@@ -3,6 +3,7 @@ package Controller;
 import java.awt.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import DAO.AccountDAOPostgresImpl;
 import DAO.SedeDAOPostgresImp;
@@ -21,6 +22,14 @@ public class MainController {
 	}
 	
 	public static void main(String[] args) {
+		
+		try {
+			  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch(Exception e) {
+			  System.out.println("Error setting native LookAndFeelClassName: " + e);
+		}
+		
+		
 		MainController mainController = new MainController();
 	}
 	
@@ -35,14 +44,9 @@ public class MainController {
 			if(account != null){
 				
 				if(account.getAmministratore() == false) {
-					//sbaglio o qui va il gestore?
+					//hai ragione
 				}else {
-					this.controllerAmministratore = new ControllerAmministratore(this);
-					this.controllerAmministratore.SetAccount(account);
-					this.controllerAmministratore.ApriClient();
-					//this.controllerAmministratore = new ControllerAmministratore(this);
-					//Qualche funzione per passsare dati (?)
-					//this.controllerAmministratore.ApriClient();
+					this.controllerAmministratore = new ControllerAmministratore(this,account);
 				}
 				this.loginFrame.setVisible(false);
 				
@@ -51,10 +55,7 @@ public class MainController {
 			{
 				JOptionPane.showMessageDialog(this.loginFrame,"Credenziali invalide!","Errore",JOptionPane.ERROR_MESSAGE);
 			}
-			
-			System.out.println("Sono uscito");
-			System.out.println("Ciao");
-			System.out.println("1");
+
 	}
 
 	public void ApriLogin() {

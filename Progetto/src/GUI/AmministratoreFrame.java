@@ -36,10 +36,9 @@ import java.awt.SystemColor;
 
 public class AmministratoreFrame extends JFrame{
 	
-	private JTable table;
-	private JTable table_1;
+	private JTable tblSedi;
 	
-	public AmministratoreFrame(ControllerAmministratore controllerAmministratore,Object[][] sedi) {
+	public AmministratoreFrame(ControllerAmministratore controllerAmministratore) {
 		
 		
 		setMinimumSize(new Dimension(1200, 700));
@@ -121,57 +120,61 @@ public class AmministratoreFrame extends JFrame{
 		getContentPane().add(scrollPane);
 	
 		
-		table = new JTable();
-		table.setSelectionForeground(SystemColor.text);
-		table.setGridColor(Color.LIGHT_GRAY);
-		table.setRowHeight(30);
-		table.setAutoCreateRowSorter(true);
-		table.setFont(new Font("Calibri", Font.PLAIN, 18));
-		table.setSelectionBackground(UIManager.getColor("Table.selectionBackground"));
-		table.setFillsViewportHeight(true);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(new DefaultTableModel(
-			sedi,
+		tblSedi = new JTable();
+		tblSedi.setSelectionForeground(SystemColor.text);
+		tblSedi.setGridColor(Color.LIGHT_GRAY);
+		tblSedi.setRowHeight(30);
+		tblSedi.setAutoCreateRowSorter(true);
+		tblSedi.setFont(new Font("Calibri", Font.PLAIN, 18));
+		tblSedi.setSelectionBackground(UIManager.getColor("Table.selectionBackground"));
+		tblSedi.setFillsViewportHeight(true);
+		tblSedi.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblSedi.setModel(new DefaultTableModel(
+			controllerAmministratore.getDatiSedi(),
 			new String[] {
-				"Nome", "Indirizzo", "Telefono"
+				"ID", "Nome", "Indirizzo", "Telefono"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class
+				String.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(150);
-		table.getColumnModel().getColumn(0).setMinWidth(150);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(150);
-		table.getColumnModel().getColumn(1).setMinWidth(150);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(2).setPreferredWidth(150);
-		table.getColumnModel().getColumn(2).setMinWidth(150);
-		table.getTableHeader().setReorderingAllowed(false);
+		tblSedi.getColumnModel().getColumn(0).setResizable(false);
+		tblSedi.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblSedi.getColumnModel().getColumn(0).setMinWidth(50);
+		tblSedi.getColumnModel().getColumn(0).setMaxWidth(50);
+		tblSedi.getColumnModel().getColumn(1).setResizable(false);
+		tblSedi.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblSedi.getColumnModel().getColumn(1).setMinWidth(150);
+		tblSedi.getColumnModel().getColumn(2).setResizable(false);
+		tblSedi.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblSedi.getColumnModel().getColumn(2).setMinWidth(150);
+		tblSedi.getColumnModel().getColumn(3).setResizable(false);
+		tblSedi.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tblSedi.getColumnModel().getColumn(3).setMinWidth(150);
+		tblSedi.getTableHeader().setReorderingAllowed(false);
 		
 		
-		table.setAutoResizeMode(JTable.HEIGHT);
-		scrollPane.setViewportView(table);
+		tblSedi.setAutoResizeMode(JTable.HEIGHT);
+		scrollPane.setViewportView(tblSedi);
 		
 		btnAggiungi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.BUTTON1 == MouseEvent.BUTTON1)
 				{
-					if(table.getSelectedColumnCount() != 0)
+					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						System.out.println("Selezionata riga n." + (table.getSelectedRow() + 1));
+						System.out.println("Selezionata riga n." + (tblSedi.getSelectedRow() + 1));
 					}else 
 					{
 						System.out.println("Nessuna riga selezionata");		
@@ -185,9 +188,9 @@ public class AmministratoreFrame extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				if(e.BUTTON1 == MouseEvent.BUTTON1)
 				{
-					if(table.getSelectedColumnCount() != 0)
+					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						System.out.println("Selezionata riga n." + (table.getSelectedRow() + 1));
+						System.out.println("Selezionata riga n." + (tblSedi.getSelectedRow() + 1));
 					}else 
 					{
 						System.out.println("Nessuna riga selezionata");		
@@ -201,9 +204,9 @@ public class AmministratoreFrame extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				if(e.BUTTON1 == MouseEvent.BUTTON1)
 				{
-					if(table.getSelectedColumnCount() != 0)
+					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						System.out.println("Selezionata riga n." + (table.getSelectedRow() + 1));
+						System.out.println("Selezionata riga n." + (tblSedi.getSelectedRow() + 1));
 					}else 
 					{
 						System.out.println("Nessuna riga selezionata");		
@@ -213,8 +216,8 @@ public class AmministratoreFrame extends JFrame{
 		});
 
 		setResizable(false); 
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		//setUndecorated(true);
 		setVisible(true);
 	}
 	
@@ -223,7 +226,4 @@ public class AmministratoreFrame extends JFrame{
 		this.setVisible(false);
 	}
 	
-	public void CaricaDati(Account account) {
-		
-	}
 }

@@ -10,35 +10,26 @@ import GUI.AmministratoreFrame;
 
 public class ControllerAmministratore {
 
-    
-	public AmministratoreFrame amministratoreFrame = null;
+ 
+	public AmministratoreFrame amministratoreFrame = new AmministratoreFrame(this);
 	
 	private MainController mainController = null;
 	private Account account;
 	
-	public ControllerAmministratore(MainController mainController) {
+	public ControllerAmministratore(MainController mainController, Account account) {
+		
 		this.mainController = mainController;
-	}
-
-	public void ApriClient(Account account) {
 		this.account = account;
-		this.amministratoreFrame.CaricaDati(account);
 		
-		List<Sede> sedi = new ArrayList<Sede>();
-		
-		SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-		sedi = sedeDao.getSedi();	
-		System.out.println("ooo");	
-		this.amministratoreFrame = new AmministratoreFrame(this,sedi.toArray(new Object[][] {}));
-		
-	}
-
-	public void SetAccount(Account account) {
-		this.amministratoreFrame.CaricaDati(account);
 	}
 	
-	public void ApriClient() {
-		this.amministratoreFrame.setVisible(true);
+	public Object[][] getDatiSedi() {
+		
+		List<Sede> sedi = null;
+		SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+		return sedeDao.getSedi().toArray(new Object[][] {});
 	}
+	
 	
 }
+

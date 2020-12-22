@@ -22,11 +22,14 @@ public class AccountDAOPostgresImpl implements AccountDAO {
 			Boolean amministratore = rs.getBoolean(3);
 			String ID_Sede = rs.getString(4);
 				
-			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-			Sede s = sedeDao.CercaSedePerId(ID_Sede);
-			
-			account = new Account(NomeUtente, Pwd, amministratore, s);
-			
+			if(amministratore == false) {
+				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+				Sede s = sedeDao.CercaSedePerId(ID_Sede);
+				account = new Account(NomeUtente, Pwd, amministratore, s);
+			}else {
+				account = new Account(NomeUtente, Pwd, amministratore, null);
+			}
+					
 			rs.close();
 			st.close();
 			conn.close();
@@ -35,7 +38,6 @@ public class AccountDAOPostgresImpl implements AccountDAO {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();	
 		}
-		
 		return account;
 	
 	}

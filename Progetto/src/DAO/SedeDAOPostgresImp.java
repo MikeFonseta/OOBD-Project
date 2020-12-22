@@ -21,20 +21,19 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM sedi WHERE id_sede=" + id);	
+			ResultSet rs = st.executeQuery("SELECT * FROM sede WHERE id_sede='" + id +"'");	
 			
 			if(rs.next()){
 				
 				String idSede = rs.getString(1);
 				String nomeSede= rs.getString(2);
-				String indirizzoSede = rs.getString(3);
-				String telefonoSede = rs.getString(4);
+				String telefonoSede = rs.getString(3);
 				String provincia = rs.getString(4);
-				String citt‡ = rs.getString(6);
-				String via = rs.getString(7);
-				String numCivico = rs.getString(8);
+				String citt√† = rs.getString(5);
+				String via = rs.getString(6);
+				String numCivico = rs.getString(7);
 				
-				sede = new Sede(idSede,nomeSede,indirizzoSede,telefonoSede,provincia,citt‡,via,numCivico);
+				sede = new Sede(idSede,nomeSede,telefonoSede,provincia,citt√†,via,numCivico);
 				
 			}
 				
@@ -43,36 +42,34 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			conn.close();
 			
 		}catch(SQLException e){				
-			// TODO Auto-generated catch block
-			//e.printStackTrace();	
+			e.printStackTrace();	
 		}
 		
 		return sede;
 	}
 
 	@Override
-	public List<Sede> getSedi() {
+	public List<Object[]> getSedi() {
 		
-		List<Sede> sedi = new ArrayList<Sede>();
+		List<Object[]> sedi = new ArrayList<Object[]>();
 		Connection conn = null;
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM sedi");	
-			
+			ResultSet rs = st.executeQuery("SELECT * FROM sede");
 			while(rs.next()) {
 				
 				String idSede = rs.getString(1);
 				String nomeSede= rs.getString(2);
-				String indirizzoSede = rs.getString(3);
-				String telefonoSede = rs.getString(4);
+				String telefonoSede = rs.getString(3);
 				String provincia = rs.getString(4);
-				String citt‡ = rs.getString(6);
-				String via = rs.getString(7);
-				String numCivico = rs.getString(8);
+				String citt√† = rs.getString(5);
+				String via = rs.getString(6);
+				String numCivico = rs.getString(7);
 				
-				Sede s = new Sede(idSede,nomeSede,indirizzoSede,telefonoSede,provincia,citt‡,via,numCivico);
-				sedi.add(s);
+				Object[] object = new Object[] {idSede,nomeSede,"(" + provincia + ") " + citt√† + " - " + via + " [" + numCivico +"]" , telefonoSede};
+				
+				sedi.add(object);
 			}
 				
 			rs.close();
@@ -80,8 +77,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			conn.close();
 			
 		}catch(SQLException e){				
-			// TODO Auto-generated catch block
-			//e.printStackTrace();	
+			e.printStackTrace();	
 		}
 		
 		return sedi;

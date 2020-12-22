@@ -132,6 +132,7 @@ public class LoginFrame extends JFrame {
 					.addContainerGap(22, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
+		setLocationRelativeTo(null);
 	}
 
 
