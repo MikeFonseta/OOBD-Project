@@ -14,12 +14,13 @@ public class MainController {
 	public LoginFrame loginFrame = new LoginFrame(this);
 	private ControllerAmministratore controllerAmministratore = null;
 	//private AdminController AdminController = null;
+	private ControllerGestore controllerGestore = null;
 
 	public MainController() {
-		
+		ApriLogin();
 	}
 	
-	public static void main(String[] argc) {
+	public static void main(String[] args) {
 		MainController mainController = new MainController();
 	}
 	
@@ -34,11 +35,11 @@ public class MainController {
 			if(account != null){
 				
 				if(account.getAmministratore() == false) {
-					
+					//sbaglio o qui va il gestore?
+				}else {
 					this.controllerAmministratore = new ControllerAmministratore(this);
 					this.controllerAmministratore.SetAccount(account);
 					this.controllerAmministratore.ApriClient();
-				}else {
 					//this.controllerAmministratore = new ControllerAmministratore(this);
 					//Qualche funzione per passsare dati (?)
 					//this.controllerAmministratore.ApriClient();
@@ -60,6 +61,8 @@ public class MainController {
 		this.controllerGestore = null;
 		//this.ControllerAdmin = null;
 		this.loginFrame.setVisible(true);
-		this.loginFrame.NomeUtente_tf.setText("");
-		this.loginFrame.Password_pf.setText("");
+		this.loginFrame.getNomeUtente_tf().setText("");
+		this.loginFrame.getPassword_pf().setText("");
 	}
+	
+}

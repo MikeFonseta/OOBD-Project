@@ -28,7 +28,7 @@ public class ControllerAmministratore {
 		
 		SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 		sedi = sedeDao.getSedi();	
-			
+		System.out.println("ooo");	
 		this.amministratoreFrame = new AmministratoreFrame(this,sedi.toArray(new Object[][] {}));
 		
 	}

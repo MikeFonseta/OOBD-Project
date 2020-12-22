@@ -30,11 +30,11 @@ public class SedeDAOPostgresImp implements SedeDAO{
 				String indirizzoSede = rs.getString(3);
 				String telefonoSede = rs.getString(4);
 				String provincia = rs.getString(4);
-				String citt√† = rs.getString(6);
+				String citt‡ = rs.getString(6);
 				String via = rs.getString(7);
 				String numCivico = rs.getString(8);
 				
-				sede = new Sede(idSede,nomeSede,indirizzoSede,telefonoSede,provincia,citt√†,via,numCivico);
+				sede = new Sede(idSede,nomeSede,indirizzoSede,telefonoSede,provincia,citt‡,via,numCivico);
 				
 			}
 				
@@ -67,11 +67,11 @@ public class SedeDAOPostgresImp implements SedeDAO{
 				String indirizzoSede = rs.getString(3);
 				String telefonoSede = rs.getString(4);
 				String provincia = rs.getString(4);
-				String citt√† = rs.getString(6);
+				String citt‡ = rs.getString(6);
 				String via = rs.getString(7);
 				String numCivico = rs.getString(8);
 				
-				Sede s = new Sede(idSede,nomeSede,indirizzoSede,telefonoSede,provincia,citt√†,via,numCivico);
+				Sede s = new Sede(idSede,nomeSede,indirizzoSede,telefonoSede,provincia,citt‡,via,numCivico);
 				sedi.add(s);
 			}
 				

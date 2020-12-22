@@ -11,11 +11,14 @@ public class DBConnection {
 
     private static DBConnection instance;
     private Connection connection = null;
-    private final String USERNAME = "postgres";
-    private final String PASSWORD = "admin";
-    private final String IP = "localhost";
-    private final String PORT = "5432";
-    private String url = "jdbc:postgresql://"+IP+":"+PORT+"/postgres";
+//    private final String USERNAME = "postgres";
+//    private final String PASSWORD = "adminadmin";
+//    private final String IP = "jdbc:postgresql://db.c3kk24vgqllo.eu-north-1.rds.amazonaws.com/progetto";
+//    private final String PORT = "5432";
+//    private String url = "jdbc:postgresql://"+IP+":"+PORT+"/postgres";
+	private String url = "jdbc:postgresql://db.c3kk24vgqllo.eu-north-1.rds.amazonaws.com/progetto";
+	private String USERNAME = "postgres";
+	private String PASSWORD = "adminadmin";
 
     private DBConnection() throws SQLException {
     	
