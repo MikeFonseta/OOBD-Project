@@ -39,7 +39,7 @@ public class AmministratoreFrame extends JFrame{
 	private JTable table;
 	private JTable table_1;
 	
-	public AmministratoreFrame(ControllerGestore controllerGestore,Object[][] sedi) {
+	public AmministratoreFrame(ControllerAmministratore controllerAmministratore,Object[][] sedi) {
 		
 		
 		setMinimumSize(new Dimension(1200, 700));

@@ -1,5 +1,7 @@
 package Controller;
 
+import java.awt.List;
+
 import javax.swing.JOptionPane;
 
 import DAO.AccountDAOPostgresImpl;
@@ -10,7 +12,7 @@ import GUI.LoginFrame;
 public class MainController {
 	
 	public LoginFrame loginFrame = new LoginFrame(this);
-	private ControllerGestore ControllerGestore = null;
+	private ControllerAmministratore controllerAmministratore = null;
 	//private AdminController AdminController = null;
 
 	public MainController() {
@@ -32,9 +34,10 @@ public class MainController {
 			if(account != null){
 				
 				if(account.getAmministratore() == false) {
-					this.ControllerGestore = new ControllerGestore(this);
-					this.ControllerGestore.SetAccount(account);
-					this.ControllerGestore.ApriClient();
+					
+					this.controllerAmministratore = new ControllerAmministratore(this);
+					this.controllerAmministratore.SetAccount(account);
+					this.controllerAmministratore.ApriClient();
 				}else {
 					//this.controllerAmministratore = new ControllerAmministratore(this);
 					//Qualche funzione per passsare dati (?)
@@ -54,7 +57,7 @@ public class MainController {
 	}
 
 	public void ApriLogin() {
-		this.ControllerGestore = null;
+		this.controllerGestore = null;
 		//this.ControllerAdmin = null;
 		this.loginFrame.setVisible(true);
 		this.loginFrame.NomeUtente_tf.setText("");
