@@ -22,6 +22,12 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+
+import Controller.ControllerAmministratore;
+import Controller.ControllerGestore;
+import Entities.Account;
+import Entities.Sede;
+
 import javax.swing.ListSelectionModel;
 import java.awt.Color;
 import javax.swing.JScrollPane;
@@ -33,7 +39,7 @@ public class AmministratoreFrame extends JFrame{
 	private JTable table;
 	private JTable table_1;
 	
-	public AmministratoreFrame(Object[][] sedi) {
+	public AmministratoreFrame(ControllerGestore controllerGestore,Object[][] sedi) {
 		
 		
 		setMinimumSize(new Dimension(1200, 700));
@@ -72,7 +78,7 @@ public class AmministratoreFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				CloseFrame();
+				ChiudiFrame();
 			}
 		});
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 23));
@@ -213,7 +219,11 @@ public class AmministratoreFrame extends JFrame{
 	}
 	
 
-	private void CloseFrame() {
+	private void ChiudiFrame() {
 		this.setVisible(false);
+	}
+	
+	public void CaricaDati(Account account) {
+		
 	}
 }
