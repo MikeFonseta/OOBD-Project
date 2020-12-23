@@ -14,6 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import Controller.ControllerAmministratore;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -21,28 +24,13 @@ import java.awt.Font;
 public class GestoreFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GestoreFrame frame = new GestoreFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JTable tblOrdini;
 
 	/**
 	 * Create the frame.
 	 */
-	public GestoreFrame() {
+	public GestoreFrame(ControllerGestore controllerGestore) {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		contentPane = new JPanel();
@@ -56,12 +44,12 @@ public class GestoreFrame extends JFrame {
 		scrollPane.setBounds(43, 225, 1006, 347);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
-		table.setRowHeight(30);
-		table.setFillsViewportHeight(true);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setModel(new DefaultTableModel(
+		tblOrdini = new JTable();
+		tblOrdini.setRowHeight(30);
+		tblOrdini.setFillsViewportHeight(true);
+		tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblOrdini.getTableHeader().setReorderingAllowed(false);
+		tblOrdini.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -75,17 +63,17 @@ public class GestoreFrame extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(5).setResizable(false);
-		table.getColumnModel().getColumn(6).setResizable(false);
-		table.getColumnModel().getColumn(6).setPreferredWidth(74);
-		table.getColumnModel().getColumn(7).setResizable(false);
-		table.getColumnModel().getColumn(8).setResizable(false);
-		scrollPane.setViewportView(table);
+		tblOrdini.getColumnModel().getColumn(0).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(1).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(2).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(3).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(4).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(5).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(6).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(6).setPreferredWidth(74);
+		tblOrdini.getColumnModel().getColumn(7).setResizable(false);
+		tblOrdini.getColumnModel().getColumn(8).setResizable(false);
+		scrollPane.setViewportView(tblOrdini);
 		
 		JLabel lblNewLabel = new JLabel("NomeUtente");
 		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
