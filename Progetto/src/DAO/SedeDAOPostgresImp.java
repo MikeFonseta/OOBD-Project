@@ -83,6 +83,25 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return sedi;
 	}
 	
+	public int aggiungiProdottoASede(String idSede,int idProdotto) {
+		
+		Connection conn = null;
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			st.executeUpdate("INSERT INTO menù VALUES ('"+idSede + "'," + idProdotto +")");
+				
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+		return 1;
+		
+	}
+	
 	
 
 }

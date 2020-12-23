@@ -193,6 +193,7 @@ public class AmministratoreFrame extends JFrame{
 				{
 					if(tblSedi.getSelectedColumnCount() != 0)
 					{
+						System.out.println("Cerco " + tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString());
 						controllerAmministratore.ApriGestioneSedi((tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString()));
 					}else 
 					{

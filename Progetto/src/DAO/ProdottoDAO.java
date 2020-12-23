@@ -5,5 +5,5 @@ import java.util.List;
 public interface ProdottoDAO {
 	
 	public List<Object[]> getTuttiProdotti(); 
-	public List<Object[]> getProdottiDaSede();
+	public List<Object[]> getProdottiDaSede(String idSede);
 }

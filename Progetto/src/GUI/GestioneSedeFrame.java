@@ -37,13 +37,17 @@ public class GestioneSedeFrame extends JDialog{
 	private JTable tableProdotti;
 	private JScrollPane scrollPaneRider;
 	private JTable tableRider;
+	private ControllerAmministratore controllerAmministratore;
+	private String idSede;
 	
 	
 	public GestioneSedeFrame(ControllerAmministratore controllerAmministratore,String idSede) {
+		
+		this.controllerAmministratore = controllerAmministratore;
+		this.idSede = idSede;
+	
 		setAlwaysOnTop(true);
 		setResizable(false);
-		
-
 		setBounds(0,0,1200,700);
 		getContentPane().setLayout(null);
 		
@@ -154,13 +158,13 @@ public class GestioneSedeFrame extends JDialog{
 		tableProdotti.setDragEnabled(false);
 		tableProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableProdotti.setModel(new DefaultTableModel(
-			controllerAmministratore.getProdottiDaSede(idSede),
+			controllerAmministratore.getMenùSede(idSede),
 			new String[] {
 				"ID", "Nome", "Descrizione", "Allergeni", "Prezzo"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, Double.class
+				Integer.class, String.class, String.class, String.class, Double.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -199,13 +203,14 @@ public class GestioneSedeFrame extends JDialog{
 		tableRider.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tableRider.getTableHeader().setReorderingAllowed(false);
 		tableRider.setModel(new DefaultTableModel(
-				controllerAmministratore.getRiderDaSede(idSede),
+			new Object[][] {
+			},
 			new String[] {
 				"ID", "Nome", "Cognome", "Telefono", "Veicolo"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class
+				Integer.class, String.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -238,7 +243,7 @@ public class GestioneSedeFrame extends JDialog{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.BUTTON1 == MouseEvent.BUTTON1) {
-					controllerAmministratore.ApriAggiungiProdottoFrame();
+					controllerAmministratore.ApriAggiungiProdottoFrame(idSede);
 				}
 			}
 		});
@@ -260,5 +265,42 @@ public class GestioneSedeFrame extends JDialog{
 		setVisible(true);
 	}
 
+	public void AggiornaProdotti() {
+		tableProdotti.setModel(new DefaultTableModel(
+				this.controllerAmministratore.getMenùSede(this.idSede),
+				new String[] {
+					"ID", "Nome", "Descrizione", "Allergeni", "Prezzo"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					Integer.class, String.class, String.class, String.class, Double.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+		tableProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tableProdotti.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tableProdotti.getColumnModel().getColumn(0).setMinWidth(40);
+		tableProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
+		tableProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tableProdotti.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tableProdotti.getColumnModel().getColumn(1).setMinWidth(150);
+		tableProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tableProdotti.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tableProdotti.getColumnModel().getColumn(2).setMinWidth(100);
+		tableProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tableProdotti.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tableProdotti.getColumnModel().getColumn(3).setMinWidth(150);
+		tableProdotti.getColumnModel().getColumn(4).setResizable(false);
+		tableProdotti.getColumnModel().getColumn(4).setPreferredWidth(61);
+		tableProdotti.getColumnModel().getColumn(4).setMinWidth(20);
+	}
 
 }

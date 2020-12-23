@@ -3,6 +3,8 @@ package Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import DAO.ProdottoDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.Account;
@@ -59,21 +61,54 @@ public class ControllerAmministratore {
 		return result;
 	}
 	
-	public void ApriGestioneSedi(String idSede) {
-		gestioneSedeFrame = new GestioneSedeFrame(this,idSede);
-	}
-
-	public Object[][] getProdottiDaSede(String idSede) {
-		return null;
-	}
 
 	public Object[][] getRiderDaSede(String idSede) {
 		return null;
 	}
+	
+	public void ApriGestioneSedi(String idSede) {
+		gestioneSedeFrame = new GestioneSedeFrame(this,idSede);
+	}
 
-	public void ApriAggiungiProdottoFrame() {
-		aggiungiProdottoFrame = new AggiungiProdottoFrame(this);
+	public void ApriAggiungiProdottoFrame(String idSede) {
+		aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
 		
+	}
+
+	public Object[][] getMenùSede(String idSede) {
+		
+		Object[][] result = null;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+			result = prodottoDao.getProdottiDaSede(idSede).toArray(new Object[][] {});
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
+		return result;
+	}
+
+	public void aggiungiProdottoASede(String idSede, int idProdotto) {
+		
+		int result;
+		if(this.imp.equals(this.postgresImp))
+		{
+			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+			result = sedeDao.aggiungiProdottoASede(idSede, idProdotto);
+			
+			if(result==1) {
+				
+				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione effettuata con successo","",JOptionPane.OK_OPTION);
+				this.gestioneSedeFrame.AggiornaProdotti();
+			}else {
+				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
 	}
 	
 	

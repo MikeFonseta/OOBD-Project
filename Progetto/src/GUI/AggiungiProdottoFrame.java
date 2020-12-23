@@ -22,7 +22,7 @@ import javax.swing.DropMode;
 public class AggiungiProdottoFrame extends JFrame{
 	private JTable table;
 	
-	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore) {
+	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore, String idSede){
 		
 		setResizable(false);
 		setBounds(100,100,956,580);
@@ -56,31 +56,35 @@ public class AggiungiProdottoFrame extends JFrame{
 		table.setModel(new DefaultTableModel(
 			controllerAmministratore.getDatiProdotti(),
 			new String[] {
-				"Nome", "Descrizione", "Prezzo"
+				"ID", "Nome", "Descrizione", "Prezzo"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Object.class, Double.class
+				Integer.class, String.class, String.class, Double.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
 		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(350);
-		table.getColumnModel().getColumn(0).setMinWidth(350);
-		table.getColumnModel().getColumn(0).setMaxWidth(350);
+		table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		table.getColumnModel().getColumn(0).setMinWidth(40);
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
 		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(350);
+		table.getColumnModel().getColumn(1).setMinWidth(350);
+		table.getColumnModel().getColumn(1).setMaxWidth(350);
 		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(2).setPreferredWidth(70);
-		table.getColumnModel().getColumn(2).setMinWidth(70);
-		table.getColumnModel().getColumn(2).setMaxWidth(70);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(3).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setMinWidth(70);
+		table.getColumnModel().getColumn(3).setMaxWidth(70);
 		table.setFont(new Font("Calibri", Font.PLAIN, 14));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
@@ -98,6 +102,14 @@ public class AggiungiProdottoFrame extends JFrame{
 		getContentPane().add(btnChiudi);
 		
 		JButton btnAggiungi = new JButton("AGGIUNGI");
+		btnAggiungi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+					controllerAmministratore.aggiungiProdottoASede(idSede, (int)table.getValueAt(table.getSelectedRow(), 0));
+				}
+			}
+		});
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnAggiungi.setBounds(789, 483, 141, 44);
 		getContentPane().add(btnAggiungi);
