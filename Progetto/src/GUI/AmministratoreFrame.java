@@ -124,7 +124,6 @@ public class AmministratoreFrame extends JFrame{
 		tblSedi.setSelectionForeground(SystemColor.text);
 		tblSedi.setGridColor(Color.LIGHT_GRAY);
 		tblSedi.setRowHeight(30);
-		tblSedi.setAutoCreateRowSorter(true);
 		tblSedi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		tblSedi.setSelectionBackground(UIManager.getColor("Table.selectionBackground"));
 		tblSedi.setFillsViewportHeight(true);
@@ -161,10 +160,8 @@ public class AmministratoreFrame extends JFrame{
 		tblSedi.getColumnModel().getColumn(3).setResizable(false);
 		tblSedi.getColumnModel().getColumn(3).setPreferredWidth(150);
 		tblSedi.getColumnModel().getColumn(3).setMinWidth(150);
-		tblSedi.getTableHeader().setReorderingAllowed(false);
-		
-		
 		tblSedi.setAutoResizeMode(JTable.HEIGHT);
+		tblSedi.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(tblSedi);
 		
 		btnAggiungi.addMouseListener(new MouseAdapter() {
@@ -190,7 +187,7 @@ public class AmministratoreFrame extends JFrame{
 				{
 					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						System.out.println("Selezionata riga n." + (tblSedi.getSelectedRow() + 1));
+						controllerAmministratore.ApriGestioneSedi((tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString()));
 					}else 
 					{
 						System.out.println("Nessuna riga selezionata");		

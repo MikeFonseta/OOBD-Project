@@ -5,7 +5,7 @@ import java.awt.List;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import DAO.AccountDAOPostgresImpl;
+import DAO.AccountDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.*;
 import GUI.LoginFrame;
@@ -38,7 +38,7 @@ public class MainController {
 		
 		Account account = new Account();
 		
-		AccountDAOPostgresImpl accountDao = new AccountDAOPostgresImpl();
+		AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
 			
 		account = accountDao.ControlloCredenziali(NomeUtente, password);
 			if(account != null){
