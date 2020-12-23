@@ -49,6 +49,12 @@ public class AmministratoreFrame extends JFrame{
 		getContentPane().add(lbNomeUtente);
 		
 		JButton btnGestioneProdotti = new JButton("GESTIONE PRODOTTI");
+		btnGestioneProdotti.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1) {}
+			}
+		});
 		btnGestioneProdotti.setBounds(343, 29, 242, 54);
 		btnGestioneProdotti.setBorder(UIManager.getBorder("Button.border"));
 		btnGestioneProdotti.setFont(new Font("Calibri", Font.PLAIN, 23));

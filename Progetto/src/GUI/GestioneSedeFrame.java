@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JToggleButton;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -16,8 +17,10 @@ import Controller.ControllerAmministratore;
 import javax.swing.JPasswordField;
 import javax.swing.ListSelectionModel;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class GestioneSedeFrame extends JFrame{
+public class GestioneSedeFrame extends JDialog{
 	private JTextField textFieldNomeSede;
 	private JTextField textFieldProvincia;
 	private JTextField textFieldCittà;
@@ -39,6 +42,8 @@ public class GestioneSedeFrame extends JFrame{
 	public GestioneSedeFrame(ControllerAmministratore controllerAmministratore,String idSede) {
 		setAlwaysOnTop(true);
 		setResizable(false);
+		
+
 		setBounds(0,0,1200,700);
 		getContentPane().setLayout(null);
 		
@@ -229,6 +234,14 @@ public class GestioneSedeFrame extends JFrame{
 		getContentPane().add(btnEliminaProdotto);
 		
 		JButton btnAggiungiProdotto = new JButton("AGGIUNGI");
+		btnAggiungiProdotto.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriAggiungiProdottoFrame();
+				}
+			}
+		});
 		btnAggiungiProdotto.setBounds(376, 616, 105, 34);
 		getContentPane().add(btnAggiungiProdotto);
 		

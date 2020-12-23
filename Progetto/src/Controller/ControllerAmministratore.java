@@ -19,8 +19,8 @@ public class ControllerAmministratore {
 	private String altraImp = "altraImp";
 	public AmministratoreFrame amministratoreFrame = new AmministratoreFrame(this);
 	private MainController mainController = null;
-	private GestioneSedeFrame gestioneSede = null;
-	private AggiungiProdottoFrame aggiungiProdotto = null;
+	private GestioneSedeFrame gestioneSedeFrame = null;
+	private AggiungiProdottoFrame aggiungiProdottoFrame = null;
 	private Account account;
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
@@ -32,14 +32,11 @@ public class ControllerAmministratore {
 	
 	public Object[][] getDatiSedi() {
 		
-		List<Sede> sedi = null;
 		Object[][] result = null;
-		
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			result = sedeDao.getSedi().toArray(new Object[][] {});
-			System.out.println("Ciao");
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -47,16 +44,14 @@ public class ControllerAmministratore {
 		return result;
 	}
 	
-	public Object[][] getProdotti() {
+	public Object[][] getDatiProdotti() {
 		
-		List<Prodotto> prodotti = null;
 		Object[][] result = null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 			result = prodottoDao.getTuttiProdotti().toArray(new Object[][] {});
-			System.out.println("Ciao");
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -65,7 +60,7 @@ public class ControllerAmministratore {
 	}
 	
 	public void ApriGestioneSedi(String idSede) {
-		gestioneSede = new GestioneSedeFrame(this,idSede);
+		gestioneSedeFrame = new GestioneSedeFrame(this,idSede);
 	}
 
 	public Object[][] getProdottiDaSede(String idSede) {
@@ -74,6 +69,11 @@ public class ControllerAmministratore {
 
 	public Object[][] getRiderDaSede(String idSede) {
 		return null;
+	}
+
+	public void ApriAggiungiProdottoFrame() {
+		aggiungiProdottoFrame = new AggiungiProdottoFrame(this);
+		
 	}
 	
 	

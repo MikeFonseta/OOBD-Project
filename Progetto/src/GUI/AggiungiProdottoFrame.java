@@ -54,7 +54,7 @@ public class AggiungiProdottoFrame extends JFrame{
 		table.setRowHeight(30);
 		table.setFillsViewportHeight(true);
 		table.setModel(new DefaultTableModel(
-			controllerAmministratore.getProdotti(),
+			controllerAmministratore.getDatiProdotti(),
 			new String[] {
 				"Nome", "Descrizione", "Prezzo"
 			}

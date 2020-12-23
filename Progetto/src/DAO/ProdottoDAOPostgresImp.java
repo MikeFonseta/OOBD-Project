@@ -44,4 +44,10 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return prodotti;
 	}
 
+	@Override
+	public List<Object[]> getProdottiDaSede() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
