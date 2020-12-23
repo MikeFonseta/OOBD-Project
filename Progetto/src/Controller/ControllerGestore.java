@@ -13,5 +13,9 @@ public class ControllerGestore {
 		
 	}
 
-
+	
+	public Object[][] getDatiSedi() //funzione provvisoria
+	{
+		return getDatiSedi();
+	}
 }

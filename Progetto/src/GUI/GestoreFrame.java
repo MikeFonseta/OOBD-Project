@@ -16,33 +16,33 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
+import Controller.ControllerGestore;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
 public class GestoreFrame extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel pnlGestore;
 	private JTable tblOrdini;
 
-	/**
-	 * Create the frame.
-	 */
 	public GestoreFrame(ControllerGestore controllerGestore) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		pnlGestore = new JPanel();
+		pnlGestore.setBackground(Color.WHITE);
+		pnlGestore.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(pnlGestore);
+		pnlGestore.setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setFont(new Font("Calibri", Font.PLAIN, 11));
-		scrollPane.setBounds(43, 225, 1006, 347);
-		contentPane.add(scrollPane);
+		JScrollPane scpGestore = new JScrollPane();
+		scpGestore.setFont(new Font("Calibri", Font.PLAIN, 11));
+		scpGestore.setBounds(43, 225, 1006, 347);
+		pnlGestore.add(scpGestore);
 		
 		tblOrdini = new JTable();
 		tblOrdini.setRowHeight(30);
@@ -50,12 +50,17 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblOrdini.getTableHeader().setReorderingAllowed(false);
 		tblOrdini.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
+			controllerGestore.getDatiSedi(),
 			new String[] {
 				"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale", "Stato"
 			}
 		) {
+			Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class,String.class, String.class, String.class, String.class,String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+			}
 			boolean[] columnEditables = new boolean[] {
 				false, false, false, false, false, false, false, false, false
 			};
@@ -73,77 +78,107 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getColumnModel().getColumn(6).setPreferredWidth(74);
 		tblOrdini.getColumnModel().getColumn(7).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(8).setResizable(false);
-		scrollPane.setViewportView(tblOrdini);
+		scpGestore.setViewportView(tblOrdini);
 		
-		JLabel lblNewLabel = new JLabel("NomeUtente");
-		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNewLabel.setBounds(40, 27, 88, 14);
-		contentPane.add(lblNewLabel);
+		JLabel lblNomeUtente = new JLabel("NomeUtente");
+		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblNomeUtente.setBounds(40, 27, 88, 14);
+		pnlGestore.add(lblNomeUtente);
 		
-		JLabel lblNomesede = new JLabel("NomeSede");
-		lblNomesede.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNomesede.setBounds(344, 27, 88, 14);
-		contentPane.add(lblNomesede);
+		JLabel lblNomeSede = new JLabel("NomeSede");
+		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblNomeSede.setBounds(344, 27, 88, 14);
+		pnlGestore.add(lblNomeSede);
 		
-		JButton btnNewButton = new JButton("Esci");
-		btnNewButton.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnNewButton.setBounds(804, 23, 89, 23);
-		contentPane.add(btnNewButton);
+		JButton btnEsci = new JButton("Esci");
+		btnEsci.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnEsci.setBounds(804, 23, 89, 23);
+		pnlGestore.add(btnEsci);
+		btnEsci.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1) //controlla che si usi il tasto sinistro del mouse
+				TornaAlLogin();
+			}
+		});
 		
 		JButton btnChiudi = new JButton("Chiudi");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnChiudi.setBounds(1023, 23, 89, 23);
-		contentPane.add(btnChiudi);
+		pnlGestore.add(btnChiudi);
+		btnChiudi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1)
+				ChiudiFrame();
+			}
+		});
 		
-		JButton btnNewButton_1 = new JButton("Crea Ordine");
-		btnNewButton_1.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnNewButton_1.setBounds(43, 116, 339, 63);
-		contentPane.add(btnNewButton_1);
+		JButton btnCreaOrdine = new JButton("Crea Ordine");
+		btnCreaOrdine.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnCreaOrdine.setBounds(43, 116, 339, 63);
+		pnlGestore.add(btnCreaOrdine);
+		btnCreaOrdine.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1)
+				ChiudiFrame(); //sostituire con funzione che apre la schermata crea ordine
+			}
+		});
 		
-		JButton btnNewButton_1_1 = new JButton("Visualizza Ordini");
-		btnNewButton_1_1.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnNewButton_1_1.setBounds(391, 116, 372, 63);
-		contentPane.add(btnNewButton_1_1);
+		JButton btnVisualizzaOrdini = new JButton("Visualizza Ordini");
+		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnVisualizzaOrdini.setBounds(391, 116, 372, 63);
+		pnlGestore.add(btnVisualizzaOrdini);
 		
-		JButton btnNewButton_1_1_1 = new JButton("Visualizza Prodotti");
-		btnNewButton_1_1_1.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnNewButton_1_1_1.setBounds(773, 116, 339, 63);
-		contentPane.add(btnNewButton_1_1_1);
+		JButton btnVisualizzaProdotti = new JButton("Visualizza Prodotti");
+		btnVisualizzaProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnVisualizzaProdotti.setBounds(773, 116, 339, 63);
+		pnlGestore.add(btnVisualizzaProdotti);
 		
-		JButton btnNewButton_2 = new JButton("Immagine");
-		btnNewButton_2.addActionListener(new ActionListener() {
+		JButton btnFineConsegna = new JButton("Immagine");
+		btnFineConsegna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2.setBounds(1085, 260, 89, 63);
-		contentPane.add(btnNewButton_2);
+		btnFineConsegna.setBounds(1085, 260, 89, 63);
+		pnlGestore.add(btnFineConsegna);
 		
-		JButton btnNewButton_2_1 = new JButton("Immagine");
-		btnNewButton_2_1.addActionListener(new ActionListener() {
+		JButton btnIniziaConsegna = new JButton("Immagine");
+		btnIniziaConsegna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2_1.setBounds(1085, 324, 89, 63);
-		contentPane.add(btnNewButton_2_1);
+		btnIniziaConsegna.setBounds(1085, 324, 89, 63);
+		pnlGestore.add(btnIniziaConsegna);
 		
-		JButton btnNewButton_2_2 = new JButton("Immagine");
-		btnNewButton_2_2.addActionListener(new ActionListener() {
+		JButton btnModifica = new JButton("Immagine");
+		btnModifica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2_2.setBounds(1085, 385, 89, 63);
-		contentPane.add(btnNewButton_2_2);
+		btnModifica.setBounds(1085, 385, 89, 63);
+		pnlGestore.add(btnModifica);
 		
-		JButton btnNewButton_2_3 = new JButton("Immagine");
-		btnNewButton_2_3.addActionListener(new ActionListener() {
+		JButton btnInfo = new JButton("Immagine");
+		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2_3.setBounds(1085, 446, 89, 63);
-		contentPane.add(btnNewButton_2_3);
+		btnInfo.setBounds(1085, 446, 89, 63);
+		pnlGestore.add(btnInfo);
 		
-		JButton btnNewButton_2_4 = new JButton("Immagine");
-		btnNewButton_2_4.setBounds(1085, 509, 89, 63);
-		contentPane.add(btnNewButton_2_4);
+		JButton btnElimina = new JButton("Immagine");
+		btnElimina.setBounds(1085, 509, 89, 63);
+		pnlGestore.add(btnElimina);
 	}
+	
+	private void ChiudiFrame() {
+		this.setVisible(false);
+	}
+	
+	private void TornaAlLogin() {
+	
+	}
+	
 }
