@@ -1,5 +1,6 @@
 package Controller;
 
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,13 +68,25 @@ public class ControllerAmministratore {
 	}
 	
 	public void ApriGestioneSedi(String idSede) {
-		gestioneSedeFrame = new GestioneSedeFrame(this,idSede);
+		this.gestioneSedeFrame = new GestioneSedeFrame(this,idSede);
+		this.amministratoreFrame.setVisible(false);
 	}
 
 	public void ApriAggiungiProdottoFrame(String idSede) {
-		aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
-		
+		this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
+		this.gestioneSedeFrame.setEnabled(false);
 	}
+	
+	public void ChiudiGestioneSedeFrame() {
+		this.gestioneSedeFrame.dispose();
+		this.amministratoreFrame.setVisible(true);
+	}
+	
+	public void ChiudiAggiungiProdottoFrame() {
+		this.gestioneSedeFrame.setEnabled(true);
+		this.aggiungiProdottoFrame.dispose();
+	}
+	
 
 	public Object[][] getMenùSede(String idSede) {
 		
@@ -82,7 +95,22 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
-			result = prodottoDao.getProdottiDaSede(idSede).toArray(new Object[][] {});
+			result = prodottoDao.getProdottiDellaSede(idSede).toArray(new Object[][] {});
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
+		return result;
+	}
+	
+	public Object[][] getProdottiPerUnaSede(String idSede) {
+		
+		Object[][] result = null;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+			result = prodottoDao.getProdottiPerUnaSede(idSede).toArray(new Object[][] {});
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -100,7 +128,29 @@ public class ControllerAmministratore {
 			
 			if(result==1) {
 				
-				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione effettuata con successo","",JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione effettuata con successo","",JOptionPane.PLAIN_MESSAGE);
+				this.gestioneSedeFrame.AggiornaProdotti();
+				this.aggiungiProdottoFrame.AggiornaProdotti();
+			}else {
+				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
+	}
+	
+	public void EliminaProdottoDaSede(String idSede, int idProdotto) {
+		
+		int result;
+		if(this.imp.equals(this.postgresImp))
+		{
+			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+			result = sedeDao.EliminaProdottoDaSede(idSede, idProdotto);
+			
+			if(result==1) {
+				
+				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione effettuata con successo","",JOptionPane.PLAIN_MESSAGE);
 				this.gestioneSedeFrame.AggiornaProdotti();
 			}else {
 				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
@@ -110,6 +160,8 @@ public class ControllerAmministratore {
 			//altra implementazioni
 		}
 	}
+
+	
 	
 	
 }

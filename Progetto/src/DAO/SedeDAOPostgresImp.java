@@ -101,6 +101,26 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return 1;
 		
 	}
+
+	@Override
+	public int EliminaProdottoDaSede(String idSede, int idProdotto) {
+		Connection conn = null;
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			st.executeUpdate("DELETE FROM menù WHERE id_sede='"+idSede + "' AND id_prodotto='" + idProdotto +"'");
+				
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+		return 1;
+	}
+
+
 	
 	
 

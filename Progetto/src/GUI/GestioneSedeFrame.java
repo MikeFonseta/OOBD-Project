@@ -3,6 +3,7 @@ package GUI;
 import javax.swing.JFrame;
 import java.awt.Dimension;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,6 +20,8 @@ import javax.swing.ListSelectionModel;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GestioneSedeFrame extends JDialog{
 	private JTextField textFieldNomeSede;
@@ -45,8 +48,6 @@ public class GestioneSedeFrame extends JDialog{
 		
 		this.controllerAmministratore = controllerAmministratore;
 		this.idSede = idSede;
-	
-		setAlwaysOnTop(true);
 		setResizable(false);
 		setBounds(0,0,1200,700);
 		getContentPane().setLayout(null);
@@ -112,6 +113,14 @@ public class GestioneSedeFrame extends JDialog{
 		getContentPane().add(btnSalva);
 		
 		btnChiudi = new JButton("CHIUDI");
+		btnChiudi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.ChiudiGestioneSedeFrame();
+				}
+			}
+		});
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnChiudi.setBounds(1037, 61, 118, 39);
 		getContentPane().add(btnChiudi);
@@ -235,6 +244,18 @@ public class GestioneSedeFrame extends JDialog{
 		scrollPaneRider.setViewportView(tableRider);
 		
 		JButton btnEliminaProdotto = new JButton("ELIMINA");
+		btnEliminaProdotto.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(tableProdotti.getSelectedRowCount() > 0) {
+						controllerAmministratore.EliminaProdottoDaSede(idSede, (int)tableProdotti.getValueAt(tableProdotti.getSelectedRow(), 0));
+					}else {
+						Errore();
+					}
+				}
+			}
+		});
 		btnEliminaProdotto.setBounds(483, 616, 105, 34);
 		getContentPane().add(btnEliminaProdotto);
 		
@@ -242,7 +263,7 @@ public class GestioneSedeFrame extends JDialog{
 		btnAggiungiProdotto.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
 					controllerAmministratore.ApriAggiungiProdottoFrame(idSede);
 				}
 			}
@@ -261,7 +282,8 @@ public class GestioneSedeFrame extends JDialog{
 		JButton btnModificaRider = new JButton("MODIFICA");
 		btnModificaRider.setBounds(854, 616, 105, 34);
 		getContentPane().add(btnModificaRider);
-		
+		setLocationRelativeTo(null);
+		setUndecorated(true);
 		setVisible(true);
 	}
 
@@ -301,6 +323,10 @@ public class GestioneSedeFrame extends JDialog{
 		tableProdotti.getColumnModel().getColumn(4).setResizable(false);
 		tableProdotti.getColumnModel().getColumn(4).setPreferredWidth(61);
 		tableProdotti.getColumnModel().getColumn(4).setMinWidth(20);
+	}
+	
+	private void Errore() {
+		JOptionPane.showMessageDialog(this,"Nessun prodotto selezionato","Errore",JOptionPane.ERROR_MESSAGE);
 	}
 
 }

@@ -8,5 +8,6 @@ public interface SedeDAO {
 	
 	public Sede CercaSedePerId(String id);
 	public List<Object[]> getSedi();
+	public int EliminaProdottoDaSede(String idSede, int idProdotto);
 
 }

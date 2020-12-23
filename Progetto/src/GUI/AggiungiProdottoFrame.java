@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -21,8 +22,14 @@ import javax.swing.DropMode;
 
 public class AggiungiProdottoFrame extends JFrame{
 	private JTable table;
+	private ControllerAmministratore controllerAmministratore;
+	private String idSede;
 	
 	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore, String idSede){
+		
+		setAlwaysOnTop(true);
+		this.controllerAmministratore = controllerAmministratore;
+		this.idSede = idSede;
 		
 		setResizable(false);
 		setBounds(100,100,956,580);
@@ -54,7 +61,7 @@ public class AggiungiProdottoFrame extends JFrame{
 		table.setRowHeight(30);
 		table.setFillsViewportHeight(true);
 		table.setModel(new DefaultTableModel(
-			controllerAmministratore.getDatiProdotti(),
+			controllerAmministratore.getProdottiPerUnaSede(idSede),
 			new String[] {
 				"ID", "Nome", "Descrizione", "Prezzo"
 			}
@@ -94,8 +101,8 @@ public class AggiungiProdottoFrame extends JFrame{
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				CloseFrame();
+				if(e.getButton() == MouseEvent.BUTTON1)
+				controllerAmministratore.ChiudiAggiungiProdottoFrame();
 			}
 		});
 		btnChiudi.setBounds(636, 485, 141, 44);
@@ -105,19 +112,60 @@ public class AggiungiProdottoFrame extends JFrame{
 		btnAggiungi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(table.getSelectedRowCount() > 0) {
 					controllerAmministratore.aggiungiProdottoASede(idSede, (int)table.getValueAt(table.getSelectedRow(), 0));
+					}else {
+						Errore();
+					}
 				}
 			}
+
 		});
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnAggiungi.setBounds(789, 483, 141, 44);
 		getContentPane().add(btnAggiungi);
-		
+		setLocationRelativeTo(null);
+		setUndecorated(true);
 		setVisible(true);
 	}
+
+	private void Errore() {
+		JOptionPane.showMessageDialog(this, "Nessun prodotto selezionato","Errore",JOptionPane.ERROR_MESSAGE);
+	}
 	
-	private void CloseFrame() {
-		this.dispose();
+	public void AggiornaProdotti() {
+		table.setModel(new DefaultTableModel(
+				controllerAmministratore.getProdottiPerUnaSede(this.idSede),
+				new String[] {
+					"ID", "Nome", "Descrizione", "Prezzo"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					Integer.class, String.class, String.class, Double.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		table.getColumnModel().getColumn(0).setMinWidth(40);
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(350);
+		table.getColumnModel().getColumn(1).setMinWidth(350);
+		table.getColumnModel().getColumn(1).setMaxWidth(350);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(3).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setMinWidth(70);
+		table.getColumnModel().getColumn(3).setMaxWidth(70);
 	}
 }

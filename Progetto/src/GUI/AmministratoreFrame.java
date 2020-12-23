@@ -221,6 +221,7 @@ public class AmministratoreFrame extends JFrame{
 
 		setResizable(false); 
 		setLocationRelativeTo(null);
+		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setVisible(true);
 	}
