@@ -26,7 +26,7 @@ import java.awt.event.WindowEvent;
 public class GestioneSedeFrame extends JDialog{
 	private JTextField textFieldNomeSede;
 	private JTextField textFieldProvincia;
-	private JTextField textFieldCitt√†;
+	private JTextField textFieldCitt‡;
 	private JTextField textFieldVia;
 	private JLabel lblVia;
 	private JTextField textFieldNumCivico;
@@ -74,16 +74,16 @@ public class GestioneSedeFrame extends JDialog{
 		lblProvincia.setBounds(296, 11, 96, 39);
 		getContentPane().add(lblProvincia);
 		
-		textFieldCitt√† = new JTextField();
-		textFieldCitt√†.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldCitt√†.setColumns(10);
-		textFieldCitt√†.setBounds(480, 15, 106, 28);
-		getContentPane().add(textFieldCitt√†);
+		textFieldCitt‡ = new JTextField();
+		textFieldCitt‡.setFont(new Font("Calibri", Font.PLAIN, 18));
+		textFieldCitt‡.setColumns(10);
+		textFieldCitt‡.setBounds(480, 15, 106, 28);
+		getContentPane().add(textFieldCitt‡);
 		
-		JLabel lblCitt√† = new JLabel("Citt√†");
-		lblCitt√†.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblCitt√†.setBounds(428, 11, 42, 39);
-		getContentPane().add(lblCitt√†);
+		JLabel lblCitt‡ = new JLabel("Citt√†");
+		lblCitt‡.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblCitt‡.setBounds(428, 11, 42, 39);
+		getContentPane().add(lblCitt‡);
 		
 		textFieldVia = new JTextField();
 		textFieldVia.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -167,7 +167,7 @@ public class GestioneSedeFrame extends JDialog{
 		tableProdotti.setDragEnabled(false);
 		tableProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableProdotti.setModel(new DefaultTableModel(
-			controllerAmministratore.getMen√πSede(idSede),
+			controllerAmministratore.getMen˘Sede(idSede),
 			new String[] {
 				"ID", "Nome", "Descrizione", "Allergeni", "Prezzo"
 			}
@@ -289,7 +289,7 @@ public class GestioneSedeFrame extends JDialog{
 
 	public void AggiornaProdotti() {
 		tableProdotti.setModel(new DefaultTableModel(
-				this.controllerAmministratore.getMen√πSede(this.idSede),
+				this.controllerAmministratore.getMen˘Sede(this.idSede),
 				new String[] {
 					"ID", "Nome", "Descrizione", "Allergeni", "Prezzo"
 				}

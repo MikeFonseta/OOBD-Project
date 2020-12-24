@@ -44,7 +44,7 @@ public class MainController {
 			if(account != null){
 				
 				if(account.getAmministratore() == false) {
-					//hai ragione
+
 				}else {
 					this.controllerAmministratore = new ControllerAmministratore(this,account);
 				}
@@ -60,10 +60,13 @@ public class MainController {
 
 	public void ApriLogin() {
 		this.controllerGestore = null;
-		//this.ControllerAdmin = null;
+		this.controllerAmministratore = null;
 		this.loginFrame.setVisible(true);
 		this.loginFrame.getNomeUtente_tf().setText("");
 		this.loginFrame.getPassword_pf().setText("");
 	}
 	
+	public void ChiudiLogin() {
+		this.loginFrame.dispose();
+	}
 }

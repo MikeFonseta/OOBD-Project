@@ -88,7 +88,7 @@ public class ControllerAmministratore {
 	}
 	
 
-	public Object[][] getMenÃ¹Sede(String idSede) {
+	public Object[][] getMenùSede(String idSede) {
 		
 		Object[][] result = null;
 		
