@@ -62,11 +62,15 @@ public class MainController {
 		this.controllerGestore = null;
 		this.controllerAmministratore = null;
 		this.loginFrame.setVisible(true);
-		this.loginFrame.getNomeUtente_tf().setText("");
-		this.loginFrame.getPassword_pf().setText("");
+		this.loginFrame.getTxfNomeUtente().setText("");
+		this.loginFrame.getPsfPassword().setText("");
 	}
 	
 	public void ChiudiLogin() {
 		this.loginFrame.dispose();
+	}
+
+	public void ChiudiVisualizzaOrdini() {
+			
 	}
 }

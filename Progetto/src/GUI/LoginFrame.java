@@ -37,9 +37,6 @@ public class LoginFrame extends JFrame {
 	MainController controller;
 	private JTextField txfNomeUtente;
 	private JPasswordField psfPassword;
-	private JLabel lblPassword;
-	private JButton btnLogin;
-
 
 	/**
 	 * Create the frame.
@@ -53,6 +50,10 @@ public class LoginFrame extends JFrame {
 		setAlwaysOnTop(true);
 		setBackground(SystemColor.inactiveCaption);
 		setBounds(100, 100, 471, 362);
+		setResizable(false); 
+		setLocationRelativeTo(null);
+		setUndecorated(true);
+		
 		JPanel contentPane = new JPanel();
 		contentPane.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.setPreferredSize(new Dimension(0, 0));
@@ -60,112 +61,76 @@ public class LoginFrame extends JFrame {
 		contentPane.setAutoscrolls(false);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+	
 		
-		setNomeUtente_tf(new JTextField());
-		getNomeUtente_tf().setHorizontalAlignment(SwingConstants.LEFT);
-		getNomeUtente_tf().setFont(new Font("Calibri", Font.PLAIN, 14));
-		getNomeUtente_tf().setColumns(10);
+	    txfNomeUtente = new JTextField();
+		txfNomeUtente.setBounds(173, 100, 163, 24);
+		txfNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 14));
+		txfNomeUtente.setColumns(10);
+		contentPane.add(txfNomeUtente);
+		
+		
+	    psfPassword = new JPasswordField();
+		psfPassword.setBounds(173, 178, 163, 24);
+		psfPassword.setFont(new Font("Calibri", Font.PLAIN, 14));
+		psfPassword.setColumns(10);
+		contentPane.add(psfPassword);
+		
 		
 		JLabel lblNomeUtente = new JLabel("Nome Utente");
+		lblNomeUtente.setBounds(78, 103, 77, 18);
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 14));
+		contentPane.add(lblNomeUtente);
 		
-		setPassword_pf(new JPasswordField());
-		getPassword_pf().setHorizontalAlignment(SwingConstants.LEFT);
-		getPassword_pf().setFont(new Font("Calibri", Font.PLAIN, 14));
 		
-		lblPassword = new JLabel("Password");
-		lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(78, 181, 77, 18);
 		lblPassword.setFont(new Font("Calibri", Font.PLAIN, 14));
+		contentPane.add(lblPassword);
 		
-		btnLogin = new JButton("Login");
-		btnLogin.setOpaque(false);
+		
+		JButton btnLogin = new JButton("Login");
+		btnLogin.setBounds(333, 285, 63, 27);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				c.LoginTry(getNomeUtente_tf().getText(), getPassword_pf().getText());
+				c.LoginTry(getTxfNomeUtente().getText(), getPsfPassword().getText());
 				}
 		});
 		btnLogin.setFont(new Font("Calibri", Font.PLAIN, 14));
+		contentPane.add(btnLogin);
+		
 		
 		JButton btnChiudi = new JButton("Chiudi");
-		btnChiudi.setOpaque(false);
 		btnChiudi.addMouseListener(new MouseAdapter() {
-
 			@Override
-			public void mousePressed(MouseEvent e) {
-				if(e.getButton()==MouseEvent.BUTTON1) {
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()== MouseEvent.BUTTON1)
 					c.ChiudiLogin();
-				}	
 			}
 		});
-	
-		btnChiudi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnChiudi.setBounds(217, 285, 67, 27);
+		btnChiudi.setOpaque(false);
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 14));
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(78)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(lblNomeUtente, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(getNomeUtente_tf(), GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE)
-								.addComponent(getPassword_pf(), GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(217)
-							.addComponent(btnChiudi)
-							.addGap(49)
-							.addComponent(btnLogin)))
-					.addContainerGap(70, Short.MAX_VALUE))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(100)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(getNomeUtente_tf(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNomeUtente))
-					.addGap(54)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(getPassword_pf(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPassword))
-					.addGap(83)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnLogin)
-						.addComponent(btnChiudi, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(22, Short.MAX_VALUE))
-		);
-		contentPane.setLayout(gl_contentPane);
-		setLocationRelativeTo(null);
-	}
+		contentPane.add(btnChiudi);
+}
 
+		
 
-	
-	
-	
-	public JTextField getNomeUtente_tf() {
+	//Getter e Setter
+	public JTextField getTxfNomeUtente() {
 		return txfNomeUtente;
 	}
 
-
-	public void setNomeUtente_tf(JTextField nomeUtente_tf) {
-		txfNomeUtente = nomeUtente_tf;
-	}
-
-
-	public JPasswordField getPassword_pf() {
+	public JPasswordField getPsfPassword() {
 		return psfPassword;
 	}
 
+	public void setTxfNomeUtente(JTextField txfNomeUtente) {
+		this.txfNomeUtente = txfNomeUtente;
+	}
 
-	public void setPassword_pf(JPasswordField password_pf) {
-		psfPassword = password_pf;
+	public void setPsfPassword(JPasswordField psfPassword) {
+		this.psfPassword = psfPassword;
 	}
 }
-
