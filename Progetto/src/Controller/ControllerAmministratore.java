@@ -4,6 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 
 import DAO.AccountDAOPostgresImp;
@@ -16,6 +17,7 @@ import GUI.AggiungiProdottoFrame;
 import GUI.AmministratoreFrame;
 import GUI.EliminaSedeFrame;
 import GUI.GestioneSedeFrame;
+import GUI.VisualizzaOrdiniFrame;
 
 public class ControllerAmministratore {
 	
@@ -27,6 +29,7 @@ public class ControllerAmministratore {
 	private GestioneSedeFrame gestioneSedeFrame = null;
 	private AggiungiProdottoFrame aggiungiProdottoFrame = null;
 	private EliminaSedeFrame eliminaSedeFrame = null;
+	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
 	private Account account;
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
@@ -36,7 +39,13 @@ public class ControllerAmministratore {
 		
 	}
 	
-	public void ApriGestioneSedi(String idSede) {
+	public void chiudiAmministratoreFrame() {
+		this.amministratoreFrame.dispose();
+		this.mainController.ApriLogin();
+		
+	}
+	
+	public void ApriModificaSediFrame(String idSede) {
 		
 		Sede sede = new Sede();
 		Account gestoreSede = new Account();
@@ -51,6 +60,21 @@ public class ControllerAmministratore {
 		
 		this.gestioneSedeFrame = new GestioneSedeFrame(this,gestoreSede);
 		this.amministratoreFrame.setVisible(false);
+	}
+	
+//	public void ApriCreazioneSedeFrame() {
+//		this.gestioneSedeFrame = new GestioneSedeFrame(this);
+//	}
+	
+
+	public void ApriVisualizzaOrdiniFrame() {
+		this.amministratoreFrame.setEnabled(false);
+		//this.mainController.ApriVisualizzaOrdiniFrame(); ????????????????????????
+	}
+	
+	public void ChiudiVisualizzaOrdiniFrame() {
+		this.amministratoreFrame.setEnabled(true);
+		//this.mainController.ChiudiVisualizzaOrdiniFrame(); ????????????????????????
 	}
 	
 	public void ChiudiGestioneSedeFrame() {
@@ -164,7 +188,7 @@ public class ControllerAmministratore {
 			}
 		}else if(this.imp.equals(this.altraImp))
 		{
-			//altra implementazioni
+			//altra implementazione
 		}
 	}
 	
@@ -185,10 +209,9 @@ public class ControllerAmministratore {
 			}
 		}else if(this.imp.equals(this.altraImp))
 		{
-			//altra implementazioni
+			//altra implementazione
 		}
 	}
-
 	
 	public void EliminaSede(String idSede) {
 		this.amministratoreFrame.setEnabled(false);
@@ -197,27 +220,35 @@ public class ControllerAmministratore {
 	
 	public void ConfermaEliminazioneSede(String password,String idSede) {
 		
-		int result;
+		int result = 0;
 		
 		this.eliminaSedeFrame.dispose();
 		this.amministratoreFrame.setEnabled(true);
 		
 		if(this.account.getPassword().equals(password)) 
 		{
-			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-			result = sedeDao.EliminaSede(idSede);
-			
-			if(result == 1) 
+			if(this.imp.equals(this.postgresImp)) 
 			{
-				JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede '" + idSede + "' eliminata","",JOptionPane.PLAIN_MESSAGE);
-				this.amministratoreFrame.AggiornaSedi();
-			}else {
-				JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+				result = sedeDao.EliminaSede(idSede);
+				
+				if(result == 1) 
+				{
+					JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede '" + idSede + "' eliminata","",JOptionPane.PLAIN_MESSAGE);
+					this.amministratoreFrame.AggiornaSedi();
+				}else
+				{
+					JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				}
+		
+			}else
+			{
+				//altra implementazione
 			}
-		}else {
+		}else
+		{
 			JOptionPane.showMessageDialog(this.amministratoreFrame,"Password non corretta!","",JOptionPane.ERROR_MESSAGE);
 		}
-		
 
 	}
 
@@ -225,6 +256,8 @@ public class ControllerAmministratore {
 		this.amministratoreFrame.setEnabled(true);
 		this.eliminaSedeFrame.dispose();
 	}
+
+		
 	
 }
 

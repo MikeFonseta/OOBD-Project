@@ -85,8 +85,9 @@ public class AmministratoreFrame extends JFrame{
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				ChiudiFrame();
+				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+					controllerAmministratore.chiudiAmministratoreFrame();
+				}
 			}
 		});
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 23));
@@ -199,7 +200,7 @@ public class AmministratoreFrame extends JFrame{
 				{
 					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						controllerAmministratore.ApriGestioneSedi((tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString()));
+						controllerAmministratore.ApriModificaSediFrame((tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString()));
 					}else 
 					{
 						Errore();	
@@ -264,10 +265,6 @@ public class AmministratoreFrame extends JFrame{
 			tblSedi.getColumnModel().getColumn(3).setResizable(false);
 			tblSedi.getColumnModel().getColumn(3).setPreferredWidth(150);
 			tblSedi.getColumnModel().getColumn(3).setMinWidth(150);
-	}
-
-	private void ChiudiFrame() {
-		this.setVisible(false);
 	}
 	
 	private void Errore() {
