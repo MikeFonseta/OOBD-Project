@@ -82,18 +82,49 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
+			ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.prezzo,P.categoria FROM prodotto AS P "
 					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menù WHERE id_sede='" + idSede + "')");
 			
 			while(rs.next()) {
 				
 				int idProdotto = rs.getInt(1);
 				String nomeProdotto= rs.getString(2);
+				float prezzo = rs.getFloat(3);
+				String categoria = rs.getString(4);
+				
+				Object[] object = new Object[] {idProdotto,nomeProdotto,categoria,prezzo};
+				
+				prodotti.add(object);
+			}
+				
+			rs.close();
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+		return prodotti;
+	}
+	
+	@Override
+	public List<Object[]> getProdottiSedeCategoria(String idSede, String categoria) {
+		List<Object[]> prodotti = new ArrayList<Object[]>();
+		Connection conn = null;
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
+					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede='" + idSede + "') AND P.categoria='" + categoria + "'");
+			while(rs.next()) {
+				
+				int idProdotto = rs.getInt(1);
+				String nomeProdotto= rs.getString(2);
 				String descrizione = rs.getString(3);
 				float prezzo = rs.getFloat(4);
-				String categoria = rs.getString(5);
 				
-				Object[] object = new Object[] {idProdotto,nomeProdotto,descrizione,categoria,prezzo};
+				Object[] object = new Object[] {idProdotto,nomeProdotto,descrizione,prezzo};
 				
 				prodotti.add(object);
 			}

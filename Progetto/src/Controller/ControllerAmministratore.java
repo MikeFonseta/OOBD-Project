@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import DAO.AccountDAOPostgresImp;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.Account;
@@ -13,6 +14,7 @@ import Entities.Prodotto;
 import Entities.Sede;
 import GUI.AggiungiProdottoFrame;
 import GUI.AmministratoreFrame;
+import GUI.EliminaSedeFrame;
 import GUI.GestioneSedeFrame;
 
 public class ControllerAmministratore {
@@ -24,6 +26,7 @@ public class ControllerAmministratore {
 	private MainController mainController = null;
 	private GestioneSedeFrame gestioneSedeFrame = null;
 	private AggiungiProdottoFrame aggiungiProdottoFrame = null;
+	private EliminaSedeFrame eliminaSedeFrame = null;
 	private Account account;
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
@@ -31,6 +34,38 @@ public class ControllerAmministratore {
 		this.mainController = mainController;
 		this.account = account;
 		
+	}
+	
+	public void ApriGestioneSedi(String idSede) {
+		
+		Sede sede = new Sede();
+		Account gestoreSede = new Account();
+		if(this.imp.equals(this.postgresImp))
+		{
+			AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
+			gestoreSede = accountDao.CercaAccountPerIdSede(idSede);
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
+		
+		this.gestioneSedeFrame = new GestioneSedeFrame(this,gestoreSede);
+		this.amministratoreFrame.setVisible(false);
+	}
+	
+	public void ChiudiGestioneSedeFrame() {
+		this.gestioneSedeFrame.dispose();
+		this.amministratoreFrame.setVisible(true);
+	}
+
+	public void ApriAggiungiProdottoFrame(String idSede) {
+		this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
+		this.gestioneSedeFrame.setEnabled(false);
+	}
+	
+	public void ChiudiAggiungiProdottoFrame() {
+		this.gestioneSedeFrame.setEnabled(true);
+		this.aggiungiProdottoFrame.dispose();
 	}
 	
 	public Object[][] getDatiSedi() {
@@ -62,33 +97,11 @@ public class ControllerAmministratore {
 		return result;
 	}
 	
-
 	public Object[][] getRiderDaSede(String idSede) {
 		return null;
 	}
-	
-	public void ApriGestioneSedi(String idSede) {
-		this.gestioneSedeFrame = new GestioneSedeFrame(this,idSede);
-		this.amministratoreFrame.setVisible(false);
-	}
 
-	public void ApriAggiungiProdottoFrame(String idSede) {
-		this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
-		this.gestioneSedeFrame.setEnabled(false);
-	}
-	
-	public void ChiudiGestioneSedeFrame() {
-		this.gestioneSedeFrame.dispose();
-		this.amministratoreFrame.setVisible(true);
-	}
-	
-	public void ChiudiAggiungiProdottoFrame() {
-		this.gestioneSedeFrame.setEnabled(true);
-		this.aggiungiProdottoFrame.dispose();
-	}
-	
-
-	public Object[][] getMenùSede(String idSede) {
+	public Object[][] getMenuSede(String idSede) {
 		
 		Object[][] result = null;
 		
@@ -101,6 +114,21 @@ public class ControllerAmministratore {
 			//altra implementazioni
 		}
 		return result;
+	}
+
+	public void getProdottiSedeCategoria(String idSede, String categoria) {
+		Object[][] result = null;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+			result = prodottoDao.getProdottiSedeCategoria(idSede,categoria).toArray(new Object[][] {});
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
+		
+		this.aggiungiProdottoFrame.AggiornaProdottiConCategoria(result);
 	}
 	
 	public Object[][] getProdottiPerUnaSede(String idSede) {
@@ -118,7 +146,7 @@ public class ControllerAmministratore {
 		return result;
 	}
 
-	public void aggiungiProdottoASede(String idSede, int idProdotto) {
+	public void AggiungiProdottoASede(String idSede, int idProdotto) {
 		
 		int result;
 		if(this.imp.equals(this.postgresImp))
@@ -128,7 +156,7 @@ public class ControllerAmministratore {
 			
 			if(result==1) {
 				
-				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione effettuata con successo","",JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotto aggiunto!","",JOptionPane.PLAIN_MESSAGE);
 				this.gestioneSedeFrame.AggiornaProdotti();
 				this.aggiungiProdottoFrame.AggiornaProdotti();
 			}else {
@@ -150,10 +178,10 @@ public class ControllerAmministratore {
 			
 			if(result==1) {
 				
-				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione effettuata con successo","",JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Prodotto eliminato!","",JOptionPane.PLAIN_MESSAGE);
 				this.gestioneSedeFrame.AggiornaProdotti();
 			}else {
-				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
 			}
 		}else if(this.imp.equals(this.altraImp))
 		{
@@ -162,7 +190,41 @@ public class ControllerAmministratore {
 	}
 
 	
+	public void EliminaSede(String idSede) {
+		this.amministratoreFrame.setEnabled(false);
+		this.eliminaSedeFrame = new EliminaSedeFrame(this,idSede);
+	}
 	
+	public void ConfermaEliminazioneSede(String password,String idSede) {
+		
+		int result;
+		
+		this.eliminaSedeFrame.dispose();
+		this.amministratoreFrame.setEnabled(true);
+		
+		if(this.account.getPassword().equals(password)) 
+		{
+			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+			result = sedeDao.EliminaSede(idSede);
+			
+			if(result == 1) 
+			{
+				JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede '" + idSede + "' eliminata","",JOptionPane.PLAIN_MESSAGE);
+				this.amministratoreFrame.AggiornaSedi();
+			}else {
+				JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+			}
+		}else {
+			JOptionPane.showMessageDialog(this.amministratoreFrame,"Password non corretta!","",JOptionPane.ERROR_MESSAGE);
+		}
+		
+
+	}
+
+	public void ChiudiEliminaSedeFrame() {
+		this.amministratoreFrame.setEnabled(true);
+		this.eliminaSedeFrame.dispose();
+	}
 	
 }
 

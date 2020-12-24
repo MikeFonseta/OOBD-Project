@@ -14,6 +14,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
+import Entities.Account;
+import Entities.Sede;
 
 import javax.swing.JPasswordField;
 import javax.swing.ListSelectionModel;
@@ -24,83 +26,84 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class GestioneSedeFrame extends JDialog{
-	private JTextField textFieldNomeSede;
-	private JTextField textFieldProvincia;
-	private JTextField textFieldCittà;
-	private JTextField textFieldVia;
+	
+	private JTextField txfNomeSede;
+	private JTextField txfProvincia;
+	private JTextField txfCitta;
+	private JTextField txfVia;
 	private JLabel lblVia;
-	private JTextField textFieldNumCivico;
+	private JTextField txfNumCivico;
 	private JButton btnSalva;
 	private JButton btnChiudi;
-	private JPasswordField textFieldPassword;
+	private JPasswordField psfPassword;
 	private JLabel lblPassword;
 	private JLabel lblNomeUtente;
 	private JLabel lblTelefono;
-	private JTextField textFieldTelefono;
-	private JTable tableProdotti;
-	private JScrollPane scrollPaneRider;
-	private JTable tableRider;
+	private JTextField txfTelefono;
+	private JTable tblProdotti;
+	private JScrollPane scpRider;
+	private JTable tblRider;
 	private ControllerAmministratore controllerAmministratore;
-	private String idSede;
+	private Account gestoreSede;
 	
 	
-	public GestioneSedeFrame(ControllerAmministratore controllerAmministratore,String idSede) {
+	public GestioneSedeFrame(ControllerAmministratore controllerAmministratore,Account gestoreSede) {
 		
 		this.controllerAmministratore = controllerAmministratore;
-		this.idSede = idSede;
+		this.gestoreSede = gestoreSede;
 		setResizable(false);
 		setBounds(0,0,1200,700);
 		getContentPane().setLayout(null);
 		
-		JLabel lblNome = new JLabel("Nome sede");
-		lblNome.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblNome.setBounds(10, 11, 106, 39);
-		getContentPane().add(lblNome);
+		JLabel lblNomeSede = new JLabel("Nome sede");
+		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblNomeSede.setBounds(10, 11, 106, 39);
+		getContentPane().add(lblNomeSede);
 		
-		textFieldNomeSede = new JTextField();
-		textFieldNomeSede.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldNomeSede.setBounds(108, 15, 183, 28);
-		getContentPane().add(textFieldNomeSede);
-		textFieldNomeSede.setColumns(10);
+		txfNomeSede = new JTextField(gestoreSede.getSede().getNomeSede());
+		txfNomeSede.setFont(new Font("Calibri", Font.PLAIN, 18));
+		txfNomeSede.setBounds(108, 15, 183, 28);
+		getContentPane().add(txfNomeSede);
+		txfNomeSede.setColumns(10);
 		
-		textFieldProvincia = new JTextField();
-		textFieldProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldProvincia.setColumns(10);
-		textFieldProvincia.setBounds(376, 15, 42, 28);
-		getContentPane().add(textFieldProvincia);
+		txfProvincia = new JTextField(gestoreSede.getSede().getProvincia());
+		txfProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
+		txfProvincia.setColumns(10);
+		txfProvincia.setBounds(376, 15, 42, 28);
+		getContentPane().add(txfProvincia);
 		
 		JLabel lblProvincia = new JLabel("Provincia");
 		lblProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblProvincia.setBounds(296, 11, 96, 39);
 		getContentPane().add(lblProvincia);
 		
-		textFieldCittà = new JTextField();
-		textFieldCittà.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldCittà.setColumns(10);
-		textFieldCittà.setBounds(480, 15, 106, 28);
-		getContentPane().add(textFieldCittà);
+		txfCitta = new JTextField(gestoreSede.getSede().getCitta());
+		txfCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
+		txfCitta.setColumns(10);
+		txfCitta.setBounds(480, 15, 106, 28);
+		getContentPane().add(txfCitta);
 		
-		JLabel lblCittà = new JLabel("CittÃ ");
-		lblCittà.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblCittà.setBounds(428, 11, 42, 39);
-		getContentPane().add(lblCittà);
+		JLabel lblCitta = new JLabel("CittÃ ");
+		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblCitta.setBounds(428, 11, 42, 39);
+		getContentPane().add(lblCitta);
 		
-		textFieldVia = new JTextField();
-		textFieldVia.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldVia.setColumns(10);
-		textFieldVia.setBounds(637, 15, 172, 28);
-		getContentPane().add(textFieldVia);
+		txfVia = new JTextField(gestoreSede.getSede().getVia());
+		txfVia.setFont(new Font("Calibri", Font.PLAIN, 18));
+		txfVia.setColumns(10);
+		txfVia.setBounds(637, 15, 172, 28);
+		getContentPane().add(txfVia);
 		
 		lblVia = new JLabel("Via");
 		lblVia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblVia.setBounds(604, 11, 42, 39);
 		getContentPane().add(lblVia);
 		
-		textFieldNumCivico = new JTextField();
-		textFieldNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldNumCivico.setColumns(10);
-		textFieldNumCivico.setBounds(847, 15, 76, 28);
-		getContentPane().add(textFieldNumCivico);
+		txfNumCivico = new JTextField(gestoreSede.getSede().getNumCivico());
+		txfNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
+		txfNumCivico.setColumns(10);
+		txfNumCivico.setBounds(847, 15, 76, 28);
+		getContentPane().add(txfNumCivico);
 		
 		JLabel lblNumCivico = new JLabel("N.");
 		lblNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -125,18 +128,18 @@ public class GestioneSedeFrame extends JDialog{
 		btnChiudi.setBounds(1037, 61, 118, 39);
 		getContentPane().add(btnChiudi);
 		
-		textFieldPassword = new JPasswordField();
-		textFieldPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldPassword.setColumns(10);
-		textFieldPassword.setBounds(376, 66, 106, 28);
-		getContentPane().add(textFieldPassword);
+		psfPassword = new JPasswordField(gestoreSede.getPassword());
+		psfPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
+		psfPassword.setColumns(10);
+		psfPassword.setBounds(376, 66, 106, 28);
+		getContentPane().add(psfPassword);
 		
 		lblPassword = new JLabel("Password");
 		lblPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblPassword.setBounds(296, 62, 87, 39);
 		getContentPane().add(lblPassword);
 		
-		lblNomeUtente = new JLabel("Nome utente      U001");
+		lblNomeUtente = new JLabel("Gestore: " + gestoreSede.getNomeUtente());
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblNomeUtente.setBounds(10, 61, 236, 39);
 		getContentPane().add(lblNomeUtente);
@@ -150,70 +153,68 @@ public class GestioneSedeFrame extends JDialog{
 		lblTelefono.setBounds(694, 61, 76, 39);
 		getContentPane().add(lblTelefono);
 		
-		textFieldTelefono = new JTextField();
-		textFieldTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
-		textFieldTelefono.setColumns(10);
-		textFieldTelefono.setBounds(780, 66, 143, 28);
-		getContentPane().add(textFieldTelefono);
+		txfTelefono = new JTextField(gestoreSede.getSede().getTelefonoSede());
+		txfTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
+		txfTelefono.setColumns(10);
+		txfTelefono.setBounds(780, 66, 143, 28);
+		getContentPane().add(txfTelefono);
 		
-		JScrollPane scrollPaneProdotti = new JScrollPane();
-		scrollPaneProdotti.setBounds(10, 111, 578, 494);
-		getContentPane().add(scrollPaneProdotti);
+		JScrollPane scpProdotti = new JScrollPane();
+		scpProdotti.setBounds(10, 111, 578, 494);
+		getContentPane().add(scpProdotti);
 		
-		tableProdotti = new JTable();
-		tableProdotti.setRowHeight(30);
-		tableProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
-		tableProdotti.getTableHeader().setReorderingAllowed(false);
-		tableProdotti.setDragEnabled(false);
-		tableProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableProdotti.setModel(new DefaultTableModel(
-			controllerAmministratore.getMenùSede(idSede),
+		tblProdotti = new JTable();
+		tblProdotti.setRowHeight(30);
+		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblProdotti.getTableHeader().setReorderingAllowed(false);
+		tblProdotti.setDragEnabled(false);
+		tblProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblProdotti.setModel(new DefaultTableModel(
+			controllerAmministratore.getMenuSede(gestoreSede.getSede().getIdSede()),
 			new String[] {
-				"ID", "Nome", "Descrizione", "Allergeni", "Prezzo"
+				"ID", "Nome", "Categoria", "Prezzo"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, String.class, String.class, Double.class
+				Integer.class, String.class, String.class, Double.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		tableProdotti.getColumnModel().getColumn(0).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(0).setPreferredWidth(40);
-		tableProdotti.getColumnModel().getColumn(0).setMinWidth(40);
-		tableProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
-		tableProdotti.getColumnModel().getColumn(1).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(1).setPreferredWidth(150);
-		tableProdotti.getColumnModel().getColumn(1).setMinWidth(150);
-		tableProdotti.getColumnModel().getColumn(2).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tableProdotti.getColumnModel().getColumn(2).setMinWidth(100);
-		tableProdotti.getColumnModel().getColumn(3).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tableProdotti.getColumnModel().getColumn(3).setMinWidth(150);
-		tableProdotti.getColumnModel().getColumn(4).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(4).setPreferredWidth(61);
-		tableProdotti.getColumnModel().getColumn(4).setMinWidth(20);
-		scrollPaneProdotti.setViewportView(tableProdotti);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblProdotti.getColumnModel().getColumn(0).setMinWidth(40);
+		tblProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblProdotti.getColumnModel().getColumn(1).setMinWidth(150);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblProdotti.getColumnModel().getColumn(2).setMinWidth(100);
+		tblProdotti.getColumnModel().getColumn(2).setMaxWidth(100);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(61);
+		tblProdotti.getColumnModel().getColumn(3).setMinWidth(60);
+		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(60);
+		scpProdotti.setViewportView(tblProdotti);
 		
-		scrollPaneRider = new JScrollPane();
-		scrollPaneRider.setBounds(604, 111, 570, 494);
-		getContentPane().add(scrollPaneRider);
+		scpRider = new JScrollPane();
+		scpRider.setBounds(604, 111, 570, 494);
+		getContentPane().add(scpRider);
 		
-		tableRider = new JTable();
-		tableRider.setRowHeight(30);
-		tableRider.setFont(new Font("Calibri", Font.PLAIN, 14));
-		tableRider.getTableHeader().setReorderingAllowed(false);
-		tableRider.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
+		tblRider = new JTable();
+		tblRider.setRowHeight(30);
+		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblRider.getTableHeader().setReorderingAllowed(false);
+		tblRider.setModel(new DefaultTableModel(
+			controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
 			new String[] {
 				"ID", "Nome", "Cognome", "Telefono", "Veicolo"
 			}
@@ -231,25 +232,25 @@ public class GestioneSedeFrame extends JDialog{
 				return columnEditables[column];
 			}
 		});
-		tableRider.getColumnModel().getColumn(0).setResizable(false);
-		tableRider.getColumnModel().getColumn(0).setPreferredWidth(40);
-		tableRider.getColumnModel().getColumn(0).setMinWidth(40);
-		tableRider.getColumnModel().getColumn(0).setMaxWidth(40);
-		tableRider.getColumnModel().getColumn(1).setResizable(false);
-		tableRider.getColumnModel().getColumn(2).setResizable(false);
-		tableRider.getColumnModel().getColumn(3).setResizable(false);
-		tableRider.getColumnModel().getColumn(3).setPreferredWidth(80);
-		tableRider.getColumnModel().getColumn(3).setMinWidth(80);
-		tableRider.getColumnModel().getColumn(4).setResizable(false);
-		scrollPaneRider.setViewportView(tableRider);
+		tblRider.getColumnModel().getColumn(0).setResizable(false);
+		tblRider.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblRider.getColumnModel().getColumn(0).setMinWidth(40);
+		tblRider.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblRider.getColumnModel().getColumn(1).setResizable(false);
+		tblRider.getColumnModel().getColumn(2).setResizable(false);
+		tblRider.getColumnModel().getColumn(3).setResizable(false);
+		tblRider.getColumnModel().getColumn(3).setPreferredWidth(80);
+		tblRider.getColumnModel().getColumn(3).setMinWidth(80);
+		tblRider.getColumnModel().getColumn(4).setResizable(false);
+		scpRider.setViewportView(tblRider);
 		
 		JButton btnEliminaProdotto = new JButton("ELIMINA");
 		btnEliminaProdotto.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					if(tableProdotti.getSelectedRowCount() > 0) {
-						controllerAmministratore.EliminaProdottoDaSede(idSede, (int)tableProdotti.getValueAt(tableProdotti.getSelectedRow(), 0));
+					if(tblProdotti.getSelectedRowCount() > 0) {
+						controllerAmministratore.EliminaProdottoDaSede(gestoreSede.getSede().getIdSede(), (int)tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0));
 					}else {
 						Errore();
 					}
@@ -264,7 +265,7 @@ public class GestioneSedeFrame extends JDialog{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					controllerAmministratore.ApriAggiungiProdottoFrame(idSede);
+					controllerAmministratore.ApriAggiungiProdottoFrame(gestoreSede.getSede().getIdSede());
 				}
 			}
 		});
@@ -288,14 +289,51 @@ public class GestioneSedeFrame extends JDialog{
 	}
 
 	public void AggiornaProdotti() {
-		tableProdotti.setModel(new DefaultTableModel(
-				this.controllerAmministratore.getMenùSede(this.idSede),
+		tblProdotti.setModel(new DefaultTableModel(
+				controllerAmministratore.getMenuSede(gestoreSede.getSede().getIdSede()),
 				new String[] {
-					"ID", "Nome", "Descrizione", "Allergeni", "Prezzo"
+					"ID", "Nome", "Categoria", "Prezzo"
 				}
 			) {
 				Class[] columnTypes = new Class[] {
-					Integer.class, String.class, String.class, String.class, Double.class
+					Integer.class, String.class, String.class, Double.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(40);
+			tblProdotti.getColumnModel().getColumn(0).setMinWidth(40);
+			tblProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
+			tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(150);
+			tblProdotti.getColumnModel().getColumn(1).setMinWidth(150);
+			tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(100);
+			tblProdotti.getColumnModel().getColumn(2).setMinWidth(100);
+			tblProdotti.getColumnModel().getColumn(2).setMaxWidth(100);
+			tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(61);
+			tblProdotti.getColumnModel().getColumn(3).setMinWidth(60);
+			tblProdotti.getColumnModel().getColumn(3).setMaxWidth(60);
+	}
+	
+	public void AggiornaRider() {
+		tblRider.setModel(new DefaultTableModel(
+				controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
+				new String[] {
+					"ID", "Nome", "Cognome", "Telefono", "Veicolo"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					Integer.class, String.class, String.class, String.class, String.class
 				};
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
@@ -307,22 +345,16 @@ public class GestioneSedeFrame extends JDialog{
 					return columnEditables[column];
 				}
 			});
-		tableProdotti.getColumnModel().getColumn(0).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(0).setPreferredWidth(40);
-		tableProdotti.getColumnModel().getColumn(0).setMinWidth(40);
-		tableProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
-		tableProdotti.getColumnModel().getColumn(1).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(1).setPreferredWidth(150);
-		tableProdotti.getColumnModel().getColumn(1).setMinWidth(150);
-		tableProdotti.getColumnModel().getColumn(2).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tableProdotti.getColumnModel().getColumn(2).setMinWidth(100);
-		tableProdotti.getColumnModel().getColumn(3).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tableProdotti.getColumnModel().getColumn(3).setMinWidth(150);
-		tableProdotti.getColumnModel().getColumn(4).setResizable(false);
-		tableProdotti.getColumnModel().getColumn(4).setPreferredWidth(61);
-		tableProdotti.getColumnModel().getColumn(4).setMinWidth(20);
+			tblRider.getColumnModel().getColumn(0).setResizable(false);
+			tblRider.getColumnModel().getColumn(0).setPreferredWidth(40);
+			tblRider.getColumnModel().getColumn(0).setMinWidth(40);
+			tblRider.getColumnModel().getColumn(0).setMaxWidth(40);
+			tblRider.getColumnModel().getColumn(1).setResizable(false);
+			tblRider.getColumnModel().getColumn(2).setResizable(false);
+			tblRider.getColumnModel().getColumn(3).setResizable(false);
+			tblRider.getColumnModel().getColumn(3).setPreferredWidth(80);
+			tblRider.getColumnModel().getColumn(3).setMinWidth(80);
+			tblRider.getColumnModel().getColumn(4).setResizable(false);
 	}
 	
 	private void Errore() {

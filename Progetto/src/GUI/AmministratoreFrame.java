@@ -13,6 +13,8 @@ import javax.swing.SwingConstants;
 
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -37,16 +39,17 @@ import java.awt.SystemColor;
 public class AmministratoreFrame extends JFrame{
 	
 	private JTable tblSedi;
+	private ControllerAmministratore controllerAmministratore = null;
 	
 	public AmministratoreFrame(ControllerAmministratore controllerAmministratore) {
 		
-		
+		this.controllerAmministratore = controllerAmministratore;
 		setMinimumSize(new Dimension(1200, 700));
 		getContentPane().setLayout(null);
-		JLabel lbNomeUtente = new JLabel("Nome Utente: A001");
-		lbNomeUtente.setBounds(22, 29, 321, 54);
-		lbNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 30));
-		getContentPane().add(lbNomeUtente);
+		JLabel lblNomeUtente = new JLabel("Nome Utente: A001");
+		lblNomeUtente.setBounds(22, 29, 321, 54);
+		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 30));
+		getContentPane().add(lblNomeUtente);
 		
 		JButton btnGestioneProdotti = new JButton("GESTIONE PRODOTTI");
 		btnGestioneProdotti.addMouseListener(new MouseAdapter() {
@@ -94,16 +97,19 @@ public class AmministratoreFrame extends JFrame{
 		btnChiudi.setActionCommand("closeBtn");
 		getContentPane().add(btnChiudi);
 		
-		JButton button = new JButton("New button");
-		button.setBounds(1111, 652, 6, -44);
-		getContentPane().add(button);
-		
 		JButton btnElimina = new JButton("X");
 		btnElimina.setBounds(1085, 576, 89, 74);
 		btnElimina.setBorder(UIManager.getBorder("Button.border"));
 		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 48));
 		btnElimina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(tblSedi.getSelectedColumnCount() != 0)
+				{
+					controllerAmministratore.EliminaSede(tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString());
+				}else 
+				{
+					Errore();		
+				}
 			}
 		});
 		getContentPane().add(btnElimina);
@@ -121,9 +127,9 @@ public class AmministratoreFrame extends JFrame{
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 48));
 		getContentPane().add(btnAggiungi);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(32, 95, 1036, 555);
-		getContentPane().add(scrollPane);
+		JScrollPane scpSedi = new JScrollPane();
+		scpSedi.setBounds(32, 95, 1036, 555);
+		getContentPane().add(scpSedi);
 	
 		
 		tblSedi = new JTable();
@@ -168,7 +174,7 @@ public class AmministratoreFrame extends JFrame{
 		tblSedi.getColumnModel().getColumn(3).setMinWidth(150);
 		tblSedi.setAutoResizeMode(JTable.HEIGHT);
 		tblSedi.getTableHeader().setReorderingAllowed(false);
-		scrollPane.setViewportView(tblSedi);
+		scpSedi.setViewportView(tblSedi);
 		
 		btnAggiungi.addMouseListener(new MouseAdapter() {
 			@Override
@@ -180,7 +186,7 @@ public class AmministratoreFrame extends JFrame{
 						System.out.println("Selezionata riga n." + (tblSedi.getSelectedRow() + 1));
 					}else 
 					{
-						System.out.println("Nessuna riga selezionata");		
+						Errore();		
 					}
 				}
 			}
@@ -193,11 +199,10 @@ public class AmministratoreFrame extends JFrame{
 				{
 					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						System.out.println("Cerco " + tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString());
 						controllerAmministratore.ApriGestioneSedi((tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString()));
 					}else 
 					{
-						System.out.println("Nessuna riga selezionata");		
+						Errore();	
 					}
 				}
 			}
@@ -226,9 +231,47 @@ public class AmministratoreFrame extends JFrame{
 		setVisible(true);
 	}
 	
+	public void AggiornaSedi() {
+		tblSedi.setModel(new DefaultTableModel(
+				controllerAmministratore.getDatiSedi(),
+				new String[] {
+					"ID", "Nome", "Indirizzo", "Telefono"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			tblSedi.getColumnModel().getColumn(0).setResizable(false);
+			tblSedi.getColumnModel().getColumn(0).setPreferredWidth(50);
+			tblSedi.getColumnModel().getColumn(0).setMinWidth(50);
+			tblSedi.getColumnModel().getColumn(0).setMaxWidth(50);
+			tblSedi.getColumnModel().getColumn(1).setResizable(false);
+			tblSedi.getColumnModel().getColumn(1).setPreferredWidth(150);
+			tblSedi.getColumnModel().getColumn(1).setMinWidth(150);
+			tblSedi.getColumnModel().getColumn(2).setResizable(false);
+			tblSedi.getColumnModel().getColumn(2).setPreferredWidth(150);
+			tblSedi.getColumnModel().getColumn(2).setMinWidth(150);
+			tblSedi.getColumnModel().getColumn(3).setResizable(false);
+			tblSedi.getColumnModel().getColumn(3).setPreferredWidth(150);
+			tblSedi.getColumnModel().getColumn(3).setMinWidth(150);
+	}
 
 	private void ChiudiFrame() {
 		this.setVisible(false);
+	}
+	
+	private void Errore() {
+		JOptionPane.showMessageDialog(this,"Nessuna sede selezionata","Errore",JOptionPane.ERROR_MESSAGE);
 	}
 	
 }

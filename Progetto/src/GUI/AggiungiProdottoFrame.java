@@ -21,9 +21,10 @@ import java.awt.Dimension;
 import javax.swing.DropMode;
 
 public class AggiungiProdottoFrame extends JFrame{
-	private JTable table;
+	private JTable tblProdotti;
 	private ControllerAmministratore controllerAmministratore;
 	private String idSede;
+	private JComboBox cbxCategoria;
 	
 	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore, String idSede){
 		
@@ -35,32 +36,33 @@ public class AggiungiProdottoFrame extends JFrame{
 		setBounds(100,100,956,580);
 		getContentPane().setLayout(null);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Nessuna categoria", "Pizza", "Panini", "Bibite"}));
-		comboBox.setFont(new Font("Calibri", Font.PLAIN, 18));
-		comboBox.setBounds(12, 13, 175, 30);
-		getContentPane().add(comboBox);
+		cbxCategoria = new JComboBox();
+		cbxCategoria.setModel(new DefaultComboBoxModel(new String[] {"Nessuna categoria", "Pizze", "Panini", "Bibite"}));
+		cbxCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
+		cbxCategoria.setBounds(12, 13, 175, 30);
+		getContentPane().add(cbxCategoria);
 		
 		JButton btnCerca = new JButton("CERCA");
 		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnCerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				controllerAmministratore.getProdottiSedeCategoria(idSede,cbxCategoria.getSelectedItem().toString());
 			}
 		});
 		btnCerca.setBounds(199, 11, 113, 35);
 		getContentPane().add(btnCerca);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setFont(new Font("Calibri", Font.PLAIN, 18));
-		scrollPane.setBounds(12, 67, 918, 405);
-		getContentPane().add(scrollPane);
+		JScrollPane scpProdotti = new JScrollPane();
+		scpProdotti.setFont(new Font("Calibri", Font.PLAIN, 18));
+		scpProdotti.setBounds(12, 67, 918, 405);
+		getContentPane().add(scpProdotti);
 		
-		table = new JTable();
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		table.setRowHeight(30);
-		table.setFillsViewportHeight(true);
-		table.setModel(new DefaultTableModel(
+		tblProdotti = new JTable();
+		tblProdotti.getTableHeader().setReorderingAllowed(false);
+		tblProdotti.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		tblProdotti.setRowHeight(30);
+		tblProdotti.setFillsViewportHeight(true);
+		tblProdotti.setModel(new DefaultTableModel(
 			controllerAmministratore.getProdottiPerUnaSede(idSede),
 			new String[] {
 				"ID", "Nome", "Descrizione", "Prezzo"
@@ -79,22 +81,22 @@ public class AggiungiProdottoFrame extends JFrame{
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(50);
-		table.getColumnModel().getColumn(0).setMinWidth(40);
-		table.getColumnModel().getColumn(0).setMaxWidth(40);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(350);
-		table.getColumnModel().getColumn(1).setMinWidth(350);
-		table.getColumnModel().getColumn(1).setMaxWidth(350);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(3).setPreferredWidth(70);
-		table.getColumnModel().getColumn(3).setMinWidth(70);
-		table.getColumnModel().getColumn(3).setMaxWidth(70);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane.setViewportView(table);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblProdotti.getColumnModel().getColumn(0).setMinWidth(40);
+		tblProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(350);
+		tblProdotti.getColumnModel().getColumn(1).setMinWidth(350);
+		tblProdotti.getColumnModel().getColumn(1).setMaxWidth(350);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(70);
+		tblProdotti.getColumnModel().getColumn(3).setMinWidth(70);
+		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(70);
+		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scpProdotti.setViewportView(tblProdotti);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -113,8 +115,8 @@ public class AggiungiProdottoFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					if(table.getSelectedRowCount() > 0) {
-					controllerAmministratore.aggiungiProdottoASede(idSede, (int)table.getValueAt(table.getSelectedRow(), 0));
+					if(tblProdotti.getSelectedRowCount() > 0) {
+					controllerAmministratore.AggiungiProdottoASede(idSede, (int)tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0));
 					}else {
 						Errore();
 					}
@@ -135,7 +137,8 @@ public class AggiungiProdottoFrame extends JFrame{
 	}
 	
 	public void AggiornaProdotti() {
-		table.setModel(new DefaultTableModel(
+		this.cbxCategoria.setSelectedIndex(0);
+		tblProdotti.setModel(new DefaultTableModel(
 				controllerAmministratore.getProdottiPerUnaSede(this.idSede),
 				new String[] {
 					"ID", "Nome", "Descrizione", "Prezzo"
@@ -154,18 +157,53 @@ public class AggiungiProdottoFrame extends JFrame{
 					return columnEditables[column];
 				}
 			});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(50);
-		table.getColumnModel().getColumn(0).setMinWidth(40);
-		table.getColumnModel().getColumn(0).setMaxWidth(40);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(350);
-		table.getColumnModel().getColumn(1).setMinWidth(350);
-		table.getColumnModel().getColumn(1).setMaxWidth(350);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(3).setPreferredWidth(70);
-		table.getColumnModel().getColumn(3).setMinWidth(70);
-		table.getColumnModel().getColumn(3).setMaxWidth(70);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblProdotti.getColumnModel().getColumn(0).setMinWidth(40);
+		tblProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(350);
+		tblProdotti.getColumnModel().getColumn(1).setMinWidth(350);
+		tblProdotti.getColumnModel().getColumn(1).setMaxWidth(350);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(70);
+		tblProdotti.getColumnModel().getColumn(3).setMinWidth(70);
+		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(70);
+	}
+
+	public void AggiornaProdottiConCategoria(Object[][] result) {
+		tblProdotti.setModel(new DefaultTableModel(
+				result,
+				new String[] {
+					"ID", "Nome", "Descrizione", "Prezzo"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					Integer.class, String.class, String.class, Double.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblProdotti.getColumnModel().getColumn(0).setMinWidth(40);
+		tblProdotti.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(350);
+		tblProdotti.getColumnModel().getColumn(1).setMinWidth(350);
+		tblProdotti.getColumnModel().getColumn(1).setMaxWidth(350);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(70);
+		tblProdotti.getColumnModel().getColumn(3).setMinWidth(70);
+		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(70);
 	}
 }

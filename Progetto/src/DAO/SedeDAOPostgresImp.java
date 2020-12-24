@@ -29,11 +29,11 @@ public class SedeDAOPostgresImp implements SedeDAO{
 				String nomeSede= rs.getString(2);
 				String telefonoSede = rs.getString(3);
 				String provincia = rs.getString(4);
-				String citt‡ = rs.getString(5);
+				String citta = rs.getString(5);
 				String via = rs.getString(6);
 				String numCivico = rs.getString(7);
 				
-				sede = new Sede(idSede,nomeSede,telefonoSede,provincia,citt‡,via,numCivico);
+				sede = new Sede(idSede,nomeSede,telefonoSede,provincia,citta,via,numCivico);
 				
 			}
 				
@@ -63,11 +63,11 @@ public class SedeDAOPostgresImp implements SedeDAO{
 				String nomeSede= rs.getString(2);
 				String telefonoSede = rs.getString(3);
 				String provincia = rs.getString(4);
-				String citt‡ = rs.getString(5);
+				String citta = rs.getString(5);
 				String via = rs.getString(6);
 				String numCivico = rs.getString(7);
 				
-				Object[] object = new Object[] {idSede,nomeSede,"(" + provincia + ") " + citt‡ + " - " + via + " [" + numCivico +"]" , telefonoSede};
+				Object[] object = new Object[] {idSede,nomeSede,"(" + provincia + ") " + citta + " - " + via + " [" + numCivico +"]" , telefonoSede};
 				
 				sedi.add(object);
 			}
@@ -83,13 +83,14 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return sedi;
 	}
 	
-	public int aggiungiProdottoASede(String idSede,int idProdotto) {
-		
+	@Override
+	public int aggiungiProdottoASede(String idSede, int idProdotto) {
+		int ris = 0;
 		Connection conn = null;
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO men√π VALUES ('"+idSede + "'," + idProdotto +")");
+			ris = st.executeUpdate("INSERT INTO men√π VALUES ('"+idSede + "'," + idProdotto +")");
 				
 			st.close();
 			conn.close();
@@ -98,17 +99,18 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			e.printStackTrace();	
 		}
 		
-		return 1;
-		
+		return ris;
 	}
 
 	@Override
 	public int EliminaProdottoDaSede(String idSede, int idProdotto) {
+
+		int ris = 0;
 		Connection conn = null;
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			st.executeUpdate("DELETE FROM men√π WHERE id_sede='"+idSede + "' AND id_prodotto='" + idProdotto +"'");
+			ris = st.executeUpdate("DELETE FROM men√π WHERE id_sede='"+idSede + "' AND id_prodotto='" + idProdotto +"'");
 				
 			st.close();
 			conn.close();
@@ -117,11 +119,28 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			e.printStackTrace();	
 		}
 		
-		return 1;
+		return ris;
 	}
 
 
-	
-	
+	@Override
+	public int EliminaSede(String idSede) {
+		int ris = 0;
+		Connection conn = null;
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			ris = st.executeUpdate("DELETE FROM sede WHERE id_sede='"+idSede + "'");
+				
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+		return ris;
+	}
+
 
 }

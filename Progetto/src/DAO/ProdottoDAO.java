@@ -7,4 +7,5 @@ public interface ProdottoDAO {
 	public List<Object[]> getTuttiProdotti(); 
 	public List<Object[]> getProdottiDellaSede(String idSede);
 	public List<Object[]> getProdottiPerUnaSede(String idSede);
+	public List<Object[]> getProdottiSedeCategoria(String idSede,String categoria);
 }

@@ -6,17 +6,17 @@ public class Sede {
 	private String nomeSede;
 	private String telefonoSede;
 	private String provincia;
-	private String città;
+	private String citta;
 	private String via;
 	private String numCivico;
 	
 	public Sede(String idSede, String nomeSede,String telefonoSede, String provincia,
-			String città, String via, String numCivico) {
+			String citta, String via, String numCivico) {
 		this.idSede = idSede;
 		this.nomeSede = nomeSede;
 		this.telefonoSede = telefonoSede;
 		this.provincia = provincia;
-		this.città = città;
+		this.citta = citta;
 		this.via = via;
 		this.numCivico = numCivico;
 	}
@@ -43,8 +43,8 @@ public class Sede {
 		return provincia;
 	}
 
-	public String getCittà() {
-		return città;
+	public String getCitta() {
+		return citta;
 	}
 
 	public String getVia() {
