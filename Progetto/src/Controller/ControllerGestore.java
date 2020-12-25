@@ -1,12 +1,9 @@
 package Controller;
 
 import Entities.Account;
-<<<<<<< .mine
 import Entities.Sede;
-||||||| .r21
-=======
 import GUI.GestoreFrame;
->>>>>>> .r23
+
 
 public class ControllerGestore {
 	private MainController mainController = null;
@@ -32,15 +29,14 @@ public class ControllerGestore {
 	{
 		return getDatiSedi();
 	}
-<<<<<<< .mine
+
 
 
 	public void ApriVisualizzaOrdini() {
 
 		
 	}
-||||||| .r21
-=======
+
 	
 	static public void TornaAlLogin() {
 		
@@ -82,5 +78,5 @@ public class ControllerGestore {
 		
 	}
 
->>>>>>> .r23
+
 }

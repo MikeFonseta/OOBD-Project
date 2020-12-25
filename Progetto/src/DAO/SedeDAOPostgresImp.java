@@ -7,10 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.net.httpserver.Authenticator.Result;
+
 
 import Database.DBConnection;
-import Entities.Account;
 import Entities.Sede;
 
 public class SedeDAOPostgresImp implements SedeDAO{

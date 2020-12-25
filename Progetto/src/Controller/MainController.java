@@ -1,13 +1,10 @@
 package Controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-
-import org.postgresql.jdbc2.ArrayAssistantRegistry;
 
 import DAO.AccountDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;

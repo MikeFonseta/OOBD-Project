@@ -272,11 +272,7 @@ public class ControllerAmministratore {
 		this.eliminaSedeFrame.dispose();
 	}
 
-<<<<<<< .mine
 
-||||||| .r21
-		
-=======
 	public int getIdProssimoRider() {
 		return 6;
 	}
@@ -289,7 +285,7 @@ public class ControllerAmministratore {
 	public void ApriModificaRiderFrame(String idRider,String idSede) {
 		Rider rider = new Rider();
 		
->>>>>>> .r23
+
 		if(this.imp.equals(this.postgresImp)) 
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
@@ -304,8 +300,7 @@ public class ControllerAmministratore {
 		this.gestioneSedeFrame.setEnabled(false);
 	}
 	
-<<<<<<< .mine
-	
+
 	
 	//getter e setter
 	
@@ -341,8 +336,7 @@ public class ControllerAmministratore {
 	
 	
 	
-||||||| .r21
-=======
+
 	public void ChiudiGestioneRiderFrame() {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.gestioneRiderFrame.dispose();
@@ -350,6 +344,5 @@ public class ControllerAmministratore {
 
 		
 	
->>>>>>> .r23
 }
 
