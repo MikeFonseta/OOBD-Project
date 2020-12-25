@@ -97,8 +97,8 @@ public class GestoreFrame extends JFrame {
 		btnEsci.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1) //controlla che si usi il tasto sinistro del mouse
-				TornaAlLogin();
+				if(e.getButton() == MouseEvent.BUTTON1)   //controlla che si usi il tasto sinistro del mouse
+					controllerGestore.chiudiGestoreFrame(true);
 			}
 		});
 		
@@ -109,8 +109,8 @@ public class GestoreFrame extends JFrame {
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				ChiudiFrame();
+				if(e.getButton() == MouseEvent.BUTTON1)
+				controllerGestore.chiudiGestoreFrame(false);
 			}
 		});
 		
@@ -121,8 +121,8 @@ public class GestoreFrame extends JFrame {
 		btnCreaOrdine.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				ChiudiFrame(); //sostituire con funzione che apre la schermata crea ordine
+				if(e.getButton() == MouseEvent.BUTTON1)
+					ControllerGestore.ApriCreaOrdineFrame(); 	//da scrivere
 			}
 		});
 		
@@ -130,11 +130,25 @@ public class GestoreFrame extends JFrame {
 		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnVisualizzaOrdini.setBounds(391, 116, 372, 63);
 		pnlGestore.add(btnVisualizzaOrdini);
+		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					ControllerGestore.ApriVisualizzaOrdineFrame(); //da scrivere
+			}
+		});
 		
 		JButton btnVisualizzaProdotti = new JButton("Visualizza Prodotti");
 		btnVisualizzaProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnVisualizzaProdotti.setBounds(773, 116, 339, 63);
 		pnlGestore.add(btnVisualizzaProdotti);
+		btnVisualizzaProdotti.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					ControllerGestore.ApriVisualizzaProdottiFrame(); //da scrivere
+			}
+		});
 		
 		JButton btnFineConsegna = new JButton("Immagine");
 		btnFineConsegna.addActionListener(new ActionListener() {
@@ -143,6 +157,14 @@ public class GestoreFrame extends JFrame {
 		});
 		btnFineConsegna.setBounds(1085, 260, 89, 63);
 		pnlGestore.add(btnFineConsegna);
+		btnFineConsegna.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					ControllerGestore.ImpostaFineConsegna(); //da scrivere
+				ControllerGestore.AggiornaTabella();
+			}
+		});
 		
 		JButton btnIniziaConsegna = new JButton("Immagine");
 		btnIniziaConsegna.addActionListener(new ActionListener() {
@@ -151,6 +173,14 @@ public class GestoreFrame extends JFrame {
 		});
 		btnIniziaConsegna.setBounds(1085, 324, 89, 63);
 		pnlGestore.add(btnIniziaConsegna);
+		btnIniziaConsegna.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					ControllerGestore.ImpostaInizioConsegna(); //da scrivere
+				ControllerGestore.AggiornaTabella();
+			}
+		});
 		
 		JButton btnModifica = new JButton("Immagine");
 		btnModifica.addActionListener(new ActionListener() {
@@ -159,6 +189,14 @@ public class GestoreFrame extends JFrame {
 		});
 		btnModifica.setBounds(1085, 385, 89, 63);
 		pnlGestore.add(btnModifica);
+		btnModifica.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					ControllerGestore.ModificaCreaOrdineFrame(); //da scrivere
+				ControllerGestore.AggiornaTabella();
+			}
+		});
 		
 		JButton btnInfo = new JButton("Immagine");
 		btnInfo.addActionListener(new ActionListener() {
@@ -167,18 +205,25 @@ public class GestoreFrame extends JFrame {
 		});
 		btnInfo.setBounds(1085, 446, 89, 63);
 		pnlGestore.add(btnInfo);
+		btnInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					ControllerGestore.ApriCarrello(); //da scrivere
+			}
+		});
 		
 		JButton btnElimina = new JButton("Immagine");
 		btnElimina.setBounds(1085, 509, 89, 63);
 		pnlGestore.add(btnElimina);
+		btnElimina.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+				ControllerGestore.EliminaOrdine(); //da scrivere
+				ControllerGestore.AggiornaTabella();
+			}
+		});
 	}
 	
-	private void ChiudiFrame() {
-		this.setVisible(false);
 	}
-	
-	private void TornaAlLogin() {
-	
-	}
-	
-}
