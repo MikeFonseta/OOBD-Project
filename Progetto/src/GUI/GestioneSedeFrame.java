@@ -277,10 +277,26 @@ public class GestioneSedeFrame extends JDialog{
 		getContentPane().add(btnEliminaRider);
 		
 		JButton btnAggiungiRider = new JButton("AGGIUNGI");
+		btnAggiungiRider.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriNuovoRiderFrame();
+				}
+			}
+		});
 		btnAggiungiRider.setBounds(962, 616, 105, 34);
 		getContentPane().add(btnAggiungiRider);
 		
 		JButton btnModificaRider = new JButton("MODIFICA");
+		btnModificaRider.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriModificaRiderFrame(tblRider.getValueAt(tblRider.getSelectedRow(), 0).toString(), gestoreSede.getSede().getIdSede());
+				}
+			}
+		});
 		btnModificaRider.setBounds(854, 616, 105, 34);
 		getContentPane().add(btnModificaRider);
 		setLocationRelativeTo(null);

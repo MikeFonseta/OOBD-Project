@@ -8,6 +8,7 @@ public class Rider {
 	private String telefonoRider;
 	private String veicoloRider;
 	private boolean disponibilita;
+	private Sede sede;
 	
 	
 	public Rider() {
@@ -15,8 +16,19 @@ public class Rider {
 	}
 	
 	public Rider(int idRider, String nomeRider, String cognomeRider, String telefonoRider, String veicoloRider,
-			boolean disponibilita) {
-		super();
+			boolean disponibilita, Sede sede) {
+		this.idRider = idRider;
+		this.nomeRider = nomeRider;
+		this.cognomeRider = cognomeRider;
+		this.telefonoRider = telefonoRider;
+		this.veicoloRider = veicoloRider;
+		this.disponibilita = disponibilita;
+		this.sede = sede;
+	}
+	
+	
+	public Rider(int idRider, String nomeRider, String cognomeRider, String telefonoRider, String veicoloRider,
+			Boolean disponibilita) {
 		this.idRider = idRider;
 		this.nomeRider = nomeRider;
 		this.cognomeRider = cognomeRider;
@@ -24,8 +36,7 @@ public class Rider {
 		this.veicoloRider = veicoloRider;
 		this.disponibilita = disponibilita;
 	}
-	
-	
+
 	public int getIdRider() {
 		return idRider;
 	}
@@ -46,6 +57,9 @@ public class Rider {
 	}
 	public void setDisponibilita(boolean disponibilita) {
 		this.disponibilita = disponibilita;
+	}
+	public Sede getSede() {
+		return this.sede;
 	}
 	
 }

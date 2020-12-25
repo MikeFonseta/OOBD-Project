@@ -9,13 +9,16 @@ import javax.swing.JOptionPane;
 
 import DAO.AccountDAOPostgresImp;
 import DAO.ProdottoDAOPostgresImp;
+import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.Account;
 import Entities.Prodotto;
+import Entities.Rider;
 import Entities.Sede;
 import GUI.AggiungiProdottoFrame;
 import GUI.AmministratoreFrame;
 import GUI.EliminaSedeFrame;
+import GUI.GestioneRiderFrame;
 import GUI.GestioneSedeFrame;
 import GUI.VisualizzaOrdiniFrame;
 
@@ -30,6 +33,7 @@ public class ControllerAmministratore {
 	private AggiungiProdottoFrame aggiungiProdottoFrame = null;
 	private EliminaSedeFrame eliminaSedeFrame = null;
 	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
+	private GestioneRiderFrame gestioneRiderFrame = null;
 	private Account account;
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
@@ -66,7 +70,6 @@ public class ControllerAmministratore {
 //		this.gestioneSedeFrame = new GestioneSedeFrame(this);
 //	}
 	
-
 	public void ApriVisualizzaOrdiniFrame() {
 		this.amministratoreFrame.setEnabled(false);
 		//this.mainController.ApriVisualizzaOrdiniFrame(); ????????????????????????
@@ -122,7 +125,19 @@ public class ControllerAmministratore {
 	}
 	
 	public Object[][] getRiderDaSede(String idSede) {
-		return null;
+		
+		Object[][] result = null;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+			result = riderDao.getRiderDaSede(idSede).toArray(new Object[][] {});
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
+		return result;
+		
 	}
 
 	public Object[][] getMenuSede(String idSede) {
@@ -255,6 +270,37 @@ public class ControllerAmministratore {
 	public void ChiudiEliminaSedeFrame() {
 		this.amministratoreFrame.setEnabled(true);
 		this.eliminaSedeFrame.dispose();
+	}
+
+	public int getIdProssimoRider() {
+		return 6;
+	}
+
+	public void ApriNuovoRiderFrame() {
+		this.gestioneSedeFrame.setEnabled(false);
+		this.gestioneRiderFrame = new GestioneRiderFrame(this);
+	}
+	
+	public void ApriModificaRiderFrame(String idRider,String idSede) {
+		Rider rider = new Rider();
+		
+		if(this.imp.equals(this.postgresImp)) 
+		{
+			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+			rider = riderDao.CercaRiderPerId(Integer.parseInt(idRider));
+				
+		}else
+		{
+			//altra implementazione
+		}
+		
+		this.gestioneRiderFrame = new GestioneRiderFrame(this,rider);
+		this.gestioneSedeFrame.setEnabled(false);
+	}
+	
+	public void ChiudiGestioneRiderFrame() {
+		this.gestioneSedeFrame.setEnabled(true);
+		this.gestioneRiderFrame.dispose();
 	}
 
 		
