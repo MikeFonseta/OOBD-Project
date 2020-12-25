@@ -17,23 +17,28 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.MainController;
+import javax.swing.DefaultComboBoxModel;
 
 public class VisualizzaOrdiniFrame extends JFrame {
 
 	private JPanel pnlPrincipale;
 	private JTable tbl_Ordini;
-
-
+	private JComboBox cbxTutteLeSedi;
+	private String[] e;
+	
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public VisualizzaOrdiniFrame(MainController c) {
+	public VisualizzaOrdiniFrame(MainController mainController, String[] e) {
 		setMinimumSize(new Dimension(1200, 700));
 		setTitle("Visualizza Ordini");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,7 +49,8 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		pnlPrincipale.setLayout(null);
 		
 		
-		JComboBox cbxTutteLeSedi = new JComboBox();
+		cbxTutteLeSedi = new JComboBox();
+		cbxTutteLeSedi.setModel(new DefaultComboBoxModel(e));
 		cbxTutteLeSedi.setBounds(96, 16, 354, 35);
 		pnlPrincipale.add(cbxTutteLeSedi);
 		
@@ -129,8 +135,7 @@ public class VisualizzaOrdiniFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton()==MouseEvent.BUTTON1) 
-					c.ChiudiVisualizzaOrdini();
-				
+					mainController.ChiudiVisualizzaOrdiniFrame();	
 			}
 		});
 		Chiudi_btn.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -204,5 +209,21 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		
 		
+	}
+
+	public JComboBox getCbxTutteLeSedi() {
+		return cbxTutteLeSedi;
+	}
+
+	public String[] getE() {
+		return e;
+	}
+
+	public void setCbxTutteLeSedi(JComboBox cbxTutteLeSedi) {
+		this.cbxTutteLeSedi = cbxTutteLeSedi;
+	}
+
+	public void setE(String[] e) {
+		this.e = e;
 	}
 }

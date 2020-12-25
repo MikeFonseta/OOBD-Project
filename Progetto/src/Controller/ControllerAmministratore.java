@@ -32,7 +32,6 @@ public class ControllerAmministratore {
 	private GestioneSedeFrame gestioneSedeFrame = null;
 	private AggiungiProdottoFrame aggiungiProdottoFrame = null;
 	private EliminaSedeFrame eliminaSedeFrame = null;
-	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
 	private GestioneRiderFrame gestioneRiderFrame = null;
 	private Account account;
 	
@@ -72,12 +71,13 @@ public class ControllerAmministratore {
 	
 	public void ApriVisualizzaOrdiniFrame() {
 		this.amministratoreFrame.setEnabled(false);
-		//this.mainController.ApriVisualizzaOrdiniFrame(); ????????????????????????
+		this.mainController.ApriVisualizzaOrdini();
+		 
 	}
 	
 	public void ChiudiVisualizzaOrdiniFrame() {
 		this.amministratoreFrame.setEnabled(true);
-		//this.mainController.ChiudiVisualizzaOrdiniFrame(); ????????????????????????
+		this.mainController.ChiudiVisualizzaOrdiniFrame();
 	}
 	
 	public void ChiudiGestioneSedeFrame() {
@@ -272,6 +272,11 @@ public class ControllerAmministratore {
 		this.eliminaSedeFrame.dispose();
 	}
 
+<<<<<<< .mine
+
+||||||| .r21
+		
+=======
 	public int getIdProssimoRider() {
 		return 6;
 	}
@@ -284,6 +289,7 @@ public class ControllerAmministratore {
 	public void ApriModificaRiderFrame(String idRider,String idSede) {
 		Rider rider = new Rider();
 		
+>>>>>>> .r23
 		if(this.imp.equals(this.postgresImp)) 
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
@@ -298,6 +304,45 @@ public class ControllerAmministratore {
 		this.gestioneSedeFrame.setEnabled(false);
 	}
 	
+<<<<<<< .mine
+	
+	
+	//getter e setter
+	
+	public String getImp() {
+		return imp;
+	}
+
+
+	public String getPostgresImp() {
+		return postgresImp;
+	}
+
+
+	public String getAltraImp() {
+		return altraImp;
+	}
+
+
+	public void setImp(String imp) {
+		this.imp = imp;
+	}
+
+
+	public void setPostgresImp(String postgresImp) {
+		this.postgresImp = postgresImp;
+	}
+
+
+	public void setAltraImp(String altraImp) {
+		this.altraImp = altraImp;
+	}
+	
+	
+	
+	
+||||||| .r21
+=======
 	public void ChiudiGestioneRiderFrame() {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.gestioneRiderFrame.dispose();
@@ -305,5 +350,6 @@ public class ControllerAmministratore {
 
 		
 	
+>>>>>>> .r23
 }
 

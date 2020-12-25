@@ -7,12 +7,36 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.net.httpserver.Authenticator.Result;
+
 import Database.DBConnection;
 import Entities.Account;
 import Entities.Sede;
 
 public class SedeDAOPostgresImp implements SedeDAO{
+	
+	
+	@Override
+	public List<String> CercaTutteLeSedi() {
+		List<String> sedi = new ArrayList<String>();
+		Connection conn = null;
+		
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT ID_Sede FROM Sede");
+			
+			while(rs.next()) 
+				sedi.add(rs.getString(1));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		  }
+		return sedi;
+	}
 
+	
 	@Override
 	public Sede CercaSedePerId(String id) {
 		

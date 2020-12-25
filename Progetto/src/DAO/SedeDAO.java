@@ -6,6 +6,7 @@ import Entities.Sede;
 
 public interface SedeDAO {
 	
+	public List<String> CercaTutteLeSedi();
 	public Sede CercaSedePerId(String id);
 	public List<Object[]> getSedi();
 	public int aggiungiProdottoASede(String idSede,int idProdotto);

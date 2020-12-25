@@ -61,9 +61,18 @@ public class AmministratoreFrame extends JFrame{
 		btnGestioneProdotti.setBounds(343, 29, 242, 54);
 		btnGestioneProdotti.setBorder(UIManager.getBorder("Button.border"));
 		btnGestioneProdotti.setFont(new Font("Calibri", Font.PLAIN, 23));
-		getContentPane().add(btnGestioneProdotti);
+		getContentPane().add(btnGestioneProdotti); 
 		
 		JButton btnVisualizzaOrdini = new JButton("VISUALIZZA ORDINI");
+		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()==MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriVisualizzaOrdiniFrame();
+				}
+					
+			}
+		});
 		btnVisualizzaOrdini.setBounds(601, 29, 242, 54);
 		btnVisualizzaOrdini.setBorder(UIManager.getBorder("Button.border"));
 		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 23));

@@ -1,14 +1,19 @@
 package Controller;
 
-import java.awt.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+
+import org.postgresql.jdbc2.ArrayAssistantRegistry;
 
 import DAO.AccountDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.*;
 import GUI.LoginFrame;
+import GUI.VisualizzaOrdiniFrame;
 
 public class MainController {
 	
@@ -16,6 +21,7 @@ public class MainController {
 	private ControllerAmministratore controllerAmministratore = null;
 	//private AdminController AdminController = null;
 	private ControllerGestore controllerGestore = null;
+	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
 
 	public MainController() {
 		ApriLogin();
@@ -44,7 +50,7 @@ public class MainController {
 			if(account != null){
 				
 				if(account.getAmministratore() == false) {
-
+					this.controllerGestore = new ControllerGestore(this, account);
 				}else {
 					this.controllerAmministratore = new ControllerAmministratore(this,account);
 				}
@@ -69,8 +75,33 @@ public class MainController {
 	public void ChiudiLogin() {
 		this.loginFrame.dispose();
 	}
-
-	public void ChiudiVisualizzaOrdini() {
+	
+	
+	public void ApriVisualizzaOrdini() {
+		List<String> sedi = new ArrayList<String>(); 
+		if(controllerAmministratore != null) {
+			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
+				SedeDAOPostgresImp SedeDAO = new SedeDAOPostgresImp();
+				sedi = SedeDAO.CercaTutteLeSedi();
+				String[] ris = new String[sedi.size()+1];
+				ris[0] = "Tutte Le Sedi";
+				for(int i=1;i<sedi.size()+1;i++)
+					ris[i] = sedi.get(i-1);
+					visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this,ris);
 			
+			}
+			else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {//Altra impl
+			}
+	    }
+		else {
+			//codice per il gestore
+		}
+		visualizzaOrdiniFrame.setVisible(true);
+	}
+	
+
+	public void ChiudiVisualizzaOrdiniFrame() {
+		visualizzaOrdiniFrame.setVisible(false);
+		
 	}
 }

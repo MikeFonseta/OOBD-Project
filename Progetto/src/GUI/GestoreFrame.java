@@ -127,6 +127,12 @@ public class GestoreFrame extends JFrame {
 		});
 		
 		JButton btnVisualizzaOrdini = new JButton("Visualizza Ordini");
+		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controllerGestore.ApriVisualizzaOrdini();
+			}
+		});
 		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnVisualizzaOrdini.setBounds(391, 116, 372, 63);
 		pnlGestore.add(btnVisualizzaOrdini);
