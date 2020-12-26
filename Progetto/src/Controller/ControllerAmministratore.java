@@ -69,13 +69,13 @@ public class ControllerAmministratore {
 //		this.gestioneSedeFrame = new GestioneSedeFrame(this);
 //	}
 	
-	public void ApriVisualizzaOrdiniFrame() {
+	public void ApriVisualizzaOrdini() {
 		this.amministratoreFrame.setEnabled(false);
-		this.mainController.ApriVisualizzaOrdini();
+		this.mainController.ApriVisualizzaOrdiniFrame();
 		 
 	}
 	
-	public void ChiudiVisualizzaOrdiniFrame() {
+	public void ChiudiVisualizzaOrdini() {
 		this.amministratoreFrame.setEnabled(true);
 		this.mainController.ChiudiVisualizzaOrdiniFrame();
 	}

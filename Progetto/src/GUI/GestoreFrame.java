@@ -127,6 +127,10 @@ public class GestoreFrame extends JFrame {
 		});
 		
 		JButton btnVisualizzaOrdini = new JButton("Visualizza Ordini");
+		btnVisualizzaOrdini.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -140,7 +144,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					ControllerGestore.ApriVisualizzaOrdineFrame(); //da scrivere
+					controllerGestore.ApriVisualizzaOrdini(); 
 			}
 		});
 		
@@ -230,6 +234,7 @@ public class GestoreFrame extends JFrame {
 				ControllerGestore.AggiornaTabella();
 			}
 		});
+		this.setVisible(true);
 	}
 	
 	}

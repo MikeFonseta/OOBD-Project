@@ -74,31 +74,53 @@ public class MainController {
 	}
 	
 	
-	public void ApriVisualizzaOrdini() {
-		List<String> sedi = new ArrayList<String>(); 
-		if(controllerAmministratore != null) {
-			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
-				SedeDAOPostgresImp SedeDAO = new SedeDAOPostgresImp();
-				sedi = SedeDAO.CercaTutteLeSedi();
-				String[] ris = new String[sedi.size()+1];
-				ris[0] = "Tutte Le Sedi";
-				for(int i=1;i<sedi.size()+1;i++)
-					ris[i] = sedi.get(i-1);
-					visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this,ris);
-			
-			}
-			else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {//Altra impl
-			}
-	    }
-		else {
-			//codice per il gestore
-		}
-		visualizzaOrdiniFrame.setVisible(true);
+	
+	public void ApriVisualizzaOrdiniFrame() {
+		visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this);
 	}
 	
 
 	public void ChiudiVisualizzaOrdiniFrame() {
 		visualizzaOrdiniFrame.setVisible(false);
+
+	}
+	
+	
+	
+	
+	String[] convertiInArrayStringhe(List<String> list) {
+	String ris[] = new String[list.size()];
+	
+		for(int i=0;i<list.size();i++)	
+			ris[i] = list.get(i);	
+	return ris;
+	}
+	
+	
+	
+	
+	
+	
+	public String[] getIDSedi() {
+		List<String> IDsedi = new ArrayList<String>();
+		String[] ris = null;
 		
+		if(controllerAmministratore != null) {
+
+			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
+				SedeDAOPostgresImp SedeDAOPostgres = new SedeDAOPostgresImp();
+				IDsedi = SedeDAOPostgres.CercaTutteLeSedi();
+				IDsedi.add(0, "Tutte Le Sedi");
+				ris = convertiInArrayStringhe(IDsedi);
+			}		
+			else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {
+			//Altra implementazione
+			}
+	    }
+		else {
+			//codice per il gestore
+			ris = new String[] { controllerGestore.getAccount().getSede().getIdSede() };			
+		}
+		return ris;
 	}
 }

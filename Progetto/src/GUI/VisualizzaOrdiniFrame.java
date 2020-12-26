@@ -29,14 +29,14 @@ public class VisualizzaOrdiniFrame extends JFrame {
 	private JPanel pnlPrincipale;
 	private JTable tbl_Ordini;
 	private JComboBox cbxTutteLeSedi;
-	private String[] e;
+
 	
 	
 
 	/**
 	 * Create the frame.
 	 */
-	public VisualizzaOrdiniFrame(MainController mainController, String[] e) {
+	public VisualizzaOrdiniFrame(MainController mainController) {
 		setMinimumSize(new Dimension(1200, 700));
 		setTitle("Visualizza Ordini");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +48,8 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		
 		cbxTutteLeSedi = new JComboBox();
-		cbxTutteLeSedi.setModel(new DefaultComboBoxModel(e));
+		cbxTutteLeSedi.setModel(new DefaultComboBoxModel(mainController.getIDSedi()));
+		cbxTutteLeSedi.setSelectedIndex(0);
 		cbxTutteLeSedi.setBounds(96, 16, 354, 35);
 		pnlPrincipale.add(cbxTutteLeSedi);
 		
@@ -197,31 +198,20 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		tbl_Ordini.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tbl_Ordini.setFillsViewportHeight(true);
 		scrollPane.setViewportView(tbl_Ordini);
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		this.setVisible(true);
 	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
 
-	public JComboBox getCbxTutteLeSedi() {
-		return cbxTutteLeSedi;
-	}
 
-	public String[] getE() {
-		return e;
-	}
 
-	public void setCbxTutteLeSedi(JComboBox cbxTutteLeSedi) {
-		this.cbxTutteLeSedi = cbxTutteLeSedi;
-	}
 
-	public void setE(String[] e) {
-		this.e = e;
-	}
 }
