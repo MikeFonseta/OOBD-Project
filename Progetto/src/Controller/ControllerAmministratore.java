@@ -42,10 +42,11 @@ public class ControllerAmministratore {
 		
 	}
 	
-	public void chiudiAmministratoreFrame() {
+	public void chiudiAmministratoreFrame(boolean logout) {
 		this.amministratoreFrame.dispose();
-		this.mainController.ApriLogin();
-		
+		if(logout==true) {
+			this.mainController.ApriLogin();
+		}
 	}
 	
 	public void ApriModificaSediFrame(String idSede) {

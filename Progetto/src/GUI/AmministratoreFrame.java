@@ -82,8 +82,12 @@ public class AmministratoreFrame extends JFrame{
 		btnEsci.setBounds(868, 29, 148, 54);
 		btnEsci.setBorder(UIManager.getBorder("Button.border"));
 		btnEsci.setFont(new Font("Calibri", Font.PLAIN, 23));
-		btnEsci.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnEsci.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+					controllerAmministratore.chiudiAmministratoreFrame(true);
+				}
 			}
 		});
 		getContentPane().add(btnEsci);
@@ -95,7 +99,7 @@ public class AmministratoreFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.BUTTON1 == MouseEvent.BUTTON1) {
-					controllerAmministratore.chiudiAmministratoreFrame();
+					controllerAmministratore.chiudiAmministratoreFrame(false);
 				}
 			}
 		});
