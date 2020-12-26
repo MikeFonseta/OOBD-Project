@@ -82,5 +82,74 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		return rider;
 	}
 
+	@Override
+	public int NextIdRider() {
+		
+		Connection conn = null;
+		int result = 0;
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT nextIdRider()");	
+			
+			if(rs.next()){
+				result = rs.getInt(1);
+			}
+				
+			rs.close();
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) {
+		
+		Connection conn = null;
+		int result = 0;
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			result = st.executeUpdate("INSERT INTO rider VALUES ('"+idRider+ "','" + nome +"','" + cognome + "','"
+					+ telefono + "','" + veicolo + "',null,'" + idSede + "')");
+	
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int EliminaRider(int idRider,String idSede) {
+		
+		Connection conn = null;
+		int result = 0;
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			result = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede='" + idSede + "'");
+	
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+		return result;
+	}
+
 
 }

@@ -34,7 +34,6 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		  }
 		return sedi;
 	}
-
 	
 	@Override
 	public Sede CercaSedePerId(String id) {
@@ -108,12 +107,12 @@ public class SedeDAOPostgresImp implements SedeDAO{
 	
 	@Override
 	public int aggiungiProdottoASede(String idSede, int idProdotto) {
-		int ris = 0;
+		int result = 0;
 		Connection conn = null;
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ris = st.executeUpdate("INSERT INTO menù VALUES ('"+idSede + "'," + idProdotto +")");
+			result = st.executeUpdate("INSERT INTO menù VALUES ('"+idSede + "'," + idProdotto +")");
 				
 			st.close();
 			conn.close();
@@ -122,18 +121,18 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			e.printStackTrace();	
 		}
 		
-		return ris;
+		return result;
 	}
 
 	@Override
 	public int EliminaProdottoDaSede(String idSede, int idProdotto) {
 
-		int ris = 0;
+		int result = 0;
 		Connection conn = null;
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ris = st.executeUpdate("DELETE FROM menù WHERE id_sede='"+idSede + "' AND id_prodotto='" + idProdotto +"'");
+			result = st.executeUpdate("DELETE FROM menù WHERE id_sede='"+idSede + "' AND id_prodotto=" + idProdotto +"");
 				
 			st.close();
 			conn.close();
@@ -142,18 +141,18 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			e.printStackTrace();	
 		}
 		
-		return ris;
+		return result;
 	}
 
 
 	@Override
 	public int EliminaSede(String idSede) {
-		int ris = 0;
+		int result = 0;
 		Connection conn = null;
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ris = st.executeUpdate("DELETE FROM sede WHERE id_sede='"+idSede + "'");
+			result = st.executeUpdate("DELETE FROM sede WHERE id_sede='"+idSede + "'");
 				
 			st.close();
 			conn.close();
@@ -162,7 +161,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			e.printStackTrace();	
 		}
 		
-		return ris;
+		return result;
 	}
 
 

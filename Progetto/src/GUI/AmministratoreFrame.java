@@ -46,7 +46,7 @@ public class AmministratoreFrame extends JFrame{
 		this.controllerAmministratore = controllerAmministratore;
 		setMinimumSize(new Dimension(1200, 700));
 		getContentPane().setLayout(null);
-		JLabel lblNomeUtente = new JLabel("Nome Utente: A001");
+		JLabel lblNomeUtente = new JLabel("Nome Utente: " + controllerAmministratore.getAccount().getNomeUtente());
 		lblNomeUtente.setBounds(22, 29, 321, 54);
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 30));
 		getContentPane().add(lblNomeUtente);

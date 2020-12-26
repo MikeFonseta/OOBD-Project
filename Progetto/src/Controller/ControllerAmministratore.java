@@ -27,7 +27,7 @@ public class ControllerAmministratore {
 	private String imp = "postgres";
 	private String postgresImp = "postgres";
 	private String altraImp = "altraImp";
-	public AmministratoreFrame amministratoreFrame = new AmministratoreFrame(this);
+	public AmministratoreFrame amministratoreFrame = null;
 	private MainController mainController = null;
 	private GestioneSedeFrame gestioneSedeFrame = null;
 	private AggiungiProdottoFrame aggiungiProdottoFrame = null;
@@ -37,21 +37,26 @@ public class ControllerAmministratore {
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
 		
+		
 		this.mainController = mainController;
 		this.account = account;
+		amministratoreFrame = new AmministratoreFrame(this);
 		
 	}
-	
+
+	public Account getAccount() {
+		return this.account;
+	}
+
 	public void chiudiAmministratoreFrame(boolean logout) {
 		this.amministratoreFrame.dispose();
 		if(logout==true) {
 			this.mainController.ApriLogin();
 		}
 	}
-	
+
 	public void ApriModificaSediFrame(String idSede) {
 		
-		Sede sede = new Sede();
 		Account gestoreSede = new Account();
 		if(this.imp.equals(this.postgresImp))
 		{
@@ -66,21 +71,20 @@ public class ControllerAmministratore {
 		this.amministratoreFrame.setVisible(false);
 	}
 	
-//	public void ApriCreazioneSedeFrame() {
-//		this.gestioneSedeFrame = new GestioneSedeFrame(this);
-//	}
+//    public void ApriCreazioneSedeFrame() {
+//    	this.gestioneSedeFrame = new GestioneSedeFrame(this);
+//    }
 	
 	public void ApriVisualizzaOrdini() {
 		this.amministratoreFrame.setEnabled(false);
-		this.mainController.ApriVisualizzaOrdiniFrame();
-		 
-	}
-	
+		this.mainController.ApriVisualizzaOrdiniFrame(); 
+	}	
+
 	public void ChiudiVisualizzaOrdini() {
 		this.amministratoreFrame.setEnabled(true);
 		this.mainController.ChiudiVisualizzaOrdiniFrame();
 	}
-	
+
 	public void ChiudiGestioneSedeFrame() {
 		this.gestioneSedeFrame.dispose();
 		this.amministratoreFrame.setVisible(true);
@@ -90,12 +94,12 @@ public class ControllerAmministratore {
 		this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
 		this.gestioneSedeFrame.setEnabled(false);
 	}
-	
+
 	public void ChiudiAggiungiProdottoFrame() {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.aggiungiProdottoFrame.dispose();
 	}
-	
+
 	public Object[][] getDatiSedi() {
 		
 		Object[][] result = null;
@@ -275,12 +279,26 @@ public class ControllerAmministratore {
 
 
 	public int getIdProssimoRider() {
-		return 6;
+		
+		int result = 0;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+			result = riderDao.NextIdRider();
+			
+		}else if(this.imp.equals(this.altraImp))
+		{
+			
+		}
+		
+		return result;
+		
 	}
 
-	public void ApriNuovoRiderFrame() {
+	public void ApriNuovoRiderFrame(String idSede) {
 		this.gestioneSedeFrame.setEnabled(false);
-		this.gestioneRiderFrame = new GestioneRiderFrame(this);
+		this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede);
 	}
 	
 	public void ApriModificaRiderFrame(String idRider,String idSede) {
@@ -301,49 +319,90 @@ public class ControllerAmministratore {
 		this.gestioneSedeFrame.setEnabled(false);
 	}
 	
-
-	
-	//getter e setter
-	
-	public String getImp() {
-		return imp;
-	}
-
-
-	public String getPostgresImp() {
-		return postgresImp;
-	}
-
-
-	public String getAltraImp() {
-		return altraImp;
-	}
-
-
-	public void setImp(String imp) {
-		this.imp = imp;
-	}
-
-
-	public void setPostgresImp(String postgresImp) {
-		this.postgresImp = postgresImp;
-	}
-
-
-	public void setAltraImp(String altraImp) {
-		this.altraImp = altraImp;
+	public void CreaRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) {
+		
+		int result = 0;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+			result = riderDao.InserisciRider(idRider,nome,cognome,telefono,veicolo,idSede);
+			
+			if(result == 1) 
+			{
+				JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
+				this.gestioneSedeFrame.AggiornaRider();
+			}else
+			{
+				JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}else if(this.imp.equals(this.altraImp))
+		{
+			
+		}
+		
 	}
 	
+	public void EliminaRider(String idSede, int idRider) {
+		
+		int result = 0;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+			result = riderDao.EliminaRider(idRider,idSede);
+			
+			if(result == 1) 
+			{
+				JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider eliminato correttamente!","",JOptionPane.PLAIN_MESSAGE);
+				this.gestioneSedeFrame.AggiornaRider();
+			}else
+			{
+				JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}else if(this.imp.equals(this.altraImp))
+		{
+			
+		}
+	}
 	
-	
-	
-
 	public void ChiudiGestioneRiderFrame() {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.gestioneRiderFrame.dispose();
 	}
 
+
+	//getter e setter
+	public String getImp() {
+		return imp;
+	}
+
+	public String getPostgresImp() {
+		return postgresImp;
+	}
+
+	public String getAltraImp() {
+		return altraImp;
+	}
+
+	public void setImp(String imp) {
+		this.imp = imp;
+	}
+
+	public void setPostgresImp(String postgresImp) {
+		this.postgresImp = postgresImp;
+	}
+
+	public void setAltraImp(String altraImp) {
+		this.altraImp = altraImp;
+	}
+
+
+
+
 		
-	
+
 }
 

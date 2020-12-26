@@ -51,7 +51,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede='" + idSede + "')");
+					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menÃ¹ WHERE id_sede='" + idSede + "')");
 			while(rs.next()) {
 				
 				int idProdotto = rs.getInt(1);
@@ -83,7 +83,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menù WHERE id_sede='" + idSede + "')");
+					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menÃ¹ WHERE id_sede='" + idSede + "')");
 			
 			while(rs.next()) {
 				

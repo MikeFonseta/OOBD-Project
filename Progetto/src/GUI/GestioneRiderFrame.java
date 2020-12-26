@@ -21,11 +21,8 @@ import java.awt.Dimension;
 public class GestioneRiderFrame extends JFrame{
 	
 	private ControllerAmministratore controllerAmministratore = null;
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore) {
+
+	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, String idSede) {
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);
 		setResizable(false);
@@ -33,19 +30,21 @@ public class GestioneRiderFrame extends JFrame{
 		setPreferredSize(new Dimension(430, 496));
 		setMinimumSize(new Dimension(430, 496));
 		getContentPane().setLayout(null);
+			
+		JLabel lblIdRiderTxt = new JLabel("ID RIder ");
+		lblIdRiderTxt.setHorizontalAlignment(SwingConstants.LEFT);
+		lblIdRiderTxt.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblIdRiderTxt.setBounds(27, 21, 116, 39);
+		getContentPane().add(lblIdRiderTxt);
 		
-		JLabel lblIdRider = new JLabel("ID RIder : " + controllerAmministratore.getIdProssimoRider());
-		lblIdRider.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel lblIdRider = new JLabel("" + controllerAmministratore.getIdProssimoRider());
+		lblIdRider.setHorizontalAlignment(SwingConstants.LEFT);
 		lblIdRider.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblIdRider.setBounds(102, 21, 196, 39);
+		lblIdRider.setBounds(178, 21, 116, 39);
 		getContentPane().add(lblIdRider);
 		
-		JButton btnSalva = new JButton("SALVA");
+		JButton btnSalva = new JButton("AGGIUNGI");
 		btnSalva.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnSalva.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnSalva.setBounds(228, 378, 130, 44);
 		getContentPane().add(btnSalva);
 		
@@ -105,11 +104,24 @@ public class GestioneRiderFrame extends JFrame{
 		lblVeicolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblVeicolo.setBounds(27, 269, 130, 30);
 		getContentPane().add(lblVeicolo);
+		
+		btnSalva.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+					controllerAmministratore.CreaRider(Integer.parseInt(lblIdRider.getText()),txfNome.getText(),txfCognome.getText(),txfTelefono.getText(),cbxVeicolo.getSelectedItem().toString(),idSede);
+				}
+			}
+		});
+		
+		
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
-
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, Rider rider) {
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);
@@ -119,11 +131,11 @@ public class GestioneRiderFrame extends JFrame{
 		setMinimumSize(new Dimension(430, 496));
 		getContentPane().setLayout(null);
 		
-		JLabel lblIDRider = new JLabel("ID RIder : " + rider.getIdRider());
-		lblIDRider.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIDRider.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblIDRider.setBounds(102, 21, 196, 39);
-		getContentPane().add(lblIDRider);
+		JLabel lblIdRiderTxt = new JLabel("ID RIder");
+		lblIdRiderTxt.setHorizontalAlignment(SwingConstants.LEFT);
+		lblIdRiderTxt.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblIdRiderTxt.setBounds(27, 27, 96, 39);
+		getContentPane().add(lblIdRiderTxt);
 		
 		JButton btnSalva = new JButton("SALVA");
 		btnSalva.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -191,8 +203,15 @@ public class GestioneRiderFrame extends JFrame{
 		lblVeicolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblVeicolo.setBounds(27, 269, 130, 30);
 		getContentPane().add(lblVeicolo);
+		
+		JLabel lblIdRider = new JLabel("" + rider.getIdRider());
+		lblIdRider.setHorizontalAlignment(SwingConstants.LEFT);
+		lblIdRider.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblIdRider.setBounds(178, 27, 96, 39);
+		getContentPane().add(lblIdRider);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
+
 
 }
