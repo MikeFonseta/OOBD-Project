@@ -332,6 +332,8 @@ public class ControllerAmministratore {
 			{
 				JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
 				this.gestioneSedeFrame.AggiornaRider();
+				this.gestioneSedeFrame.setEnabled(true);
+				this.gestioneRiderFrame.dispose();
 			}else
 			{
 				JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
@@ -344,14 +346,14 @@ public class ControllerAmministratore {
 		
 	}
 	
-	public void EliminaRider(String idSede, int idRider) {
+	public void EliminaRider(String idSede, String idRider) {
 		
 		int result = 0;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
-			result = riderDao.EliminaRider(idRider,idSede);
+			result = riderDao.EliminaRider(Integer.parseInt(idRider),idSede);
 			
 			if(result == 1) 
 			{

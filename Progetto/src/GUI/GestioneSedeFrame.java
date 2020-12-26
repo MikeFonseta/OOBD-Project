@@ -288,7 +288,7 @@ public class GestioneSedeFrame extends JDialog{
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
 					if(tblRider.getSelectedRowCount() > 0) {
-						controllerAmministratore.EliminaRider(gestoreSede.getSede().getIdSede(), (int) tblRider.getValueAt(tblRider.getSelectedRow(), 0));
+						controllerAmministratore.EliminaRider(gestoreSede.getSede().getIdSede(), tblRider.getValueAt(tblRider.getSelectedRow(), 0).toString());
 					}else {
 						Errore();
 					}
