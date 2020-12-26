@@ -109,23 +109,19 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) {
+	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) throws SQLException {
 		
 		Connection conn = null;
 		int result = 0;
 		
-		try {
-			conn = DBConnection.getInstance().getConnection();
-			Statement st = conn.createStatement();
-			result = st.executeUpdate("INSERT INTO rider VALUES ('"+idRider+ "','" + nome +"','" + cognome + "','"
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		result = st.executeUpdate("INSERT INTO rider VALUES ('"+idRider+ "','" + nome +"','" + cognome + "','"
 					+ telefono + "','" + veicolo + "',null,'" + idSede + "')");
 	
-			st.close();
-			conn.close();
-			
-		}catch(SQLException e){				
-			e.printStackTrace();	
-		}
+		st.close();
+		conn.close();
 		
 		return result;
 	}

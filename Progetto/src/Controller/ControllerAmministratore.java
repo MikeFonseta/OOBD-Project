@@ -1,6 +1,10 @@
 package Controller;
 
 import java.awt.event.WindowAdapter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +15,7 @@ import DAO.AccountDAOPostgresImp;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
+import Database.DBConnection;
 import Entities.Account;
 import Entities.Prodotto;
 import Entities.Rider;
@@ -43,16 +48,17 @@ public class ControllerAmministratore {
 		amministratoreFrame = new AmministratoreFrame(this);
 		
 	}
+	
 
 	public Account getAccount() {
 		return this.account;
 	}
 
 	public void chiudiAmministratoreFrame(boolean logout) {
-		this.amministratoreFrame.dispose();
 		if(logout==true) {
 			this.mainController.ApriLogin();
 		}
+		this.amministratoreFrame.dispose();
 	}
 
 	public void ApriModificaSediFrame(String idSede) {
@@ -326,17 +332,21 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
-			result = riderDao.InserisciRider(idRider,nome,cognome,telefono,veicolo,idSede);
+			try {
+				result = riderDao.InserisciRider(idRider,nome,cognome,telefono,veicolo,idSede);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 			
 			if(result == 1) 
 			{
-				JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
 				this.gestioneSedeFrame.AggiornaRider();
 				this.gestioneSedeFrame.setEnabled(true);
 				this.gestioneRiderFrame.dispose();
 			}else
 			{
-				JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}else if(this.imp.equals(this.altraImp))

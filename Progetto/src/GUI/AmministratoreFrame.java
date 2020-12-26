@@ -55,7 +55,8 @@ public class AmministratoreFrame extends JFrame{
 		btnGestioneProdotti.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1) {}
+				if(e.BUTTON1 == MouseEvent.BUTTON1){
+				}
 			}
 		});
 		btnGestioneProdotti.setBounds(343, 29, 242, 54);
