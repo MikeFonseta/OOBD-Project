@@ -30,12 +30,18 @@ public class ControllerGestore {
 	}
 
 	
+	public Account getAccount() {
+		return this.account;
+	}
+	
 	public Object[][] getDatiSedi() //funzione provvisoria
 	{
 		return null;
 	}
 
-
+	public void AggiornaTabella() {
+		//aggiorna le tabelle
+	}
 
 	public void ApriVisualizzaOrdini() {
 		mainController.ApriVisualizzaOrdiniFrame();
@@ -45,44 +51,40 @@ public class ControllerGestore {
 		
 	}
 	
-	static public void TornaAlLogin() {
-		
+	public void ApriCreaOrdineFrame() {
+		//NB:cambiare il nome del file creaOrdineGUI con CreaOrdineFrame
+		this.gestoreFrame.setVisible(false);
+		//this.mainController.ApriCreaOrdineFrame();  funzione ancora non creata
 	}
 	
-	static public void ApriCreaOrdineFrame() {
-		//creaOrdineGUI
+	public void ApriVisualizzaOrdiniFrame(){
+		this.gestoreFrame.setVisible(false);
+		//this.mainController.ApriVisualizzaOrdiniFrame();  funzione ancora non creata
 	}
 	
-	static public void ApriVisualizzaOrdineFrame(){
-	
+	public void ApriVisualizzaProdottiFrame(){
+		this.gestoreFrame.setVisible(false);
+		//this.mainController.ApriVisualizzaProdottiFrame();  funzione ancora non creata
 	}
 	
-	static public void ApriVisualizzaProdottiFrame(){
-		
+	public void ImpostaFineConsegna() {
+		//fa partire una query che imposta la data e l'ora attuale come fine consegna
 	}
 	
-	static public void ImpostaFineConsegna() {
-		
+	public void ImpostaInizioConsegna() {
+		//fa partire una query che imposta la data e l'ora attuale come inizio consegna
 	}
 	
-	static public void ImpostaInizioConsegna() {
-		
+	public void ModificaCreaOrdineFrame() {
+		//apre la schermata Crea ordine ma con i campi caricati dall ordine selezionato
 	}
 	
-	static public void ModificaCreaOrdineFrame() {
-		
+	public void ApriCarrello() {
+		//apre il carrello di un ordine
 	}
 	
-	static public void AggiornaTabella() {
-		
-	}
-	
-	static public void ApriCarrello() {
-		
-	}
-	
-	static public void EliminaOrdine() {
-		
+	public void EliminaOrdine() {
+		//cancella un ordine 
 	}
 
 	
@@ -112,15 +114,8 @@ public class ControllerGestore {
 		this.altraImp = altraImp;
 	}
 
-	public Account getAccount() {
-		return account;
-	}
-
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
-
-
 
 }

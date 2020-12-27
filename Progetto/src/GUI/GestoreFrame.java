@@ -80,12 +80,12 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getColumnModel().getColumn(8).setResizable(false);
 		scpGestore.setViewportView(tblOrdini);
 		
-		JLabel lblNomeUtente = new JLabel("NomeUtente");
+		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblNomeUtente.setBounds(40, 27, 88, 14);
 		pnlGestore.add(lblNomeUtente);
 		
-		JLabel lblNomeSede = new JLabel("NomeSede");
+		JLabel lblNomeSede = new JLabel(controllerGestore.getAccount().getSede().getNomeSede());
 		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblNomeSede.setBounds(344, 27, 88, 14);
 		pnlGestore.add(lblNomeSede);
@@ -98,7 +98,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)   //controlla che si usi il tasto sinistro del mouse
-					controllerGestore.chiudiGestoreFrame(true);
+					controllerGestore.chiudiGestoreFrame(true); //dopo aver chiuso il frame, apre login
 			}
 		});
 		
@@ -110,7 +110,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-				controllerGestore.chiudiGestoreFrame(false);
+					controllerGestore.chiudiGestoreFrame(false);
 			}
 		});
 		
@@ -122,21 +122,11 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					ControllerGestore.ApriCreaOrdineFrame(); 	//da scrivere
+					controllerGestore.ApriCreaOrdineFrame(); 	//da completare
 			}
 		});
 		
 		JButton btnVisualizzaOrdini = new JButton("Visualizza Ordini");
-		btnVisualizzaOrdini.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				controllerGestore.ApriVisualizzaOrdini();
-			}
-		});
 		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnVisualizzaOrdini.setBounds(391, 116, 372, 63);
 		pnlGestore.add(btnVisualizzaOrdini);
@@ -144,7 +134,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriVisualizzaOrdini(); 
+					controllerGestore.ApriVisualizzaOrdiniFrame(); //da completare
 			}
 		});
 		
@@ -156,7 +146,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					ControllerGestore.ApriVisualizzaProdottiFrame(); //da scrivere
+					controllerGestore.ApriVisualizzaProdottiFrame(); //da completare
 			}
 		});
 		
@@ -171,8 +161,8 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					ControllerGestore.ImpostaFineConsegna(); //da scrivere
-				ControllerGestore.AggiornaTabella();
+					controllerGestore.ImpostaFineConsegna(); //da completare
+					controllerGestore.AggiornaTabella();
 			}
 		});
 		
@@ -187,8 +177,8 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					ControllerGestore.ImpostaInizioConsegna(); //da scrivere
-				ControllerGestore.AggiornaTabella();
+					controllerGestore.ImpostaInizioConsegna(); //da completare
+					controllerGestore.AggiornaTabella();
 			}
 		});
 		
@@ -203,8 +193,8 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					ControllerGestore.ModificaCreaOrdineFrame(); //da scrivere
-				ControllerGestore.AggiornaTabella();
+					controllerGestore.ModificaCreaOrdineFrame(); //da completare
+					controllerGestore.AggiornaTabella();
 			}
 		});
 		
@@ -219,7 +209,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					ControllerGestore.ApriCarrello(); //da scrivere
+					controllerGestore.ApriCarrello(); //da completare
 			}
 		});
 		
@@ -230,11 +220,10 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-				ControllerGestore.EliminaOrdine(); //da scrivere
-				ControllerGestore.AggiornaTabella();
+					controllerGestore.EliminaOrdine(); //da completare
+					controllerGestore.AggiornaTabella();
 			}
 		});
-		this.setVisible(true);
 	}
 	
 	}
