@@ -49,7 +49,6 @@ public class ControllerAmministratore {
 		
 	}
 	
-
 	public Account getAccount() {
 		return this.account;
 	}
@@ -112,7 +111,11 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-			result = sedeDao.getSedi().toArray(new Object[][] {});
+			try {
+				result = sedeDao.getSedi().toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -127,7 +130,13 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
-			result = prodottoDao.getTuttiProdotti().toArray(new Object[][] {});
+			try {
+				result = prodottoDao.getTuttiProdotti().toArray(new Object[][] {});
+			} catch (SQLException e) {
+				this.gestioneSedeFrame.setEnabled(true);
+				this.aggiungiProdottoFrame.dispose();
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -142,7 +151,11 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
-			result = riderDao.getRiderDaSede(idSede).toArray(new Object[][] {});
+			try {
+				result = riderDao.getRiderDaSede(idSede).toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -158,7 +171,11 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
-			result = prodottoDao.getProdottiDellaSede(idSede).toArray(new Object[][] {});
+			try {
+				result = prodottoDao.getProdottiDellaSede(idSede).toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -172,7 +189,13 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
-			result = prodottoDao.getProdottiSedeCategoria(idSede,categoria).toArray(new Object[][] {});
+			try {
+				result = prodottoDao.getProdottiSedeCategoria(idSede,categoria).toArray(new Object[][] {});
+			} catch (SQLException e) {
+				this.gestioneSedeFrame.setEnabled(true);
+				this.aggiungiProdottoFrame.dispose();
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -188,7 +211,11 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
-			result = prodottoDao.getProdottiPerUnaSede(idSede).toArray(new Object[][] {});
+			try {
+				result = prodottoDao.getProdottiPerUnaSede(idSede).toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazioni
@@ -198,20 +225,28 @@ public class ControllerAmministratore {
 
 	public void AggiungiProdottoASede(String idSede, int idProdotto) {
 		
-		int result;
+		int result = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-			result = sedeDao.aggiungiProdottoASede(idSede, idProdotto);
-			
-			if(result==1) {
+			try {
+				result = sedeDao.aggiungiProdottoASede(idSede, idProdotto);
 				
-				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotto aggiunto!","",JOptionPane.PLAIN_MESSAGE);
-				this.gestioneSedeFrame.AggiornaProdotti();
-				this.aggiungiProdottoFrame.AggiornaProdotti();
-			}else {
-				JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				if(result==1) {
+					
+					JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotto aggiunto!","",JOptionPane.PLAIN_MESSAGE);
+					this.gestioneSedeFrame.AggiornaProdotti();
+					this.aggiungiProdottoFrame.AggiornaProdotti();
+				}else {
+					JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			} catch (SQLException e) {
+				this.gestioneSedeFrame.setEnabled(true);
+				this.aggiungiProdottoFrame.dispose();
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
+		
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazione
@@ -220,19 +255,25 @@ public class ControllerAmministratore {
 	
 	public void EliminaProdottoDaSede(String idSede, int idProdotto) {
 		
-		int result;
+		int result = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-			result = sedeDao.EliminaProdottoDaSede(idSede, idProdotto);
-			
-			if(result==1) {
+			try {
+				result = sedeDao.EliminaProdottoDaSede(idSede, idProdotto);
 				
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Prodotto eliminato!","",JOptionPane.PLAIN_MESSAGE);
-				this.gestioneSedeFrame.AggiornaProdotti();
-			}else {
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				if(result==1) {
+					
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Prodotto eliminato!","",JOptionPane.PLAIN_MESSAGE);
+					this.gestioneSedeFrame.AggiornaProdotti();
+				}else {
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
+	
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazione
@@ -256,15 +297,20 @@ public class ControllerAmministratore {
 			if(this.imp.equals(this.postgresImp)) 
 			{
 				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-				result = sedeDao.EliminaSede(idSede);
-				
-				if(result == 1) 
-				{
-					JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede '" + idSede + "' eliminata","",JOptionPane.PLAIN_MESSAGE);
-					this.amministratoreFrame.AggiornaSedi();
-				}else
-				{
-					JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				try {
+					result = sedeDao.EliminaSede(idSede);
+					
+					if(result == 1) 
+					{
+						JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede '" + idSede + "' eliminata","",JOptionPane.PLAIN_MESSAGE);
+						this.amministratoreFrame.AggiornaSedi();
+					}else
+					{
+						JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 		
 			}else
@@ -314,15 +360,19 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp)) 
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
-			rider = riderDao.CercaRiderPerId(Integer.parseInt(idRider));
+			try {
+				rider = riderDao.CercaRiderPerId(Integer.parseInt(idRider));
+				this.gestioneRiderFrame = new GestioneRiderFrame(this,rider);
+				this.gestioneSedeFrame.setEnabled(false);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 				
 		}else
 		{
 			//altra implementazione
 		}
 		
-		this.gestioneRiderFrame = new GestioneRiderFrame(this,rider);
-		this.gestioneSedeFrame.setEnabled(false);
 	}
 	
 	public void CreaRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) {
@@ -334,19 +384,22 @@ public class ControllerAmministratore {
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
 				result = riderDao.InserisciRider(idRider,nome,cognome,telefono,veicolo,idSede);
+				
+				if(result == 1) 
+				{
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
+					this.gestioneSedeFrame.AggiornaRider();
+					this.gestioneSedeFrame.setEnabled(true);
+					this.gestioneRiderFrame.dispose();
+				}else
+				{
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				}
+				
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}
-			
-			if(result == 1) 
-			{
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
-				this.gestioneSedeFrame.AggiornaRider();
 				this.gestioneSedeFrame.setEnabled(true);
 				this.gestioneRiderFrame.dispose();
-			}else
-			{
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}else if(this.imp.equals(this.altraImp))
@@ -363,15 +416,20 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
-			result = riderDao.EliminaRider(Integer.parseInt(idRider),idSede);
-			
-			if(result == 1) 
-			{
-				JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider eliminato correttamente!","",JOptionPane.PLAIN_MESSAGE);
-				this.gestioneSedeFrame.AggiornaRider();
-			}else
-			{
-				JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+			try {
+				result = riderDao.EliminaRider(Integer.parseInt(idRider),idSede);
+				
+				if(result == 1) 
+				{
+					JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider eliminato correttamente!","",JOptionPane.PLAIN_MESSAGE);
+					this.gestioneSedeFrame.AggiornaRider();
+				}else
+				{
+					JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}else if(this.imp.equals(this.altraImp))
@@ -384,7 +442,6 @@ public class ControllerAmministratore {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.gestioneRiderFrame.dispose();
 	}
-
 
 	//getter e setter
 	public String getImp() {
@@ -411,10 +468,6 @@ public class ControllerAmministratore {
 		this.altraImp = altraImp;
 	}
 
-
-
-
-		
 
 }
 

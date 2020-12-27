@@ -14,71 +14,61 @@ import Entities.Sede;
 public class RiderDAOPostgresImp implements RiderDAO{
 
 	@Override
-	public Rider CercaRiderPerId(int idRider) {
+	public Rider CercaRiderPerId(int idRider) throws SQLException {
 		
 		Rider rider = new Rider();
 		Connection conn = null;
 		
-		try {
-			conn = DBConnection.getInstance().getConnection();
-			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT R.nomer,R.cognomer,R.telefonor,R.veicolo,R.disponibilità FROM rider AS R WHERE id_rider=" + idRider +"");	
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT R.nomer,R.cognomer,R.telefonor,R.veicolo,R.disponibilità FROM rider AS R WHERE id_rider=" + idRider +"");	
 			
-			if(rs.next()){
+		if(rs.next()){
 				
-				String nomeRider= rs.getString(1);
-				String cognomeRider = rs.getString(2);
-				String telefonoRider = rs.getString(3);
-				String veicolo = rs.getString(4);
-				Boolean disponibilita = rs.getBoolean(5);
+			String nomeRider= rs.getString(1);
+			String cognomeRider = rs.getString(2);
+			String telefonoRider = rs.getString(3);
+			String veicolo = rs.getString(4);
+			Boolean disponibilita = rs.getBoolean(5);
+						
+			rider = new Rider(idRider,nomeRider,cognomeRider,telefonoRider,veicolo,disponibilita);
 				
-				
-				
-				rider = new Rider(idRider,nomeRider,cognomeRider,telefonoRider,veicolo,disponibilita);
-				
-			}
-				
-			rs.close();
-			st.close();
-			conn.close();
-			
-		}catch(SQLException e){				
-			e.printStackTrace();	
 		}
+				
+		rs.close();
+		st.close();
+		conn.close();
 		
 		return rider;
 	}
 
 	@Override
-	public List<Object[]> getRiderDaSede(String idSede) {
+	public List<Object[]> getRiderDaSede(String idSede) throws SQLException {
 		
 		List<Object[]> rider = new ArrayList<Object[]>();
 		Connection conn = null;
-		try {
-			conn = DBConnection.getInstance().getConnection();
-			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT R.id_rider,R.nomer,R.cognomer,R.telefonor,R.veicolo FROM rider AS R WHERE id_sede='" + idSede +"'" );
-			while(rs.next()) {
-				
-				String idRider = rs.getString(1);
-				String nomeRider = rs.getString(2);
-				String cognomeRider = rs.getString(3);
-				String telefonoRider = rs.getString(4);
-				String veicolo = rs.getString(5);
-				
-				Object[] object = new Object[] {idRider,nomeRider,cognomeRider,telefonoRider,veicolo};
-				
-				rider.add(object);
-			}
-				
-			rs.close();
-			st.close();
-			conn.close();
-			
-		}catch(SQLException e){				
-			e.printStackTrace();	
-		}
 		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT R.id_rider,R.nomer,R.cognomer,R.telefonor,R.veicolo FROM rider AS R WHERE id_sede='" + idSede +"'" );
+		
+		while(rs.next()) {
+				
+			String idRider = rs.getString(1);
+			String nomeRider = rs.getString(2);
+			String cognomeRider = rs.getString(3);
+			String telefonoRider = rs.getString(4);
+			String veicolo = rs.getString(5);
+				
+			Object[] object = new Object[] {idRider,nomeRider,cognomeRider,telefonoRider,veicolo};
+				
+			rider.add(object);
+		}
+				
+		rs.close();
+		st.close();
+		conn.close();
+			
 		return rider;
 	}
 
@@ -127,22 +117,17 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int EliminaRider(int idRider,String idSede) {
+	public int EliminaRider(int idRider,String idSede) throws SQLException  {
 		
 		Connection conn = null;
 		int result = 0;
 		
-		try {
-			conn = DBConnection.getInstance().getConnection();
-			Statement st = conn.createStatement();
-			result = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede='" + idSede + "'");
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		result = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede='" + idSede + "'");
 	
-			st.close();
-			conn.close();
-			
-		}catch(SQLException e){				
-			e.printStackTrace();	
-		}
+		st.close();
+		conn.close();
 		
 		return result;
 	}

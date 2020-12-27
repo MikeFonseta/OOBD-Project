@@ -1,5 +1,6 @@
 package Controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,9 +110,15 @@ public class MainController {
 
 			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
 				SedeDAOPostgresImp SedeDAOPostgres = new SedeDAOPostgresImp();
-				IDsedi = SedeDAOPostgres.CercaTutteLeSedi();
-				IDsedi.add(0, "Tutte Le Sedi");
-				ris = convertiInArrayStringhe(IDsedi);
+				try {
+					IDsedi = SedeDAOPostgres.CercaTutteLeSedi();
+					IDsedi.add(0, "Tutte Le Sedi");
+					ris = convertiInArrayStringhe(IDsedi);
+				} catch (SQLException e) {
+					
+					//Inserito cosi come ho fatto in controllerAmministratore per non farti avere l'errore nella classe
+					JOptionPane.showMessageDialog(this.loginFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE); 
+				}
 			}		
 			else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {
 			//Altra implementazione
