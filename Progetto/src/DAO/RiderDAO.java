@@ -8,8 +8,9 @@ import Entities.Rider;
 public interface RiderDAO {
 
 	public Rider CercaRiderPerId(int idRider) throws SQLException;
-	public List<Object[]> getRiderDaSede(String idSede) throws SQLException; 
+	public List<Object[]> getRiderDaSede(int idSede) throws SQLException; 
 	public int NextIdRider() throws SQLException;
-	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) throws SQLException;
-	public int EliminaRider(int idRider,String idSede) throws SQLException;
+	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) throws SQLException;
+	public int EliminaRider(int idRider,int idSede) throws SQLException;
+	public int AggiornaRider(Rider idRider) throws SQLException;
 }

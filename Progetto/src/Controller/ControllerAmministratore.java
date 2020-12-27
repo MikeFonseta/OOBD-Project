@@ -58,9 +58,10 @@ public class ControllerAmministratore {
 			this.mainController.ApriLogin();
 		}
 		this.amministratoreFrame.dispose();
+		this.mainController.loginFrame.dispose();
 	}
 
-	public void ApriModificaSediFrame(String idSede) {
+	public void ApriModificaSediFrame(int idSede) {
 		
 		Account gestoreSede = new Account();
 		if(this.imp.equals(this.postgresImp))
@@ -95,7 +96,7 @@ public class ControllerAmministratore {
 		this.amministratoreFrame.setVisible(true);
 	}
 
-	public void ApriAggiungiProdottoFrame(String idSede) {
+	public void ApriAggiungiProdottoFrame(int idSede) {
 		this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
 		this.gestioneSedeFrame.setEnabled(false);
 	}
@@ -144,7 +145,7 @@ public class ControllerAmministratore {
 		return result;
 	}
 	
-	public Object[][] getRiderDaSede(String idSede) {
+	public Object[][] getRiderDaSede(int idSede) {
 		
 		Object[][] result = null;
 		
@@ -164,7 +165,7 @@ public class ControllerAmministratore {
 		
 	}
 
-	public Object[][] getMenuSede(String idSede) {
+	public Object[][] getMenuSede(int idSede) {
 		
 		Object[][] result = null;
 		
@@ -183,7 +184,7 @@ public class ControllerAmministratore {
 		return result;
 	}
 
-	public void getProdottiSedeCategoria(String idSede, String categoria) {
+	public void getProdottiSedeCategoria(int idSede, String categoria) {
 		Object[][] result = null;
 		
 		if(this.imp.equals(this.postgresImp))
@@ -204,7 +205,7 @@ public class ControllerAmministratore {
 		this.aggiungiProdottoFrame.AggiornaProdottiConCategoria(result);
 	}
 	
-	public Object[][] getProdottiPerUnaSede(String idSede) {
+	public Object[][] getProdottiPerUnaSede(int idSede) {
 		
 		Object[][] result = null;
 		
@@ -223,7 +224,7 @@ public class ControllerAmministratore {
 		return result;
 	}
 
-	public void AggiungiProdottoASede(String idSede, int idProdotto) {
+	public void AggiungiProdottoASede(int idSede, int idProdotto) {
 		
 		int result = 0;
 		if(this.imp.equals(this.postgresImp))
@@ -253,7 +254,7 @@ public class ControllerAmministratore {
 		}
 	}
 	
-	public void EliminaProdottoDaSede(String idSede, int idProdotto) {
+	public void EliminaProdottoDaSede(int idSede, int idProdotto) {
 		
 		int result = 0;
 		if(this.imp.equals(this.postgresImp))
@@ -280,12 +281,12 @@ public class ControllerAmministratore {
 		}
 	}
 	
-	public void EliminaSede(String idSede) {
+	public void EliminaSede(int idSede) {
 		this.amministratoreFrame.setEnabled(false);
 		this.eliminaSedeFrame = new EliminaSedeFrame(this,idSede);
 	}
 	
-	public void ConfermaEliminazioneSede(String password,String idSede) {
+	public void ConfermaEliminazioneSede(String password,int idSede) {
 		
 		int result = 0;
 		
@@ -348,12 +349,12 @@ public class ControllerAmministratore {
 		
 	}
 
-	public void ApriNuovoRiderFrame(String idSede) {
+	public void ApriNuovoRiderFrame(int idSede) {
 		this.gestioneSedeFrame.setEnabled(false);
 		this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede);
 	}
 	
-	public void ApriModificaRiderFrame(String idRider,String idSede) {
+	public void ApriModificaRiderFrame(String idRider,int idSede) {
 		Rider rider = new Rider();
 		
 
@@ -375,7 +376,7 @@ public class ControllerAmministratore {
 		
 	}
 	
-	public void CreaRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) {
+	public void CreaRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) {
 		
 		int result = 0;
 		
@@ -409,7 +410,7 @@ public class ControllerAmministratore {
 		
 	}
 	
-	public void EliminaRider(String idSede, String idRider) {
+	public void EliminaRider(int idSede, String idRider) {
 		
 		int result = 0;
 		

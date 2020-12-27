@@ -5,5 +5,5 @@ import Entities.Account;
 public interface AccountDAO{
 	
 	public Account ControlloCredenziali(String username, String Password);
-	public Account CercaAccountPerIdSede(String idSede);
+	public Account CercaAccountPerIdSede(int idSede);
 }

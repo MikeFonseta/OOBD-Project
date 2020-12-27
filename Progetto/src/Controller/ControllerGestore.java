@@ -23,10 +23,11 @@ public class ControllerGestore {
 	}
 	
 	public void chiudiGestoreFrame(boolean logout) {
-		this.gestoreFrame.dispose();
 		if(logout==true) {
 			this.mainController.ApriLogin();
 		}
+		this.gestoreFrame.dispose();
+		this.mainController.loginFrame.dispose();
 	}
 
 	

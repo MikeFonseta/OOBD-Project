@@ -22,7 +22,7 @@ public class GestioneRiderFrame extends JFrame{
 	
 	private ControllerAmministratore controllerAmministratore = null;
 
-	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, String idSede) {
+	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, int idSede) {
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);
 		setResizable(false);

@@ -10,6 +10,7 @@ import java.util.List;
 
 
 import Database.DBConnection;
+import Entities.Account;
 import Entities.Sede;
 
 public class SedeDAOPostgresImp implements SedeDAO{
@@ -32,18 +33,18 @@ public class SedeDAOPostgresImp implements SedeDAO{
 	}
 	
 	@Override
-	public Sede CercaSedePerId(String id) throws SQLException {
+	public Sede CercaSedePerId(int id) throws SQLException {
 		
 		Sede sede = null;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM sede WHERE id_sede='" + id +"'");	
+		ResultSet rs = st.executeQuery("SELECT * FROM sede WHERE id_sede="+ id +"");	
 			
 		if(rs.next()){
 			
-			String idSede = rs.getString(1);
+			int idSede = rs.getInt(1);
 			String nomeSede= rs.getString(2);
 			String telefonoSede = rs.getString(3);
 			String provincia = rs.getString(4);
@@ -70,10 +71,10 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM sede");
+		ResultSet rs = st.executeQuery("SELECT * FROM sede ORDER BY id_sede ASC");
 		while(rs.next()) {
 				
-			String idSede = rs.getString(1);
+			int idSede = rs.getInt(1);
 			String nomeSede= rs.getString(2);
 			String telefonoSede = rs.getString(3);
 			String provincia = rs.getString(4);
@@ -94,13 +95,13 @@ public class SedeDAOPostgresImp implements SedeDAO{
 	}
 	
 	@Override
-	public int aggiungiProdottoASede(String idSede, int idProdotto) throws SQLException {
+	public int aggiungiProdottoASede(int idSede, int idProdotto) throws SQLException {
 		int result = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("INSERT INTO menù VALUES ('"+idSede + "'," + idProdotto +")");
+		result = st.executeUpdate("INSERT INTO menù VALUES ("+idSede + "," + idProdotto +")");
 				
 		st.close();
 		conn.close();
@@ -109,14 +110,14 @@ public class SedeDAOPostgresImp implements SedeDAO{
 	}
 
 	@Override
-	public int EliminaProdottoDaSede(String idSede, int idProdotto)  throws SQLException {
+	public int EliminaProdottoDaSede(int idSede, int idProdotto)  throws SQLException {
 
 		int result = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("DELETE FROM menù WHERE id_sede='"+idSede + "' AND id_prodotto=" + idProdotto +"");
+		result = st.executeUpdate("DELETE FROM menù WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
 				
 		st.close();
 		conn.close();
@@ -126,17 +127,39 @@ public class SedeDAOPostgresImp implements SedeDAO{
 
 
 	@Override
-	public int EliminaSede(String idSede) throws SQLException  {
+	public int EliminaSede(int idSede) throws SQLException  {
 		int result = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("DELETE FROM sede WHERE id_sede='"+idSede + "'");
+		result = st.executeUpdate("DELETE FROM sede WHERE id_sede="+idSede +"");
 				
 		st.close();
 		conn.close();
 		
+		return result;
+	}
+
+	@Override
+	public int CreaSede(Sede sede, String nomeUtente, String password) throws SQLException {
+		
+		int result = 0;
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		result = st.executeUpdate("INSERT INTO sede(id_sede,telefono,provincia,città,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
+									sede.getNomeSede() + "','" + sede.getTelefonoSede() + "','" + sede.getProvincia() + "','" + sede.getCitta() + "','" + sede.getVia() + "','" + sede.getNumCivico());
+		
+		if(result == 1) {
+			result = st.executeUpdate("INSERT INTO account(nomeutente,password,amministratore,id_sede) VALUES ('" + nomeUtente + "','" + password +
+					"',false," + sede.getIdSede());
+		}
+				
+		st.close();
+		conn.close();
+			
 		return result;
 	}
 

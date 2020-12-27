@@ -43,14 +43,14 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public List<Object[]> getRiderDaSede(String idSede) throws SQLException {
+	public List<Object[]> getRiderDaSede(int idSede) throws SQLException {
 		
 		List<Object[]> rider = new ArrayList<Object[]>();
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT R.id_rider,R.nomer,R.cognomer,R.telefonor,R.veicolo FROM rider AS R WHERE id_sede='" + idSede +"'" );
+		ResultSet rs = st.executeQuery("SELECT R.id_rider,R.nomer,R.cognomer,R.telefonor,R.veicolo FROM rider AS R WHERE id_sede=" + idSede +"" );
 		
 		while(rs.next()) {
 				
@@ -99,16 +99,15 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, String idSede) throws SQLException {
+	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) throws SQLException {
 		
 		Connection conn = null;
-		int result = 0;
-		
+		int result = 0;		
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("INSERT INTO rider VALUES ('"+idRider+ "','" + nome +"','" + cognome + "','"
-					+ telefono + "','" + veicolo + "',null,'" + idSede + "')");
+		result = st.executeUpdate("INSERT INTO rider(id_rider,nomer,cognomer,telefonor,veicolo,id_sede) VALUES ('"+idRider+ "','" + nome +"','" + cognome + "','"
+					+ telefono + "','" + veicolo + "',"+ idSede + ")");
 	
 		st.close();
 		conn.close();
@@ -117,14 +116,31 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int EliminaRider(int idRider,String idSede) throws SQLException  {
+	public int EliminaRider(int idRider,int idSede) throws SQLException  {
 		
 		Connection conn = null;
 		int result = 0;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede='" + idSede + "'");
+		result = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede=" + idSede + "");
+	
+		st.close();
+		conn.close();
+		
+		return result;
+	}
+
+	@Override
+	public int AggiornaRider(Rider rider) throws SQLException {
+		Connection conn = null;
+		int result = 0;
+		
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		result = st.executeUpdate("UPDATE rider SET nomer='" + rider.getNomeRider() + "',cognomer='" + rider.getCognomeRider() + "','" 
+							+ rider.getVeicoloRider() + "','" + rider.getTelefonoRider() + "' WHERE id_rider=" + rider.getIdRider());
 	
 		st.close();
 		conn.close();

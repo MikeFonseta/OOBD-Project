@@ -20,7 +20,7 @@ public class AccountDAOPostgresImp implements AccountDAO {
 			String NomeUtente = rs.getString(1);
 			String Pwd = rs.getString(2);
 			Boolean amministratore = rs.getBoolean(3);
-			String ID_Sede = rs.getString(4);
+			int ID_Sede = rs.getInt(4);
 				
 			if(amministratore == false) {
 				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
@@ -42,20 +42,20 @@ public class AccountDAOPostgresImp implements AccountDAO {
 	}
 
 	@Override
-	public Account CercaAccountPerIdSede(String idSede) {
+	public Account CercaAccountPerIdSede(int idSede) {
 		Connection conn = null;
 		Account account = null;
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM Account WHERE id_sede='" + idSede + "'");	
+			ResultSet rs = st.executeQuery("SELECT * FROM Account WHERE id_sede=" + idSede + "");	
 			
 			if(rs.next()){
 				
 				String NomeUtente = rs.getString(1);
 				String Pwd = rs.getString(2);
 				Boolean amministratore = rs.getBoolean(3);
-				String ID_Sede = rs.getString(4);
+				int ID_Sede = rs.getInt(4);
 			
 				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 				Sede s = sedeDao.CercaSedePerId(ID_Sede);

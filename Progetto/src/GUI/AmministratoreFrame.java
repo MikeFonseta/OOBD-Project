@@ -120,7 +120,7 @@ public class AmministratoreFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				if(tblSedi.getSelectedColumnCount() != 0)
 				{
-					controllerAmministratore.EliminaSede(tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString());
+					controllerAmministratore.EliminaSede((int) tblSedi.getValueAt(tblSedi.getSelectedRow(), 0));
 				}else 
 				{
 					Errore();		
@@ -162,7 +162,7 @@ public class AmministratoreFrame extends JFrame{
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class
+				Integer.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -214,7 +214,7 @@ public class AmministratoreFrame extends JFrame{
 				{
 					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						controllerAmministratore.ApriModificaSediFrame((tblSedi.getValueAt(tblSedi.getSelectedRow(), 0).toString()));
+						controllerAmministratore.ApriModificaSediFrame((int) (tblSedi.getValueAt(tblSedi.getSelectedRow(), 0)));
 					}else 
 					{
 						Errore();	

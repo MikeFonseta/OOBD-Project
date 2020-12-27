@@ -125,7 +125,7 @@ public class MainController {
 			}
 	    }
 		else {
-			//codice per il gestore
+			//codice per il gestore              per l'admin ??
 			ris = new String[] { controllerGestore.getAccount().getSede().getIdSede() };			
 		}
 		return ris;

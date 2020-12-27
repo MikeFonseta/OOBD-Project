@@ -48,7 +48,7 @@ public class GestioneSedeFrame extends JDialog{
 		lblIdSedeTxt.setBounds(10, 11, 67, 39);
 		getContentPane().add(lblIdSedeTxt);
 		
-		JLabel lblIdSede = new JLabel(gestoreSede.getSede().getIdSede());
+		JLabel lblIdSede = new JLabel("" + gestoreSede.getSede().getIdSede());
 		lblIdSede.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblIdSede.setBounds(82, 11, 88, 39);
 		getContentPane().add(lblIdSede);
@@ -303,7 +303,7 @@ public class GestioneSedeFrame extends JDialog{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					controllerAmministratore.ApriNuovoRiderFrame(lblIdSede.getText());
+					controllerAmministratore.ApriNuovoRiderFrame(gestoreSede.getSede().getIdSede());
 				}
 			}
 		});

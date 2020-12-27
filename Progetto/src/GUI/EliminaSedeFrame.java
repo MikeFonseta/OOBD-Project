@@ -26,7 +26,7 @@ public class EliminaSedeFrame extends JDialog{
 	
 	private JPasswordField pxfPassword;
 	
-	public EliminaSedeFrame(ControllerAmministratore controllerAmministratore,String idSede) {
+	public EliminaSedeFrame(ControllerAmministratore controllerAmministratore,int idSede) {
 		setUndecorated(true);
 		
 		setPreferredSize(new Dimension(475, 251));

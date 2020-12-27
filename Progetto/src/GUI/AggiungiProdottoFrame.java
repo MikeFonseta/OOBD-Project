@@ -23,10 +23,10 @@ import javax.swing.DropMode;
 public class AggiungiProdottoFrame extends JFrame{
 	private JTable tblProdotti;
 	private ControllerAmministratore controllerAmministratore;
-	private String idSede;
+	private int idSede;
 	private JComboBox cbxCategoria;
 	
-	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore, String idSede){
+	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore, int idSede){
 		
 		setAlwaysOnTop(true);
 		this.controllerAmministratore = controllerAmministratore;

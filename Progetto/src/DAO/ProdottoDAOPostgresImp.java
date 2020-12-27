@@ -19,7 +19,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT id_prodotto,nomep,descrizione,prezzo FROM prodotto");
+		ResultSet rs = st.executeQuery("SELECT id_prodotto,nomep,descrizione,prezzo FROM prodotto ORDER BY id_prodotto ASC");
 		while(rs.next()) {
 				
 			int idProdotto = rs.getInt(1);
@@ -39,7 +39,8 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return prodotti;
 	}
 	
-	public List<Object[]> getProdottiPerUnaSede(String idSede)  throws SQLException {
+	@Override
+	public List<Object[]> getProdottiPerUnaSede(int idSede)  throws SQLException {
 		
 		List<Object[]> prodotti = new ArrayList<Object[]>();
 		Connection conn = null;
@@ -47,7 +48,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede='" + idSede + "')");
+					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
 		
 		while(rs.next()) {
 				
@@ -69,14 +70,14 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	}
 
 	@Override
-	public List<Object[]> getProdottiDellaSede(String idSede)  throws SQLException {
+	public List<Object[]> getProdottiDellaSede(int idSede)  throws SQLException {
 		List<Object[]> prodotti = new ArrayList<Object[]>();
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menù WHERE id_sede='" + idSede + "')");
+					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
 			
 		while(rs.next()) {
 				
@@ -99,14 +100,14 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	}
 	
 	@Override
-	public List<Object[]> getProdottiSedeCategoria(String idSede, String categoria)  throws SQLException {
+	public List<Object[]> getProdottiSedeCategoria(int idSede, String categoria)  throws SQLException {
 		List<Object[]> prodotti = new ArrayList<Object[]>();
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede='" + idSede + "') AND P.categoria='" + categoria + "'");
+					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ") AND P.categoria='" + categoria + "' ORDER BY P.id_prodotto ASC");
 		
 		while(rs.next()) {
 				

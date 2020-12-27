@@ -2,7 +2,7 @@ package Entities;
 
 public class Sede {
 
-	private String idSede;
+	private int idSede;
 	private String nomeSede;
 	private String telefonoSede;
 	private String provincia;
@@ -10,7 +10,7 @@ public class Sede {
 	private String via;
 	private String numCivico;
 	
-	public Sede(String idSede, String nomeSede,String telefonoSede, String provincia,
+	public Sede(int idSede, String nomeSede,String telefonoSede, String provincia,
 			String citta, String via, String numCivico) {
 		this.idSede = idSede;
 		this.nomeSede = nomeSede;
@@ -26,7 +26,7 @@ public class Sede {
 	}
 
 	
-	public String getIdSede() {
+	public int getIdSede() {
 		return idSede;
 	}
 
