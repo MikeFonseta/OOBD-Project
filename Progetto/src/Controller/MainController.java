@@ -9,6 +9,8 @@ import javax.swing.UIManager;
 
 import DAO.AccountDAOPostgresImp;
 import DAO.OrdineDAOPostgresImp;
+import DAO.ProdottoDAO;
+import DAO.ProdottoDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.*;
 import GUI.LoginFrame;
@@ -152,24 +154,44 @@ public class MainController {
 	
 	public Object[][] getOrdini(String IDSede, String Prodotti, String Veicolo, Integer Min, Integer Max) {
 		List<Object[]> a = new ArrayList<Object[]>();
+		List<Integer> i = new ArrayList<>();
+		String prodotti[] = Prodotti.split(";"); 
 		if(controllerAmministratore != null) {
 			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
-				//da restituire: CodSede CodOrdine CodCliente NomeCliente Indirizzo CodiceRider NomeRider Totale
-				OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-				System.out.print("cioa");
-			    a = OrdineDAO.ricercaComplessaOrdini(IDSede,Prodotti,Veicolo,Min,Max);
+				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+				try {
+					i = prodottoDAO.getTuttiProdottiPerNome(prodotti);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(i!=null)
+				for(Integer j : i) System.out.print(j);
 				
-			}else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {
-			//Altra implementazione
+				
+				
+				
+				
+				
+				
+				
+				
+				
+//				//da restituire: CodSede CodOrdine CodCliente NomeCliente Indirizzo CodiceRider NomeRider Totale
+//				OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
+//				System.out.print("cioa");
+//			    a = OrdineDAO.ricercaComplessaOrdini(IDSede,Prodotti,Veicolo,Min,Max);
+//				
+//			}else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {
+//			//Altra implementazione
 			 }
 		}
 		else {	
-		//codice gestore
+//		//codice gestore	
 			
-			
-			
+		
 		}
-	
+		
 	return null;
 	}
 

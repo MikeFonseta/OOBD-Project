@@ -114,7 +114,8 @@ public class VisualizzaOrdiniFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton()==MouseEvent.BUTTON1){
-					AggiornaRis();
+//					AggiornaRis();
+					mainController.getOrdini(cbxIDSedi.getSelectedItem().toString(), txfProdotti.getText(), cbxMezzo.getSelectedItem().toString(), Integer.parseInt(txfMin.getText()), Integer.parseInt(txfMax.getText()));
 				}
 			}
 		});
@@ -149,7 +150,7 @@ public class VisualizzaOrdiniFrame extends JFrame {
 
 		tbl_Ordini = new JTable();
 		tbl_Ordini.setModel(new DefaultTableModel(
-			mainController.getOrdini(cbxIDSedi.getSelectedItem().toString(), txfProdotti.getText(), cbxMezzo.getSelectedItem().toString(), Integer.parseInt(txfMin.getText()), Integer.parseInt(txfMax.getText())),
+		mainController.getOrdini(cbxIDSedi.getSelectedItem().toString(), txfProdotti.getText(), cbxMezzo.getSelectedItem().toString(), Integer.parseInt(txfMin.getText()), Integer.parseInt(txfMax.getText())),
 			new String[] {
 				"CodSede", "CodOrdine", "CodCliente", "Nome Cliente ", "Indirizzo", "CodRider", "Nome Rider ", "Totale"
 			}

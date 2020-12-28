@@ -128,4 +128,53 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return prodotti;
 	}
 
+	
+	
+	
+	
+	@Override
+	public List<Integer> getTuttiProdottiPerNome(String[] Prodotti) throws SQLException {
+		int i =0; boolean isEmpty = false;
+		List<Integer> ris = new ArrayList<>();
+		Connection connection = DBConnection.getInstance().getConnection();
+		Statement st = null;
+		ResultSet rs = null;
+		while(i < Prodotti.length && isEmpty == false) {
+		String query = "Select ID_Prodotto FROM Prodotto WHERE NomeP LIKE '%"+Prodotti[i]+"%'";
+		st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+			       ResultSet.CONCUR_READ_ONLY);
+		rs = st.executeQuery(query);
+		if(rs.next()==false) isEmpty = true;
+		rs.beforeFirst();
+		while(rs.next()) {
+			ris.add(rs.getInt(1));
+			
+		}
+		i=i+1;
+		}
+		
+		if(isEmpty==true) ris = null ;
+		rs.close();
+		st.close();
+		connection.close();
+	return ris;
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
