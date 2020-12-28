@@ -36,10 +36,8 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			
 			//da restituire: CodSede CodOrdine CodCliente NomeCliente Indirizzo CodiceRider NomeRider Totale
 			Statement st = conn.createStatement();
-//			for(String s : prodotti){
-//				s2 = s2 + ",'" + s + "'";
-//				}
-			System.out.print("cioa");
+
+
 			ResultSet rs = st.executeQuery("SELECT R.ID_Sede, O.ID_Ordine, C.ID_Cliente, C.NomeC, C.CognomeC, IO.Città, IO.Via, IO.NumCivico, R.ID_Rider, O.Totale FROM Rider AS R NATURAL JOIN Ordine AS O NATURAL JOIN CompOrdine AS CO NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C WHERE R.ID_Sede LIKE '"+IDSede+"' AND O.Totale <= "+Max+" AND O.Totale >= "+Min+" AND R.Veicolo = '"+Veicolo+"' ");
 			ArrayList<Object> lista = new ArrayList<Object>();
 			while(rs.next()) {

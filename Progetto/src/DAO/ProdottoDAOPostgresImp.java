@@ -139,21 +139,20 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		Connection connection = DBConnection.getInstance().getConnection();
 		Statement st = null;
 		ResultSet rs = null;
-		while(i < Prodotti.length && isEmpty == false) {
-		String query = "Select ID_Prodotto FROM Prodotto WHERE NomeP LIKE '%"+Prodotti[i]+"%'";
-		st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-			       ResultSet.CONCUR_READ_ONLY);
-		rs = st.executeQuery(query);
-		if(rs.next()==false) isEmpty = true;
-		rs.beforeFirst();
-		while(rs.next()) {
-			ris.add(rs.getInt(1));
-			
-		}
-		i=i+1;
+		while(i < Prodotti.length && isEmpty == false) {								//no case-sensitive
+			String query = "Select ID_Prodotto FROM Prodotto WHERE LOWER(NomeP) LIKE LOWER('%"+Prodotti[i]+"%')";
+			st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			rs = st.executeQuery(query);
+			if(rs.next()==false) isEmpty = true;
+			rs.beforeFirst();
+			while(rs.next()) {
+				Integer temp = rs.getInt(1);
+				if(!ris.contains(temp)) ris.add(temp);									//elimina duplicati
+			}
+			i=i+1;
 		}
 		
-		if(isEmpty==true) ris = null ;
+		if(isEmpty==true) ris = null;													//se uno dei parametri non ha nessun riscontro la ricerca salta
 		rs.close();
 		st.close();
 		connection.close();

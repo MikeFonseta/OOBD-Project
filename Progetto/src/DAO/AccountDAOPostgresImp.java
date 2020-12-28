@@ -16,28 +16,28 @@ public class AccountDAOPostgresImp implements AccountDAO {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("Select * FROM Account WHERE NomeUtente ='"+username+"' AND Password = '"+Password+"'");	
-			rs.next();
-			String NomeUtente = rs.getString(1);
-			String Pwd = rs.getString(2);
-			Boolean amministratore = rs.getBoolean(3);
-			int ID_Sede = rs.getInt(4);
+			if(rs.next()) {
+				String NomeUtente = rs.getString(1);
+				String Pwd = rs.getString(2);
+				Boolean amministratore = rs.getBoolean(3);
+				int ID_Sede = rs.getInt(4);
 				
-			if(amministratore == false) {
-				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-				Sede s = sedeDao.CercaSedePerId(ID_Sede);
-				account = new Account(NomeUtente, Pwd, amministratore, s);
-			}else {
-				account = new Account(NomeUtente, Pwd, amministratore, null);
-			}
+				if(amministratore == false) {
+					SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+					Sede s = sedeDao.CercaSedePerId(ID_Sede);
+					account = new Account(NomeUtente, Pwd, amministratore, s);
+				}else {
+					account = new Account(NomeUtente, Pwd, amministratore, null);
+				}
 					
-			rs.close();
-			st.close();
-			conn.close();
-			
+				rs.close();
+				st.close();
+				conn.close();
+			}
 		}catch(SQLException e){				
 			e.printStackTrace();	
 		}
-		return account;
+			return account;
 	
 	}
 

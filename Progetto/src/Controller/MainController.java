@@ -150,25 +150,34 @@ public class MainController {
 	}
 
 
-	
+	private Integer[] getID_OrdiniPerNomeP(String Prodotti) {
+		List<Integer> i = new ArrayList<>();
+		if(Prodotti.isBlank()== false) {
+			String prodotti[] = Prodotti.split(","); 
+			if(controllerAmministratore != null) {
+				if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
+					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+						try {
+							i = prodottoDAO.getTuttiProdottiPerNome(prodotti);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+					if(i!=null)	for(Integer j : i) System.out.print(j);
+					System.out.println();
+			}
+			else {	}
+		}
+			return null;
+			
+	}
 	
 	public Object[][] getOrdini(String IDSede, String Prodotti, String Veicolo, Integer Min, Integer Max) {
-		List<Object[]> a = new ArrayList<Object[]>();
-		List<Integer> i = new ArrayList<>();
-		String prodotti[] = Prodotti.split(";"); 
-		if(controllerAmministratore != null) {
-			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
-				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
-				try {
-					i = prodottoDAO.getTuttiProdottiPerNome(prodotti);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if(i!=null)
-				for(Integer j : i) System.out.print(j);
+//		List<Object[]> a = new ArrayList<Object[]>();
+			Integer [] o = getID_OrdiniPerNomeP(Prodotti);
 				
-				
+			
 				
 				
 				
@@ -184,18 +193,15 @@ public class MainController {
 //				
 //			}else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {
 //			//Altra implementazione
-			 }
-		}
-		else {	
+			 
+
+
+		
 //		//codice gestore	
 			
 		
-		}
-		
-	return null;
+			return null;
 	}
-
-
 
 
 	
