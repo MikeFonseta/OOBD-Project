@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import DAO.AccountDAOPostgresImp;
+import DAO.OrdineDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.*;
 import GUI.LoginFrame;
@@ -141,9 +142,45 @@ public class MainController {
 			}
 	    }
 		else {
-			//codice per il gestore              per l'admin ??
-			ris = new String[] { controllerGestore.getAccount().getSede().getIdSede() };			
+					ris = new String[] { String.valueOf(controllerGestore.getAccount().getSede().getIdSede()) };			
 		}
 		return ris;
 	}
+
+
+	
+	
+	public Object[][] getOrdini(String IDSede, String Prodotti, String Veicolo, Integer Min, Integer Max) {
+		List<Object[]> a = new ArrayList<Object[]>();
+		if(controllerAmministratore != null) {
+			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
+				//da restituire: CodSede CodOrdine CodCliente NomeCliente Indirizzo CodiceRider NomeRider Totale
+				OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
+				System.out.print("cioa");
+			    a = OrdineDAO.ricercaComplessaOrdini(IDSede,Prodotti,Veicolo,Min,Max);
+				
+			}else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {
+			//Altra implementazione
+			 }
+		}
+		else {	
+		//codice gestore
+			
+			
+			
+		}
+	
+	return null;
+	}
+
+
+
+
+	
+	
+
+
+
+
+
 }

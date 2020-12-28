@@ -11,7 +11,7 @@ public class ControllerGestore {
 	private String altraImp = "altraImp";
 	private MainController mainController = null;
 	private Account account;
-	public GestoreFrame gestoreFrame = new GestoreFrame(this);
+	private GestoreFrame gestoreFrame = null;
 	
 	
 	
@@ -19,14 +19,14 @@ public class ControllerGestore {
 		
 		this.mainController = mainController;
 		this.account = account;
-		
+	    gestoreFrame = new GestoreFrame(this); 
 	}
 	
 	public void chiudiGestoreFrame(boolean logout) {
 		if(logout==true) {
 			this.mainController.ApriLogin();
 		}
-		this.gestoreFrame.dispose();
+		gestoreFrame.dispose();
 		this.mainController.loginFrame.dispose();
 	}
 
@@ -44,10 +44,6 @@ public class ControllerGestore {
 		//aggiorna le tabelle
 	}
 
-	public void ApriVisualizzaOrdini() {
-		this.gestoreFrame.setVisible(false);
-		mainController.ApriVisualizzaOrdiniFrame();
-	}
     
 	public void ChiudiVisualizzaOrdini() {
 		
@@ -58,9 +54,9 @@ public class ControllerGestore {
 		this.mainController.ApriCreaOrdineFrame();  
 	}
 	
-	public void ApriVisualizzaOrdiniFrame(){
+	public void ApriVisualizzaOrdini() {
 		this.gestoreFrame.setVisible(false);
-		//this.mainController.ApriVisualizzaOrdiniFrame();  funzione ancora non creata
+		mainController.ApriVisualizzaOrdiniFrame();
 	}
 	
 	public void ApriVisualizzaProdottiFrame(){

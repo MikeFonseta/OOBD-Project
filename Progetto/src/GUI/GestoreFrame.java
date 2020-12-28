@@ -134,7 +134,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriVisualizzaOrdiniFrame(); 
+					controllerGestore.ApriVisualizzaOrdini(); 
 			}
 		});
 		
@@ -224,6 +224,7 @@ public class GestoreFrame extends JFrame {
 					controllerGestore.AggiornaTabella();
 			}
 		});
+		this.setVisible(true);
 	}
 	
 	}

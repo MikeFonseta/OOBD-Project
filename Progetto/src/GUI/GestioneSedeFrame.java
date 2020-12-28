@@ -150,7 +150,7 @@ public class GestioneSedeFrame extends JDialog{
 					if(rdbtnVisualizzaPassword.isSelected()) {
 						psfPassword.setEchoChar((char)0);
 					}else {
-						psfPassword.setEchoChar((char)'●');
+						psfPassword.setEchoChar((char)1);
 					}
 				}
 			}

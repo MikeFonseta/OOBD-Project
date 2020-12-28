@@ -1,7 +1,5 @@
+
 package GUI;
-
-
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import Controller.ControllerAmministratore;
 import Controller.MainController;
 import javax.swing.DefaultComboBoxModel;
 
@@ -28,10 +27,6 @@ public class VisualizzaOrdiniFrame extends JFrame {
 
 	private JPanel pnlPrincipale;
 	private JTable tbl_Ordini;
-	private JComboBox cbxTutteLeSedi;
-
-	
-	
 
 	/**
 	 * Create the frame.
@@ -47,14 +42,15 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		pnlPrincipale.setLayout(null);
 		
 		
-		cbxTutteLeSedi = new JComboBox();
-		cbxTutteLeSedi.setModel(new DefaultComboBoxModel(mainController.getIDSedi()));
-		cbxTutteLeSedi.setSelectedIndex(0);
-		cbxTutteLeSedi.setBounds(96, 16, 354, 35);
-		pnlPrincipale.add(cbxTutteLeSedi);
+		JComboBox cbxIDSedi = new JComboBox();
+		cbxIDSedi.setModel(new DefaultComboBoxModel(mainController.getIDSedi()));
+		cbxIDSedi.setSelectedIndex(0);
+		cbxIDSedi.setBounds(96, 16, 354, 35);
+		pnlPrincipale.add(cbxIDSedi);
 		
 		
 		JComboBox cbxMezzo = new JComboBox();
+		cbxMezzo.setModel(new DefaultComboBoxModel(new String[] {"Auto", "Bici", "Scooter ", "Scooter elettrico"}));
 		cbxMezzo.setFont(new Font("Calibri", Font.PLAIN, 14));
 		cbxMezzo.setBounds(521, 85, 148, 33);
 		pnlPrincipale.add(cbxMezzo);
@@ -97,6 +93,7 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		
 		JTextField txfMin = new JTextField();
+		txfMin.setText("2");
 		txfMin.setBounds(752, 87, 67, 32);
 		txfMin.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(txfMin);
@@ -104,6 +101,7 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		
 		JTextField txfMax = new JTextField();
+		txfMax.setText("3");
 		txfMax.setBounds(912, 87, 67, 32);
 		txfMax.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfMax.setColumns(10);
@@ -116,11 +114,7 @@ public class VisualizzaOrdiniFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton()==MouseEvent.BUTTON1){
-//					chiamata a funzione per query  
-//					c.VisualizzaProdotti();								
-//					risultati --> lista di object		
-//					Risultati = new ArrayList<Object[]>();
-//					Risultati.add(new String[] {"FHJ", "SDFS", "DS", "FSF", "FSF", "SF", "SFS", "FSF"});	
+					AggiornaRis();
 				}
 			}
 		});
@@ -152,11 +146,10 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		scrollPane.setBounds(82, 170, 1030, 374);		
 		pnlPrincipale.add(scrollPane);
 		
-		
+
 		tbl_Ordini = new JTable();
 		tbl_Ordini.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
+			mainController.getOrdini(cbxIDSedi.getSelectedItem().toString(), txfProdotti.getText(), cbxMezzo.getSelectedItem().toString(), Integer.parseInt(txfMin.getText()), Integer.parseInt(txfMax.getText())),
 			new String[] {
 				"CodSede", "CodOrdine", "CodCliente", "Nome Cliente ", "Indirizzo", "CodRider", "Nome Rider ", "Totale"
 			}
@@ -199,17 +192,58 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		tbl_Ordini.setFillsViewportHeight(true);
 		scrollPane.setViewportView(tbl_Ordini);
 		this.setVisible(true);
+
 	}
 		
 		
+	public void AggiornaRis(){
+		tbl_Ordini.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"CodSede", "CodOrdine", "CodCliente", "Nome Cliente ", "Indirizzo", "CodRider", "Nome Rider ", "Totale"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			tbl_Ordini.getColumnModel().getColumn(0).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(0).setPreferredWidth(20);
+			tbl_Ordini.getColumnModel().getColumn(1).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(1).setPreferredWidth(20);
+			tbl_Ordini.getColumnModel().getColumn(2).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(2).setPreferredWidth(20);
+			tbl_Ordini.getColumnModel().getColumn(3).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(3).setPreferredWidth(150);
+			tbl_Ordini.getColumnModel().getColumn(4).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(4).setPreferredWidth(250);
+			tbl_Ordini.getColumnModel().getColumn(5).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(5).setPreferredWidth(20);
+			tbl_Ordini.getColumnModel().getColumn(6).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(6).setPreferredWidth(150);
+			tbl_Ordini.getColumnModel().getColumn(7).setResizable(false);
+			tbl_Ordini.getColumnModel().getColumn(7).setPreferredWidth(20);
+			tbl_Ordini.getColumnModel().getColumn(0).setMinWidth(17);
+			tbl_Ordini.getTableHeader().setReorderingAllowed(false);
+			tbl_Ordini.setAutoResizeMode(JTable.HEIGHT);
+			tbl_Ordini.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			tbl_Ordini.setRowHeight(30);
+			tbl_Ordini.setFont(new Font("Calibri", Font.PLAIN, 14));
+			tbl_Ordini.setFillsViewportHeight(true);
+	}
 		
 		
-		
-		
-		
-		
-		
-	
+
 
 
 
