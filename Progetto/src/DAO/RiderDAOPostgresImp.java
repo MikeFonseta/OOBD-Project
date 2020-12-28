@@ -21,7 +21,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT R.nomer,R.cognomer,R.telefonor,R.veicolo,R.disponibilità FROM rider AS R WHERE id_rider=" + idRider +"");	
+		ResultSet rs = st.executeQuery("SELECT R.nomer,R.cognomer,R.telefonor,R.veicolo FROM rider AS R WHERE id_rider=" + idRider +"");	
 			
 		if(rs.next()){
 				
@@ -29,9 +29,8 @@ public class RiderDAOPostgresImp implements RiderDAO{
 			String cognomeRider = rs.getString(2);
 			String telefonoRider = rs.getString(3);
 			String veicolo = rs.getString(4);
-			Boolean disponibilita = rs.getBoolean(5);
 						
-			rider = new Rider(idRider,nomeRider,cognomeRider,telefonoRider,veicolo,disponibilita);
+			rider = new Rider(idRider,nomeRider,cognomeRider,telefonoRider,veicolo);
 				
 		}
 				
@@ -106,7 +105,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("INSERT INTO rider(id_rider,nomer,cognomer,telefonor,veicolo,id_sede) VALUES ('"+idRider+ "','" + nome +"','" + cognome + "','"
+		result = st.executeUpdate("INSERT INTO rider(id_rider,nomer,cognomer,telefonor,veicolo,id_sede) VALUES ("+idRider+ ",'" + nome +"','" + cognome + "','"
 					+ telefono + "','" + veicolo + "',"+ idSede + ")");
 	
 		st.close();
@@ -132,15 +131,14 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int AggiornaRider(Rider rider) throws SQLException {
+	public int AggiornaRider(int idRider,String telefono, String veicolo) throws SQLException {
 		Connection conn = null;
 		int result = 0;
 		
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("UPDATE rider SET nomer='" + rider.getNomeRider() + "',cognomer='" + rider.getCognomeRider() + "','" 
-							+ rider.getVeicoloRider() + "','" + rider.getTelefonoRider() + "' WHERE id_rider=" + rider.getIdRider());
+		result = st.executeUpdate("UPDATE rider SET veicolo='"+ veicolo + "', telefonor='" + telefono + "' WHERE id_rider=" + idRider);
 	
 		st.close();
 		conn.close();

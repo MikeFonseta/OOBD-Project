@@ -12,5 +12,5 @@ public interface RiderDAO {
 	public int NextIdRider() throws SQLException;
 	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) throws SQLException;
 	public int EliminaRider(int idRider,int idSede) throws SQLException;
-	public int AggiornaRider(Rider idRider) throws SQLException;
+	public int AggiornaRider(int idRider, String telefono, String veicolo) throws SQLException;
 }

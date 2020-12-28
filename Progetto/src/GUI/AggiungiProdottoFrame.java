@@ -1,30 +1,40 @@
 package GUI;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.DropMode;
 
 public class AggiungiProdottoFrame extends JFrame{
+	
 	private JTable tblProdotti;
 	private ControllerAmministratore controllerAmministratore;
 	private int idSede;
 	private JComboBox cbxCategoria;
+	private Point initialClick;
+	private JFrame parent=this;
 	
 	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore, int idSede){
 		
@@ -33,13 +43,13 @@ public class AggiungiProdottoFrame extends JFrame{
 		this.idSede = idSede;
 		
 		setResizable(false);
-		setBounds(100,100,956,580);
+		setBounds(100,100,889,580);
 		getContentPane().setLayout(null);
 		
 		cbxCategoria = new JComboBox();
 		cbxCategoria.setModel(new DefaultComboBoxModel(new String[] {"Nessuna categoria", "Pizze", "Panini", "Bibite"}));
 		cbxCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
-		cbxCategoria.setBounds(12, 13, 175, 30);
+		cbxCategoria.setBounds(10, 52, 175, 30);
 		getContentPane().add(cbxCategoria);
 		
 		JButton btnCerca = new JButton("CERCA");
@@ -49,12 +59,12 @@ public class AggiungiProdottoFrame extends JFrame{
 				controllerAmministratore.getProdottiSedeCategoria(idSede,cbxCategoria.getSelectedItem().toString());
 			}
 		});
-		btnCerca.setBounds(199, 11, 113, 35);
+		btnCerca.setBounds(194, 50, 113, 35);
 		getContentPane().add(btnCerca);
 		
 		JScrollPane scpProdotti = new JScrollPane();
 		scpProdotti.setFont(new Font("Calibri", Font.PLAIN, 18));
-		scpProdotti.setBounds(12, 67, 918, 405);
+		scpProdotti.setBounds(12, 109, 859, 405);
 		getContentPane().add(scpProdotti);
 		
 		tblProdotti = new JTable();
@@ -107,7 +117,7 @@ public class AggiungiProdottoFrame extends JFrame{
 				controllerAmministratore.ChiudiAggiungiProdottoFrame();
 			}
 		});
-		btnChiudi.setBounds(636, 485, 141, 44);
+		btnChiudi.setBounds(577, 527, 141, 44);
 		getContentPane().add(btnChiudi);
 		
 		JButton btnAggiungi = new JButton("AGGIUNGI");
@@ -125,8 +135,49 @@ public class AggiungiProdottoFrame extends JFrame{
 
 		});
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnAggiungi.setBounds(789, 483, 141, 44);
+		btnAggiungi.setBounds(730, 525, 141, 44);
 		getContentPane().add(btnAggiungi);
+		
+		
+		JPanel pnlBarra = new JPanel();
+		pnlBarra.setBackground(Color.DARK_GRAY);
+		pnlBarra.setBounds(0, 0, 956, 35);
+		getContentPane().add(pnlBarra);
+		pnlBarra.setLayout(null);
+		
+		pnlBarra.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            initialClick = e.getPoint();
+	            getComponentAt(initialClick);
+	        }
+	    });
+
+	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+
+	            // Posizione Finestra
+	            int thisX = parent.getLocation().x;
+	            int thisY = parent.getLocation().y;
+
+	            // Determinazione Spostamento
+	            int xMoved = e.getX() - initialClick.x;
+	            int yMoved = e.getY() - initialClick.y;
+
+	            // Spostamento finestra
+	            int X = thisX + xMoved;
+	            int Y = thisY + yMoved;
+	            parent.setLocation(X, Y);
+	        }
+	    });
+	    
+		JLabel lblTitolo = new JLabel("Aggiungi Prodotto");
+		lblTitolo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setBounds(0, 0, 185, 35);
+		pnlBarra.add(lblTitolo);
+		
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setVisible(true);

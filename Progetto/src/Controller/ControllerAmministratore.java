@@ -54,11 +54,13 @@ public class ControllerAmministratore {
 	}
 
 	public void chiudiAmministratoreFrame(boolean logout) {
+		
 		if(logout==true) {
 			this.mainController.ApriLogin();
+		}else {
+			this.mainController.loginFrame.dispose();
 		}
 		this.amministratoreFrame.dispose();
-		this.mainController.loginFrame.dispose();
 	}
 
 	public void ApriModificaSediFrame(int idSede) {
@@ -75,6 +77,32 @@ public class ControllerAmministratore {
 		
 		this.gestioneSedeFrame = new GestioneSedeFrame(this,gestoreSede);
 		this.amministratoreFrame.setVisible(false);
+	}
+	
+	public void SalvaSede(String nomeSede, String telefono,String provincia, String citta, String via, String numCivico, Account gestoreSede,String nuovaPassword) {
+		
+		int result=0;
+		
+		Sede sede = new Sede(gestoreSede.getSede().getIdSede(),nomeSede,telefono,provincia,citta,via,numCivico);
+		if(this.imp.equals(this.postgresImp))
+		{
+			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+			try {
+				result = sedeDao.AggiornaSede(sede,gestoreSede,nuovaPassword);
+				//PROVVISORIO
+				
+				if(result==2) {
+					this.gestioneSedeFrame.dispose();
+					this.amministratoreFrame.setVisible(true);
+					JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede aggiornata!","",JOptionPane.PLAIN_MESSAGE);
+				}
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altra implementazioni
+		}
 	}
 	
 //    public void ApriCreazioneSedeFrame() {
@@ -238,8 +266,6 @@ public class ControllerAmministratore {
 					JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotto aggiunto!","",JOptionPane.PLAIN_MESSAGE);
 					this.gestioneSedeFrame.AggiornaProdotti();
 					this.aggiungiProdottoFrame.AggiornaProdotti();
-				}else {
-					JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
 				}
 				
 			} catch (SQLException e) {
@@ -267,8 +293,6 @@ public class ControllerAmministratore {
 					
 					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Prodotto eliminato!","",JOptionPane.PLAIN_MESSAGE);
 					this.gestioneSedeFrame.AggiornaProdotti();
-				}else {
-					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
 				}
 				
 			} catch (SQLException e) {
@@ -305,9 +329,6 @@ public class ControllerAmministratore {
 					{
 						JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede '" + idSede + "' eliminata","",JOptionPane.PLAIN_MESSAGE);
 						this.amministratoreFrame.AggiornaSedi();
-					}else
-					{
-						JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
 					}
 					
 				} catch (SQLException e) {
@@ -376,6 +397,34 @@ public class ControllerAmministratore {
 		
 	}
 	
+	public void AggiornaRider(int idRider, String telefono, String veicolo) {
+
+		int result = 0;
+
+		if(this.imp.equals(this.postgresImp)) 
+		{
+			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+			try {
+				result = riderDao.AggiornaRider(idRider,telefono,veicolo);
+				
+				if(result == 1) {
+					this.gestioneSedeFrame.setEnabled(true);
+					this.gestioneRiderFrame.dispose();
+					this.gestioneSedeFrame.AggiornaRider();
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Rider aggiornato!","",JOptionPane.PLAIN_MESSAGE);
+				}
+				
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+				
+		}else
+		{
+			//altra implementazione
+		}
+		
+	}
+	
 	public void CreaRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) {
 		
 		int result = 0;
@@ -389,12 +438,9 @@ public class ControllerAmministratore {
 				if(result == 1) 
 				{
 					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
-					this.gestioneSedeFrame.AggiornaRider();
 					this.gestioneSedeFrame.setEnabled(true);
 					this.gestioneRiderFrame.dispose();
-				}else
-				{
-					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
+					this.gestioneSedeFrame.AggiornaRider();
 				}
 				
 			} catch (SQLException e) {
@@ -405,7 +451,7 @@ public class ControllerAmministratore {
 			
 		}else if(this.imp.equals(this.altraImp))
 		{
-			
+			//altra implementazione
 		}
 		
 	}
@@ -424,9 +470,6 @@ public class ControllerAmministratore {
 				{
 					JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider eliminato correttamente!","",JOptionPane.PLAIN_MESSAGE);
 					this.gestioneSedeFrame.AggiornaRider();
-				}else
-				{
-					JOptionPane.showMessageDialog(this.amministratoreFrame,"Operazione fallita","",JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}catch (SQLException e) {

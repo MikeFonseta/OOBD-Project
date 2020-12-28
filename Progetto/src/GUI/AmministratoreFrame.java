@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Point;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.List;
 
 import javax.swing.UIManager;
@@ -35,11 +37,14 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
+import javax.swing.JPanel;
 
 public class AmministratoreFrame extends JFrame{
 	
 	private JTable tblSedi;
 	private ControllerAmministratore controllerAmministratore = null;
+	private Point initialClick;
+	private JFrame parent=this;
 	
 	public AmministratoreFrame(ControllerAmministratore controllerAmministratore) {
 		
@@ -47,7 +52,7 @@ public class AmministratoreFrame extends JFrame{
 		setMinimumSize(new Dimension(1200, 700));
 		getContentPane().setLayout(null);
 		JLabel lblNomeUtente = new JLabel("Nome Utente: " + controllerAmministratore.getAccount().getNomeUtente());
-		lblNomeUtente.setBounds(22, 29, 321, 54);
+		lblNomeUtente.setBounds(22, 46, 321, 54);
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 30));
 		getContentPane().add(lblNomeUtente);
 		
@@ -59,7 +64,7 @@ public class AmministratoreFrame extends JFrame{
 				}
 			}
 		});
-		btnGestioneProdotti.setBounds(343, 29, 242, 54);
+		btnGestioneProdotti.setBounds(349, 46, 242, 54);
 		btnGestioneProdotti.setBorder(UIManager.getBorder("Button.border"));
 		btnGestioneProdotti.setFont(new Font("Calibri", Font.PLAIN, 23));
 		getContentPane().add(btnGestioneProdotti); 
@@ -74,13 +79,13 @@ public class AmministratoreFrame extends JFrame{
 					
 			}
 		});
-		btnVisualizzaOrdini.setBounds(601, 29, 242, 54);
+		btnVisualizzaOrdini.setBounds(603, 46, 242, 54);
 		btnVisualizzaOrdini.setBorder(UIManager.getBorder("Button.border"));
 		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 23));
 		getContentPane().add(btnVisualizzaOrdini);
 		
 		JButton btnEsci = new JButton("ESCI");
-		btnEsci.setBounds(868, 29, 148, 54);
+		btnEsci.setBounds(868, 46, 148, 54);
 		btnEsci.setBorder(UIManager.getBorder("Button.border"));
 		btnEsci.setFont(new Font("Calibri", Font.PLAIN, 23));
 		btnEsci.addMouseListener(new MouseAdapter() {
@@ -94,7 +99,7 @@ public class AmministratoreFrame extends JFrame{
 		getContentPane().add(btnEsci);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
-		btnChiudi.setBounds(1026, 29, 148, 54);
+		btnChiudi.setBounds(1026, 46, 148, 54);
 		btnChiudi.setBorder(UIManager.getBorder("Button.border"));
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
@@ -113,7 +118,7 @@ public class AmministratoreFrame extends JFrame{
 		getContentPane().add(btnChiudi);
 		
 		JButton btnElimina = new JButton("X");
-		btnElimina.setBounds(1085, 576, 89, 74);
+		btnElimina.setBounds(1085, 603, 89, 74);
 		btnElimina.setBorder(UIManager.getBorder("Button.border"));
 		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 48));
 		btnElimina.addActionListener(new ActionListener() {
@@ -130,20 +135,20 @@ public class AmministratoreFrame extends JFrame{
 		getContentPane().add(btnElimina);
 		
 		JButton btnModifica = new JButton("M");
-		btnModifica.setBounds(1085, 491, 89, 74);
+		btnModifica.setBounds(1085, 518, 89, 74);
 		btnModifica.setBorder(UIManager.getBorder("Button.border"));
 		btnModifica.setFont(new Font("Calibri", Font.PLAIN, 48));
 		getContentPane().add(btnModifica);
 		
 		JButton btnAggiungi = new JButton("+");
 
-		btnAggiungi.setBounds(1085, 403, 89, 74);
+		btnAggiungi.setBounds(1085, 430, 89, 74);
 		btnAggiungi.setBorder(UIManager.getBorder("Button.border"));
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 48));
 		getContentPane().add(btnAggiungi);
 		
 		JScrollPane scpSedi = new JScrollPane();
-		scpSedi.setBounds(32, 95, 1036, 555);
+		scpSedi.setBounds(22, 122, 1036, 555);
 		getContentPane().add(scpSedi);
 	
 		
@@ -191,18 +196,23 @@ public class AmministratoreFrame extends JFrame{
 		tblSedi.getTableHeader().setReorderingAllowed(false);
 		scpSedi.setViewportView(tblSedi);
 		
+		JPanel pnlBarra = new JPanel();
+		pnlBarra.setBackground(Color.DARK_GRAY);
+		pnlBarra.setBounds(0, 0, 1200, 35);
+		getContentPane().add(pnlBarra);
+		pnlBarra.setLayout(null);
+		
+		JLabel lblTitolo = new JLabel("Client Amministratore");
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblTitolo);
+		
 		btnAggiungi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				{
-					if(tblSedi.getSelectedColumnCount() != 0)
-					{
-						System.out.println("Selezionata riga n." + (tblSedi.getSelectedRow() + 1));
-					}else 
-					{
-						Errore();		
-					}
+				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+
 				}
 			}
 		});
@@ -238,8 +248,34 @@ public class AmministratoreFrame extends JFrame{
 				}
 			}
 		});
+		
+		pnlBarra.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            initialClick = e.getPoint();
+	            getComponentAt(initialClick);
+	        }
+	    });
 
-		setResizable(false); 
+	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+
+	            // Posizione Finestra
+	            int thisX = parent.getLocation().x;
+	            int thisY = parent.getLocation().y;
+
+	            // Determinazione Spostamento
+	            int xMoved = e.getX() - initialClick.x;
+	            int yMoved = e.getY() - initialClick.y;
+
+	            // Spostamento finestra
+	            int X = thisX + xMoved;
+	            int Y = thisY + yMoved;
+	            parent.setLocation(X, Y);
+	        }
+	    });
+		
+		
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
@@ -284,5 +320,4 @@ public class AmministratoreFrame extends JFrame{
 	private void Errore() {
 		JOptionPane.showMessageDialog(this,"Nessuna sede selezionata","Errore",JOptionPane.ERROR_MESSAGE);
 	}
-	
 }

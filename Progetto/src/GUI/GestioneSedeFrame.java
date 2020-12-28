@@ -20,19 +20,23 @@ import Entities.Sede;
 import javax.swing.JPasswordField;
 import javax.swing.ListSelectionModel;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JPanel;
+import java.awt.Color;
 
-public class GestioneSedeFrame extends JDialog{
-	
-	
+public class GestioneSedeFrame extends JFrame{	
 	
 	private JTable tblProdotti;
 	private JTable tblRider;
 	private ControllerAmministratore controllerAmministratore;
 	private Account gestoreSede;
+	private Point initialClick;
+	private JFrame parent=this;
 	
 	
 	public GestioneSedeFrame(ControllerAmministratore controllerAmministratore,Account gestoreSede) {
@@ -45,72 +49,72 @@ public class GestioneSedeFrame extends JDialog{
 		
 		JLabel lblIdSedeTxt = new JLabel("ID Sede:");
 		lblIdSedeTxt.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblIdSedeTxt.setBounds(10, 11, 67, 39);
+		lblIdSedeTxt.setBounds(10, 41, 67, 39);
 		getContentPane().add(lblIdSedeTxt);
 		
 		JLabel lblIdSede = new JLabel("" + gestoreSede.getSede().getIdSede());
 		lblIdSede.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblIdSede.setBounds(82, 11, 88, 39);
+		lblIdSede.setBounds(82, 41, 88, 39);
 		getContentPane().add(lblIdSede);
 		
 		JLabel lblNome = new JLabel("Nome ");
 		lblNome.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblNome.setBounds(180, 11, 49, 39);
+		lblNome.setBounds(180, 41, 49, 39);
 		getContentPane().add(lblNome);
 		
 		JTextField txfNomeSede = new JTextField(gestoreSede.getSede().getNomeSede());
 		txfNomeSede.setFont(new Font("Calibri", Font.PLAIN, 18));
-		txfNomeSede.setBounds(231, 15, 183, 28);
+		txfNomeSede.setBounds(231, 46, 183, 28);
 		getContentPane().add(txfNomeSede);
 		txfNomeSede.setColumns(10);
 		
 		JTextField txfProvincia = new JTextField(gestoreSede.getSede().getProvincia());
 		txfProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfProvincia.setColumns(10);
-		txfProvincia.setBounds(499, 15, 49, 28);
+		txfProvincia.setBounds(503, 46, 49, 28);
 		getContentPane().add(txfProvincia);
 		
 		JLabel lblProvincia = new JLabel("Provincia");
 		lblProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblProvincia.setBounds(424, 11, 76, 39);
+		lblProvincia.setBounds(424, 41, 76, 39);
 		getContentPane().add(lblProvincia);
 		
 		JTextField txfCitta = new JTextField(gestoreSede.getSede().getCitta());
 		txfCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfCitta.setColumns(10);
-		txfCitta.setBounds(603, 15, 106, 28);
+		txfCitta.setBounds(604, 46, 106, 28);
 		getContentPane().add(txfCitta);
 		
 		JLabel lblCitta = new JLabel("Città");
 		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblCitta.setBounds(558, 11, 42, 39);
+		lblCitta.setBounds(562, 41, 42, 39);
 		getContentPane().add(lblCitta);
 		
 		JTextField txfVia = new JTextField(gestoreSede.getSede().getVia());
 		txfVia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfVia.setColumns(10);
-		txfVia.setBounds(760, 15, 172, 28);
+		txfVia.setBounds(760, 46, 172, 28);
 		getContentPane().add(txfVia);
 		
 		JLabel lblVia = new JLabel("Via");
 		lblVia.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblVia.setBounds(727, 11, 42, 39);
+		lblVia.setBounds(730, 41, 42, 39);
 		getContentPane().add(lblVia);
 		
 		JTextField txfNumCivico = new JTextField(gestoreSede.getSede().getNumCivico());
 		txfNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfNumCivico.setColumns(10);
-		txfNumCivico.setBounds(970, 15, 76, 28);
+		txfNumCivico.setBounds(970, 46, 76, 28);
 		getContentPane().add(txfNumCivico);
 		
 		JLabel lblNumCivico = new JLabel("N.");
 		lblNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblNumCivico.setBounds(942, 11, 18, 39);
+		lblNumCivico.setBounds(942, 41, 18, 39);
 		getContentPane().add(lblNumCivico);
 		
 		JButton btnSalva = new JButton("SALVA");
 		btnSalva.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnSalva.setBounds(1056, 11, 118, 39);
+		btnSalva.setBounds(1056, 41, 118, 39);
 		getContentPane().add(btnSalva);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
@@ -123,23 +127,23 @@ public class GestioneSedeFrame extends JDialog{
 			}
 		});
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnChiudi.setBounds(1056, 61, 118, 39);
+		btnChiudi.setBounds(1056, 91, 118, 39);
 		getContentPane().add(btnChiudi);
 		
 		JPasswordField psfPassword = new JPasswordField(gestoreSede.getPassword());
 		psfPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
 		psfPassword.setColumns(10);
-		psfPassword.setBounds(289, 66, 164, 28);
+		psfPassword.setBounds(287, 96, 164, 28);
 		getContentPane().add(psfPassword);
 		
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblPassword.setBounds(212, 62, 87, 39);
+		lblPassword.setBounds(211, 91, 87, 39);
 		getContentPane().add(lblPassword);
 		
 		JLabel lblNomeUtente = new JLabel("Gestore: " + gestoreSede.getNomeUtente());
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblNomeUtente.setBounds(10, 61, 236, 39);
+		lblNomeUtente.setBounds(10, 91, 236, 39);
 		getContentPane().add(lblNomeUtente);
 		
 		JRadioButton rdbtnVisualizzaPassword = new JRadioButton("Visualizza");
@@ -155,22 +159,22 @@ public class GestioneSedeFrame extends JDialog{
 				}
 			}
 		});
-		rdbtnVisualizzaPassword.setBounds(459, 68, 109, 23);
+		rdbtnVisualizzaPassword.setBounds(457, 98, 109, 23);
 		getContentPane().add(rdbtnVisualizzaPassword);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
 		lblTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblTelefono.setBounds(687, 61, 76, 39);
+		lblTelefono.setBounds(686, 91, 76, 39);
 		getContentPane().add(lblTelefono);
 		
 		JTextField txfTelefono = new JTextField(gestoreSede.getSede().getTelefonoSede());
 		txfTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfTelefono.setColumns(10);
-		txfTelefono.setBounds(760, 66, 143, 28);
+		txfTelefono.setBounds(760, 96, 143, 28);
 		getContentPane().add(txfTelefono);
 		
 		JScrollPane scpProdotti = new JScrollPane();
-		scpProdotti.setBounds(10, 111, 578, 494);
+		scpProdotti.setBounds(10, 150, 578, 494);
 		getContentPane().add(scpProdotti);
 		
 		tblProdotti = new JTable();
@@ -216,7 +220,7 @@ public class GestioneSedeFrame extends JDialog{
 		scpProdotti.setViewportView(tblProdotti);
 		
 		JScrollPane scpRider = new JScrollPane();
-		scpRider.setBounds(604, 111, 570, 494);
+		scpRider.setBounds(604, 150, 570, 494);
 		getContentPane().add(scpRider);
 		
 		tblRider = new JTable();
@@ -267,7 +271,7 @@ public class GestioneSedeFrame extends JDialog{
 				}
 			}
 		});
-		btnEliminaProdotto.setBounds(483, 616, 105, 34);
+		btnEliminaProdotto.setBounds(483, 655, 105, 34);
 		getContentPane().add(btnEliminaProdotto);
 		
 		JButton btnAggiungiProdotto = new JButton("AGGIUNGI");
@@ -279,7 +283,7 @@ public class GestioneSedeFrame extends JDialog{
 				}
 			}
 		});
-		btnAggiungiProdotto.setBounds(376, 616, 105, 34);
+		btnAggiungiProdotto.setBounds(376, 655, 105, 34);
 		getContentPane().add(btnAggiungiProdotto);
 		
 		JButton btnEliminaRider = new JButton("ELIMINA");
@@ -295,7 +299,7 @@ public class GestioneSedeFrame extends JDialog{
 				}
 			}
 		});
-		btnEliminaRider.setBounds(1069, 616, 105, 34);
+		btnEliminaRider.setBounds(1069, 655, 105, 34);
 		getContentPane().add(btnEliminaRider);
 		
 		JButton btnAggiungiRider = new JButton("AGGIUNGI");
@@ -307,7 +311,7 @@ public class GestioneSedeFrame extends JDialog{
 				}
 			}
 		});
-		btnAggiungiRider.setBounds(962, 616, 105, 34);
+		btnAggiungiRider.setBounds(962, 655, 105, 34);
 		getContentPane().add(btnAggiungiRider);
 		
 		JButton btnModificaRider = new JButton("MODIFICA");
@@ -315,13 +319,68 @@ public class GestioneSedeFrame extends JDialog{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					controllerAmministratore.ApriModificaRiderFrame(tblRider.getValueAt(tblRider.getSelectedRow(), 0).toString(), gestoreSede.getSede().getIdSede());
+					if(tblRider.getSelectedRowCount() > 0) {
+						controllerAmministratore.ApriModificaRiderFrame(tblRider.getValueAt(tblRider.getSelectedRow(), 0).toString(), gestoreSede.getSede().getIdSede());
+					}else {
+						Errore();
+					}
 				}
 			}
 		});
-		btnModificaRider.setBounds(854, 616, 105, 34);
+		btnModificaRider.setBounds(854, 655, 105, 34);
 		getContentPane().add(btnModificaRider);
+		
+		btnSalva.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.SalvaSede(txfNomeSede.getText(),txfTelefono.getText(),txfProvincia.getText(),txfCitta.getText(),txfVia.getText(),txfNumCivico.getText(),gestoreSede,psfPassword.getText());
+				}
+			}
+		});
+		
+		
+		JPanel pnlBarra = new JPanel();
+		pnlBarra.setLayout(null);
+		pnlBarra.setBackground(Color.DARK_GRAY);
+		pnlBarra.setBounds(0, 0, 1200, 35);
+		getContentPane().add(pnlBarra);
+		
+		JLabel lblGestioneSede = new JLabel("Gestione Sede");
+		lblGestioneSede.setForeground(Color.WHITE);
+		lblGestioneSede.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblGestioneSede.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblGestioneSede);
 	
+		
+		pnlBarra.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            initialClick = e.getPoint();
+	            getComponentAt(initialClick);
+	        }
+	    });
+
+	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+
+	            // Posizione Finestra
+	            int thisX = parent.getLocation().x;
+	            int thisY = parent.getLocation().y;
+
+	            // Determinazione Spostamento
+	            int xMoved = e.getX() - initialClick.x;
+	            int yMoved = e.getY() - initialClick.y;
+
+	            // Spostamento finestra
+	            int X = thisX + xMoved;
+	            int Y = thisY + yMoved;
+	            parent.setLocation(X, Y);
+	        }
+	    });
+	    
+	    
+		
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setVisible(true);
@@ -362,6 +421,8 @@ public class GestioneSedeFrame extends JDialog{
 			tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(61);
 			tblProdotti.getColumnModel().getColumn(3).setMinWidth(60);
 			tblProdotti.getColumnModel().getColumn(3).setMaxWidth(60);
+			
+			
 	}
 	
 	public void AggiornaRider() {

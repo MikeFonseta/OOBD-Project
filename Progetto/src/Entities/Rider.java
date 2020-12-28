@@ -26,6 +26,14 @@ public class Rider {
 		this.sede = sede;
 	}
 	
+	public Rider(int idRider, String nomeRider, String cognomeRider, String telefonoRider, String veicoloRider) {
+		this.idRider = idRider;
+		this.nomeRider = nomeRider;
+		this.cognomeRider = cognomeRider;
+		this.telefonoRider = telefonoRider;
+		this.veicoloRider = veicoloRider;
+	}
+	
 	
 	public Rider(int idRider, String nomeRider, String cognomeRider, String telefonoRider, String veicoloRider,
 			Boolean disponibilita) {
