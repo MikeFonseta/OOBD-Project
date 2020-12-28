@@ -50,7 +50,7 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblOrdini.getTableHeader().setReorderingAllowed(false);
 		tblOrdini.setModel(new DefaultTableModel(
-			controllerGestore.getDatiSedi(),
+			controllerGestore.getDatiOrdini(),
 			new String[] {
 				"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale", "Stato"
 			}

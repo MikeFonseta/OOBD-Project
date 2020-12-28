@@ -1,7 +1,11 @@
 package Controller;
 
+import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
+
+import DAO.OrdineDAOPostgresImp;
 import Entities.Account;
-import Entities.Sede;
 import GUI.GestoreFrame;
 
 
@@ -35,10 +39,27 @@ public class ControllerGestore {
 		return this.account;
 	}
 	
-	public Object[][] getDatiSedi() //funzione provvisoria
-	{
-		return null;
+	
+	
+public Object[][] getDatiOrdini() {
+		
+		Object[][] result = null;
+		if(this.imp.equals(this.postgresImp))
+		{
+			OrdineDAOPostgresImp ordineDao = new OrdineDAOPostgresImp();
+			try {
+				result = ordineDao.getOrdiniTabella().toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		return result;
 	}
+	
+	
 
 	public void AggiornaTabella() {
 		//aggiorna le tabelle
@@ -66,6 +87,7 @@ public class ControllerGestore {
 	
 	public void ImpostaFineConsegna() {
 		//fa partire una query che imposta la data e l'ora attuale come fine consegna
+		
 	}
 	
 	public void ImpostaInizioConsegna() {

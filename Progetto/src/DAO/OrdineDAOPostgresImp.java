@@ -6,22 +6,92 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import Entities.Ordine;
+import Entities.Rider;
 import Database.DBConnection;
 
 public class OrdineDAOPostgresImp implements OrdineDAO {
 
 	
+	@Override
+	public void impostaInizioConsegna(Integer idOrdine) {
+		Connection conn = null;
+		int result = 0;
+	
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			result = st.executeUpdate("UPDATE ordine SET inizioconsegna = CURRENT_TIMESTAMP WHERE id_ordine='"+idOrdine+"'");	
+			st.close();
+			conn.close();
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+
+	}
 	
 	
+	@Override
+	public void impostaFineConsegna(Integer idOrdine) {
+		Connection conn = null;
+		int result = 0;
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			result = st.executeUpdate("UPDATE ordine SET fineconsegna = CURRENT_TIMESTAMP WHERE id_ordine='"+idOrdine+"'");	
+			st.close();
+			conn.close();
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public List<Object[]> getOrdiniTabella() throws SQLException {
+		
+		List<Object[]> ordini = new ArrayList<Object[]>();
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
+				+ "	via || ' ' || numcivico || ',' || città AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
+				+ "	nomer || ' ' || cognomer AS NomeRider, telefonor AS TelefonoRider,\r\n"
+				+ "	totale AS Totale, inizioconsegna AS Stato\r\n"
+				+ "FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
+				+ "		 NATURAL JOIN cliente AS C\r\n"
+				+ "		 NATURAL JOIN rider AS R\r\n"
+				+ "ORDER BY id_ordine ASC");
+		while(rs.next()) {
+				
+			int CodOrdine = rs.getInt(1);
+			int CodCliente = rs.getInt(2);
+			String NomeCliente= rs.getString(3);
+			String Indirizzo= rs.getString(4);
+			String TelefonoCliente = rs.getString(5);
+			String NomeRider = rs.getString(6);
+			String TelefonoRider = rs.getString(7);
+			float Totale =rs.getFloat(8);
+			java.sql.Timestamp InizioConsegna = rs.getTimestamp(9);
+			
+			char Stato = 'A'; //Attesa default
+			if(InizioConsegna != null) {
+				Stato = 'S'; //Spedito se c'è la data inizioConsegna
+			}
+				
+			Object[] object = new Object[] {CodOrdine,CodCliente,NomeCliente,Indirizzo,TelefonoCliente,NomeRider,TelefonoRider,Totale,Stato};
+				
+			ordini.add(object);
+		}
+				
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return ordini;
+	}
 	
 	
 	
