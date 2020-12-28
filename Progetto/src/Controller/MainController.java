@@ -12,6 +12,8 @@ import DAO.SedeDAOPostgresImp;
 import Entities.*;
 import GUI.LoginFrame;
 import GUI.VisualizzaOrdiniFrame;
+import GUI.VisualizzaProdottiFrame;
+import GUI.CreaOrdineFrame;
 
 public class MainController {
 	
@@ -20,6 +22,8 @@ public class MainController {
 	//private AdminController AdminController = null;
 	private ControllerGestore controllerGestore = null;
 	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
+	private VisualizzaProdottiFrame visualizzaProdottiFrame = null;
+	private CreaOrdineFrame creaOrdineFrame = null;
 
 	public MainController() {
 		ApriLogin();
@@ -79,14 +83,26 @@ public class MainController {
 	public void ApriVisualizzaOrdiniFrame() {
 		visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this);
 	}
-	
 
 	public void ChiudiVisualizzaOrdiniFrame() {
 		visualizzaOrdiniFrame.setVisible(false);
-
 	}
 	
+	public void ApriVisualizzaProdottiFrame() {
+		visualizzaProdottiFrame = new VisualizzaProdottiFrame(this);
+	}
 	
+	public void ChiudiVisualizzaProdottiFrame() {
+		visualizzaProdottiFrame.setVisible(false);
+	}
+	
+	public void ApriCreaOrdineFrame() {
+		creaOrdineFrame = new CreaOrdineFrame(this);
+	}
+	
+	public void ChiudiCreaOrdineFrame() {
+		creaOrdineFrame.setVisible(false);
+	}
 	
 	
 	String[] convertiInArrayStringhe(List<String> list) {

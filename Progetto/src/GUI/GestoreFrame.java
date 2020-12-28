@@ -122,7 +122,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriCreaOrdineFrame(); 	//da completare
+					controllerGestore.ApriCreaOrdineFrame(); 	
 			}
 		});
 		
@@ -134,7 +134,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriVisualizzaOrdiniFrame(); //da completare
+					controllerGestore.ApriVisualizzaOrdiniFrame(); 
 			}
 		});
 		
@@ -146,7 +146,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriVisualizzaProdottiFrame(); //da completare
+					controllerGestore.ApriVisualizzaProdottiFrame(); 
 			}
 		});
 		

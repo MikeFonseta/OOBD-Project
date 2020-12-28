@@ -45,6 +45,7 @@ public class ControllerGestore {
 	}
 
 	public void ApriVisualizzaOrdini() {
+		this.gestoreFrame.setVisible(false);
 		mainController.ApriVisualizzaOrdiniFrame();
 	}
     
@@ -53,9 +54,8 @@ public class ControllerGestore {
 	}
 	
 	public void ApriCreaOrdineFrame() {
-		//NB:cambiare il nome del file creaOrdineGUI con CreaOrdineFrame
 		this.gestoreFrame.setVisible(false);
-		//this.mainController.ApriCreaOrdineFrame();  funzione ancora non creata
+		this.mainController.ApriCreaOrdineFrame();  
 	}
 	
 	public void ApriVisualizzaOrdiniFrame(){
@@ -65,7 +65,7 @@ public class ControllerGestore {
 	
 	public void ApriVisualizzaProdottiFrame(){
 		this.gestoreFrame.setVisible(false);
-		//this.mainController.ApriVisualizzaProdottiFrame();  funzione ancora non creata
+		this.mainController.ApriVisualizzaProdottiFrame(); 
 	}
 	
 	public void ImpostaFineConsegna() {
