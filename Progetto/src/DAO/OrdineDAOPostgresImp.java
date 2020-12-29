@@ -57,7 +57,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
-				+ "	via || ' ' || numcivico || ',' || città AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
+				+ "	via || ' ' || numcivico || ',' || cittÃ  AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
 				+ "	nomer || ' ' || cognomer AS NomeRider, telefonor AS TelefonoRider,\r\n"
 				+ "	totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
@@ -78,7 +78,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			
 			char Stato = 'A'; //Attesa default
 			if(InizioConsegna != null) {
-				Stato = 'S'; //Spedito se c'è la data inizioConsegna
+				Stato = 'S'; //Spedito se c'ï¿½ la data inizioConsegna
 			}
 				
 			Object[] object = new Object[] {CodOrdine,CodCliente,NomeCliente,Indirizzo,TelefonoCliente,NomeRider,TelefonoRider,Totale,Stato};
@@ -108,7 +108,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			Statement st = conn.createStatement();
 
 
-			ResultSet rs = st.executeQuery("SELECT R.ID_Sede, O.ID_Ordine, C.ID_Cliente, C.NomeC, C.CognomeC, IO.Città, IO.Via, IO.NumCivico, R.ID_Rider, O.Totale FROM Rider AS R NATURAL JOIN Ordine AS O NATURAL JOIN CompOrdine AS CO NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C WHERE R.ID_Sede LIKE '"+IDSede+"' AND O.Totale <= "+Max+" AND O.Totale >= "+Min+" AND R.Veicolo = '"+Veicolo+"' ");
+			ResultSet rs = st.executeQuery("SELECT R.ID_Sede, O.ID_Ordine, C.ID_Cliente, C.NomeC, C.CognomeC, IO.Cittï¿½, IO.Via, IO.NumCivico, R.ID_Rider, O.Totale FROM Rider AS R NATURAL JOIN Ordine AS O NATURAL JOIN CompOrdine AS CO NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C WHERE R.ID_Sede LIKE '"+IDSede+"' AND O.Totale <= "+Max+" AND O.Totale >= "+Min+" AND R.Veicolo = '"+Veicolo+"' ");
 			ArrayList<Object> lista = new ArrayList<Object>();
 			while(rs.next()) {
 				lista.add(rs.getString(0));

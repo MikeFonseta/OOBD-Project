@@ -275,7 +275,6 @@ public class AmministratoreFrame extends JFrame{
 	        }
 	    });
 		
-		
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 

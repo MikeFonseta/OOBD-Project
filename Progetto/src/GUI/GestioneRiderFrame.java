@@ -29,6 +29,7 @@ public class GestioneRiderFrame extends JFrame{
 	private Point initialClick;
 	private JFrame parent=this;
 
+
 	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, int idSede) {
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);

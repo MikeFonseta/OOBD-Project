@@ -437,10 +437,10 @@ public class ControllerAmministratore {
 				
 				if(result == 1) 
 				{
-					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
 					this.gestioneSedeFrame.setEnabled(true);
 					this.gestioneRiderFrame.dispose();
 					this.gestioneSedeFrame.AggiornaRider();
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Rider inserito correttamente!","",JOptionPane.PLAIN_MESSAGE);
 				}
 				
 			} catch (SQLException e) {
