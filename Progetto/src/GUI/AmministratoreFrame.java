@@ -91,7 +91,7 @@ public class AmministratoreFrame extends JFrame{
 		btnEsci.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+				if(e.getButton()==MouseEvent.BUTTON1) {
 					controllerAmministratore.chiudiAmministratoreFrame(true);
 				}
 			}
@@ -104,16 +104,12 @@ public class AmministratoreFrame extends JFrame{
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1) {
+				if(e.getButton()==MouseEvent.BUTTON1) {
 					controllerAmministratore.chiudiAmministratoreFrame(false);
 				}
 			}
 		});
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 23));
-		btnChiudi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnChiudi.setActionCommand("closeBtn");
 		getContentPane().add(btnChiudi);
 		
@@ -121,14 +117,16 @@ public class AmministratoreFrame extends JFrame{
 		btnElimina.setBounds(1085, 603, 89, 74);
 		btnElimina.setBorder(UIManager.getBorder("Button.border"));
 		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 48));
-		btnElimina.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(tblSedi.getSelectedColumnCount() != 0)
-				{
-					controllerAmministratore.EliminaSede((int) tblSedi.getValueAt(tblSedi.getSelectedRow(), 0));
-				}else 
-				{
+		btnElimina.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(tblSedi.getSelectedColumnCount() != 0)
+					{
+						controllerAmministratore.EliminaSede((int) tblSedi.getValueAt(tblSedi.getSelectedRow(), 0));
+					}else 
+					{
 					Errore();		
+					}
 				}
 			}
 		});
@@ -138,6 +136,21 @@ public class AmministratoreFrame extends JFrame{
 		btnModifica.setBounds(1085, 518, 89, 74);
 		btnModifica.setBorder(UIManager.getBorder("Button.border"));
 		btnModifica.setFont(new Font("Calibri", Font.PLAIN, 48));
+		btnModifica.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.BUTTON1 == MouseEvent.BUTTON1)
+				{
+					if(tblSedi.getSelectedColumnCount() != 0)
+					{
+						controllerAmministratore.ApriModificaSediFrame((int) (tblSedi.getValueAt(tblSedi.getSelectedRow(), 0)));
+					}else 
+					{
+						Errore();	
+					}
+				}
+			}
+		});
 		getContentPane().add(btnModifica);
 		
 		JButton btnAggiungi = new JButton("+");
@@ -145,6 +158,13 @@ public class AmministratoreFrame extends JFrame{
 		btnAggiungi.setBounds(1085, 430, 89, 74);
 		btnAggiungi.setBorder(UIManager.getBorder("Button.border"));
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 48));
+		btnAggiungi.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriCreazioneSedeFrame();
+				}
+			}
+		});
 		getContentPane().add(btnAggiungi);
 		
 		JScrollPane scpSedi = new JScrollPane();
@@ -208,46 +228,6 @@ public class AmministratoreFrame extends JFrame{
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
 		
-		btnAggiungi.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1) {
-
-				}
-			}
-		});
-		
-		btnModifica.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				{
-					if(tblSedi.getSelectedColumnCount() != 0)
-					{
-						controllerAmministratore.ApriModificaSediFrame((int) (tblSedi.getValueAt(tblSedi.getSelectedRow(), 0)));
-					}else 
-					{
-						Errore();	
-					}
-				}
-			}
-		});
-		
-		btnElimina.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
-				{
-					if(tblSedi.getSelectedColumnCount() != 0)
-					{
-						System.out.println("Selezionata riga n." + (tblSedi.getSelectedRow() + 1));
-					}else 
-					{
-						System.out.println("Nessuna riga selezionata");		
-					}
-				}
-			}
-		});
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {

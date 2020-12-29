@@ -174,12 +174,33 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		result += st.executeUpdate("UPDATE sede SET nomes='"+sede.getNomeSede()+"',telefono='" + sede.getTelefonoSede() + "',"+
 					"provincia='"+sede.getProvincia()+"',città='" + sede.getCitta() + "',via='"+ sede.getVia() + "',numcivico='" + sede.getNumCivico() + "' WHERE id_sede = " + sede.getIdSede());
 				
-		System.out.println(result);
 		result += st.executeUpdate("UPDATE account SET password='" + nuovaPassword+ "' WHERE nomeutente='" + gestoreSede.getNomeUtente() + "'");
-		System.out.println(result);
+		
 		st.close();
 		conn.close();
 					
+		return result;
+	}
+
+	@Override
+	public int NextIdSede() throws SQLException{
+		
+		Connection conn = null;
+		int result = 0;
+		
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT nextIdSede()");	
+			
+		if(rs.next()){
+			result = rs.getInt(1);
+		}
+				
+		rs.close();
+		st.close();
+		conn.close();
+		
 		return result;
 	}
 

@@ -72,27 +72,23 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int NextIdRider() {
+	public int NextIdRider() throws SQLException{
 		
 		Connection conn = null;
 		int result = 0;
 		
-		try {
-			conn = DBConnection.getInstance().getConnection();
-			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT nextIdRider()");	
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT nextIdRider()");	
 			
-			if(rs.next()){
-				result = rs.getInt(1);
-			}
-				
-			rs.close();
-			st.close();
-			conn.close();
-			
-		}catch(SQLException e){				
-			e.printStackTrace();	
+		if(rs.next()){
+			result = rs.getInt(1);
 		}
+				
+		rs.close();
+		st.close();
+		conn.close();
 		
 		return result;
 	}

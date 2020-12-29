@@ -30,7 +30,7 @@ public class GestioneRiderFrame extends JFrame{
 	private JFrame parent=this;
 
 
-	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, int idSede) {
+	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, int idSede, int idRider) {
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);
 		setResizable(false);
@@ -45,7 +45,7 @@ public class GestioneRiderFrame extends JFrame{
 		lblIdRiderTxt.setBounds(37, 64, 116, 39);
 		getContentPane().add(lblIdRiderTxt);
 		
-		JLabel lblIdRider = new JLabel("" + controllerAmministratore.getIdProssimoRider());
+		JLabel lblIdRider = new JLabel(""+idRider);
 		lblIdRider.setHorizontalAlignment(SwingConstants.LEFT);
 		lblIdRider.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblIdRider.setBounds(179, 64, 116, 39);

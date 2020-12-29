@@ -16,4 +16,5 @@ public interface SedeDAO {
 	public int EliminaSede(int idSede) throws SQLException;
 	public int CreaSede(Sede sede,String nomeUtente, String password) throws SQLException;
 	public int AggiornaSede(Sede sede, Account gestoreSede, String nuovaPassword) throws SQLException;
+	public int NextIdSede() throws SQLException;
 }
