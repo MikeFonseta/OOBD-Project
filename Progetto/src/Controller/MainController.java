@@ -182,15 +182,11 @@ public class MainController {
 	
 	
 	public Object[][] getOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) {
-		Object [][]object = null;
-		List<Object[]> result = new ArrayList<Object[]>();			
+		Object[][] result = null;		
 			if(controllerAmministratore != null) {
 				if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
 					OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-					result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max);
-					if(result!=null)
-					object = result.toArray(new Object[][]{});
-					
+					result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
 				}
 				else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {//Altra Impl
 					
@@ -199,7 +195,7 @@ public class MainController {
 			else {
 					if(controllerGestore.getImp() == controllerGestore.getPostgresImp()) {
 						OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-						result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max);
+						result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
 					}
 					else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
 						
@@ -209,7 +205,7 @@ public class MainController {
 			
 			
 		
-		return object;
+		return result;
 	}
 
 

@@ -54,14 +54,12 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		cbxIDSedi = new JComboBox();
 		cbxIDSedi.setModel(new DefaultComboBoxModel(mainController.getIDSedi()));
-		cbxIDSedi.setSelectedIndex(1);
 		cbxIDSedi.setBounds(96, 16, 354, 35);
 		pnlPrincipale.add(cbxIDSedi);
 		
 		
 		cbxVeicolo = new JComboBox();
 		cbxVeicolo.setModel(new DefaultComboBoxModel(new String[] {"", "Auto", "Bici", "Scooter ", "Scooter elettrico"}));
-		cbxVeicolo.setSelectedIndex(1);
 		cbxVeicolo.setFont(new Font("Calibri", Font.PLAIN, 14));
 		cbxVeicolo.setBounds(521, 85, 148, 33);
 		pnlPrincipale.add(cbxVeicolo);
@@ -97,7 +95,6 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		
 		txfProdotti = new JTextField();
-		txfProdotti.setText("Ortolana");
 		txfProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfProdotti.setBounds(96, 86, 272, 32);
 		pnlPrincipale.add(txfProdotti);
@@ -105,7 +102,6 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		
 		txfMin = new JTextField();
-		txfMin.setText("3");
 		txfMin.setBounds(752, 87, 67, 32);
 		txfMin.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(txfMin);
@@ -113,7 +109,6 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 		
 		txfMax = new JTextField();
-		txfMax.setText("18");
 		txfMax.setBounds(912, 87, 67, 32);
 		txfMax.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfMax.setColumns(10);
@@ -210,7 +205,7 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		
 	public void AggiornaRis(){
 		tblOrdini.setModel(new DefaultTableModel(
-		mainController.getOrdini(getSedeSelezionata(), getProdottiSelezionati(),getVeicoloSelezionato(), getMinSelezionato(), getMaxSelezionato()),
+				mainController.getOrdini(getSedeSelezionata(), getProdottiSelezionati(),getVeicoloSelezionato(), getMinSelezionato(), getMaxSelezionato()),
 		new String[] {
 			"CodSede", "CodOrdine", "CodCliente", "Nome Cliente ", "Indirizzo", "CodRider", "Nome Rider ", "Totale"
 		}
@@ -311,9 +306,9 @@ public class VisualizzaOrdiniFrame extends JFrame {
 //		Integer Min = this.getMinSelezionato();
 //		Integer Max = this.getMaxSelezionato();
 //
+//		mainController.getOrdini(getSedeSelezionata(), getProdottiSelezionati(),getVeicoloSelezionato(), getMinSelezionato(), getMaxSelezionato());
 //
-//		//mainController.getOrdini(this.getSedeSelezionata(), this.getProdottiSelezionati(),this.getVeicoloSelezionato(), );
-//	}
+//		}
 
 
 }

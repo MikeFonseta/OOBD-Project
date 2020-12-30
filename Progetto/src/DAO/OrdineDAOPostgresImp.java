@@ -165,7 +165,8 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			//Creazione stringa sql per la query ricerca
 			
 			StringBuilder sql = new StringBuilder(1024);
-			sql.append("SELECT R.ID_Sede, O.ID_Ordine, C.ID_Cliente, C.NomeC, C.CognomeC, IO.Città, IO.Via, IO.NumCivico, R.ID_Rider, O.Totale "
+			sql.append("SELECT R.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.città AS Indirizzo, "
+					+ "R.ID_Rider, R.NomeR|| ' ' || R.CognomeR AS NomeRider,  O.Totale "
 					 + "FROM Rider AS R ");
 			
 			if(idProdotti!= null && ProdottoNonEsistente) 	sql.append("INNER JOIN RisultatoFinale AS RF "); 
@@ -233,11 +234,9 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 							     			queryRicerca.getResultSet().getInt(3),
 							     			queryRicerca.getResultSet().getString(4),
 							     			queryRicerca.getResultSet().getString(5),
-							     			queryRicerca.getResultSet().getString(6),
+							     			queryRicerca.getResultSet().getInt(6),
 							     			queryRicerca.getResultSet().getString(7),
-							     			queryRicerca.getResultSet().getString(8),
-							     			queryRicerca.getResultSet().getInt(9),
-							     			queryRicerca.getResultSet().getFloat(10)} );
+							     			queryRicerca.getResultSet().getFloat(8)} );
 				i++;
 			}
 			
