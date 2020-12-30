@@ -149,14 +149,14 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("INSERT INTO sede(id_sede,telefono,provincia,città,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
-									sede.getNomeSede() + "','" + sede.getTelefonoSede() + "','" + sede.getProvincia() + "','" + sede.getCitta() + "','" + sede.getVia() + "','" + sede.getNumCivico());
+		result = st.executeUpdate("INSERT INTO sede(id_sede,nomes,telefono,provincia,città,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
+									sede.getNomeSede() + "','" + sede.getTelefonoSede() + "','" + sede.getProvincia() + "','" + sede.getCitta() + "','" + sede.getVia() + "','" + sede.getNumCivico() + "')");
 		
 		if(result == 1) {
-			result = st.executeUpdate("INSERT INTO account(nomeutente,password,amministratore,id_sede) VALUES ('" + nomeUtente + "','" + password +
-					"',false," + sede.getIdSede());
+			result += st.executeUpdate("INSERT INTO account(nomeutente,password,amministratore,id_sede) VALUES ('" + nomeUtente + "','" + password +
+					"',false," + sede.getIdSede()+ ")");
 		}
-				
+			
 		st.close();
 		conn.close();
 			

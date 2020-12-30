@@ -122,7 +122,7 @@ public class AmministratoreFrame extends JFrame{
 				if(e.getButton() == MouseEvent.BUTTON1) {
 					if(tblSedi.getSelectedColumnCount() != 0)
 					{
-						controllerAmministratore.EliminaSede((int) tblSedi.getValueAt(tblSedi.getSelectedRow(), 0));
+						controllerAmministratore.ApriEliminaSedeFrame((int) tblSedi.getValueAt(tblSedi.getSelectedRow(), 0));
 					}else 
 					{
 					Errore();		

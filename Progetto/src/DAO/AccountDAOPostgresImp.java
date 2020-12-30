@@ -73,4 +73,28 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		return account;
 	}
 
+	@Override
+	public String NomeUtentePerNuovaSede(int idSede) {
+		
+		Connection conn = null;
+		String nomeUtente=null;
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT nomeUtenteAssociato(" + idSede +")");	
+			
+			if(rs.next()){
+				nomeUtente= rs.getString(1);	
+			}
+				
+			rs.close();
+			st.close();
+			conn.close();
+			
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		return nomeUtente;
+	}
+
 }

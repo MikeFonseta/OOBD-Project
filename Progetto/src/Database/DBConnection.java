@@ -12,9 +12,9 @@ public class DBConnection {
     private static DBConnection instance;
     private Connection connection = null;
     private final String USERNAME = "postgres";
-    private final String PASSWORD = "admin";
-    private final String IP = "localhost";
-    private final String DATABASE = "progetto2";
+    private final String PASSWORD = "adminadmin";
+    private final String IP = "database.ckeutmg1tgie.eu-central-1.rds.amazonaws.com";
+    private final String DATABASE = "progetto";
     private final String PORT = "5432";
 	private String url = "jdbc:postgresql://" + IP +":"+PORT+"/"+DATABASE;
 //	private String USERNAME = "postgres";

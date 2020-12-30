@@ -35,6 +35,11 @@ public class Account {
 		return this.Sede;
 	}
 	
+	public void setSede(Sede sede) {
+		this.Sede=sede;
+	}
+	
+	
 	public void setPassword(String password) {
 		this.Password = password;
 	}
