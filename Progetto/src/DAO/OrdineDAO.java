@@ -6,8 +6,9 @@ import java.util.List;
 public interface OrdineDAO {
 	List<Object[]> ricercaComplessaOrdini(String IDSede, String Prodotti, String Veicolo, Integer Min, Integer Max);
 
-	void impostaInizioConsegna(Integer idOrdine);
-	void impostaFineConsegna(Integer idOrdine);
+	void IniziaConsegna(Integer idOrdine);
+	void TerminaConsegna(Integer idOrdine);
+	void CancellaOrdine(Integer idOrdine);
 	public List<Object[]> getOrdiniTabella() throws SQLException;
 
 	

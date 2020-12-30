@@ -16,6 +16,13 @@ public class Ordine {
 		this.totale = totale;
 		this.rider = rider;
 	}
+
+
+	public Ordine() {
+		
+	}
+	
+	
 	
 	}
 

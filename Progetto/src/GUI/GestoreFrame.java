@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -28,6 +30,7 @@ public class GestoreFrame extends JFrame {
 
 	private JPanel pnlGestore;
 	private JTable tblOrdini;
+	private ControllerGestore controllerGestore=null;
 
 	public GestoreFrame(ControllerGestore controllerGestore) {
 		
@@ -49,6 +52,7 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.setFillsViewportHeight(true);
 		tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblOrdini.getTableHeader().setReorderingAllowed(false);
+		//
 		tblOrdini.setModel(new DefaultTableModel(
 			controllerGestore.getDatiOrdini(),
 			new String[] {
@@ -78,6 +82,7 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getColumnModel().getColumn(6).setPreferredWidth(74);
 		tblOrdini.getColumnModel().getColumn(7).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(8).setResizable(false);
+		//
 		scpGestore.setViewportView(tblOrdini);
 		
 		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
@@ -161,8 +166,15 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ImpostaFineConsegna(); //da completare
-					controllerGestore.AggiornaTabella();
+				{
+					if(tblOrdini.getSelectedColumnCount() != 0)
+					{
+						controllerGestore.ImpostaFineConsegna((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));
+					}else 
+					{
+						Errore();	
+					}
+				}
 			}
 		});
 		
@@ -177,9 +189,18 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ImpostaInizioConsegna(); //da completare
-					controllerGestore.AggiornaTabella();
+				{
+					if(tblOrdini.getSelectedColumnCount() != 0)
+					{
+						controllerGestore.ImpostaInizioConsegna((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));
+					}else 
+					{
+						Errore();	
+					}
+				}
+					
 			}
+			
 		});
 		
 		JButton btnModifica = new JButton("Immagine");
@@ -193,8 +214,8 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ModificaCreaOrdineFrame(); //da completare
-					controllerGestore.AggiornaTabella();
+					controllerGestore.ModificaCreaOrdineFrame(); //da scrivere dopo aver caricato CreaOrdineFrame
+					
 			}
 		});
 		
@@ -209,7 +230,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriCarrello(); //da completare
+					controllerGestore.ApriCarrello(); //da scrivere appena CarrelloFrame viene caricato
 			}
 		});
 		
@@ -217,14 +238,70 @@ public class GestoreFrame extends JFrame {
 		btnElimina.setBounds(1085, 509, 89, 63);
 		pnlGestore.add(btnElimina);
 		btnElimina.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.EliminaOrdine(); //da completare
-					controllerGestore.AggiornaTabella();
+				{
+					if(tblOrdini.getSelectedColumnCount() != 0)
+					{
+						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 8))=='A') {
+							controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));
+						}
+						else {
+							OrdineSpedito();
+						}
+					}else 
+					{
+						Errore();	
+					}
+				}
+					
 			}
+		
 		});
-		this.setVisible(true);
+		setVisible(true);
 	}
 	
+	
+	public void AggiornaOrdini() {
+		tblOrdini.setModel(new DefaultTableModel(
+				controllerGestore.getDatiOrdini(),
+				new String[] {
+					"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale", "Stato"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+						String.class, String.class, String.class, String.class,String.class, String.class, String.class, String.class,String.class
+					};
+					public Class getColumnClass(int columnIndex) {
+						return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			tblOrdini.getColumnModel().getColumn(0).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(1).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(2).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(3).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(4).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(5).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(6).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(6).setPreferredWidth(74);
+			tblOrdini.getColumnModel().getColumn(7).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(8).setResizable(false);
 	}
+	
+	private void Errore() {
+		JOptionPane.showMessageDialog(this,"Nessun ordine selezionato","Errore",JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void OrdineSpedito() {
+		JOptionPane.showMessageDialog(this,"Impossibile eliminare un ordine in consegna","Errore",JOptionPane.ERROR_MESSAGE);
+	}
+	
+}

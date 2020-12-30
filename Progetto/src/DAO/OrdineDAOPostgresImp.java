@@ -14,7 +14,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 
 	
 	@Override
-	public void impostaInizioConsegna(Integer idOrdine) {
+	public void IniziaConsegna(Integer idOrdine) {
 		Connection conn = null;
 		int result = 0;
 	
@@ -32,7 +32,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	
 	
 	@Override
-	public void impostaFineConsegna(Integer idOrdine) {
+	public void TerminaConsegna(Integer idOrdine) {
 		Connection conn = null;
 		int result = 0;
 		
@@ -48,8 +48,27 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 
 	}
 	
+
 	@Override
-	public List<Object[]> getOrdiniTabella() throws SQLException {
+	public void CancellaOrdine(Integer idOrdine) {
+		Connection conn = null;
+		int result = 0;
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			result = st.executeUpdate("DELETE FROM ordine WHERE id_ordine='"+idOrdine+ "'");	
+			st.close();
+			conn.close();
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+
+	}
+	
+	
+	@Override
+	public List<Object[]> getOrdiniTabella() throws SQLException {//controllare le lettere accentate
 		
 		List<Object[]> ordini = new ArrayList<Object[]>();
 		Connection conn = null;
@@ -78,7 +97,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			
 			char Stato = 'A'; //Attesa default
 			if(InizioConsegna != null) {
-				Stato = 'S'; //Spedito se c'� la data inizioConsegna
+				Stato = 'S'; //Spedito se presente la data inizioConsegna
 			}
 				
 			Object[] object = new Object[] {CodOrdine,CodCliente,NomeCliente,Indirizzo,TelefonoCliente,NomeRider,TelefonoRider,Totale,Stato};

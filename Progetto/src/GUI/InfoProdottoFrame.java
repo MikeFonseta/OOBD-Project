@@ -16,7 +16,7 @@ import java.awt.Font;
 
 public class InfoProdottoFrame extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel pnlinfo;
 
 	/**
 	 * Launch the application.
@@ -39,36 +39,36 @@ public class InfoProdottoFrame extends JFrame {
 	 */
 	public InfoProdottoFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 300, 450);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setBounds(100, 100, 439, 601);
+		pnlinfo = new JPanel();
+		pnlinfo.setBackground(Color.WHITE);
+		pnlinfo.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(pnlinfo);
+		pnlinfo.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Nome");
-		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNewLabel.setBounds(122, 66, 46, 14);
-		contentPane.add(lblNewLabel);
+		JLabel lblNome = new JLabel("Nome");
+		lblNome.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblNome.setBounds(122, 66, 46, 14);
+		pnlinfo.add(lblNome);
 		
-		JLabel lblNewLabel_1 = new JLabel("Descrizione");
-		lblNewLabel_1.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNewLabel_1.setBounds(122, 142, 61, 14);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblDescrizione = new JLabel("Descrizione");
+		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblDescrizione.setBounds(122, 142, 61, 14);
+		pnlinfo.add(lblDescrizione);
 		
-		JLabel lblNewLabel_2 = new JLabel("Allergeni");
-		lblNewLabel_2.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNewLabel_2.setBounds(123, 211, 46, 14);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblAllergeni = new JLabel("Allergeni");
+		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblAllergeni.setBounds(123, 211, 46, 14);
+		pnlinfo.add(lblAllergeni);
 		
-		JLabel lblNewLabel_3 = new JLabel("Prezzo");
-		lblNewLabel_3.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNewLabel_3.setBounds(123, 279, 46, 14);
-		contentPane.add(lblNewLabel_3);
+		JLabel lblPrezzo = new JLabel("Prezzo");
+		lblPrezzo.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblPrezzo.setBounds(123, 279, 46, 14);
+		pnlinfo.add(lblPrezzo);
 		
-		JButton btnNewButton = new JButton("Chiudi");
-		btnNewButton.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnNewButton.setBounds(94, 335, 89, 23);
-		contentPane.add(btnNewButton);
+		JButton btnChiudi = new JButton("Chiudi");
+		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnChiudi.setBounds(94, 335, 89, 23);
+		pnlinfo.add(btnChiudi);
 	}
 }

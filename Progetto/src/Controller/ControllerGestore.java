@@ -10,6 +10,7 @@ import GUI.GestoreFrame;
 
 
 public class ControllerGestore {
+	//da caricare: CreaOrdineFrame, VisualizzaProdottiFrame, InfoProdottoFrame
 	private String imp = "postgres";
 	private String postgresImp = "postgres";
 	private String altraImp = "altraImp";
@@ -17,8 +18,7 @@ public class ControllerGestore {
 	private Account account;
 	private GestoreFrame gestoreFrame = null;
 	
-	
-	
+
 	public ControllerGestore(MainController mainController, Account account) {
 		
 		this.mainController = mainController;
@@ -34,14 +34,11 @@ public class ControllerGestore {
 		this.mainController.loginFrame.dispose();
 	}
 
-	
 	public Account getAccount() {
 		return this.account;
 	}
 	
-	
-	
-public Object[][] getDatiOrdini() {
+	public Object[][] getDatiOrdini() {
 		
 		Object[][] result = null;
 		if(this.imp.equals(this.postgresImp))
@@ -58,18 +55,7 @@ public Object[][] getDatiOrdini() {
 		}
 		return result;
 	}
-	
-	
 
-	public void AggiornaTabella() {
-		//aggiorna le tabelle
-	}
-
-    
-	public void ChiudiVisualizzaOrdini() {
-		
-	}
-	
 	public void ApriCreaOrdineFrame() {
 		this.gestoreFrame.setVisible(false);
 		this.mainController.ApriCreaOrdineFrame();  
@@ -85,28 +71,57 @@ public Object[][] getDatiOrdini() {
 		this.mainController.ApriVisualizzaProdottiFrame(); 
 	}
 	
-	public void ImpostaFineConsegna() {
-		//fa partire una query che imposta la data e l'ora attuale come fine consegna
+	public void ImpostaFineConsegna(int idOrdine) {
+		
+		if(this.imp.equals(this.postgresImp)) {
+			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+			ordineDAO.TerminaConsegna(idOrdine);
+			this.gestoreFrame.AggiornaOrdini();
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
 		
 	}
 	
-	public void ImpostaInizioConsegna() {
-		//fa partire una query che imposta la data e l'ora attuale come inizio consegna
+	public void ImpostaInizioConsegna(int idOrdine) {
+		
+		if(this.imp.equals(this.postgresImp)) {
+			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+			ordineDAO.IniziaConsegna(idOrdine);
+			this.gestoreFrame.AggiornaOrdini();
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
 	}
 	
-	public void ModificaCreaOrdineFrame() {
+	public void ModificaCreaOrdineFrame() {//scrivere dopo aver caricato CreaOrdineFrame
+		
 		//apre la schermata Crea ordine ma con i campi caricati dall ordine selezionato
 	}
 	
-	public void ApriCarrello() {
+	public void ApriCarrello() {//scrivere dopo che carrelloFrame sia stato caricato
 		//apre il carrello di un ordine
 	}
 	
-	public void EliminaOrdine() {
-		//cancella un ordine 
+	public void EliminaOrdine(int idOrdine) {
+		
+		if(this.imp.equals(this.postgresImp)) {
+			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+			ordineDAO.CancellaOrdine(idOrdine);
+			this.gestoreFrame.AggiornaOrdini();
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		 
 	}
 
-	
 	
 	//Getter e Setter
 	public String getImp() {

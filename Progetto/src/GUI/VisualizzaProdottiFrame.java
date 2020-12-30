@@ -23,32 +23,32 @@ import javax.swing.ListSelectionModel;
 
 public class VisualizzaProdottiFrame extends JFrame {
 
-	private JPanel contentPane;
-	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JPanel pnlProdotti;
+	private JTable tblProdotti;
+	private JTextField txfMin;
+	private JTextField txfMax;
+	private JTextField txfAllergeni;
 
 	public VisualizzaProdottiFrame(MainController mainController) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 700);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setBounds(100, 100, 2844, 913);
+		pnlProdotti = new JPanel();
+		pnlProdotti.setBackground(Color.WHITE);
+		pnlProdotti.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(pnlProdotti);
+		pnlProdotti.setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(62, 186, 1041, 348);
-		contentPane.add(scrollPane);
+		JScrollPane scpProdotti = new JScrollPane();
+		scpProdotti.setBounds(62, 186, 1041, 348);
+		pnlProdotti.add(scpProdotti);
 		
-		table = new JTable();
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		table.setRowHeight(30);
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setFillsViewportHeight(true);
-		table.setModel(new DefaultTableModel(
+		tblProdotti = new JTable();
+		tblProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblProdotti.setRowHeight(30);
+		tblProdotti.getTableHeader().setReorderingAllowed(false);
+		tblProdotti.setFillsViewportHeight(true);
+		tblProdotti.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -68,55 +68,55 @@ public class VisualizzaProdottiFrame extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		scrollPane.setViewportView(table);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		scpProdotti.setViewportView(tblProdotti);
 		
-		JButton btnNewButton = new JButton("Conferma");
-		btnNewButton.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnChiudi = new JButton("Chiudi");
+		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnChiudi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton.setBounds(1014, 605, 89, 23);
-		contentPane.add(btnNewButton);
+		btnChiudi.setBounds(1014, 605, 89, 23);
+		pnlProdotti.add(btnChiudi);
 		
 		JButton btnCerca = new JButton("Cerca");
 		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnCerca.setBounds(1014, 67, 89, 23);
-		contentPane.add(btnCerca);
+		pnlProdotti.add(btnCerca);
 		
-		JLabel lblNewLabel = new JLabel("Min");
-		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNewLabel.setBounds(62, 71, 46, 14);
-		contentPane.add(lblNewLabel);
+		JLabel lblMin = new JLabel("Min");
+		lblMin.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblMin.setBounds(62, 71, 46, 14);
+		pnlProdotti.add(lblMin);
 		
 		JLabel lblMax = new JLabel("Max");
 		lblMax.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblMax.setBounds(204, 71, 46, 14);
-		contentPane.add(lblMax);
+		pnlProdotti.add(lblMax);
 		
-		textField = new JTextField();
-		textField.setBounds(118, 68, 46, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txfMin = new JTextField();
+		txfMin.setBounds(118, 68, 46, 20);
+		pnlProdotti.add(txfMin);
+		txfMin.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(260, 68, 46, 20);
-		contentPane.add(textField_1);
+		txfMax = new JTextField();
+		txfMax.setColumns(10);
+		txfMax.setBounds(260, 68, 46, 20);
+		pnlProdotti.add(txfMax);
 		
-		JLabel lblAllergeneallergeneallergene = new JLabel("Allergene1,Allergene2,Allergene3");
-		lblAllergeneallergeneallergene.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblAllergeneallergeneallergene.setBounds(380, 71, 168, 14);
-		contentPane.add(lblAllergeneallergeneallergene);
+		JLabel lblAllergeni = new JLabel("Allergene1,Allergene2,Allergene3");
+		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblAllergeni.setBounds(380, 71, 168, 14);
+		pnlProdotti.add(lblAllergeni);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(558, 68, 226, 20);
-		contentPane.add(textField_2);
+		txfAllergeni = new JTextField();
+		txfAllergeni.setColumns(10);
+		txfAllergeni.setBounds(558, 68, 226, 20);
+		pnlProdotti.add(txfAllergeni);
 	}
 
 }
