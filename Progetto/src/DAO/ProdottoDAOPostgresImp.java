@@ -152,7 +152,11 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 			i=i+1;
 		}
 		
-		if(isEmpty==true) ris = null;													//se uno dei parametri non ha nessun riscontro la ricerca salta
+		if(isEmpty==true) {
+		ris.clear();
+		ris.add(0,-1);
+		System.out.print("ciao");
+		}													//se uno dei parametri non ha nessun riscontro la ricerca salta
 		rs.close();
 		st.close();
 		connection.close();

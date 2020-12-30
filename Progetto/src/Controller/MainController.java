@@ -123,7 +123,7 @@ public class MainController {
 	
 	public String[] getIDSedi() {
 		List<String> IDsedi = new ArrayList<String>();
-		String[] ris = null;
+		String[] result = null;
 		
 		if(controllerAmministratore != null) {
 
@@ -132,7 +132,7 @@ public class MainController {
 				try {
 					IDsedi = SedeDAOPostgres.CercaTutteLeSedi();
 					IDsedi.add(0, "Tutte Le Sedi");
-					ris = convertiInArrayStringhe(IDsedi);
+					result = convertiInArrayStringhe(IDsedi);
 				} catch (SQLException e) {
 					
 					//Inserito cosi come ho fatto in controllerAmministratore per non farti avere l'errore nella classe
@@ -144,63 +144,72 @@ public class MainController {
 			}
 	    }
 		else {
-					ris = new String[] { String.valueOf(controllerGestore.getAccount().getSede().getIdSede()) };			
+					result = new String[] { String.valueOf(controllerGestore.getAccount().getSede().getIdSede()) };			
 		}
-		return ris;
+		return result;
 	}
 
 
-	private Integer[] getID_OrdiniPerNomeP(String Prodotti) {
-		List<Integer> i = new ArrayList<>();
-		if(Prodotti.isBlank()== false) {
-			String prodotti[] = Prodotti.split(","); 
+	public List<Integer> getID_ProdottiPerNomeP(String NomiP) {
+		List<Integer> result = new ArrayList<>();
+		if(NomiP.isBlank()== false) {
+			String Nprodotti[] = NomiP.split(","); 		
 			if(controllerAmministratore != null) {
 				if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
 					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 						try {
-							i = prodottoDAO.getTuttiProdottiPerNome(prodotti);
+							result = prodottoDAO.getTuttiProdottiPerNome(Nprodotti);
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 				}
-					if(i!=null)	for(Integer j : i) System.out.print(j);
-					System.out.println();
+				else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()){ //AltraImpl
+					
+				}				
+
 			}
-			else {	}
+			else {//codice gestore	
+				
+				
+				
+			}
 		}
-			return null;
-			
+			else result = null;
+		
+		return result;
 	}
 	
-	public Object[][] getOrdini(String IDSede, String Prodotti, String Veicolo, Integer Min, Integer Max) {
-//		List<Object[]> a = new ArrayList<Object[]>();
-			Integer [] o = getID_OrdiniPerNomeP(Prodotti);
-				
+	
+	public Object[][] getOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) {
+		Object [][]object = null;
+		List<Object[]> result = new ArrayList<Object[]>();			
+			if(controllerAmministratore != null) {
+				if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
+					OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
+					result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max);
+					if(result!=null)
+					object = result.toArray(new Object[][]{});
+					
+				}
+				else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {//Altra Impl
+					
+				}
+			}
+			else {
+					if(controllerGestore.getImp() == controllerGestore.getPostgresImp()) {
+						OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
+						result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max);
+					}
+					else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
+						
+					}
+			}
 			
-				
-				
-				
-				
-				
-				
-				
-				
-//				//da restituire: CodSede CodOrdine CodCliente NomeCliente Indirizzo CodiceRider NomeRider Totale
-//				OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-//				System.out.print("cioa");
-//			    a = OrdineDAO.ricercaComplessaOrdini(IDSede,Prodotti,Veicolo,Min,Max);
-//				
-//			}else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {
-//			//Altra implementazione
-			 
-
-
-		
-//		//codice gestore	
+			
 			
 		
-			return null;
+		return object;
 	}
 
 
