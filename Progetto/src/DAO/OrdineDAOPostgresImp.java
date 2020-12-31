@@ -119,59 +119,18 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 
 	@Override
 	public List<Object[]> ricercaComplessaOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) {
-		List<Object[]> lista = new ArrayList<>();	
-		Boolean ProdottoNonEsistente = false;
-		//serve per evitare di intaccare in un null pointer exception (lo metto in una funzione?)
-		if(idProdotti!= null) 
-			if( idProdotti.get(0) == -1)
-					 ProdottoNonEsistente = true;
 		
+		List<Object[]> lista = new ArrayList<>();
+		ResultSet rs = null;
 		Connection connection = null;
-		Statement st = null; 
 		PreparedStatement queryRicerca = null;
-		
 
-		String query1 = "CREATE TEMPORARY TABLE IF NOT EXISTS ProdottiDaCercare(ID_Prodotto INTEGER NOT NULL);";
-		String query2 = "CREATE OR REPLACE VIEW SituazioneIdeale AS (SELECT ID_Ordine, ID_Prodotto FROM ProdottiDaCercare,Ordine WHERE FineConsegna IS NOT NULL);";
-		String query3 = "CREATE OR REPLACE VIEW TuttiGliOrdini AS (SELECT ID_Ordine, ID_Prodotto FROM Ordine NATURAL JOIN CompOrdine WHERE FineConsegna IS NOT NULL);";	
-		String query4 = "CREATE OR REPLACE VIEW OrdiniNo AS (SELECT ID_Ordine FROM SituazioneIdeale EXCEPT SELECT ID_Ordine FROM TuttiGliOrdini );";
-		String query5 = "CREATE OR REPLACE VIEW OrdiniSi AS (SELECT O.ID_Ordine FROM Ordine AS O EXCEPT SELECT OrN.ID_Ordine FROM OrdiniNO AS OrN );";
-		String query6 = "CREATE OR REPLACE VIEW RisultatoFinale AS (SELECT * FROM OrdiniSi NATURAL JOIN Ordine); ";
-
-	
-		try {
-			connection = DBConnection.getInstance().getConnection();
-			st = connection.createStatement();
-			
-		
-			//Inserimento Prodotti da Cercare nella tabella temporanea
-			if(idProdotti != null) {
-				st.execute(query1);
-					for(Integer i : idProdotti) 
-						st.execute("INSERT INTO ProdottiDaCercare VALUES ("+i+")");
-			//Creazione View SituazioneIdeale	
-				st.execute(query2);
-			//Creazione View TuttiGliOrdini
-				st.execute(query3);
-			//Creazione View degli Ordini che non hanno i prodotti che stiamo cercando (OrdiniNo)
-				st.execute(query4);
-			//Creazione View degli Ordini che contengono tutti i prodotti che stiamo cercando (OrdiniSi)
-				st.execute(query5);
-			//Creazione View RisultatoFinale per poter avere tutti gli attributi della relazione Ordine con i risultati che abbiamo trovato nella view precedente
-				st.execute(query6);
-			}
-			
-			
 			//Creazione stringa sql per la query ricerca
 			
 			StringBuilder sql = new StringBuilder(1024);
 			sql.append("SELECT R.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.città AS Indirizzo, "
-					+ "R.ID_Rider, R.NomeR|| ' ' || R.CognomeR AS NomeRider,  O.Totale "
-					 + "FROM Rider AS R ");
-			
-			if(idProdotti!= null && ProdottoNonEsistente) 	sql.append("INNER JOIN RisultatoFinale AS RF "); 
-			
-			sql.append("NATURAL JOIN Ordine AS O NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C" );
+					 + "R.ID_Rider, R.NomeR|| ' ' || R.CognomeR AS NomeRider,  O.Totale "
+					 + "FROM Rider AS R NATURAL JOIN Ordine AS O NATURAL JOIN CompOrdine AS CO NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C " );
 			
 			
 			
@@ -201,51 +160,69 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 					ClausolaWhere += "";
 				ClausolaWhere += "  O.Totale <= ?";
 			}
+			
+			if(idProdotti!= null) {
+				for(int i=0; i<idProdotti.size(); i++) {
+					if(ClausolaWhere.length()>0)
+						ClausolaWhere += " AND ";
+					else
+						ClausolaWhere += "";
+					ClausolaWhere += "  CO.Id_Prodotto = ?";
+				}
+			}
 
 			if(ClausolaWhere.length()>0)
 				sql.append( " WHERE " ).append( ClausolaWhere );
 			
 			
 			//Creazione Prepared Statement
-			queryRicerca = connection.prepareStatement( sql.toString() );
+			try {
+					connection = DBConnection.getInstance().getConnection();
+					queryRicerca = connection.prepareStatement( sql.toString() );
 			
-			//Inserimenti valori nelle condizioni (se esisitono)
-			int indice = 1;
+					//Inserimenti valori nelle condizioni (se esisitono)
+					int indice = 1;
 		
-			if( idSede != null ) {
-				queryRicerca.setInt(indice++, idSede);  
-			}
-			if( Veicolo != null) {
-				queryRicerca.setString( indice++, Veicolo);  
-			}
-			if( Min != null ) {
-				queryRicerca.setInt( indice++, Min );  
-			}
-			if( Max != null ) {
-				queryRicerca.setInt( indice++, Max );  
-			}
+					if( idSede != null ) {
+						queryRicerca.setInt(indice++, idSede);  
+					}
+					if( Veicolo != null) {
+						queryRicerca.setString( indice++, Veicolo);  
+					}
+					if( Min != null ) {
+						queryRicerca.setInt( indice++, Min );  
+					}
+					if( Max != null ) {
+						queryRicerca.setInt( indice++, Max );  
+					}
+				
+					if(idProdotti!= null) {
+						for(int s =0; s<idProdotti.size(); s++) {
+							queryRicerca.setInt( indice++, idProdotti.get(s) ); 
+						}
+					}
 			
-		
-			queryRicerca.execute();
-			int i=0;
-			while(queryRicerca.getResultSet().next()) {
-				lista.add(i, new Object[] { queryRicerca.getResultSet().getInt(1),
-							     			queryRicerca.getResultSet().getInt(2),
-							     			queryRicerca.getResultSet().getInt(3),
-							     			queryRicerca.getResultSet().getString(4),
-							     			queryRicerca.getResultSet().getString(5),
-							     			queryRicerca.getResultSet().getInt(6),
-							     			queryRicerca.getResultSet().getString(7),
-							     			queryRicerca.getResultSet().getFloat(8)} );
-				i++;
-			}
+			
+					rs = queryRicerca.executeQuery();
+					int i=0;
+					while(rs.next()) {
+					lista.add(i, new Object[] { rs.getInt(1),
+							     				rs.getInt(2),
+							     				rs.getInt(3),
+							     				rs.getString(4),
+							     				rs.getString(5),
+							     				rs.getInt(6),
+							     				rs.getString(7),
+							     				rs.getFloat(8)} );
+					i++;
+					}
 			
 
-			queryRicerca.getResultSet().close();
-			queryRicerca.close();
-			connection.close();
+					queryRicerca.getResultSet().close();
+					queryRicerca.close();
+					connection.close();
 				
-		}catch(SQLException e){
+			}catch(SQLException e){
 			
 		}
 

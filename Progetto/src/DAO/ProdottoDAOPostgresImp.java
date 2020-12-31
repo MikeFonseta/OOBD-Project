@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import Database.DBConnection;
 
@@ -135,32 +136,39 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	@Override
 	public List<Integer> getTuttiProdottiPerNome(String[] Prodotti) throws SQLException {
 		int i =0; boolean isEmpty = false;
-		List<Integer> ris = new ArrayList<>();
+		List<Integer> result = new ArrayList<>();
 		Connection connection = DBConnection.getInstance().getConnection();
 		Statement st = null;
 		ResultSet rs = null;
-		while(i < Prodotti.length && isEmpty == false) {								//no case-sensitive
-			String query = "Select ID_Prodotto FROM Prodotto WHERE LOWER(NomeP) LIKE LOWER('%"+Prodotti[i]+"%')";
-			st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		
+		for(int j = 0;j<Prodotti.length;j++)
+			Prodotti[j] = Prodotti[j].toLowerCase(Locale.ROOT);
+		
+		while(i < Prodotti.length && isEmpty == false) {
+			isEmpty = true;																						//no case-sensitive
+			String query = "SELECT ID_Prodotto FROM  Ordine NATURAL JOIN CompOrdine NATURAL JOIN Prodotto WHERE LOWER(NomeP) LIKE '"+Prodotti[i]+"%'";
+			st = connection.createStatement();
 			rs = st.executeQuery(query);
-			if(rs.next()==false) isEmpty = true;
-			rs.beforeFirst();
+			
 			while(rs.next()) {
+				isEmpty = false;
 				Integer temp = rs.getInt(1);
-				if(!ris.contains(temp)) ris.add(temp);									//elimina duplicati
+				if(!result.contains(temp)) result.add(temp);									//elimina duplicati
 			}
 			i=i+1;
 		}
 		
+		//se uno dei parametri non ha nessun riscontro la ricerca salta
 		if(isEmpty==true) {
-		ris.clear();
-		ris.add(0,-1);
-		System.out.print("ciao");
-		}													//se uno dei parametri non ha nessun riscontro la ricerca salta
+		result.clear();
+		result.add(0,-1);
+		}		
+
+		
 		rs.close();
 		st.close();
 		connection.close();
-	return ris;
+	return result;
 	
 	}
 	

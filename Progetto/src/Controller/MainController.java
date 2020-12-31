@@ -159,6 +159,7 @@ public class MainController {
 					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 						try {
 							result = prodottoDAO.getTuttiProdottiPerNome(Nprodotti);
+							
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
