@@ -3,9 +3,13 @@ package GUI;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicInternalFrameUI.InternalFramePropertyChangeListener;
+
 import java.awt.Dimension;
 
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -13,18 +17,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.NumberFormatter;
 
 import Controller.ControllerAmministratore;
 import Controller.MainController;
 import javax.swing.DefaultComboBoxModel;
+import java.beans.PropertyChangeEvent;
 
-public class VisualizzaOrdiniFrame extends JFrame {
+public class VisualizzaOrdiniFrame extends JFrame  {
 
 	private JPanel pnlPrincipale;
 	private JTable tblOrdini;
@@ -40,6 +47,7 @@ public class VisualizzaOrdiniFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("deprecation")
 	public VisualizzaOrdiniFrame(MainController mainController) {
 		this.mainController = mainController;
 		setMinimumSize(new Dimension(1200, 700));
@@ -100,15 +108,18 @@ public class VisualizzaOrdiniFrame extends JFrame {
 		pnlPrincipale.add(txfProdotti);
 		txfProdotti.setColumns(10);
 		
+		NumberFormatter nf = new NumberFormatter();
+		nf.setMinimum(new Float(0.01));
+		nf.setMaximum(new Float(999999.99));
 		
-		txfMin = new JTextField();
+		txfMin = new JFormattedTextField(nf);
 		txfMin.setBounds(752, 87, 67, 32);
 		txfMin.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(txfMin);
 		txfMin.setColumns(10);
 		
 		
-		txfMax = new JTextField();
+		txfMax = new JFormattedTextField(nf);
 		txfMax.setBounds(912, 87, 67, 32);
 		txfMax.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfMax.setColumns(10);

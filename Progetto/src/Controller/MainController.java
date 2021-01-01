@@ -84,11 +84,23 @@ public class MainController {
 	
 	
 	public void ApriVisualizzaOrdiniFrame() {
+		if(this.controllerAmministratore!= null)	
+			this.controllerAmministratore.amministratoreFrame.setVisible(false);
+		else
+			this.controllerGestore.getGestoreFrame().setVisible(false);
 		visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this);
 	}
 
 	public void ChiudiVisualizzaOrdiniFrame() {
-		visualizzaOrdiniFrame.setVisible(false);
+		this.visualizzaOrdiniFrame.dispose();
+		if(this.controllerAmministratore!= null)	{
+			this.controllerAmministratore.amministratoreFrame.setVisible(true);
+			this.controllerAmministratore.amministratoreFrame.setEnabled(true);
+		}
+		else {
+			this.controllerGestore.getGestoreFrame().setVisible(true);
+			this.controllerGestore.getGestoreFrame().setEnabled(true);
+		}
 	}
 	
 	public void ApriVisualizzaProdottiFrame() {

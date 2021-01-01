@@ -152,4 +152,12 @@ public class ControllerGestore {
 		this.account = account;
 	}
 
+	public GestoreFrame getGestoreFrame() {
+		return gestoreFrame;
+	}
+
+	public void setGestoreFrame(GestoreFrame gestoreFrame) {
+		this.gestoreFrame = gestoreFrame;
+	}
+
 }
