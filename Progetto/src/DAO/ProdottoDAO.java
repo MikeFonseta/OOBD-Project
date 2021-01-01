@@ -9,4 +9,6 @@ public interface ProdottoDAO {
 	public List<Object[]> getProdottiDellaSede(int idSede) throws SQLException;
 	public List<Object[]> getProdottiPerUnaSede(int idSede) throws SQLException;
 	public List<Object[]> getProdottiSedeCategoria(int idSede,String categoria) throws SQLException;
+	public List<String> getCategorie() throws SQLException;
+	public List<Object[]> getProdottiTabella(String categoria) throws SQLException;
 }

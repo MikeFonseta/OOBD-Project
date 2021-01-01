@@ -173,10 +173,65 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	}
 	
 	
+	@Override
+	public List<String> getCategorie() throws SQLException{
+		List<String> categorie = new ArrayList<String>();
+		categorie.add("Tutte");
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		ResultSet rs = st.executeQuery("SELECT categoria FROM prodotto GROUP BY categoria");
+		
+		while(rs.next()) {
+			categorie.add(rs.getString(1));
+		}
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return categorie;
+	}
 	
-	
-	
-	
+	@Override
+	public List<Object[]> getProdottiTabella(String categoria) throws SQLException {
+		
+		List<Object[]> prodotti = new ArrayList<Object[]>();
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		String filtro = "";
+		if(!categoria.equals("Tutte")) {
+			filtro = " WHERE categoria = '"+categoria+"' ";
+		}
+		
+		ResultSet rs = st.executeQuery("SELECT nomep AS Nome, prezzo AS Prezzo "
+				+ "FROM prodotto "
+				+ filtro
+				+ "ORDER BY Nome ASC");
+		
+		while(rs.next()) {
+				
+			String Nome= rs.getString(1);
+			
+			float Prezzo = rs.getFloat(2);
+			String PrezzoEuro= "€"+String.valueOf(Prezzo);
+			
+			Object[] object = new Object[] {Nome,PrezzoEuro};
+				
+			prodotti.add(object);
+		}
+				
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return prodotti;
+	}
 	
 	
 	

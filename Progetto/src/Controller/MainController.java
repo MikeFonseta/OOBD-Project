@@ -111,10 +111,6 @@ public class MainController {
 		visualizzaProdottiFrame.setVisible(false);
 	}
 	
-	public void ApriCreaOrdineFrame() {
-		creaOrdineFrame = new CreaOrdineFrame(this);
-	}
-	
 	public void ChiudiCreaOrdineFrame() {
 		creaOrdineFrame.setVisible(false);
 	}

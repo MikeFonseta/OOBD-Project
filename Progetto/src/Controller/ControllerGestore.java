@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import DAO.OrdineDAOPostgresImp;
+import DAO.ProdottoDAOPostgresImp;
 import Entities.Account;
+import GUI.CreaOrdineFrame;
 import GUI.GestoreFrame;
 
 
@@ -17,6 +19,7 @@ public class ControllerGestore {
 	private MainController mainController = null;
 	private Account account;
 	private GestoreFrame gestoreFrame = null;
+	private CreaOrdineFrame creaOrdineFrame = null;
 	
 
 	public ControllerGestore(MainController mainController, Account account) {
@@ -31,14 +34,13 @@ public class ControllerGestore {
 			this.mainController.ApriLogin();
 		}
 		gestoreFrame.dispose();
-		this.mainController.loginFrame.dispose();
 	}
 
 	public Account getAccount() {
 		return this.account;
 	}
 	
-	public Object[][] getDatiOrdini() {
+public Object[][] getDatiOrdini() {
 		
 		Object[][] result = null;
 		if(this.imp.equals(this.postgresImp))
@@ -55,19 +57,59 @@ public class ControllerGestore {
 		}
 		return result;
 	}
+	
+	
+public Object[][] getDatiProdotti(String categoria) { //prodotti
+		
+		Object[][] result = null;
+		if(this.imp.equals(this.postgresImp))
+		{
+			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+			try {
+				result = prodottoDao.getProdottiTabella(categoria).toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		return result;
+	}
+	
+	
+	public String[] getCategorieBox() {
+		
+		String[] result = null;
+		if(this.imp.equals(this.postgresImp))
+		{
+			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+			try {
+				result = prodottoDao.getCategorie().toArray(new String[] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		return result;
+	}
+
 
 	public void ApriCreaOrdineFrame() {
-		this.gestoreFrame.setVisible(false);
-		this.mainController.ApriCreaOrdineFrame();  
+		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
+		creaOrdineFrame = new CreaOrdineFrame(this);
 	}
 	
 	public void ApriVisualizzaOrdini() {
-		this.gestoreFrame.setVisible(false);
+		//this.gestoreFrame.setEnabled(false);	//da reimpostare dopo aver finito i test
 		mainController.ApriVisualizzaOrdiniFrame();
 	}
 	
 	public void ApriVisualizzaProdottiFrame(){
-		this.gestoreFrame.setVisible(false);
+		//this.gestoreFrame.setEnabled(false);	//da reimpostare dopo aver finito i test
 		this.mainController.ApriVisualizzaProdottiFrame(); 
 	}
 	

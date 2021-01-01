@@ -9,17 +9,23 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.MainController;
+import Controller.ControllerGestore;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.DefaultComboBoxModel;
 
 public class CreaOrdineFrame extends JFrame {
 	//ultima riga contiene risultato di query con nome=totale descrizione=null prezzo=sommadeiprezzi
@@ -34,9 +40,12 @@ public class CreaOrdineFrame extends JFrame {
 	private JTextField txfCitta;
 	private JTextField txfVia;
 	private JTextField txfCodice;
+	private ControllerGestore controllerGestore;
 
 
-	public CreaOrdineFrame(MainController mainController) {
+	public CreaOrdineFrame(ControllerGestore controllerGestore) {
+
+		this.controllerGestore = controllerGestore;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 2271, 916);
@@ -55,13 +64,19 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblProdotti.getTableHeader().setReorderingAllowed(false);
 		tblProdotti.setFillsViewportHeight(true);
+		//
 		tblProdotti.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
+			controllerGestore.getDatiProdotti("Tutte"),
 			new String[] {
-				"Nome", "Prezzo"
+				"Nome", "Prezzo(€)"
 			}
 		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
 			boolean[] columnEditables = new boolean[] {
 				false, false
 			};
@@ -71,7 +86,13 @@ public class CreaOrdineFrame extends JFrame {
 		});
 		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
 		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		//
 		scpProdotti.setViewportView(tblProdotti);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); //allinea  a destra gli elementi della colonna
+		
 		
 		JScrollPane scpCarrello = new JScrollPane();
 		scpCarrello.setBounds(404, 181, 308, 351);
@@ -86,7 +107,7 @@ public class CreaOrdineFrame extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Nome", "Quantit\u00E0", "Prezzo"
+				"Nome", "Quantit\u00E0", "Prezzo(€)"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
@@ -100,8 +121,16 @@ public class CreaOrdineFrame extends JFrame {
 		tblCarrello.getColumnModel().getColumn(1).setResizable(false);
 		tblCarrello.getColumnModel().getColumn(2).setResizable(false);
 		scpCarrello.setViewportView(tblCarrello);
-		
-		JComboBox cbxCategorie = new JComboBox();
+			
+		String[] categorie =controllerGestore.getCategorieBox();
+		JComboBox cbxCategorie = new JComboBox(categorie);
+		cbxCategorie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String Categoria = cbxCategorie.getSelectedItem().toString();
+				Messaggio(Categoria);
+				FiltraPerCategorie(Categoria);
+			}
+		});
 		cbxCategorie.setBounds(46, 61, 151, 22);
 		pnlCreaOrdine.add(cbxCategorie);
 		
@@ -240,5 +269,40 @@ public class CreaOrdineFrame extends JFrame {
 		btnAnnulla.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnAnnulla.setBounds(994, 605, 71, 23);
 		pnlCreaOrdine.add(btnAnnulla);
+	
+	
+		this.setVisible(true);
+
 	}
+	
+	public void FiltraPerCategorie(String categoria) {
+		tblProdotti.setModel(new DefaultTableModel(
+				controllerGestore.getDatiProdotti(categoria),
+				new String[] {
+					"Nome", "Prezzo(€)"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+	}
+	
+	
+	
+	private void Messaggio(String input) {
+		JOptionPane.showMessageDialog(this,input,"Errore",JOptionPane.ERROR_MESSAGE);
+	}
+	
 }

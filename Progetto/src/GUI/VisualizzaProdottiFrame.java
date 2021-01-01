@@ -28,6 +28,8 @@ public class VisualizzaProdottiFrame extends JFrame {
 	private JTextField txfMin;
 	private JTextField txfMax;
 	private JTextField txfAllergeni;
+	private MainController mainController;
+
 
 	public VisualizzaProdottiFrame(MainController mainController) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,6 +119,9 @@ public class VisualizzaProdottiFrame extends JFrame {
 		txfAllergeni.setColumns(10);
 		txfAllergeni.setBounds(558, 68, 226, 20);
 		pnlProdotti.add(txfAllergeni);
+		
+		this.setVisible(true);
+
 	}
 
 }

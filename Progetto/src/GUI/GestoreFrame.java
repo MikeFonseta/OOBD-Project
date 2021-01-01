@@ -56,7 +56,7 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.setModel(new DefaultTableModel(
 			controllerGestore.getDatiOrdini(),
 			new String[] {
-				"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale", "Stato"
+				"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale(€)", "Stato"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -155,7 +155,7 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnFineConsegna = new JButton("Immagine");
+		JButton btnFineConsegna = new JButton("Immagine");			//da testare
 		btnFineConsegna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -178,7 +178,7 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnIniziaConsegna = new JButton("Immagine");
+		JButton btnIniziaConsegna = new JButton("Immagine");		//da testare
 		btnIniziaConsegna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -234,7 +234,7 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnElimina = new JButton("Immagine");
+		JButton btnElimina = new JButton("Immagine");	//da testare
 		btnElimina.setBounds(1085, 509, 89, 63);
 		pnlGestore.add(btnElimina);
 		btnElimina.addMouseListener(new MouseAdapter() {
