@@ -24,8 +24,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.DropMode;
 
 public class AggiungiProdottoFrame extends JFrame{
 	
@@ -105,7 +103,7 @@ public class AggiungiProdottoFrame extends JFrame{
 		tblProdotti.getColumnModel().getColumn(3).setMinWidth(70);
 		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(70);
 		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
-		tblProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblProdotti.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		scpProdotti.setViewportView(tblProdotti);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
@@ -126,7 +124,14 @@ public class AggiungiProdottoFrame extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
 					if(tblProdotti.getSelectedRowCount() > 0) {
-					controllerAmministratore.AggiungiProdottoASede(idSede, (int)tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0));
+						
+						int prodotti[] = new int[tblProdotti.getSelectedRowCount()];
+						int rows[] = tblProdotti.getSelectedRows();
+						for(int i=0;i<rows.length;i++) {
+							prodotti[i] = (int) tblProdotti.getValueAt(rows[i], 0);
+						}
+					    controllerAmministratore.AggiungiProdottoASede(idSede, prodotti);
+						
 					}else {
 						Errore();
 					}

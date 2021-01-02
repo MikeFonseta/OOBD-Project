@@ -1,13 +1,10 @@
 package GUI;
 
 import javax.swing.JFrame;
-import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JToggleButton;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
 import Entities.Account;
-import Entities.Sede;
 
 import javax.swing.JPasswordField;
 import javax.swing.ListSelectionModel;
@@ -27,15 +23,9 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
 
 public class GestioneSedeFrame extends JFrame{	
 	
@@ -313,22 +303,24 @@ public class GestioneSedeFrame extends JFrame{
 		lblTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTelefono.setBounds(686, 91, 76, 39);
 		getContentPane().add(lblTelefono);
-		
+
 		JTextField txfTelefono = new JTextField(gestoreSede.getSede().getTelefonoSede());
+		txfTelefono.setText(gestoreSede.getSede().getTelefonoSede());
+		txfTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
+		txfTelefono.setColumns(10);
 		txfTelefono.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede())) {
+				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()==10) {
 					TelefonoModificato=true;
 				}else {
 					TelefonoModificato=false;
 				}
 				ControllaModifiche();
 			}
-
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede())){
+				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()==10) {
 					TelefonoModificato=true;
 				}else {
 					TelefonoModificato=false;
@@ -339,10 +331,9 @@ public class GestioneSedeFrame extends JFrame{
 			public void changedUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub	
 		}});
-		txfTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
-		txfTelefono.setColumns(10);
 		txfTelefono.setBounds(760, 96, 143, 28);
 		getContentPane().add(txfTelefono);
+		
 		
 		JScrollPane scpProdotti = new JScrollPane();
 		scpProdotti.setBounds(10, 150, 578, 494);
@@ -505,8 +496,8 @@ public class GestioneSedeFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnSalva.isEnabled()) {
-						controllerAmministratore.SalvaSede(btnSalva,txfNomeSede.getText(),txfTelefono.getText(),txfProvincia.getText(),txfCitta.getText(),txfVia.getText(),txfNumCivico.getText(),gestoreSede,psfPassword.getText());
-				}
+					controllerAmministratore.SalvaSede(btnSalva,txfNomeSede.getText(),txfTelefono.getText(),txfProvincia.getText(),txfCitta.getText(),txfVia.getText(),txfNumCivico.getText(),gestoreSede,psfPassword.getText());
+			}
 			}
 		});
 		

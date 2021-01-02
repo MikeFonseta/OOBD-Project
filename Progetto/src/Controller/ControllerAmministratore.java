@@ -1,21 +1,12 @@
 package Controller;
 
-import java.awt.event.WindowAdapter;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
 import DAO.AccountDAOPostgresImp;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
-import Database.DBConnection;
 import Entities.Account;
 import Entities.Prodotto;
 import Entities.Rider;
@@ -317,17 +308,22 @@ public class ControllerAmministratore {
 		return result;
 	}
 
-	public void AggiungiProdottoASede(int idSede, int idProdotto) {
+	public void AggiungiProdottoASede(int idSede, int prodotti[]) {
 		
 		int result = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			try {
-				result = sedeDao.aggiungiProdottoASede(idSede, idProdotto);
-				
-				if(result==1) {	
-					JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotto aggiunto!","",JOptionPane.PLAIN_MESSAGE);
+				for(int i=0;i<prodotti.length;i++) {
+				result += sedeDao.aggiungiProdottoASede(idSede, prodotti[i]);
+				}
+				if(result==prodotti.length) {	
+					if(prodotti.length==1) {
+						JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotto aggiunto!","",JOptionPane.PLAIN_MESSAGE);
+					}else if(prodotti.length>1){
+						JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotti aggiunti!","",JOptionPane.PLAIN_MESSAGE);
+					}
 					this.gestioneSedeFrame.AggiornaProdotti();
 					this.aggiungiProdottoFrame.AggiornaProdotti();
 				}
