@@ -85,18 +85,18 @@ public class ControllerAmministratore {
 		
     public void ApriCreazioneSedeFrame() {
     	
-		int idNextSede;
-		String nomeUtenteSede=null;
+		int idProssimaSede;
+		String nomeUtenteGestore=null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
 			try {
-				idNextSede = sedeDao.NextIdSede();
-				nomeUtenteSede = accountDao.NomeUtentePerNuovaSede(idNextSede);
-				this.amministratoreFrame.setVisible(false);
-				this.creaSedeFrame = new CreaSedeFrame();
+				idProssimaSede = sedeDao.ProssimoIdSede();
+				nomeUtenteGestore = accountDao.NomeUtentePerNuovaSede(idProssimaSede);
+				this.amministratoreFrame.setEnabled(false);
+				this.creaSedeFrame = new CreaSedeFrame(this,idProssimaSede,nomeUtenteGestore);
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -108,6 +108,11 @@ public class ControllerAmministratore {
     	
     }
 
+	public void ChiudiCreaSedeFrame() {
+		this.amministratoreFrame.setEnabled(true);
+		this.creaSedeFrame.dispose();
+	}
+    
 	public void ChiudiGestioneSedeFrame() {
 		this.gestioneSedeFrame.dispose();
 		this.amministratoreFrame.setVisible(true);
@@ -409,7 +414,7 @@ public class ControllerAmministratore {
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
-				result = riderDao.NextIdRider();
+				result = riderDao.ProssimoIdRider();
 				this.gestioneSedeFrame.setEnabled(false);
 				this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede,result);
 			} catch (SQLException e) {

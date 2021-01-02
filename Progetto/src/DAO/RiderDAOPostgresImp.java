@@ -72,7 +72,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int NextIdRider() throws SQLException{
+	public int ProssimoIdRider() throws SQLException{
 		
 		Connection conn = null;
 		int result = 0;

@@ -204,14 +204,14 @@ public class AmministratoreFrame extends JFrame{
 		tblSedi.getColumnModel().getColumn(0).setMinWidth(50);
 		tblSedi.getColumnModel().getColumn(0).setMaxWidth(50);
 		tblSedi.getColumnModel().getColumn(1).setResizable(false);
-		tblSedi.getColumnModel().getColumn(1).setPreferredWidth(150);
-		tblSedi.getColumnModel().getColumn(1).setMinWidth(150);
+		tblSedi.getColumnModel().getColumn(1).setPreferredWidth(200);
+		tblSedi.getColumnModel().getColumn(1).setMinWidth(200);
 		tblSedi.getColumnModel().getColumn(2).setResizable(false);
-		tblSedi.getColumnModel().getColumn(2).setPreferredWidth(150);
-		tblSedi.getColumnModel().getColumn(2).setMinWidth(150);
+		tblSedi.getColumnModel().getColumn(2).setPreferredWidth(300);
+		tblSedi.getColumnModel().getColumn(2).setMinWidth(300);
 		tblSedi.getColumnModel().getColumn(3).setResizable(false);
-		tblSedi.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tblSedi.getColumnModel().getColumn(3).setMinWidth(150);
+		tblSedi.getColumnModel().getColumn(3).setPreferredWidth(80);
+		tblSedi.getColumnModel().getColumn(3).setMinWidth(80);
 		tblSedi.setAutoResizeMode(JTable.HEIGHT);
 		tblSedi.getTableHeader().setReorderingAllowed(false);
 		scpSedi.setViewportView(tblSedi);
@@ -286,14 +286,14 @@ public class AmministratoreFrame extends JFrame{
 			tblSedi.getColumnModel().getColumn(0).setMinWidth(50);
 			tblSedi.getColumnModel().getColumn(0).setMaxWidth(50);
 			tblSedi.getColumnModel().getColumn(1).setResizable(false);
-			tblSedi.getColumnModel().getColumn(1).setPreferredWidth(150);
-			tblSedi.getColumnModel().getColumn(1).setMinWidth(150);
+			tblSedi.getColumnModel().getColumn(1).setPreferredWidth(200);
+			tblSedi.getColumnModel().getColumn(1).setMinWidth(200);
 			tblSedi.getColumnModel().getColumn(2).setResizable(false);
-			tblSedi.getColumnModel().getColumn(2).setPreferredWidth(150);
-			tblSedi.getColumnModel().getColumn(2).setMinWidth(150);
+			tblSedi.getColumnModel().getColumn(2).setPreferredWidth(300);
+			tblSedi.getColumnModel().getColumn(2).setMinWidth(300);
 			tblSedi.getColumnModel().getColumn(3).setResizable(false);
-			tblSedi.getColumnModel().getColumn(3).setPreferredWidth(150);
-			tblSedi.getColumnModel().getColumn(3).setMinWidth(150);
+			tblSedi.getColumnModel().getColumn(3).setPreferredWidth(80);
+			tblSedi.getColumnModel().getColumn(3).setMinWidth(80);
 	}
 	
 	private void Errore() {

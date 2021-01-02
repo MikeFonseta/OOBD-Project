@@ -29,7 +29,6 @@ public class GestioneRiderFrame extends JFrame{
 	private Point initialClick;
 	private JFrame parent=this;
 
-
 	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, int idSede, int idRider) {
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);
@@ -150,7 +149,7 @@ public class GestioneRiderFrame extends JFrame{
 		lblTitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setForeground(Color.WHITE);
-		lblTitolo.setBounds(153, 0, 127, 35);
+		lblTitolo.setBounds(0, 0, 127, 35);
 		pnlBarra.add(lblTitolo);
 		
 		btnSalva.addMouseListener(new MouseAdapter() {
@@ -167,6 +166,9 @@ public class GestioneRiderFrame extends JFrame{
 		setVisible(true);
 	}
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, Rider rider) {
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);
@@ -286,7 +288,7 @@ public class GestioneRiderFrame extends JFrame{
 		lblTitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setForeground(Color.WHITE);
-		lblTitolo.setBounds(153, 0, 127, 35);
+		lblTitolo.setBounds(0, 0, 127, 35);
 		pnlBarra.add(lblTitolo);
 		
 		btnSalva.addMouseListener(new MouseAdapter() {

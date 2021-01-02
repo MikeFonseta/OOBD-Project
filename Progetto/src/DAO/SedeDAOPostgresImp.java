@@ -183,7 +183,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 	}
 
 	@Override
-	public int NextIdSede() throws SQLException{
+	public int ProssimoIdSede() throws SQLException{
 		
 		Connection conn = null;
 		int result = 0;

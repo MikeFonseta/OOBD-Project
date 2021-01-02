@@ -76,7 +76,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					NomeSedeModificato=false;
 				}	
-				ControllaModifiche("Modifica");	
+				ControllaModifiche();	
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -85,7 +85,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					NomeSedeModificato=false;
 				}	
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -105,7 +105,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					ProvinciaModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -114,7 +114,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					ProvinciaModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -139,7 +139,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					CittaModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -148,7 +148,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					CittaModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -174,7 +174,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					ViaModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -183,7 +183,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					ViaModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -209,7 +209,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					NumCivicoModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -218,7 +218,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					NumCivicoModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -263,7 +263,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					PasswordModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -272,7 +272,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					PasswordModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -293,7 +293,7 @@ public class GestioneSedeFrame extends JFrame{
 		lblNomeUtente.setBounds(10, 91, 236, 39);
 		getContentPane().add(lblNomeUtente);
 		
-		JRadioButton rdbtnVisualizzaPassword = new JRadioButton("Visualizza");
+		JRadioButton rdbtnVisualizzaPassword = new JRadioButton();
 		rdbtnVisualizzaPassword.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -323,7 +323,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					TelefonoModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 
 			@Override
@@ -333,7 +333,7 @@ public class GestioneSedeFrame extends JFrame{
 				}else {
 					TelefonoModificato=false;
 				}
-				ControllaModifiche("Modifica");
+				ControllaModifiche();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -557,20 +557,12 @@ public class GestioneSedeFrame extends JFrame{
 		setVisible(true);
 	}
 
-	private void ControllaModifiche(String Operazione) {
-		if(Operazione.equals("Modifica")) {
+	private void ControllaModifiche() {
 			if(NomeSedeModificato==true || TelefonoModificato==true || ProvinciaModificato==true || CittaModificato==true || ViaModificato==true || NumCivicoModificato==true || PasswordModificato==true) {
 				btnSalva.setEnabled(true);
 			}else {
 				btnSalva.setEnabled(false);
 			}
-		}else if(Operazione.equals("Creazione")){
-			if(NomeSedeModificato==true && TelefonoModificato==true && ProvinciaModificato==true && CittaModificato==true && ViaModificato==true && NumCivicoModificato==true && PasswordModificato==true) {			
-				btnSalva.setEnabled(true);
-			}else {
-				btnSalva.setEnabled(false);
-			}
-		}
 	}
 	
 	public void AggiornaProdotti() {
