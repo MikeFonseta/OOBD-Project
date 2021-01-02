@@ -2,34 +2,56 @@
 package GUI;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI.InternalFramePropertyChangeListener;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.PopupMenu;
+
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.Popup;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
+import javax.swing.text.PlainDocument;
 
 import Controller.ControllerAmministratore;
 import Controller.MainController;
 import javax.swing.DefaultComboBoxModel;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VisualizzaOrdiniFrame extends JFrame  {
 
@@ -42,13 +64,16 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	private JTextField txfMin;
 	private JTextField txfMax;
 	private MainController mainController;
-	private VisualizzaOrdiniFrame v = this;
+	private JFrame parent = this;
+	private Point initialClick;
+
 	
 	/**
 	 * Create the frame.
 	 */
 	@SuppressWarnings("deprecation")
 	public VisualizzaOrdiniFrame(MainController mainController) {
+		setResizable(false);
 		this.mainController = mainController;
 		setMinimumSize(new Dimension(1200, 700));
 		setTitle("Visualizza Ordini");
@@ -62,68 +87,115 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 		
 		cbxIDSedi = new JComboBox();
 		cbxIDSedi.setModel(new DefaultComboBoxModel(mainController.getIDSedi()));
-		cbxIDSedi.setBounds(96, 16, 354, 35);
+		cbxIDSedi.setBounds(96, 59, 354, 35);
 		pnlPrincipale.add(cbxIDSedi);
 		
 		
 		cbxVeicolo = new JComboBox();
-		cbxVeicolo.setModel(new DefaultComboBoxModel(new String[] {"", "Auto", "Bici", "Scooter ", "Scooter elettrico"}));
+		cbxVeicolo.setModel(new DefaultComboBoxModel(new String[] {"", "Auto", "Bici", "Scooter ", "Scooter Elettrico"}));
 		cbxVeicolo.setFont(new Font("Calibri", Font.PLAIN, 14));
-		cbxVeicolo.setBounds(521, 85, 148, 33);
+		cbxVeicolo.setBounds(523, 129, 148, 33);
 		pnlPrincipale.add(cbxVeicolo);
 
 		
 		JLabel lblNomeSede = new JLabel("Nome Sede");
 		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblNomeSede.setBounds(22, 33, 64, 18);
+		lblNomeSede.setBounds(22, 76, 64, 18);
 		pnlPrincipale.add(lblNomeSede);
 		
 		
 		JLabel lblVeicolo = new JLabel("Veicolo");
-		lblVeicolo.setBounds(465, 100, 46, 18);
+		lblVeicolo.setBounds(466, 144, 46, 18);
 		lblVeicolo.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(lblVeicolo);
 		
 		JLabel lblProdotti = new JLabel("Prodotti");
-		lblProdotti.setBounds(39, 100, 46, 18);
+		lblProdotti.setBounds(40, 136, 46, 18);
 		lblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(lblProdotti);
 		
 		
 		JLabel lblMin = new JLabel("Min");
-		lblMin.setBounds(720, 100, 22, 18);
+		lblMin.setBounds(720, 143, 22, 18);
 		lblMin.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(lblMin);
 		
 		
 		JLabel lblMax = new JLabel("Max");
-		lblMax.setBounds(877, 100, 25, 18);
+		lblMax.setBounds(877, 143, 25, 18);
 		lblMax.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(lblMax);
 		
 		
 		txfProdotti = new JTextField();
 		txfProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
-		txfProdotti.setBounds(96, 86, 272, 32);
+		txfProdotti.setBounds(96, 129, 272, 32);
 		pnlPrincipale.add(txfProdotti);
 		txfProdotti.setColumns(10);
 		
-		NumberFormatter nf = new NumberFormatter();
-		nf.setMinimum(new Float(0.01));
-		nf.setMaximum(new Float(999999.99));
+	
+		txfMin = new JTextField();
+	      PlainDocument docMin = (PlainDocument) txfMin.getDocument();
+	      docMin.setDocumentFilter(new FiltroInteri());
+	      docMin.addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				controllaValoriMin();
+				
+			}
+			
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				controllaValoriMin();
+				
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				controllaValoriMin();
+			}
+			
+				
+				
+		});
 		
-		txfMin = new JFormattedTextField(nf);
-		txfMin.setBounds(752, 87, 67, 32);
+		txfMin.setBounds(752, 130, 67, 32);
 		txfMin.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(txfMin);
 		txfMin.setColumns(10);
-		
-		
-		txfMax = new JFormattedTextField(nf);
-		txfMax.setBounds(912, 87, 67, 32);
+
+
+		txfMax = new JTextField();
+			PlainDocument docMax = (PlainDocument) txfMax.getDocument();
+			docMax.setDocumentFilter(new FiltroInteri());	
+			docMax.addDocumentListener(new DocumentListener() {
+				
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					controllaValoriMax();
+					
+				}
+				
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					controllaValoriMax();
+					
+				}
+				
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					controllaValoriMax();
+					
+				}
+			});
+
+		txfMax.setBounds(912, 130, 67, 32);
 		txfMax.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfMax.setColumns(10);
 		pnlPrincipale.add(txfMax);
+
 		
 
 		JButton btnCerca = new JButton("Cerca");
@@ -135,7 +207,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 				}
 			}
 		});
-		btnCerca.setBounds(1041, 86, 88, 35);
+		btnCerca.setBounds(1041, 129, 88, 35);
 		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 14));
 		pnlPrincipale.add(btnCerca);
 		
@@ -149,18 +221,18 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 			}
 		});
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnChiudi.setBounds(964, 603, 180, 35);
+		btnChiudi.setBounds(961, 618, 180, 35);
 		pnlPrincipale.add(btnChiudi);
 		
 		
 		JButton btnVisualizzaC = new JButton("Visualizza Carrello");
 		btnVisualizzaC.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnVisualizzaC.setBounds(786, 603, 180, 35);
+		btnVisualizzaC.setBounds(783, 618, 180, 35);
 		pnlPrincipale.add(btnVisualizzaC);
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(82, 170, 1030, 374);		
+		scrollPane.setBounds(81, 204, 1048, 389);		
 		pnlPrincipale.add(scrollPane);
 		
 
@@ -210,6 +282,51 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	tblOrdini.setFillsViewportHeight(true);		
 
 	scrollPane.setViewportView(tblOrdini);
+	
+	
+	
+	JPanel pnlBarra = new JPanel();
+	pnlBarra.setLayout(null);
+	pnlBarra.setBackground(Color.DARK_GRAY);
+	pnlBarra.setBounds(0, 0, 1200, 35);
+	getContentPane().add(pnlBarra);
+	
+	JLabel lblVisualizzaOrdini = new JLabel("Visualizza Ordini");
+	lblVisualizzaOrdini.setForeground(Color.WHITE);
+	lblVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 18));
+	lblVisualizzaOrdini.setBounds(10, 0, 209, 35);
+	pnlBarra.add(lblVisualizzaOrdini);
+
+	
+	pnlBarra.addMouseListener(new MouseAdapter() {
+        public void mousePressed(MouseEvent e) {
+            initialClick = e.getPoint();
+            getComponentAt(initialClick);
+        }
+    });
+
+    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+
+            // Posizione Finestra
+            int thisX = parent.getLocation().x;
+            int thisY = parent.getLocation().y;
+
+            // Determinazione Spostamento
+            int xMoved = e.getX() - initialClick.x;
+            int yMoved = e.getY() - initialClick.y;
+
+            // Spostamento finestra
+            int X = thisX + xMoved;
+            int Y = thisY + yMoved;
+            parent.setLocation(X, Y);
+        }
+    });
+	
+	
+	setLocationRelativeTo(null);
+	setUndecorated(true);
 	this.setVisible(true);
 	}
 		
@@ -260,7 +377,34 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 
 	}
 		
-	
+				private void controllaValoriMin() {
+				if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
+					try {
+					if(Integer.valueOf(this.txfMin.getText()) > Integer.valueOf(this.txfMax.getText()))
+						txfMax.setText(txfMin.getText());
+
+					}catch(NumberFormatException w) {
+						txfMax.setText(txfMin.getText());
+
+					}
+				}
+			}		
+				
+				private void controllaValoriMax() {
+				if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
+					try {
+						if(Integer.valueOf(this.txfMax.getText()) < Integer.valueOf(this.txfMin.getText())) 
+							txfMin.setText(txfMax.getText());
+						
+					}catch(NumberFormatException w) {
+						txfMin.setText(txfMax.getText());
+
+					}
+					
+			}
+		}		
+
+
 	public Integer getSedeSelezionata() {
 		if(this.cbxIDSedi.getSelectedItem().toString() == "Tutte Le Sedi")
 			return null;
@@ -309,9 +453,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 		}
 	}
 
-	public void SetMax(JTextField txfMax) {
-		
-	}
+
 
 //	public void mouseClickedFun() {
 //		Integer Min = this.getMinSelezionato();
