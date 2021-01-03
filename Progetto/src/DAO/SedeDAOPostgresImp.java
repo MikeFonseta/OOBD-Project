@@ -117,7 +117,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("DELETE FROM menù WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
+		risultato = st.executeUpdate("DELETE FROM menù WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
 				
 		st.close();
 		conn.close();
@@ -171,10 +171,10 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result += st.executeUpdate("UPDATE sede SET nomes='"+sede.getNomeSede()+"',telefono='" + sede.getTelefonoSede() + "',"+
+		risultato += st.executeUpdate("UPDATE sede SET nomes='"+sede.getNomeSede()+"',telefono='" + sede.getTelefonoSede() + "',"+
 					"provincia='"+sede.getProvincia()+"',città='" + sede.getCitta() + "',via='"+ sede.getVia() + "',numcivico='" + sede.getNumCivico() + "' WHERE id_sede = " + sede.getIdSede());
 				
-		result += st.executeUpdate("UPDATE account SET password='" + nuovaPassword+ "' WHERE nomeutente='" + gestoreSede.getNomeUtente() + "'");
+		risultato += st.executeUpdate("UPDATE account SET password='" + nuovaPassword+ "' WHERE nomeutente='" + gestoreSede.getNomeUtente() + "'");
 		
 		st.close();
 		conn.close();

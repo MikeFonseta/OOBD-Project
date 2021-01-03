@@ -118,7 +118,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		 risultato = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede=" + idSede + "");
+		risultato = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede=" + idSede + "");
 	
 		st.close();
 		conn.close();

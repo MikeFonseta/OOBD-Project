@@ -77,7 +77,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
-				+ "	via || ' ' || numcivico || ',' || citt‡ AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
+				+ "	via || ' ' || numcivico || ',' || citt√† AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
 				+ "	nomer || ' ' || cognomer AS NomeRider, telefonor AS TelefonoRider,\r\n"
 				+ "	totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
@@ -93,7 +93,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			String TelefonoCliente = rs.getString(5);
 			String NomeRider = rs.getString(6);
 			String TelefonoRider = rs.getString(7);
-			String Totale= "Ä "+String.valueOf(rs.getFloat(8));		
+			String Totale= "‚Ç¨ "+String.valueOf(rs.getFloat(8));		
 			java.sql.Timestamp InizioConsegna = rs.getTimestamp(9);
 			
 			char Stato = 'A'; //Attesa default
@@ -128,7 +128,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			//Creazione stringa sql per la query ricerca
 			
 			StringBuilder sql = new StringBuilder(1024);
-			sql.append("SELECT DISTINCT R.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.citt‡ AS Indirizzo, "
+			sql.append("SELECT DISTINCT R.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.citt√† AS Indirizzo, "
 					 + "R.ID_Rider, R.NomeR|| ' ' || R.CognomeR AS NomeRider,  O.Totale "
 					 + "FROM Rider AS R NATURAL JOIN Ordine AS O NATURAL JOIN CompOrdine AS CO NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C " );
 			

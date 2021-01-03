@@ -179,6 +179,8 @@ public class ControllerAmministratore {
 				Account account = new Account(nomeUtente,Password,false,sede);
 				if(sedeDao.CreaSede(sede, nomeUtente, Password)==2) {
 					this.creaSedeFrame.dispose();
+					this.amministratoreFrame.setEnabled(true);
+					this.amministratoreFrame.setVisible(false);
 					this.gestioneSedeFrame = new GestioneSedeFrame(this,account);
 				}
 			} catch (SQLException e) {
@@ -275,7 +277,7 @@ public class ControllerAmministratore {
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 			try {
-				result = prodottoDao.getProdottiSedeCategoria(idSede,categoria).toArray(new Object[][] {});
+				risultato = prodottoDao.getProdottiSedeCategoria(idSede,categoria).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				this.gestioneSedeFrame.setEnabled(true);
 				this.aggiungiProdottoFrame.dispose();
@@ -316,9 +318,9 @@ public class ControllerAmministratore {
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			try {
 				for(int i=0;i<prodotti.length;i++) {
-				result += sedeDao.aggiungiProdottoASede(idSede, prodotti[i]);
+				risultato+= sedeDao.aggiungiProdottoASede(idSede, prodotti[i]);
 				}
-				if(result==prodotti.length) {	
+				if(risultato==prodotti.length) {	
 					if(prodotti.length==1) {
 						JOptionPane.showMessageDialog(this.aggiungiProdottoFrame,"Prodotto aggiunto!","",JOptionPane.PLAIN_MESSAGE);
 					}else if(prodotti.length>1){
@@ -412,7 +414,7 @@ public class ControllerAmministratore {
 			try {
 				risultato = riderDao.ProssimoIdRider();
 				this.gestioneSedeFrame.setEnabled(false);
-				this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede,result);
+				this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede,risultato);
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
