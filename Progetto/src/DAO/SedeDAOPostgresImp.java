@@ -96,23 +96,23 @@ public class SedeDAOPostgresImp implements SedeDAO{
 	
 	@Override
 	public int aggiungiProdottoASede(int idSede, int idProdotto) throws SQLException {
-		int result = 0;
+		int risultato = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("INSERT INTO menù VALUES ("+idSede + "," + idProdotto +")");
+		risultato = st.executeUpdate("INSERT INTO menù VALUES ("+idSede + "," + idProdotto +")");
 				
 		st.close();
 		conn.close();
 			
-		return result;
+		return risultato;
 	}
 
 	@Override
 	public int EliminaProdottoDaSede(int idSede, int idProdotto)  throws SQLException {
 
-		int result = 0;
+		int risultato = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
@@ -122,51 +122,51 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		st.close();
 		conn.close();
 					
-		return result;
+		return risultato;
 	}
 
 
 	@Override
 	public int EliminaSede(int idSede) throws SQLException  {
-		int result = 0;
+		int risultato = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("DELETE FROM sede WHERE id_sede="+idSede +"");
+		risultato = st.executeUpdate("DELETE FROM sede WHERE id_sede="+idSede +"");
 				
 		st.close();
 		conn.close();
 		
-		return result;
+		return risultato;
 	}
 
 	@Override
 	public int CreaSede(Sede sede, String nomeUtente, String password) throws SQLException {
 		
-		int result = 0;
+		int risultato = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("INSERT INTO sede(id_sede,nomes,telefono,provincia,città,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
+		risultato= st.executeUpdate("INSERT INTO sede(id_sede,nomes,telefono,provincia,città,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
 									sede.getNomeSede() + "','" + sede.getTelefonoSede() + "','" + sede.getProvincia() + "','" + sede.getCitta() + "','" + sede.getVia() + "','" + sede.getNumCivico() + "')");
 		
-		if(result == 1) {
-			result += st.executeUpdate("INSERT INTO account(nomeutente,password,amministratore,id_sede) VALUES ('" + nomeUtente + "','" + password +
+		if(risultato == 1) {
+			risultato += st.executeUpdate("INSERT INTO account(nomeutente,password,amministratore,id_sede) VALUES ('" + nomeUtente + "','" + password +
 					"',false," + sede.getIdSede()+ ")");
 		}
 			
 		st.close();
 		conn.close();
 			
-		return result;
+		return risultato;
 	}
 
 	@Override
 	public int AggiornaSede(Sede sede, Account gestoreSede, String nuovaPassword) throws SQLException {
 		
-		int result = 0;
+		int risultato = 0;
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
@@ -179,14 +179,14 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		st.close();
 		conn.close();
 					
-		return result;
+		return risultato;
 	}
 
 	@Override
 	public int ProssimoIdSede() throws SQLException{
 		
 		Connection conn = null;
-		int result = 0;
+		int risultato = 0;
 		
 		
 		conn = DBConnection.getInstance().getConnection();
@@ -194,14 +194,14 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		ResultSet rs = st.executeQuery("SELECT nextIdSede()");	
 			
 		if(rs.next()){
-			result = rs.getInt(1);
+			risultato = rs.getInt(1);
 		}
 				
 		rs.close();
 		st.close();
 		conn.close();
 		
-		return result;
+		return risultato;
 	}
 
 

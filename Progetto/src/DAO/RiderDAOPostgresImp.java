@@ -75,7 +75,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	public int ProssimoIdRider() throws SQLException{
 		
 		Connection conn = null;
-		int result = 0;
+		int risultato = 0;
 		
 		
 		conn = DBConnection.getInstance().getConnection();
@@ -83,63 +83,63 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		ResultSet rs = st.executeQuery("SELECT nextIdRider()");	
 			
 		if(rs.next()){
-			result = rs.getInt(1);
+			 risultato = rs.getInt(1);
 		}
 				
 		rs.close();
 		st.close();
 		conn.close();
 		
-		return result;
+		return  risultato;
 	}
 
 	@Override
 	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) throws SQLException {
 		
 		Connection conn = null;
-		int result = 0;		
+		int  risultato = 0;		
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("INSERT INTO rider(id_rider,nomer,cognomer,telefonor,veicolo,id_sede) VALUES ("+idRider+ ",'" + nome +"','" + cognome + "','"
+		 risultato = st.executeUpdate("INSERT INTO rider(id_rider,nomer,cognomer,telefonor,veicolo,id_sede) VALUES ("+idRider+ ",'" + nome +"','" + cognome + "','"
 					+ telefono + "','" + veicolo + "',"+ idSede + ")");
 	
 		st.close();
 		conn.close();
 		
-		return result;
+		return  risultato;
 	}
 
 	@Override
 	public int EliminaRider(int idRider,int idSede) throws SQLException  {
 		
 		Connection conn = null;
-		int result = 0;
+		int  risultato = 0;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede=" + idSede + "");
+		 risultato = st.executeUpdate("DELETE FROM rider WHERE id_rider="+idRider+" AND id_sede=" + idSede + "");
 	
 		st.close();
 		conn.close();
 		
-		return result;
+		return risultato;
 	}
 
 	@Override
 	public int AggiornaRider(int idRider,String telefono, String veicolo) throws SQLException {
 		Connection conn = null;
-		int result = 0;
+		int risultato = 0;
 		
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		result = st.executeUpdate("UPDATE rider SET veicolo='"+ veicolo + "', telefonor='" + telefono + "' WHERE id_rider=" + idRider);
+		risultato = st.executeUpdate("UPDATE rider SET veicolo='"+ veicolo + "', telefonor='" + telefono + "' WHERE id_rider=" + idRider);
 	
 		st.close();
 		conn.close();
 		
-		return result;
+		return risultato;
 	}
 
 

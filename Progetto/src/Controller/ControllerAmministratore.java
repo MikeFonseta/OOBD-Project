@@ -143,17 +143,17 @@ public class ControllerAmministratore {
 
 	public int SalvaSede(JButton btnSalva, String nomeSede, String telefono,String provincia, String citta, String via, String numCivico,Account gestoreSede, String nuovaPassword) {
 		
-		int result=0;
+		int risultato=0;
 		
 		Sede sede = new Sede(gestoreSede.getSede().getIdSede(),nomeSede,telefono,provincia,citta,via,numCivico);
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			try {
-				result = sedeDao.AggiornaSede(sede,gestoreSede,nuovaPassword);
-				//PROVVISORIO
 				
-				if(result==2) {
+				risultato= sedeDao.AggiornaSede(sede,gestoreSede,nuovaPassword);
+			
+				if(risultato==2) {
 					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Sede aggiornata!","",JOptionPane.PLAIN_MESSAGE);
 					gestoreSede.setSede(new Sede(gestoreSede.getSede().getIdSede(),nomeSede,telefono,provincia,citta,via,numCivico));
 					btnSalva.setEnabled(false);
@@ -166,7 +166,7 @@ public class ControllerAmministratore {
 			//altra implementazioni
 		}
 		
-		return result;
+		return risultato;
 	}
 	
 	public void CreaSede(int idSede,String nomeSede, String telefono,String provincia, String citta, String via, String numCivico, String nomeUtente,String Password) {
@@ -192,12 +192,12 @@ public class ControllerAmministratore {
 	
 	public Object[][] getDatiSedi() {
 		
-		Object[][] result = null;
+		Object[][] risultato = null;
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			try {
-				result = sedeDao.getSedi().toArray(new Object[][] {});
+				risultato = sedeDao.getSedi().toArray(new Object[][] {});
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -205,18 +205,18 @@ public class ControllerAmministratore {
 		{
 			//altra implementazioni
 		}
-		return result;
+		return risultato;
 	}
 	
 	public Object[][] getDatiProdotti() {
 		
-		Object[][] result = null;
+		Object[][] risultato= null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 			try {
-				result = prodottoDao.getTuttiProdotti().toArray(new Object[][] {});
+				risultato = prodottoDao.getTuttiProdotti().toArray(new Object[][] {});
 			} catch (SQLException e) {
 				this.gestioneSedeFrame.setEnabled(true);
 				this.aggiungiProdottoFrame.dispose();
@@ -226,18 +226,18 @@ public class ControllerAmministratore {
 		{
 			//altra implementazioni
 		}
-		return result;
+		return risultato;
 	}
 	
 	public Object[][] getRiderDaSede(int idSede) {
 		
-		Object[][] result = null;
+		Object[][] risultato = null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
-				result = riderDao.getRiderDaSede(idSede).toArray(new Object[][] {});
+				risultato = riderDao.getRiderDaSede(idSede).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -245,19 +245,19 @@ public class ControllerAmministratore {
 		{
 			//altra implementazioni
 		}
-		return result;
+		return risultato;
 		
 	}
 
 	public Object[][] getMenuSede(int idSede) {
 		
-		Object[][] result = null;
+		Object[][] risultato = null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 			try {
-				result = prodottoDao.getProdottiDellaSede(idSede).toArray(new Object[][] {});
+				risultato = prodottoDao.getProdottiDellaSede(idSede).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -265,11 +265,11 @@ public class ControllerAmministratore {
 		{
 			//altra implementazioni
 		}
-		return result;
+		return risultato;
 	}
 
 	public void getProdottiSedeCategoria(int idSede, String categoria) {
-		Object[][] result = null;
+		Object[][] risultato = null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
@@ -286,18 +286,18 @@ public class ControllerAmministratore {
 			//altra implementazioni
 		}
 		
-		this.aggiungiProdottoFrame.AggiornaProdottiConCategoria(result);
+		this.aggiungiProdottoFrame.AggiornaProdottiConCategoria(risultato);
 	}
 	
 	public Object[][] getProdottiPerUnaSede(int idSede) {
 		
-		Object[][] result = null;
+		Object[][] risultato = null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 			try {
-				result = prodottoDao.getProdottiPerUnaSede(idSede).toArray(new Object[][] {});
+				risultato = prodottoDao.getProdottiPerUnaSede(idSede).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -305,12 +305,12 @@ public class ControllerAmministratore {
 		{
 			//altra implementazioni
 		}
-		return result;
+		return risultato;
 	}
 
 	public void AggiungiProdottoASede(int idSede, int prodotti[]) {
 		
-		int result = 0;
+		int risultato = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
@@ -342,14 +342,14 @@ public class ControllerAmministratore {
 	
 	public void EliminaProdottoDaSede(int idSede, int idProdotto) {
 		
-		int result = 0;
+		int risultato = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			try {
-				result = sedeDao.EliminaProdottoDaSede(idSede, idProdotto);
+				risultato = sedeDao.EliminaProdottoDaSede(idSede, idProdotto);
 				
-				if(result==1) {
+				if(risultato==1) {
 					
 					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Prodotto eliminato!","",JOptionPane.PLAIN_MESSAGE);
 					this.gestioneSedeFrame.AggiornaProdotti();
@@ -367,7 +367,7 @@ public class ControllerAmministratore {
 
 	public void ConfermaEliminazioneSede(String password,int idSede) {
 		
-		int result = 0;
+		int risultato = 0;
 		
 		this.eliminaSedeFrame.dispose();
 		this.amministratoreFrame.setEnabled(true);
@@ -378,9 +378,9 @@ public class ControllerAmministratore {
 			{
 				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 				try {
-					result = sedeDao.EliminaSede(idSede);
+					risultato = sedeDao.EliminaSede(idSede);
 					
-					if(result == 1) 
+					if(risultato == 1) 
 					{
 						JOptionPane.showMessageDialog(this.amministratoreFrame,"Sede '" + idSede + "' eliminata","",JOptionPane.PLAIN_MESSAGE);
 						this.amministratoreFrame.AggiornaSedi();
@@ -404,13 +404,13 @@ public class ControllerAmministratore {
 	
 	public void ApriNuovoRiderFrame(int idSede) {
 		
-		int result = 0;
+		int risultato = 0;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
-				result = riderDao.ProssimoIdRider();
+				risultato = riderDao.ProssimoIdRider();
 				this.gestioneSedeFrame.setEnabled(false);
 				this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede,result);
 			} catch (SQLException e) {
@@ -425,9 +425,9 @@ public class ControllerAmministratore {
 	}
 	
 	public void ApriModificaRiderFrame(String idRider,int idSede) {
+		
 		Rider rider = new Rider();
 		
-
 		if(this.imp.equals(this.postgresImp)) 
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
@@ -448,15 +448,15 @@ public class ControllerAmministratore {
 	
 	public void AggiornaRider(int idRider, String telefono, String veicolo) {
 
-		int result = 0;
+		int risultato = 0;
 
 		if(this.imp.equals(this.postgresImp)) 
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
-				result = riderDao.AggiornaRider(idRider,telefono,veicolo);
+				risultato = riderDao.AggiornaRider(idRider,telefono,veicolo);
 				
-				if(result == 1) {
+				if(risultato == 1) {
 					this.gestioneSedeFrame.setEnabled(true);
 					this.gestioneRiderFrame.dispose();
 					this.gestioneSedeFrame.AggiornaRider();
@@ -476,15 +476,15 @@ public class ControllerAmministratore {
 	
 	public void CreaRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) {
 		
-		int result = 0;
+		int risultato = 0;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
-				result = riderDao.InserisciRider(idRider,nome,cognome,telefono,veicolo,idSede);
+				risultato = riderDao.InserisciRider(idRider,nome,cognome,telefono,veicolo,idSede);
 				
-				if(result == 1) 
+				if(risultato == 1) 
 				{
 					this.gestioneSedeFrame.setEnabled(true);
 					this.gestioneRiderFrame.dispose();
@@ -507,15 +507,15 @@ public class ControllerAmministratore {
 	
 	public void EliminaRider(int idSede, String idRider) {
 		
-		int result = 0;
+		int risultato = 0;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
-				result = riderDao.EliminaRider(Integer.parseInt(idRider),idSede);
+				risultato = riderDao.EliminaRider(Integer.parseInt(idRider),idSede);
 				
-				if(result == 1) 
+				if(risultato == 1) 
 				{
 					JOptionPane.showMessageDialog(this.amministratoreFrame,"Rider eliminato correttamente!","",JOptionPane.PLAIN_MESSAGE);
 					this.gestioneSedeFrame.AggiornaRider();
