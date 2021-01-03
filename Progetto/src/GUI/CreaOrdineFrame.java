@@ -23,9 +23,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ListSelectionModel;
 
 public class CreaOrdineFrame extends JFrame {
 	//ultima riga contiene risultato di query con nome=totale descrizione=null prezzo=sommadeiprezzi
@@ -60,6 +63,7 @@ public class CreaOrdineFrame extends JFrame {
 		pnlCreaOrdine.add(scpProdotti);
 		
 		tblProdotti = new JTable();
+		tblProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblProdotti.setRowHeight(30);
 		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblProdotti.getTableHeader().setReorderingAllowed(false);
@@ -68,7 +72,7 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.setModel(new DefaultTableModel(
 			controllerGestore.getDatiProdotti("Tutte"),
 			new String[] {
-				"Nome", "Prezzo(€)"
+				"Nome", "Prezzo"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -91,7 +95,7 @@ public class CreaOrdineFrame extends JFrame {
 		
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); //allinea  a destra gli elementi della colonna
+		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); 
 		
 		
 		JScrollPane scpCarrello = new JScrollPane();
@@ -99,6 +103,7 @@ public class CreaOrdineFrame extends JFrame {
 		pnlCreaOrdine.add(scpCarrello);
 		
 		tblCarrello = new JTable();
+		tblCarrello.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblCarrello.setFillsViewportHeight(true);
 		tblCarrello.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblCarrello.getTableHeader().setReorderingAllowed(false);
@@ -107,43 +112,88 @@ public class CreaOrdineFrame extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Nome", "Quantit\u00E0", "Prezzo(€)"
+				"Nome", "Quantit\u00E0", "Prezzo"
 			}
 		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
+			Class[] columnTypes = new Class[] {
+				String.class, Integer.class, String.class
 			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
 			}
 		});
 		tblCarrello.getColumnModel().getColumn(0).setResizable(false);
 		tblCarrello.getColumnModel().getColumn(1).setResizable(false);
 		tblCarrello.getColumnModel().getColumn(2).setResizable(false);
 		scpCarrello.setViewportView(tblCarrello);
+		
+		tblCarrello.getColumnModel().getColumn(2).setCellRenderer(rightRenderer); 
+		
 			
 		String[] categorie =controllerGestore.getCategorieBox();
 		JComboBox cbxCategorie = new JComboBox(categorie);
 		cbxCategorie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String Categoria = cbxCategorie.getSelectedItem().toString();
-				Messaggio(Categoria);
 				FiltraPerCategorie(Categoria);
 			}
 		});
 		cbxCategorie.setBounds(46, 61, 151, 22);
 		pnlCreaOrdine.add(cbxCategorie);
 		
-		JButton btnCerca = new JButton("Cerca");
-		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnCerca.setBounds(265, 61, 89, 23);
-		pnlCreaOrdine.add(btnCerca);
+//		JButton btnCerca = new JButton("Cerca");
+//		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 11));
+//		btnCerca.setBounds(265, 61, 89, 23);
+//		pnlCreaOrdine.add(btnCerca);
 		
 		JButton btnAggiungiAlCarrello = new JButton("");
 		btnAggiungiAlCarrello.setBounds(309, 532, 45, 23);
 		pnlCreaOrdine.add(btnAggiungiAlCarrello);
+		btnAggiungiAlCarrello.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)   {
+					if(tblProdotti.getSelectedColumnCount() != 0)
+					{
+						DefaultTableModel modelloCarrello = (DefaultTableModel) tblCarrello.getModel();
+						boolean nuovo=true;
+						for (int i = 0; i < tblCarrello.getRowCount(); i++) {     
+							if(tblProdotti.getValueAt(tblProdotti.getSelectedRow(),0).equals(tblCarrello.getValueAt(i, 0)) ){
+								int quantita= (int) tblCarrello.getValueAt(i, 1);
+								tblCarrello.setValueAt(++quantita,i,1);
+								nuovo=false;
+							}
+							if(tblCarrello.getValueAt(i, 0).equals("Totale")) {
+								modelloCarrello.removeRow(i);
+							}
+						}
+						if(nuovo) {
+							modelloCarrello.addRow(new Object[]{tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0), 1,tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 1)});
+						}
+						
+						float totale=0;
+						for (int i = 0; i < tblCarrello.getRowCount(); i++) {    
+					
+							int quantita= (int) tblCarrello.getValueAt(i, 1);
+							String costoEuro=(String) tblCarrello.getValueAt(i, 2);
+							float costo= Float.valueOf(costoEuro.replace("€ ", ""));
+							totale+=(quantita*costo);
+							
+						}
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"€ "+String.valueOf(totale)});
+
+					}else 
+					{
+						//Errore();	
+					}
+				}
+					
+			}
+		});
 		
-		JButton btnInfo = new JButton("");
+		
+		
+		JButton btnInfo = new JButton("");  // apre la schermata infoProdottoFrame con i dati del prodotto selezionato
 		btnInfo.setBounds(265, 532, 45, 23);
 		pnlCreaOrdine.add(btnInfo);
 		
@@ -279,7 +329,7 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.setModel(new DefaultTableModel(
 				controllerGestore.getDatiProdotti(categoria),
 				new String[] {
-					"Nome", "Prezzo(€)"
+					"Nome", "Prezzo"
 				}
 			) {
 				Class[] columnTypes = new Class[] {
@@ -301,8 +351,8 @@ public class CreaOrdineFrame extends JFrame {
 	
 	
 	
-	private void Messaggio(String input) {
-		JOptionPane.showMessageDialog(this,input,"Errore",JOptionPane.ERROR_MESSAGE);
-	}
+//	private void Messaggio(String input) {
+//		JOptionPane.showMessageDialog(this,input,"Errore",JOptionPane.ERROR_MESSAGE);
+//	}
 	
 }

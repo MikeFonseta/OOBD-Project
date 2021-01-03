@@ -15,6 +15,7 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
@@ -56,7 +57,7 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.setModel(new DefaultTableModel(
 			controllerGestore.getDatiOrdini(),
 			new String[] {
-				"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale(€)", "Stato"
+				"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale", "Stato"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -84,6 +85,15 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getColumnModel().getColumn(8).setResizable(false);
 		//
 		scpGestore.setViewportView(tblOrdini);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblOrdini.getColumnModel().getColumn(7).setCellRenderer(rightRenderer); //allinea  a destra gli elementi della colonna
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tblOrdini.getColumnModel().getColumn(8).setCellRenderer( centerRenderer );
+		
 		
 		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 11));

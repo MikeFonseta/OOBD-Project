@@ -93,7 +93,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			String TelefonoCliente = rs.getString(5);
 			String NomeRider = rs.getString(6);
 			String TelefonoRider = rs.getString(7);
-			float Totale =rs.getFloat(8);
+			String Totale= "€ "+String.valueOf(rs.getFloat(8));		
 			java.sql.Timestamp InizioConsegna = rs.getTimestamp(9);
 			
 			char Stato = 'A'; //Attesa default
