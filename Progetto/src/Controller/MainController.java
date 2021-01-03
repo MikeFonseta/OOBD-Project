@@ -14,6 +14,7 @@ import DAO.ProdottoDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.*;
 import GUI.LoginFrame;
+import GUI.VisualizzaCarrelloFrame;
 import GUI.VisualizzaOrdiniFrame;
 import GUI.VisualizzaProdottiFrame;
 import GUI.CreaOrdineFrame;
@@ -25,6 +26,7 @@ public class MainController {
 	//private AdminController AdminController = null;
 	private ControllerGestore controllerGestore = null;
 	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
+	private VisualizzaCarrelloFrame visualizzaCarrelloFrame = null;
 	private VisualizzaProdottiFrame visualizzaProdottiFrame = null;
 	private CreaOrdineFrame creaOrdineFrame = null;
 
@@ -105,6 +107,31 @@ public class MainController {
 		}
 	}
 	
+	
+	public void ApriVisualizzaCarrelloFrame(int idOrdine) {
+		if(this.visualizzaOrdiniFrame != null)
+			this.visualizzaOrdiniFrame.setEnabled(false);
+		else 
+			this.controllerGestore.getGestoreFrame().setEnabled(false);
+
+		visualizzaCarrelloFrame = new VisualizzaCarrelloFrame(this,idOrdine);
+	}
+		
+	
+	
+	
+	
+	public void ChiudiVisualizzaCarrelloFrame() {
+		if(this.visualizzaOrdiniFrame != null)
+			this.visualizzaOrdiniFrame.setEnabled(true);
+		else 
+			this.controllerGestore.getGestoreFrame().setEnabled(true);
+
+		this.visualizzaCarrelloFrame.dispose();
+		
+	}
+	
+	
 	public void ApriVisualizzaProdottiFrame() {
 		visualizzaProdottiFrame = new VisualizzaProdottiFrame(this);
 	}
@@ -118,22 +145,50 @@ public class MainController {
 	}
 	
 	
-	String[] convertiInArrayStringhe(List<String> list) {
-	String ris[] = new String[list.size()];
 	
-		for(int i=0;i<list.size();i++)	
-			ris[i] = list.get(i);	
-	return ris;
+	public Object[][] getProdottiCarrello(int idOrdine){
+		Object[][] risultato = null;
+		if(controllerAmministratore != null) {
+			if(controllerAmministratore.getImp() == controllerAmministratore.getPostgresImp()) {
+				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+				risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
+			}
+			else if(controllerAmministratore.getImp() == controllerAmministratore.getAltraImp()){
+			
+			}
+		}
+		else {
+			if(controllerGestore.getImp() == controllerGestore.getPostgresImp()) {
+				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+				risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
+			}
+			else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
+			
+			}
+		}
+		return risultato;
+		
+		
 	}
 	
+
 	
 	
+	
+	
+	String[] convertiInArrayStringhe(List<String> list) {
+	String risultato[] = new String[list.size()];
+	
+		for(int i=0;i<list.size();i++)	
+			risultato[i] = list.get(i);	
+	return risultato;
+	}
 	
 	
 	
 	public String[] getIDSedi() {
 		List<String> IDsedi = new ArrayList<String>();
-		String[] result = null;
+		String[] risultato = null;
 		
 		if(controllerAmministratore != null) {
 
@@ -142,7 +197,7 @@ public class MainController {
 				try {
 					IDsedi = SedeDAOPostgres.CercaTutteLeSedi();
 					IDsedi.add(0, "Tutte Le Sedi");
-					result = convertiInArrayStringhe(IDsedi);
+					risultato = convertiInArrayStringhe(IDsedi);
 				} catch (SQLException e) {
 					
 					//Inserito cosi come ho fatto in controllerAmministratore per non farti avere l'errore nella classe
@@ -154,24 +209,23 @@ public class MainController {
 			}
 	    }
 		else {
-					result = new String[] { String.valueOf(controllerGestore.getAccount().getSede().getIdSede()) };			
+					risultato = new String[] { String.valueOf(controllerGestore.getAccount().getSede().getIdSede()) };			
 		}
-		return result;
+		return risultato;
 	}
 
 
 	public List<Integer> getID_ProdottiPerNomeP(String NomiP) {
-		List<Integer> result = new ArrayList<>();
+		List<Integer> risultato = new ArrayList<>();
 		if(NomiP.isBlank()== false) {
 			String Nprodotti[] = NomiP.split(","); 		
 			if(controllerAmministratore != null) {
 				if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
 					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 						try {
-							result = prodottoDAO.getTuttiProdottiPerNome(Nprodotti);
+							risultato = prodottoDAO.getTuttiProdottiPerNome(Nprodotti);
 							
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
+						} catch (SQLException e) {	
 							e.printStackTrace();
 						}
 				}
@@ -180,24 +234,28 @@ public class MainController {
 				}				
 
 			}
-			else {//codice gestore	
-				
-				
-				
+			else {
+				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+				try {
+					risultato = prodottoDAO.getTuttiProdottiPerNome(Nprodotti);
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}	
 			}
 		}
-			else result = null;
+			else risultato = null;
 		
-		return result;
+		return risultato;
 	}
 	
 	
 	public Object[][] getOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) {
-		Object[][] result = null;		
+		Object[][] risultato = null;		
 			if(controllerAmministratore != null) {
 				if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
 					OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-					result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
+					risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
 				}
 				else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {//Altra Impl
 					
@@ -206,17 +264,14 @@ public class MainController {
 			else {
 					if(controllerGestore.getImp() == controllerGestore.getPostgresImp()) {
 						OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-						result = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
+						risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
 					}
 					else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
 						
 					}
 			}
-			
-			
-			
 		
-		return result;
+		return risultato;
 	}
 
 

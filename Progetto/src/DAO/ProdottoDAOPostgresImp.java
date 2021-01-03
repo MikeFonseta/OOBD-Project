@@ -78,7 +78,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menÃ¹ WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
+					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
 			
 		while(rs.next()) {
 				
@@ -108,7 +108,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menÃ¹ WHERE id_sede=" + idSede + ") AND P.categoria='" + categoria + "' ORDER BY P.id_prodotto ASC");
+					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ") AND P.categoria='" + categoria + "' ORDER BY P.id_prodotto ASC");
 		
 		while(rs.next()) {
 				
@@ -136,7 +136,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	@Override
 	public List<Integer> getTuttiProdottiPerNome(String[] Prodotti) throws SQLException {
 		int i =0; boolean isEmpty = false;
-		List<Integer> result = new ArrayList<>();
+		List<Integer> risultato = new ArrayList<>();
 		Connection connection = DBConnection.getInstance().getConnection();
 		Statement st = null;
 		ResultSet rs = null;
@@ -153,22 +153,22 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 			while(rs.next()) {
 				isEmpty = false;
 				Integer temp = rs.getInt(1);
-				if(!result.contains(temp)) result.add(temp);									//elimina duplicati
+				if(!risultato.contains(temp)) risultato.add(temp);									//elimina duplicati
 			}
 			i=i+1;
 		}
 		
 		//se uno dei parametri non ha nessun riscontro la ricerca salta
 		if(isEmpty==true) {
-		result.clear();
-		result.add(0,-1);
+		risultato.clear();
+		risultato.add(0,-1);
 		}		
 
 		
 		rs.close();
 		st.close();
 		connection.close();
-	return result;
+	return risultato;
 	
 	}
 	
@@ -229,6 +229,36 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		conn.close();
 		
 		return prodotti;
+	}
+
+	
+	@Override
+	public List<Object[]> getProdottiPerId_Ordine(int idOrdine) {
+		List<Object[]> risultato = new ArrayList<Object[]>();
+		Connection connection = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		try {
+			connection = DBConnection.getInstance().getConnection();
+			st = connection.createStatement(); 
+			rs = st.executeQuery("SELECT ID_Prodotto, NomeP, NumPezzi, Prezzo "
+							   + "FROM CompOrdine NATURAL JOIN Prodotto "
+							   + "WHERE ID_Ordine = "+idOrdine+" ");
+			
+			while(rs.next()) {
+				risultato.add(new Object[] {
+				rs.getInt(1),
+				rs.getString(2),
+			    rs.getInt(3),
+			    rs.getFloat(4)} );	
+			}	
+				
+		}catch(SQLException e) {
+			
+		}
+		
+		return risultato;
 	}
 	
 	

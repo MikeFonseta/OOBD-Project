@@ -57,7 +57,6 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 
 	private JPanel pnlPrincipale;
 	private JTable tblOrdini;
-	private JTable table;
 	private JComboBox cbxIDSedi;
 	private JComboBox cbxVeicolo;
 	private JTextField txfProdotti;
@@ -225,10 +224,20 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 		pnlPrincipale.add(btnChiudi);
 		
 		
-		JButton btnVisualizzaC = new JButton("Visualizza Carrello");
-		btnVisualizzaC.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnVisualizzaC.setBounds(783, 618, 180, 35);
-		pnlPrincipale.add(btnVisualizzaC);
+		JButton btnVisualizzaCarrello = new JButton("Visualizza Carrello");
+		btnVisualizzaCarrello.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()==MouseEvent.BUTTON1) {
+				int indice = getTblOrdini().getSelectedRow();
+				if(indice!= -1)
+					mainController.ApriVisualizzaCarrelloFrame(getIdOrdineAllaRigaSelezionata(indice));
+				}
+			}
+		});
+		btnVisualizzaCarrello.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnVisualizzaCarrello.setBounds(783, 618, 180, 35);
+		pnlPrincipale.add(btnVisualizzaCarrello);
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -407,7 +416,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 
 	public Integer getSedeSelezionata() {
 		if(this.cbxIDSedi.getSelectedItem().toString() == "Tutte Le Sedi")
-			return null;
+			return null; 
 		else 
 			return Integer.valueOf(this.cbxIDSedi.getSelectedItem().toString());
 	}
@@ -454,14 +463,14 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	}
 
 
+	public JTable getTblOrdini() {
+		return tblOrdini;
+	}
 
-//	public void mouseClickedFun() {
-//		Integer Min = this.getMinSelezionato();
-//		Integer Max = this.getMaxSelezionato();
-//
-//		mainController.getOrdini(getSedeSelezionata(), getProdottiSelezionati(),getVeicoloSelezionato(), getMinSelezionato(), getMaxSelezionato());
-//
-//		}
-
+	
+	public int getIdOrdineAllaRigaSelezionata(int indice){
+		int idOrdine = Integer.parseInt(this.getTblOrdini().getValueAt(indice, 1).toString());
+		return idOrdine;
+	}
 
 }
