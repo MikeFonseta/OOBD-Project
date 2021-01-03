@@ -239,8 +239,11 @@ public class GestoreFrame extends JFrame {
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriCarrello(); //da scrivere appena CarrelloFrame viene caricato
+				if(e.getButton() == MouseEvent.BUTTON1) { //codice da rivedere
+					int indice = getTblOrdini().getSelectedRow();
+					if(indice!= -1)
+						controllerGestore.ApriVisualizzaCarrello(getIdOrdineAllaRigaSelezionata(indice));
+				}
 			}
 		});
 		
@@ -314,4 +317,12 @@ public class GestoreFrame extends JFrame {
 		JOptionPane.showMessageDialog(this,"Impossibile eliminare un ordine in consegna","Errore",JOptionPane.ERROR_MESSAGE);
 	}
 	
+	public JTable getTblOrdini() {
+		return tblOrdini;
+	}
+	
+	public int getIdOrdineAllaRigaSelezionata(int indice){
+		int idOrdine = Integer.parseInt(this.getTblOrdini().getValueAt(indice,0).toString());
+		return idOrdine;
+	}
 }

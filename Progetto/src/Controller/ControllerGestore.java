@@ -27,7 +27,14 @@ public class ControllerGestore {
 		this.mainController = mainController;
 		this.account = account;
 	    gestoreFrame = new GestoreFrame(this); 
+	    
+	    
 	}
+	
+	public void ApriVisualizzaCarrello(int indice) {
+		this.gestoreFrame.setEnabled(false);
+		this.mainController.ApriVisualizzaCarrelloFrame(indice); 
+    }
 	
 	public void chiudiGestoreFrame(boolean logout) {
 		if(logout==true) {
@@ -144,10 +151,6 @@ public Object[][] getDatiProdotti(String categoria) { //prodotti
 	public void ModificaCreaOrdineFrame() {//scrivere dopo aver caricato CreaOrdineFrame
 		
 		//apre la schermata Crea ordine ma con i campi caricati dall ordine selezionato
-	}
-	
-	public void ApriCarrello() {//scrivere dopo che carrelloFrame sia stato caricato
-		//apre il carrello di un ordine
 	}
 	
 	public void EliminaOrdine(int idOrdine) {
