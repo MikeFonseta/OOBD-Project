@@ -280,7 +280,7 @@ public class CreaSedeFrame extends JFrame{
 		btnCrea.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {
+				if(e.getButton() == MouseEvent.BUTTON1 && btnCrea.isEnabled()) {
 					controllerAmministratore.CreaSede(idProssimaSede, txfNome.getText(), txfTelefono.getText(), txfProvincia.getText(), txfCitta.getText(), txfVia.getText(), txfNumCivico.getText(), NomeUtenteGestore, psfPassword.getText());
 				}
 			}

@@ -97,7 +97,6 @@ public class GestioneRiderFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
 		}});
 		txfNome.setBounds(179, 128, 210, 30);
 		getContentPane().add(txfNome);
@@ -126,7 +125,6 @@ public class GestioneRiderFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
 		}});
 		txfCognome.setColumns(10);
 		txfCognome.setBounds(178, 194, 210, 30);
@@ -154,7 +152,6 @@ public class GestioneRiderFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
 		}});
 		txfTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfTelefono.setColumns(10);
@@ -241,7 +238,7 @@ public class GestioneRiderFrame extends JFrame{
 		btnSalva.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {
+				if(e.getButton() == MouseEvent.BUTTON1 && btnSalva.isEnabled()) {
 					controllerAmministratore.CreaRider(Integer.parseInt(lblIdRider.getText()),txfNome.getText(),txfCognome.getText(),txfTelefono.getText(),cbxVeicolo.getSelectedItem().toString(),idSede);
 				}
 			}
@@ -324,7 +321,6 @@ public class GestioneRiderFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
 		}});
 		txfTelefono.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfTelefono.setColumns(10);
@@ -412,7 +408,7 @@ public class GestioneRiderFrame extends JFrame{
 		btnSalva.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {
+				if(e.getButton() == MouseEvent.BUTTON1 && btnSalva.isEnabled()) {
 					controllerAmministratore.AggiornaRider(rider.getIdRider(), txfTelefono.getText(), cbxVeicolo.getSelectedItem().toString());
 				}
 			}
