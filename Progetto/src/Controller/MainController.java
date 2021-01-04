@@ -1,6 +1,7 @@
 package Controller;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ import GUI.VisualizzaOrdiniFrame;
 import GUI.VisualizzaProdottiFrame;
 import GUI.CreaOrdineFrame;
 
+//simbolo euro : \u20AC
+//a accentata  : \u00E0
+//u accentata  : \u00F9
+//simbolo NULL : \u0000
 public class MainController {
 	
 	public LoginFrame loginFrame = new LoginFrame(this);

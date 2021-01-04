@@ -13,33 +13,20 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class InfoProdottoFrame extends JFrame {
 
 	private JPanel pnlinfo;
+	private Point initialClick;
+	private JFrame parent=this;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InfoProdottoFrame frame = new InfoProdottoFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public InfoProdottoFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 439, 601);
+		setBounds(100, 100, 400, 500);
 		pnlinfo = new JPanel();
 		pnlinfo.setBackground(Color.WHITE);
 		pnlinfo.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,5 +57,49 @@ public class InfoProdottoFrame extends JFrame {
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnChiudi.setBounds(94, 335, 89, 23);
 		pnlinfo.add(btnChiudi);
+		
+
+		JPanel pnlBarra = new JPanel();
+		pnlBarra.setBackground(Color.DARK_GRAY);
+		pnlBarra.setBounds(0, 0, 1200, 35);
+		getContentPane().add(pnlBarra);
+		pnlBarra.setLayout(null);
+		
+		JLabel lblTitolo = new JLabel("Info Prodotto");
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblTitolo);
+		
+		
+		pnlBarra.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            initialClick = e.getPoint();
+	            getComponentAt(initialClick);
+	        }
+	    });
+
+	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+
+	            // Posizione Finestra
+	            int thisX = parent.getLocation().x;
+	            int thisY = parent.getLocation().y;
+
+	            // Determinazione Spostamento
+	            int xMoved = e.getX() - initialClick.x;
+	            int yMoved = e.getY() - initialClick.y;
+
+	            // Spostamento finestra
+	            int X = thisX + xMoved;
+	            int Y = thisY + yMoved;
+	            parent.setLocation(X, Y);
+	        }
+	    });
+		
+		setLocationRelativeTo(null);
+		setUndecorated(true);
+		setVisible(true);
 	}
 }

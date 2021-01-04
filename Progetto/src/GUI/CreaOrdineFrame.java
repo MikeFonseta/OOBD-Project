@@ -25,8 +25,11 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListSelectionModel;
 
@@ -44,14 +47,15 @@ public class CreaOrdineFrame extends JFrame {
 	private JTextField txfVia;
 	private JTextField txfCodice;
 	private ControllerGestore controllerGestore;
-
+	private Point initialClick;
+	private JFrame parent=this;
 
 	public CreaOrdineFrame(ControllerGestore controllerGestore) {
+		setResizable(false);
 
 		this.controllerGestore = controllerGestore;
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 2271, 916);
+		setBounds(100, 100, 1200, 700);
 		pnlCreaOrdine = new JPanel();
 		pnlCreaOrdine.setBackground(Color.WHITE);
 		pnlCreaOrdine.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -138,13 +142,14 @@ public class CreaOrdineFrame extends JFrame {
 				FiltraPerCategorie(Categoria);
 			}
 		});
-		cbxCategorie.setBounds(46, 61, 151, 22);
+		cbxCategorie.setBounds(203, 65, 151, 22);
 		pnlCreaOrdine.add(cbxCategorie);
 		
-//		JButton btnCerca = new JButton("Cerca");
-//		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 11));
-//		btnCerca.setBounds(265, 61, 89, 23);
-//		pnlCreaOrdine.add(btnCerca);
+		
+		JLabel lblCategoria = new JLabel("Categoria:");
+		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblCategoria.setBounds(46, 69, 88, 14);
+		pnlCreaOrdine.add(lblCategoria);
 		
 		JButton btnAggiungiAlCarrello = new JButton("");
 		btnAggiungiAlCarrello.setBounds(309, 532, 45, 23);
@@ -176,11 +181,11 @@ public class CreaOrdineFrame extends JFrame {
 					
 							int quantita= (int) tblCarrello.getValueAt(i, 1);
 							String costoEuro=(String) tblCarrello.getValueAt(i, 2);
-							float costo= Float.valueOf(costoEuro.replace("€ ", ""));
+							float costo= Float.valueOf(costoEuro.replace("\u20AC ", ""));
 							totale+=(quantita*costo);
 							
 						}
-						modelloCarrello.addRow(new Object[]{"Totale", null ,"€ "+String.valueOf(totale)});
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(totale)});
 
 					}else 
 					{
@@ -320,7 +325,49 @@ public class CreaOrdineFrame extends JFrame {
 		btnAnnulla.setBounds(994, 605, 71, 23);
 		pnlCreaOrdine.add(btnAnnulla);
 	
-	
+		
+		
+		JPanel pnlBarra = new JPanel();
+		pnlBarra.setBackground(Color.DARK_GRAY);
+		pnlBarra.setBounds(0, 0, 1200, 35);
+		getContentPane().add(pnlBarra);
+		pnlBarra.setLayout(null);
+		
+		JLabel lblTitolo = new JLabel("Creazione Ordine");
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblTitolo);
+
+			
+		pnlBarra.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            initialClick = e.getPoint();
+	            getComponentAt(initialClick);
+	        }
+	    });
+
+	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+
+	            // Posizione Finestra
+	            int thisX = parent.getLocation().x;
+	            int thisY = parent.getLocation().y;
+
+	            // Determinazione Spostamento
+	            int xMoved = e.getX() - initialClick.x;
+	            int yMoved = e.getY() - initialClick.y;
+
+	            // Spostamento finestra
+	            int X = thisX + xMoved;
+	            int Y = thisY + yMoved;
+	            parent.setLocation(X, Y);
+	        }
+	    });
+		
+		setLocationRelativeTo(null);
+		setUndecorated(true);
 		this.setVisible(true);
 
 	}
@@ -348,11 +395,4 @@ public class CreaOrdineFrame extends JFrame {
 			tblProdotti.getColumnModel().getColumn(0).setResizable(false);
 			tblProdotti.getColumnModel().getColumn(1).setResizable(false);
 	}
-	
-	
-	
-//	private void Messaggio(String input) {
-//		JOptionPane.showMessageDialog(this,input,"Errore",JOptionPane.ERROR_MESSAGE);
-//	}
-	
 }

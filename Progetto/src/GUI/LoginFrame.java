@@ -120,13 +120,6 @@ public class LoginFrame extends JFrame {
 		btnChiudi.setOpaque(false);
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(btnChiudi);
-		
-		
-		contentPane.getActionMap().put("foo", new AbstractAction() {
-	          public void actionPerformed(ActionEvent e) {
-	        	  c.ChiudiLogin();
-	          }
-	    });
 
 		//premendo il tasto esc chiudi la schermata
 		contentPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel"); 

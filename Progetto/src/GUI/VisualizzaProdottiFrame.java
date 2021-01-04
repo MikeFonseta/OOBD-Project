@@ -15,10 +15,15 @@ import javax.swing.table.DefaultTableModel;
 import Controller.MainController;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.ListSelectionModel;
 
 public class VisualizzaProdottiFrame extends JFrame {
@@ -29,11 +34,13 @@ public class VisualizzaProdottiFrame extends JFrame {
 	private JTextField txfMax;
 	private JTextField txfAllergeni;
 	private MainController mainController;
-
+	private Point initialClick;
+	private JFrame parent=this;
 
 	public VisualizzaProdottiFrame(MainController mainController) {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 2844, 913);
+		setBounds(100, 100, 1200, 700);
 		pnlProdotti = new JPanel();
 		pnlProdotti.setBackground(Color.WHITE);
 		pnlProdotti.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -119,6 +126,49 @@ public class VisualizzaProdottiFrame extends JFrame {
 		txfAllergeni.setColumns(10);
 		txfAllergeni.setBounds(558, 68, 226, 20);
 		pnlProdotti.add(txfAllergeni);
+		
+		
+		JPanel pnlBarra = new JPanel();
+		pnlBarra.setBackground(Color.DARK_GRAY);
+		pnlBarra.setBounds(0, 0, 1200, 35);
+		getContentPane().add(pnlBarra);
+		pnlBarra.setLayout(null);
+		
+		JLabel lblTitolo = new JLabel("Prodotti");
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblTitolo);
+		
+		
+		pnlBarra.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            initialClick = e.getPoint();
+	            getComponentAt(initialClick);
+	        }
+	    });
+
+	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+
+	            // Posizione Finestra
+	            int thisX = parent.getLocation().x;
+	            int thisY = parent.getLocation().y;
+
+	            // Determinazione Spostamento
+	            int xMoved = e.getX() - initialClick.x;
+	            int yMoved = e.getY() - initialClick.y;
+
+	            // Spostamento finestra
+	            int X = thisX + xMoved;
+	            int Y = thisY + yMoved;
+	            parent.setLocation(X, Y);
+	        }
+	    });
+		
+		setLocationRelativeTo(null);
+		setUndecorated(true);
 		
 		this.setVisible(true);
 

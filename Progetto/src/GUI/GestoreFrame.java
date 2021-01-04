@@ -24,16 +24,21 @@ import Controller.ControllerGestore;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Point;
 
 public class GestoreFrame extends JFrame {
 
 	private JPanel pnlGestore;
 	private JTable tblOrdini;
 	private ControllerGestore controllerGestore=null;
+	private Point initialClick;
+	private JFrame parent=this;
 
 	public GestoreFrame(ControllerGestore controllerGestore) {
+		setResizable(false);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
@@ -97,17 +102,17 @@ public class GestoreFrame extends JFrame {
 		
 		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNomeUtente.setBounds(40, 27, 88, 14);
+		lblNomeUtente.setBounds(43, 46, 88, 14);
 		pnlGestore.add(lblNomeUtente);
 		
 		JLabel lblNomeSede = new JLabel(controllerGestore.getAccount().getSede().getNomeSede());
 		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNomeSede.setBounds(344, 27, 88, 14);
+		lblNomeSede.setBounds(347, 46, 88, 14);
 		pnlGestore.add(lblNomeSede);
 		
 		JButton btnEsci = new JButton("Esci");
 		btnEsci.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnEsci.setBounds(804, 23, 89, 23);
+		btnEsci.setBounds(806, 42, 89, 23);
 		pnlGestore.add(btnEsci);
 		btnEsci.addMouseListener(new MouseAdapter() {
 			@Override
@@ -119,7 +124,7 @@ public class GestoreFrame extends JFrame {
 		
 		JButton btnChiudi = new JButton("Chiudi");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnChiudi.setBounds(1023, 23, 89, 23);
+		btnChiudi.setBounds(1023, 42, 89, 23);
 		pnlGestore.add(btnChiudi);
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
@@ -273,6 +278,48 @@ public class GestoreFrame extends JFrame {
 			}
 		
 		});
+		
+		JPanel pnlBarra = new JPanel();
+		pnlBarra.setBackground(Color.DARK_GRAY);
+		pnlBarra.setBounds(0, 0, 1200, 35);
+		getContentPane().add(pnlBarra);
+		pnlBarra.setLayout(null);
+		
+		JLabel lblTitolo = new JLabel("Client Gestore");
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblTitolo);
+		
+		
+		pnlBarra.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            initialClick = e.getPoint();
+	            getComponentAt(initialClick);
+	        }
+	    });
+
+	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+
+	            // Posizione Finestra
+	            int thisX = parent.getLocation().x;
+	            int thisY = parent.getLocation().y;
+
+	            // Determinazione Spostamento
+	            int xMoved = e.getX() - initialClick.x;
+	            int yMoved = e.getY() - initialClick.y;
+
+	            // Spostamento finestra
+	            int X = thisX + xMoved;
+	            int Y = thisY + yMoved;
+	            parent.setLocation(X, Y);
+	        }
+	    });
+		
+		setLocationRelativeTo(null);
+		setUndecorated(true);
 		setVisible(true);
 	}
 	

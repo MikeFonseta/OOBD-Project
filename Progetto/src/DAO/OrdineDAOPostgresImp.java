@@ -77,13 +77,13 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
-				+ "	via || ' ' || numcivico || ',' || città AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
-				+ "	nomer || ' ' || cognomer AS NomeRider, telefonor AS TelefonoRider,\r\n"
-				+ "	totale AS Totale, inizioconsegna AS Stato\r\n"
-				+ "FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
-				+ "		 NATURAL JOIN cliente AS C\r\n"
-				+ "		 NATURAL JOIN rider AS R\r\n"
-				+ "ORDER BY id_ordine ASC");
+				+ "				via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
+				+ "				nomer || ' ' || cognomer AS NomeRider, telefonor AS TelefonoRider,\r\n"
+				+ "			totale AS Totale, inizioconsegna AS Stato\r\n"
+				+ "				FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
+				+ "				 NATURAL JOIN cliente AS C\r\n"
+				+ "			 NATURAL JOIN rider AS R\r\n"
+				+ "				ORDER BY id_ordine ASC");
 		while(rs.next()) {
 				
 			int CodOrdine = rs.getInt(1);
@@ -93,7 +93,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			String TelefonoCliente = rs.getString(5);
 			String NomeRider = rs.getString(6);
 			String TelefonoRider = rs.getString(7);
-			String Totale= "€ "+String.valueOf(rs.getFloat(8));		
+			String Totale= "\u20AC "+String.valueOf(rs.getFloat(8));		
 			java.sql.Timestamp InizioConsegna = rs.getTimestamp(9);
 			
 			char Stato = 'A'; //Attesa default
