@@ -174,7 +174,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	
 	
 	@Override
-	public List<String> getCategorie() throws SQLException{
+	public List<String> getCategorieProdotto() throws SQLException{
 		List<String> categorie = new ArrayList<String>();
 		categorie.add("Tutte");
 		Connection conn = null;
@@ -194,6 +194,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		return categorie;
 	}
+	
 	
 	@Override
 	public List<Object[]> getProdottiTabella(String categoria) throws SQLException {

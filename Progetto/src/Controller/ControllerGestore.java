@@ -87,19 +87,7 @@ public Object[][] getDatiProdotti(String categoria) { //prodotti
 	
 	public String[] getCategorieBox() {
 		
-		String[] result = null;
-		if(this.imp.equals(this.postgresImp))
-		{
-			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
-			try {
-				result = prodottoDao.getCategorie().toArray(new String[] {});
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}
-		}else if(this.imp.equals(this.altraImp))
-		{
-			//altre implementazioni
-		}
+		String[] result = this.mainController.getCategorie();
 		
 		return result;
 	}

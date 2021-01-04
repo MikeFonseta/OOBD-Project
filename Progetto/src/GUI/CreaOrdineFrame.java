@@ -74,7 +74,7 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.setFillsViewportHeight(true);
 		//
 		tblProdotti.setModel(new DefaultTableModel(
-			controllerGestore.getDatiProdotti("Tutte"),
+			getNomePrezzo(this.controllerGestore),
 			new String[] {
 				"Nome", "Prezzo"
 			}
@@ -199,6 +199,19 @@ public class CreaOrdineFrame extends JFrame {
 		
 		
 		JButton btnInfo = new JButton("");  // apre la schermata infoProdottoFrame con i dati del prodotto selezionato
+		btnInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					if(tblProdotti.getSelectedColumnCount() != 0)
+					{
+						
+					
+					}else 
+					{
+						//Errore();	
+					}
+				
+				}
+		});
 		btnInfo.setBounds(265, 532, 45, 23);
 		pnlCreaOrdine.add(btnInfo);
 		
@@ -395,4 +408,11 @@ public class CreaOrdineFrame extends JFrame {
 			tblProdotti.getColumnModel().getColumn(0).setResizable(false);
 			tblProdotti.getColumnModel().getColumn(1).setResizable(false);
 	}
+	
+	public Object[][] getNomePrezzo(ControllerGestore controllerGestore) {
+		Object[][] result = null;
+		result=controllerGestore.getDatiProdotti("Tutte");
+		return result;
+	}
+	
 }

@@ -280,6 +280,34 @@ public class MainController {
 	}
 
 
+	public String[] getCategorie() {
+		
+		String[] result = null;
+		if(controllerGestore != null) {
+			if(controllerGestore.getImp()==controllerGestore.getPostgresImp())
+			{
+				
+				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+				try {
+					result = prodottoDao.getCategorieProdotto().toArray(new String[] {});
+				} catch (SQLException e) {
+					//Errore
+				}
+				
+				
+			}else if(controllerGestore.getImp()==controllerGestore.getAltraImp())
+			{
+				//altre implementazioni
+			}
+		}
+		else {//controllerAmministratore
+			
+			
+		}
+		
+		
+		return result;
+	}
 	
 	
 
