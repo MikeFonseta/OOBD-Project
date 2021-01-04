@@ -6,36 +6,22 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Point;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
-
-
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.List;
 
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 
 import Controller.ControllerAmministratore;
-import Controller.ControllerGestore;
-import Entities.Account;
-import Entities.Sede;
 
 import javax.swing.ListSelectionModel;
 import java.awt.Color;
 import javax.swing.JScrollPane;
-import java.awt.Rectangle;
 import java.awt.SystemColor;
 import javax.swing.JPanel;
 
@@ -60,7 +46,7 @@ public class AmministratoreFrame extends JFrame{
 		btnGestioneProdotti.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1){
+				if(e.getButton() == MouseEvent.BUTTON1){
 				}
 			}
 		});
@@ -139,7 +125,7 @@ public class AmministratoreFrame extends JFrame{
 		btnModifica.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.BUTTON1 == MouseEvent.BUTTON1)
+				if(e.getButton() == MouseEvent.BUTTON1)
 				{
 					if(tblSedi.getSelectedColumnCount() != 0)
 					{

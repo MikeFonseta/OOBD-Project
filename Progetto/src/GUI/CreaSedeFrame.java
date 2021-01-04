@@ -104,7 +104,7 @@ public class CreaSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
+				
 		}});
 		getContentPane().add(txfNome);
 		
@@ -132,7 +132,7 @@ public class CreaSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
+				
 		}});
 		getContentPane().add(txfTelefono);
 		
@@ -160,7 +160,7 @@ public class CreaSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
+				
 		}});
 		getContentPane().add(txfProvincia);
 		
@@ -188,7 +188,7 @@ public class CreaSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
+				
 		}});
 		getContentPane().add(txfVia);
 		
@@ -216,7 +216,7 @@ public class CreaSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
+				
 		}});
 		getContentPane().add(txfNumCivico);
 		
@@ -244,7 +244,7 @@ public class CreaSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
+				
 		}});
 		getContentPane().add(psfPassword);
 		
@@ -354,7 +354,7 @@ public class CreaSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
+				
 		}});
 		getContentPane().add(txfCitta);
 		

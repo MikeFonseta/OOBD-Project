@@ -183,7 +183,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 	}
 
 	@Override
-	public int ProssimoIdSede() throws SQLException{
+	public int idProssimaSede() throws SQLException{
 		
 		Connection conn = null;
 		int risultato = 0;
@@ -191,7 +191,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT nextIdSede()");	
+		ResultSet rs = st.executeQuery("SELECT idProssimaSede()");	
 			
 		if(rs.next()){
 			risultato = rs.getInt(1);

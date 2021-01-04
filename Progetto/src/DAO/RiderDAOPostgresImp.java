@@ -9,7 +9,6 @@ import java.util.List;
 
 import Database.DBConnection;
 import Entities.Rider;
-import Entities.Sede;
 
 public class RiderDAOPostgresImp implements RiderDAO{
 
@@ -72,7 +71,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 	@Override
-	public int ProssimoIdRider() throws SQLException{
+	public int idProssimoRider() throws SQLException{
 		
 		Connection conn = null;
 		int risultato = 0;
@@ -80,7 +79,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT nextIdRider()");	
+		ResultSet rs = st.executeQuery("SELECT idProssimoRider()");	
 			
 		if(rs.next()){
 			 risultato = rs.getInt(1);

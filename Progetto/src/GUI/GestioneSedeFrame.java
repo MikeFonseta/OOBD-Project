@@ -79,7 +79,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
+				
 		}});
 		txfNomeSede.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfNomeSede.setBounds(231, 46, 183, 28);
@@ -108,7 +108,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
+				
 		}});
 		txfProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfProvincia.setColumns(10);
@@ -142,7 +142,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub		
+				
 		}});
 		txfCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfCitta.setColumns(10);
@@ -177,7 +177,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub			
+				
 		}});
 		txfVia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfVia.setColumns(10);
@@ -212,7 +212,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub		
+				
 		}});
 		txfNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfNumCivico.setColumns(10);
@@ -266,7 +266,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub			
+				
 		}});
 		psfPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
 		psfPassword.setColumns(10);
@@ -329,7 +329,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub	
+				
 		}});
 		txfTelefono.setBounds(760, 96, 143, 28);
 		getContentPane().add(txfTelefono);

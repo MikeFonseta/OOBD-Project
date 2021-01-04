@@ -8,7 +8,6 @@ import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.Account;
-import Entities.Prodotto;
 import Entities.Rider;
 import Entities.Sede;
 import GUI.AggiungiProdottoFrame;
@@ -17,7 +16,6 @@ import GUI.CreaSedeFrame;
 import GUI.EliminaSedeFrame;
 import GUI.GestioneRiderFrame;
 import GUI.GestioneSedeFrame;
-import GUI.VisualizzaOrdiniFrame;
 
 public class ControllerAmministratore {
 	
@@ -84,7 +82,7 @@ public class ControllerAmministratore {
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
 			AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
 			try {
-				idProssimaSede = sedeDao.ProssimoIdSede();
+				idProssimaSede = sedeDao.idProssimaSede();
 				nomeUtenteGestore = accountDao.NomeUtentePerNuovaSede(idProssimaSede);
 				this.amministratoreFrame.setEnabled(false);
 				this.creaSedeFrame = new CreaSedeFrame(this,idProssimaSede,nomeUtenteGestore);
@@ -412,7 +410,7 @@ public class ControllerAmministratore {
 		{
 			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
 			try {
-				risultato = riderDao.ProssimoIdRider();
+				risultato = riderDao.idProssimoRider();
 				this.gestioneSedeFrame.setEnabled(false);
 				this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede,risultato);
 			} catch (SQLException e) {
