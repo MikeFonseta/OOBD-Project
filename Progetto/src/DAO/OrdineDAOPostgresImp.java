@@ -128,7 +128,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			//Creazione stringa sql per la query ricerca
 			
 			StringBuilder sql = new StringBuilder(1024);
-			sql.append("SELECT DISTINCT O.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.città AS Indirizzo, "
+			sql.append("SELECT DISTINCT O.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.citt\u00E0 AS Indirizzo, "
 					 + "R.ID_Rider, R.NomeR|| ' ' || R.CognomeR AS NomeRider,  O.Totale "
 					 + "FROM Rider AS R NATURAL JOIN Ordine AS O NATURAL JOIN CompOrdine AS CO NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C " );
 			
