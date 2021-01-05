@@ -81,7 +81,7 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT nomeUtenteAssociato(" + idSede +")");	
+			ResultSet rs = st.executeQuery("SELECT nomeutentesede(" + idSede +")");	
 			
 			if(rs.next()){
 				nomeUtente= rs.getString(1);	

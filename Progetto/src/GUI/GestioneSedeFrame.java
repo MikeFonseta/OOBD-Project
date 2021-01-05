@@ -291,7 +291,7 @@ public class GestioneSedeFrame extends JFrame{
 					if(rdbtnVisualizzaPassword.isSelected()) {
 						psfPassword.setEchoChar((char)0);
 					}else {
-						psfPassword.setEchoChar('\u0000');
+						psfPassword.setEchoChar((char)'●');
 					}
 				}
 			}
@@ -508,11 +508,11 @@ public class GestioneSedeFrame extends JFrame{
 		pnlBarra.setBounds(0, 0, 1200, 35);
 		getContentPane().add(pnlBarra);
 		
-		JLabel lblGestioneSede = new JLabel("Gestione Sede");
-		lblGestioneSede.setForeground(Color.WHITE);
-		lblGestioneSede.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblGestioneSede.setBounds(10, 0, 209, 35);
-		pnlBarra.add(lblGestioneSede);
+		JLabel lblTitolo = new JLabel("Gestione Sede");
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblTitolo);
 	
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {

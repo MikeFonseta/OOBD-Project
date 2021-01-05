@@ -2,8 +2,13 @@ package GUI;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
@@ -21,8 +26,9 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
-public class EliminaSedeFrame extends JDialog{
+public class EliminaSedeFrame extends JFrame{
 	
 	private JPasswordField pxfPassword;
 	
@@ -40,16 +46,18 @@ public class EliminaSedeFrame extends JDialog{
 		
 		JLabel lblText = new JLabel("<html>Per eliminare la sede '" + idSede + "' inserire la propria password: ");
 		lblText.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblText.setHorizontalAlignment(SwingConstants.LEFT);
+		lblText.setHorizontalAlignment(SwingConstants.CENTER);
 		lblText.setFont(new Font("Calibri", Font.PLAIN, 17));
 		lblText.setBounds(12, 13, 443, 96);
 		getContentPane().add(lblText);
 		
 		pxfPassword = new JPasswordField();
+		pxfPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
 		pxfPassword.setBounds(144, 104, 177, 28);
 		getContentPane().add(pxfPassword);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
+		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -58,10 +66,11 @@ public class EliminaSedeFrame extends JDialog{
 				}
 			}
 		});
-		btnChiudi.setBounds(85, 158, 107, 39);
+		btnChiudi.setBounds(73, 158, 134, 39);
 		getContentPane().add(btnChiudi);
 		
 		JButton btnConferma = new JButton("CONFERMA");
+		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnConferma.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -75,8 +84,9 @@ public class EliminaSedeFrame extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnConferma.setBounds(281, 158, 107, 39);
+		btnConferma.setBounds(271, 158, 134, 39);
 		getContentPane().add(btnConferma);
+		
 		setVisible(true);
 		setResizable(false); 
 		setLocationRelativeTo(null);
