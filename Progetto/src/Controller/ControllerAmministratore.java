@@ -1,9 +1,11 @@
 package Controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import DAO.AccountDAOPostgresImp;
@@ -22,6 +24,7 @@ import GUI.EliminaSedeFrame;
 import GUI.GestioneProdottiFrame;
 import GUI.GestioneRiderFrame;
 import GUI.GestioneSedeFrame;
+import Utility.DatiExcel;
 
 public class ControllerAmministratore {
 	
@@ -652,7 +655,7 @@ public class ControllerAmministratore {
 			
 		}
 		else {
-			JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Password non corretta!","",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Password non corretta!","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}	
@@ -695,7 +698,39 @@ public class ControllerAmministratore {
 		this.altraImp = altraImp;
 	}
 
-
+	public Object[] getProvince() {
+		
+		List<String> risultato = new ArrayList<String>();
+		DatiExcel DE = new DatiExcel();
+		try {
+			risultato = DE.ottieniProvince();
+		} catch (IOException e) {
+			if(this.creaSedeFrame == null) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(this.creaSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		return risultato.toArray();
+	}
+	
+	public List<String> getComuniProvincia(String Provincia) {
+		
+		List<String> risultato = new ArrayList<String>();
+		DatiExcel DE = new DatiExcel();
+		try {
+			risultato = DE.ottieniComuniProvincia(Provincia);
+		} catch (IOException e) {
+			if(this.creaSedeFrame == null) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(this.creaSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		return risultato;
+	}
 
 }
 

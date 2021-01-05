@@ -382,18 +382,19 @@ public class GestioneRiderFrame extends JFrame{
 	        @Override
 	        public void mouseDragged(MouseEvent e) {
 
-	            // Posizione Finestra
-	            int thisX = parent.getLocation().x;
-	            int thisY = parent.getLocation().y;
+		            // Posizione Finestra
+		            int thisX = parent.getLocation().x;
+		            int thisY = parent.getLocation().y;
 
-	            // Determinazione Spostamento
-	            int xMoved = e.getX() - initialClick.x;
-	            int yMoved = e.getY() - initialClick.y;
+		            // Determinazione Spostamento
+		            int xMoved = e.getX() - initialClick.x;
+		            int yMoved = e.getY() - initialClick.y;
 
-	            // Spostamento finestra
-	            int X = thisX + xMoved;
-	            int Y = thisY + yMoved;
-	            parent.setLocation(X, Y);
+		            // Spostamento finestra
+		            int X = thisX + xMoved;
+		            int Y = thisY + yMoved;
+		            parent.setLocation(X, Y);
+		        	
 	        }
 	    });
 		

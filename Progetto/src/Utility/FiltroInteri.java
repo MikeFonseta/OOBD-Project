@@ -1,4 +1,4 @@
-package GUI;
+package Utility;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -7,7 +7,7 @@ import javax.swing.text.DocumentFilter;
 
 
 
-class FiltroInteri extends DocumentFilter {
+public class FiltroInteri extends DocumentFilter {
    @Override
    public void insertString(FilterBypass fb, int offset, String string,
          AttributeSet attr) throws BadLocationException {

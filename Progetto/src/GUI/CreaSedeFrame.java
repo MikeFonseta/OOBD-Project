@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -19,8 +21,10 @@ import javax.swing.event.DocumentListener;
 
 import Controller.ControllerAmministratore;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+import javax.swing.JComboBox;
 
 public class CreaSedeFrame extends JFrame{
 	
@@ -29,12 +33,13 @@ public class CreaSedeFrame extends JFrame{
 	private JFrame parent=this;
 	private JTextField txfNome;
 	private JTextField txfTelefono;
-	private JTextField txfProvincia;
+	private JComboBox cbxProvincia;
 	private JTextField txfVia;
 	private JTextField txfNumCivico;
 	private JPasswordField psfPassword;
 	private ControllerAmministratore controllerAmministratore=null;
-	private JTextField txfCitta;
+	private JComboBox cbxCitta;
+	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	private boolean NomeSedeInserito=false,TelefonoInserito=false,ProvinciaInserito=false,CittaInserito=false,ViaInserito=false,NumCivicoInserito=false,PasswordInserito=false;
 	
 	
@@ -136,33 +141,17 @@ public class CreaSedeFrame extends JFrame{
 		}});
 		getContentPane().add(txfTelefono);
 		
-		txfProvincia = new JTextField();
-		txfProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
-		txfProvincia.setBounds(163, 244, 53, 32);
-		txfProvincia.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if(txfProvincia.getText().length() > 0) {
-					ProvinciaInserito=true;
-				}else {
-					ProvinciaInserito=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if(txfProvincia.getText().length() > 0) {
-					ProvinciaInserito=true;
-				}else {
-					ProvinciaInserito=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				
-		}});
-		getContentPane().add(txfProvincia);
+	
+		cbxProvincia = new JComboBox(controllerAmministratore.getProvince());
+		cbxProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
+		cbxProvincia.setBounds(163, 244, 53, 32);
+		getContentPane().add(cbxProvincia);
+		
+		cbxCitta = new JComboBox(CittaModel);
+		cbxCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
+		cbxCitta.setBounds(163, 296, 228, 32);
+		getContentPane().add(cbxCitta);
+		
 		
 		txfVia = new JTextField();
 		txfVia.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -276,12 +265,44 @@ public class CreaSedeFrame extends JFrame{
 		btnAnnulla.setBounds(66, 576, 113, 41);
 		getContentPane().add(btnAnnulla);
 		
+		
+		cbxProvincia.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	if(cbxProvincia.getSelectedItem() != null && !cbxProvincia.getSelectedItem().toString().equals("")) {	
+            			
+            		CittaModel.removeAllElements();
+            		CittaModel.addAll(controllerAmministratore.getComuniProvincia(cbxProvincia.getSelectedItem().toString()));
+            		
+            		ProvinciaInserito=true;
+            	}else {
+            		CittaModel.removeAllElements();
+            		ProvinciaInserito=false;
+            	}
+            	
+            	ControllaModifiche();
+            }
+		});
+				
+		cbxCitta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	          	
+            	if(cbxCitta.getSelectedItem() != null && !cbxCitta.getSelectedItem().toString().equals("")) {
+            		CittaInserito=true;
+            	}else {
+            		CittaInserito=false;
+            	}
+            	
+            	ControllaModifiche();
+            }
+		});
+
+		
 		btnCrea = new JButton("CREA");
 		btnCrea.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnCrea.isEnabled()) {
-					controllerAmministratore.CreaSede(idProssimaSede, txfNome.getText(), txfTelefono.getText(), txfProvincia.getText(), txfCitta.getText(), txfVia.getText(), txfNumCivico.getText(), NomeUtenteGestore, psfPassword.getText());
+					controllerAmministratore.CreaSede(idProssimaSede, txfNome.getText(), txfTelefono.getText(), cbxProvincia.getSelectedItem().toString(), cbxCitta.getSelectedItem().toString(), txfVia.getText(), txfNumCivico.getText(), NomeUtenteGestore, psfPassword.getText());
 				}
 			}
 		});
@@ -330,33 +351,6 @@ public class CreaSedeFrame extends JFrame{
 		lblTitolo.setBounds(0, 0, 127, 35);
 		pnlBarra.add(lblTitolo);
 		
-		txfCitta = new JTextField();
-		txfCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
-		txfCitta.setBounds(163, 296, 228, 32);
-		txfCitta.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if(txfCitta.getText().length() > 0) {
-					CittaInserito=true;
-				}else {
-					CittaInserito=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if(txfCitta.getText().length() > 0) {
-					CittaInserito=true;
-				}else {
-					CittaInserito=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				
-		}});
-		getContentPane().add(txfCitta);
 		
 		JLabel lblCitta = new JLabel("Città");
 		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 18));

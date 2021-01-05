@@ -48,6 +48,8 @@ import javax.swing.text.PlainDocument;
 
 import Controller.ControllerAmministratore;
 import Controller.MainController;
+import Utility.FiltroInteri;
+
 import javax.swing.DefaultComboBoxModel;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.ActionListener;

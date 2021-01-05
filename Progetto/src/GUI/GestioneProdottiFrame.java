@@ -14,6 +14,7 @@ import javax.swing.table.TableModel;
 import javax.swing.text.PlainDocument;
 
 import Controller.ControllerAmministratore;
+import Utility.FiltroInteri;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;

@@ -70,27 +70,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		return rider;
 	}
 
-	@Override
-	public int idProssimoRider() throws SQLException{
-		
-		Connection conn = null;
-		int risultato = 0;
-		
-		
-		conn = DBConnection.getInstance().getConnection();
-		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT idProssimoRider()");	
-			
-		if(rs.next()){
-			 risultato = rs.getInt(1);
-		}
-				
-		rs.close();
-		st.close();
-		conn.close();
-		
-		return  risultato;
-	}
+
 
 	@Override
 	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) throws SQLException {
@@ -139,6 +119,28 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		conn.close();
 		
 		return risultato;
+	}
+
+	@Override
+	public int idProssimoRider() throws SQLException{
+		
+		Connection conn = null;
+		int risultato = 0;
+		
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT idProssimoRider()");	
+			
+		if(rs.next()){
+			 risultato = rs.getInt(1);
+		}
+				
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return  risultato;
 	}
 
 

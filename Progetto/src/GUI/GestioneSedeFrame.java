@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -20,12 +21,15 @@ import javax.swing.event.DocumentListener;
 
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
 import java.awt.Color;
+import javax.swing.JComboBox;
 
 public class GestioneSedeFrame extends JFrame{	
 	
@@ -36,7 +40,9 @@ public class GestioneSedeFrame extends JFrame{
 	private Account gestoreSede;
 	private Point initialClick;
 	private JFrame parent=this;
+	DefaultTableModel tblRiderModel;
 	private JTextField txfNomeUtente;
+	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	private boolean NomeSedeModificato=false,TelefonoModificato=false,ProvinciaModificato=false,CittaModificato=false,ViaModificato=false,NumCivicoModificato=false,PasswordModificato=false;
 	
 	public GestioneSedeFrame(ControllerAmministratore controllerAmministratore,Account gestoreSede) {
@@ -46,6 +52,13 @@ public class GestioneSedeFrame extends JFrame{
 		setResizable(false);
 		setBounds(0,0,1200,700);
 		getContentPane().setLayout(null);
+		
+		btnSalva = new JButton("AGGIORNA");
+		btnSalva.setEnabled(false);
+		btnSalva.setFont(new Font("Calibri", Font.PLAIN, 18));
+		btnSalva.setBounds(1056, 41, 118, 39);
+		getContentPane().add(btnSalva);
+		
 		
 		JLabel lblIdSede = new JLabel("ID Sede:" + gestoreSede.getSede().getIdSede());
 		lblIdSede.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -86,68 +99,52 @@ public class GestioneSedeFrame extends JFrame{
 		getContentPane().add(txfNomeSede);
 		txfNomeSede.setColumns(10);
 
-		JTextField txfProvincia = new JTextField(gestoreSede.getSede().getProvincia());
-		txfProvincia.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if(!txfProvincia.getText().equals(gestoreSede.getSede().getProvincia())) {
-					ProvinciaModificato=true;
-				}else {
-					ProvinciaModificato=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if(!txfProvincia.getText().equals(gestoreSede.getSede().getProvincia())) {
-					ProvinciaModificato=true;
-				}else {
-					ProvinciaModificato=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				
-		}});
-		txfProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
-		txfProvincia.setColumns(10);
-		txfProvincia.setBounds(503, 46, 49, 28);
-		getContentPane().add(txfProvincia);
+		JComboBox cbxProvincia = new JComboBox(controllerAmministratore.getProvince());
+		cbxProvincia.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	if(cbxProvincia.getSelectedItem() != null && !cbxProvincia.getSelectedItem().toString().equals(gestoreSede.getSede().getProvincia()) && !cbxProvincia.getSelectedItem().toString().equals("")) {	
+        			
+            		CittaModificato=true;
+            		CittaModel.removeAllElements();
+            		CittaModel.addAll(controllerAmministratore.getComuniProvincia(cbxProvincia.getSelectedItem().toString()));
+    
+            		ProvinciaModificato=true;
+            	}else {
+            		CittaModel.removeAllElements();
+            		ProvinciaModificato=false;
+            	}
+            	
+            	ControllaModifiche();
+            }
+		});
+		cbxProvincia.setSelectedItem(gestoreSede.getSede().getProvincia());
+		cbxProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
+		cbxProvincia.setBounds(503, 46, 49, 28);
+		getContentPane().add(cbxProvincia);
 		
 		JLabel lblProvincia = new JLabel("Provincia");
 		lblProvincia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblProvincia.setBounds(424, 41, 76, 39);
 		getContentPane().add(lblProvincia);
 		
-		JTextField txfCitta = new JTextField(gestoreSede.getSede().getCitta());
-		txfCitta.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if(!txfCitta.getText().equals(gestoreSede.getSede().getCitta())) {
-					CittaModificato=true;
-				}else {
-					CittaModificato=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if(!txfCitta.getText().equals(gestoreSede.getSede().getCitta())) {
-					CittaModificato=true;
-				}else {
-					CittaModificato=false;
-				}
-				ControllaModifiche();
-			}
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				
-		}});
-		txfCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
-		txfCitta.setColumns(10);
-		txfCitta.setBounds(604, 46, 106, 28);
-		getContentPane().add(txfCitta);
+		
+		JComboBox cbxCitta = new JComboBox(CittaModel);
+		CittaModel.addAll(controllerAmministratore.getComuniProvincia(cbxProvincia.getSelectedItem().toString()));
+		cbxCitta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	if(cbxCitta.getSelectedItem() != null && !cbxCitta.getSelectedItem().toString().equals(gestoreSede.getSede().getCitta()) && !cbxCitta.getSelectedItem().toString().equals("")) {
+            			CittaModificato=true;
+            	}else {
+            		CittaModificato=false;
+            	}
+            	
+            	ControllaModifiche();
+            }
+		});
+		cbxCitta.setSelectedItem(gestoreSede.getSede().getCitta());
+		cbxCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
+		cbxCitta.setBounds(604, 46, 146, 28);
+		getContentPane().add(cbxCitta);
 		
 		JLabel lblCitta = new JLabel("Città");
 		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -181,12 +178,12 @@ public class GestioneSedeFrame extends JFrame{
 		}});
 		txfVia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfVia.setColumns(10);
-		txfVia.setBounds(760, 46, 172, 28);
+		txfVia.setBounds(787, 46, 172, 28);
 		getContentPane().add(txfVia);
 		
 		JLabel lblVia = new JLabel("Via");
 		lblVia.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblVia.setBounds(730, 41, 42, 39);
+		lblVia.setBounds(760, 41, 49, 39);
 		getContentPane().add(lblVia);
 		
 		JTextField txfNumCivico = new JTextField(gestoreSede.getSede().getNumCivico());
@@ -216,19 +213,14 @@ public class GestioneSedeFrame extends JFrame{
 		}});
 		txfNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfNumCivico.setColumns(10);
-		txfNumCivico.setBounds(970, 46, 76, 28);
+		txfNumCivico.setBounds(987, 46, 59, 28);
 		getContentPane().add(txfNumCivico);
 		
 		JLabel lblNumCivico = new JLabel("N.");
 		lblNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblNumCivico.setBounds(942, 41, 18, 39);
+		lblNumCivico.setBounds(969, 41, 18, 39);
 		getContentPane().add(lblNumCivico);
 		
-		btnSalva = new JButton("AGGIORNA");
-		btnSalva.setEnabled(false);
-		btnSalva.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnSalva.setBounds(1056, 41, 118, 39);
-		getContentPane().add(btnSalva);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
 		btnChiudi.addMouseListener(new MouseAdapter() {
@@ -389,25 +381,26 @@ public class GestioneSedeFrame extends JFrame{
 		tblRider.setRowHeight(30);
 		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblRider.getTableHeader().setReorderingAllowed(false);
-		tblRider.setModel(new DefaultTableModel(
-			controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
-			new String[] {
-				"ID", "Nome", "Cognome", "Telefono", "Veicolo"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+		tblRiderModel = new DefaultTableModel(
+				controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
+				new String[] {
+					"ID", "Nome", "Cognome", "Telefono", "Veicolo"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					Integer.class, String.class, String.class, String.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+		};
+		tblRider.setModel(tblRiderModel);
 		tblRider.getColumnModel().getColumn(0).setResizable(false);
 		tblRider.getColumnModel().getColumn(0).setPreferredWidth(40);
 		tblRider.getColumnModel().getColumn(0).setMinWidth(40);
@@ -496,7 +489,7 @@ public class GestioneSedeFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnSalva.isEnabled()) {
-					controllerAmministratore.SalvaSede(btnSalva,txfNomeSede.getText(),txfTelefono.getText(),txfProvincia.getText(),txfCitta.getText(),txfVia.getText(),txfNumCivico.getText(),gestoreSede,psfPassword.getText());
+					controllerAmministratore.SalvaSede(btnSalva,txfNomeSede.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString(),cbxCitta.getSelectedItem().toString(),txfVia.getText(),txfNumCivico.getText(),gestoreSede,psfPassword.getText());
 			}
 			}
 		});
@@ -538,6 +531,7 @@ public class GestioneSedeFrame extends JFrame{
 	            int X = thisX + xMoved;
 	            int Y = thisY + yMoved;
 	            parent.setLocation(X, Y);
+	        	
 	        }
 	    });
 	    
@@ -596,35 +590,10 @@ public class GestioneSedeFrame extends JFrame{
 	}
 	
 	public void AggiornaRider() {
-		tblRider.setModel(new DefaultTableModel(
-				controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
-				new String[] {
-					"ID", "Nome", "Cognome", "Telefono", "Veicolo"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					Integer.class, String.class, String.class, String.class, String.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-				boolean[] columnEditables = new boolean[] {
-					false, false, false, false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			});
-			tblRider.getColumnModel().getColumn(0).setResizable(false);
-			tblRider.getColumnModel().getColumn(0).setPreferredWidth(40);
-			tblRider.getColumnModel().getColumn(0).setMinWidth(40);
-			tblRider.getColumnModel().getColumn(0).setMaxWidth(40);
-			tblRider.getColumnModel().getColumn(1).setResizable(false);
-			tblRider.getColumnModel().getColumn(2).setResizable(false);
-			tblRider.getColumnModel().getColumn(3).setResizable(false);
-			tblRider.getColumnModel().getColumn(3).setPreferredWidth(80);
-			tblRider.getColumnModel().getColumn(3).setMinWidth(80);
-			tblRider.getColumnModel().getColumn(4).setResizable(false);
+		for(int i=0;i<tblRider.getRowCount();i++) {
+			tblRiderModel.removeRow(i);
+		}
+		tblRiderModel.setDataVector(controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()), controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()));
 	}
 	
 	private void Errore() {

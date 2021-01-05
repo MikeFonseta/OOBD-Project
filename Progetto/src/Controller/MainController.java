@@ -1,5 +1,6 @@
 package Controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import GUI.LoginFrame;
 import GUI.VisualizzaCarrelloFrame;
 import GUI.VisualizzaOrdiniFrame;
 import GUI.VisualizzaProdottiFrame;
+import Utility.DatiExcel;
 import GUI.CreaOrdineFrame;
 
 //simbolo euro : \u20AC
@@ -329,7 +331,39 @@ public class MainController {
 		return result;
 	}
 	
+	public Object[] getProvince() {
+		
+		List<String> risultato = new ArrayList<String>();
+		DatiExcel DE = new DatiExcel();
+		try {
+			risultato = DE.ottieniProvince();
+		} catch (IOException e) {
+			if(this.creaSedeFrame == null) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(this.creaSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		return risultato.toArray();
+	}
 	
+	public List<String> getComuniProvincia(String Provincia) {
+		
+		List<String> risultato = new ArrayList<String>();
+		DatiExcel DE = new DatiExcel();
+		try {
+			risultato = DE.ottieniComuniProvincia(Provincia);
+		} catch (IOException e) {
+			if(this.creaSedeFrame == null) {
+				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(this.creaSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		return risultato;
+	}
 
 
 
