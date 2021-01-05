@@ -146,7 +146,7 @@ public class GestioneSedeFrame extends JFrame{
 		cbxCitta.setBounds(604, 46, 146, 28);
 		getContentPane().add(cbxCitta);
 		
-		JLabel lblCitta = new JLabel("Città");
+		JLabel lblCitta = new JLabel("CittÃ ");
 		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblCitta.setBounds(562, 41, 42, 39);
 		getContentPane().add(lblCitta);
