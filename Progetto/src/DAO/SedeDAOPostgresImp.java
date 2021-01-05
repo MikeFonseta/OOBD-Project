@@ -101,7 +101,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		risultato = st.executeUpdate("INSERT INTO menÃ¹ VALUES ("+idSede + "," + idProdotto +")");
+		risultato = st.executeUpdate("INSERT INTO menù VALUES ("+idSede + "," + idProdotto +")");
 				
 		st.close();
 		conn.close();
@@ -117,7 +117,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		risultato = st.executeUpdate("DELETE FROM menÃ¹ WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
+		risultato = st.executeUpdate("DELETE FROM menù WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
 				
 		st.close();
 		conn.close();
@@ -149,7 +149,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		risultato= st.executeUpdate("INSERT INTO sede(id_sede,nomes,telefono,provincia,cittÃ ,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
+		risultato= st.executeUpdate("INSERT INTO sede(id_sede,nomes,telefono,provincia,città,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
 									sede.getNomeSede() + "','" + sede.getTelefonoSede() + "','" + sede.getProvincia() + "','" + sede.getCitta() + "','" + sede.getVia() + "','" + sede.getNumCivico() + "')");
 		
 		if(risultato == 1) {
@@ -172,7 +172,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		risultato += st.executeUpdate("UPDATE sede SET nomes='"+sede.getNomeSede()+"',telefono='" + sede.getTelefonoSede() + "',"+
-					"provincia='"+sede.getProvincia()+"',cittÃ ='" + sede.getCitta() + "',via='"+ sede.getVia() + "',numcivico='" + sede.getNumCivico() + "' WHERE id_sede = " + sede.getIdSede());
+					"provincia='"+sede.getProvincia()+"',città='" + sede.getCitta() + "',via='"+ sede.getVia() + "',numcivico='" + sede.getNumCivico() + "' WHERE id_sede = " + sede.getIdSede());
 				
 		risultato += st.executeUpdate("UPDATE account SET password='" + nuovaPassword+ "' WHERE nomeutente='" + gestoreSede.getNomeUtente() + "'");
 		

@@ -118,7 +118,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	
 
 	@Override
-	public List<Object[]> ricercaComplessaOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) {
+	public List<Object[]> ricercaComplessaOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) throws SQLException {
 		
 		List<Object[]> risultato = new ArrayList<>();
 		ResultSet rs = null;
@@ -128,7 +128,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			//Creazione stringa sql per la query ricerca
 			
 			StringBuilder sql = new StringBuilder(1024);
-			sql.append("SELECT DISTINCT R.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.citt√† AS Indirizzo, "
+			sql.append("SELECT DISTINCT O.ID_Sede, O.ID_Ordine, C.ID_Cliente,  C.NomeC || ' ' || C.CognomeC AS NomeCliente, IO.via || ' ' || IO.numcivico || ',' || IO.citt‡ AS Indirizzo, "
 					 + "R.ID_Rider, R.NomeR|| ' ' || R.CognomeR AS NomeRider,  O.Totale "
 					 + "FROM Rider AS R NATURAL JOIN Ordine AS O NATURAL JOIN CompOrdine AS CO NATURAL JOIN InfoOrdine AS IO NATURAL JOIN Cliente AS C " );
 			
@@ -162,21 +162,30 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			}
 			
 			if(idProdotti!= null) {
-				for(int i=0; i<idProdotti.size(); i++) {
-					if(ClausolaWhere.length()>0)
-						ClausolaWhere += " AND ";
-					else
-						ClausolaWhere += "";
+				if(ClausolaWhere.length()>0) 
+					ClausolaWhere += " AND " ;
+					
+				else ClausolaWhere += ""; 
+				
+				ClausolaWhere += "( CO.Id_Prodotto = ? ";
+				int indice=1;
+				while(indice<idProdotti.size()) {
+					ClausolaWhere += " OR ";
 					ClausolaWhere += "  CO.Id_Prodotto = ?";
+				indice++;
 				}
+				
+				ClausolaWhere += " )";
 			}
+			
+	
 
 			if(ClausolaWhere.length()>0)
 				sql.append( " WHERE " ).append( ClausolaWhere );
 			
 			
 			//Creazione Prepared Statement
-			try {
+
 					connection = DBConnection.getInstance().getConnection();
 					queryRicerca = connection.prepareStatement( sql.toString() );
 			
@@ -198,7 +207,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 				
 					if(idProdotti!= null) {
 						for(int s =0; s<idProdotti.size(); s++) {
-							queryRicerca.setInt( indice++, idProdotti.get(s) ); 
+							queryRicerca.setInt(indice++, idProdotti.get(s) ); 
 						}
 					}
 			
@@ -212,7 +221,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 							     				rs.getString(5),
 							     				rs.getInt(6),
 							     				rs.getString(7),
-							     				rs.getFloat(8)} );
+							     				"\u20ac " + rs.getFloat(8)} );
 				
 					}
 			
@@ -221,9 +230,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 					queryRicerca.close();
 					connection.close();
 				
-			}catch(SQLException e){
-			
-		}
 
 		return risultato;
 	}

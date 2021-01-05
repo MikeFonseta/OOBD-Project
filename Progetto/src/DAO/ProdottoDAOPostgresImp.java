@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -234,13 +235,13 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 
 	
 	@Override
-	public List<Object[]> getProdottiPerId_Ordine(int idOrdine) {
+	public List<Object[]> getProdottiPerId_Ordine(int idOrdine) throws SQLException {
 		List<Object[]> risultato = new ArrayList<Object[]>();
 		Connection connection = null;
 		Statement st = null;
 		ResultSet rs = null;
 		
-		try {
+		
 			connection = DBConnection.getInstance().getConnection();
 			st = connection.createStatement(); 
 			rs = st.executeQuery("SELECT ID_Prodotto, NomeP, NumPezzi, Prezzo "
@@ -252,19 +253,180 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 				rs.getInt(1),
 				rs.getString(2),
 			    rs.getInt(3),
-			    rs.getFloat(4)} );	
+			    "\u20ac "+ rs.getString(4)} );	
 			}	
-				
-		}catch(SQLException e) {
+		
+		rs.close();
+		st.close();
+		connection.close();
+		
+		return risultato;
+	}
+
+	@Override
+	public int eliminaProdottoDaTutteLeSedi(int idProdotto) throws SQLException {
+		int risultato = 0;
+		Connection conn = null;
 			
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		risultato = st.executeUpdate("DELETE FROM Prodotto WHERE ID_Prodotto="+idProdotto+"");
+					
+		st.close();
+		conn.close();
+			
+		return risultato;
+	
+	}
+
+	public List<Integer> getProdottiPerAllergeni(String[] nomiAllergeni) throws SQLException {
+		int i =0; boolean nessunRiscontro = false;
+		List<Integer> risultato = new ArrayList<>();
+		Connection connection = DBConnection.getInstance().getConnection();
+		Statement st = null;
+		ResultSet rs = null;
+		
+		for(int j = 0;j<nomiAllergeni.length;j++)
+			nomiAllergeni[j] = nomiAllergeni[j].toLowerCase(Locale.ROOT);
+		
+		while(i < nomiAllergeni.length && nessunRiscontro == false) {
+			nessunRiscontro = true;																						
+			String query = "SELECT ID_Prodotto FROM Etichetta WHERE LOWER(NomeA) LIKE '"+nomiAllergeni[i]+"%'";
+			st = connection.createStatement();
+			rs = st.executeQuery(query);
+			
+			while(rs.next()) {
+				nessunRiscontro = false;
+				Integer temp = rs.getInt(1);
+				if(!risultato.contains(temp)) risultato.add(temp);				//elimina duplicati					
+			}
+			i=i+1;
 		}
 		
+		//se uno dei parametri non ha nessun riscontro ritorna -1 al primo elemento
+		if(nessunRiscontro==true) {
+		risultato.clear();
+		risultato.add(0,-1);
+		}		
+
+		
+		rs.close();
+		st.close();
+		connection.close();
 		return risultato;
 	}
 	
 	
 	
+	public List<Object[]> ricercaComplessaProdotti(String Categoria, Integer Min, Integer Max, List<Integer> idProdottiConAllergeni) throws SQLException{
+		List<Object[]> risultato = new ArrayList<Object[]>();
+		Connection connection = null;
+		Statement st = null;
+		PreparedStatement query = null;
+		ResultSet rs = null;
+
+		
+		StringBuilder sql = new  StringBuilder(1024); 
+		sql.append("SELECT DISTINCT ID_Prodotto, NomeP, Categoria, Descrizione, Prezzo " 
+		+ "FROM Prodotto AS P " );
 	
+		if(idProdottiConAllergeni != null )
+			sql.append("NATURAL JOIN Etichetta AS E ");
+		
+		
+		
+		String ClausolaWhere = "";
+		if(Categoria!= null) {
+			ClausolaWhere = "Categoria = ?";
+		}
+		if(Min!= null) {
+			if(ClausolaWhere.length()>0) 
+				ClausolaWhere += " AND ";
+			else 
+				ClausolaWhere += "";
+		ClausolaWhere += "Prezzo >= ?";
+		}
+		if(Max!= null) {
+			if(ClausolaWhere.length()>0) 
+				ClausolaWhere += " AND ";
+			else 
+				ClausolaWhere += "";
+		ClausolaWhere += "Prezzo <= ?";
+		}
+		if(idProdottiConAllergeni!= null) {
+			if(ClausolaWhere.length()>0) 
+				ClausolaWhere += " AND " ;
+			else ClausolaWhere += ""; 
+		ClausolaWhere += "( ID_Prodotto = ? ";
+		int i=1;
+		while(i<idProdottiConAllergeni.size()) {
+			ClausolaWhere += " OR ";
+			ClausolaWhere += "  ID_Prodotto = ?";
+		i++;
+		}
+		
+		ClausolaWhere += " )";
+	}
+		
+		
+		if(ClausolaWhere.length()>0)
+			sql.append( " WHERE " ).append( ClausolaWhere );	
+		
+		connection = DBConnection.getInstance().getConnection();
+		query = connection.prepareStatement(sql.toString());
+		
+		int indice = 1;
+		if(Categoria != null)
+			query.setString(indice++, Categoria);
+		
+		if(Min != null)
+			query.setInt(indice++, Min);
+		
+		if(Max != null) 
+			query.setInt(indice++, Max);
+			
+		if(idProdottiConAllergeni != null) {
+			for(int s = 0;s<idProdottiConAllergeni.size(); s++) {
+				query.setInt(indice++, idProdottiConAllergeni.get(s));
+			}
+		}
+		
+		
+		rs = query.executeQuery();
+			while(rs.next()) {
+				risultato.add(new Object[] {
+						rs.getInt(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						"",														
+						"\u20ac "+ rs.getString(5) });
+			}
+			
+		if(risultato != null) {	
+			st= connection.createStatement();
+			for(Object[] object : risultato) {	
+				String allergeni = "";
+				rs = st.executeQuery("SELECT NomeA FROM Etichetta WHERE ID_Prodotto = "+object[0]+" ");
+				while(rs.next())
+					if(allergeni.length()>0)
+						allergeni += ", " + rs.getString(1) ;
+					else
+						allergeni += rs.getString(1);
+			
+					object[4] = allergeni;
+			
+				}		
+		}		
+		
+		rs.close();
+		st.close();
+		query.close();
+		connection.close();
+		
+		return risultato;
+		
+	}
 	
 	
 	

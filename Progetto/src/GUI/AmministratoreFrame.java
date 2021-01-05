@@ -47,6 +47,7 @@ public class AmministratoreFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
+					controllerAmministratore.ApriGestioneProdottiFrame();
 				}
 			}
 		});

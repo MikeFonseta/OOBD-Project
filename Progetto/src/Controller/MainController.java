@@ -156,7 +156,12 @@ public class MainController {
 		if(controllerAmministratore != null) {
 			if(controllerAmministratore.getImp() == controllerAmministratore.getPostgresImp()) {
 				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
-				risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
+				try {
+					risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else if(controllerAmministratore.getImp() == controllerAmministratore.getAltraImp()){
 			
@@ -165,7 +170,12 @@ public class MainController {
 		else {
 			if(controllerGestore.getImp() == controllerGestore.getPostgresImp()) {
 				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
-				risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
+				try {
+					risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
 			
@@ -260,7 +270,12 @@ public class MainController {
 			if(controllerAmministratore != null) {
 				if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp()) {
 					OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-					risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
+					try {
+						risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {//Altra Impl
 					
@@ -269,7 +284,12 @@ public class MainController {
 			else {
 					if(controllerGestore.getImp() == controllerGestore.getPostgresImp()) {
 						OrdineDAOPostgresImp OrdineDAO = new OrdineDAOPostgresImp();
-						risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
+						try {
+							risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
 						

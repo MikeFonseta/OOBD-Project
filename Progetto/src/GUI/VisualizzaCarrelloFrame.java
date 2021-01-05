@@ -72,7 +72,7 @@ public class VisualizzaCarrelloFrame extends JFrame {
 				"ID", "Nome", "Quantità", "Prezzo"
 			}) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Float.class
+				String.class, String.class, Integer.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -158,15 +158,16 @@ public class VisualizzaCarrelloFrame extends JFrame {
 	
 	
 		
-	public float calcolaTotale(JTable table) {
+	public String calcolaTotale(JTable table) {
 		float totale = 0, prezzo=0;
 		int NumPezzi=0;
 		for(int i=0;i<table.getRowCount();i++) {
-			prezzo = Float.parseFloat(table.getValueAt(i, 3).toString());
+			prezzo = Float.valueOf(table.getValueAt(i, 3).toString().substring(1));
 			NumPezzi = Integer.parseInt(table.getValueAt(i, 2).toString());  
 			totale += (prezzo*NumPezzi);
+			
 		}
-		return totale;
+		return "\u20ac " + Float.valueOf(totale).toString();
 	}
 	
 	
