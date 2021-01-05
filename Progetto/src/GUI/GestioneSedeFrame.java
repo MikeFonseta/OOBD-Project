@@ -104,7 +104,7 @@ public class GestioneSedeFrame extends JFrame{
             public void actionPerformed(ActionEvent event) {
             	if(cbxProvincia.getSelectedItem() != null && !cbxProvincia.getSelectedItem().toString().equals(gestoreSede.getSede().getProvincia()) && !cbxProvincia.getSelectedItem().toString().equals("")) {	
         			
-            		CittaModificato=true;
+            		
             		CittaModel.removeAllElements();
             		CittaModel.addAll(controllerAmministratore.getComuniProvincia(cbxProvincia.getSelectedItem().toString()));
     
@@ -133,7 +133,7 @@ public class GestioneSedeFrame extends JFrame{
 		cbxCitta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	if(cbxCitta.getSelectedItem() != null && !cbxCitta.getSelectedItem().toString().equals(gestoreSede.getSede().getCitta()) && !cbxCitta.getSelectedItem().toString().equals("")) {
-            			CittaModificato=true;
+            		CittaModificato=true;
             	}else {
             		CittaModificato=false;
             	}
@@ -543,7 +543,7 @@ public class GestioneSedeFrame extends JFrame{
 	}
 
 	private void ControllaModifiche() {
-			if(NomeSedeModificato==true || TelefonoModificato==true || ProvinciaModificato==true || CittaModificato==true || ViaModificato==true || NumCivicoModificato==true || PasswordModificato==true) {
+			if(NomeSedeModificato==true || TelefonoModificato==true || (ProvinciaModificato==true && CittaModificato==true ) || ViaModificato==true || NumCivicoModificato==true || PasswordModificato==true) {
 				btnSalva.setEnabled(true);
 			}else {
 				btnSalva.setEnabled(false);
