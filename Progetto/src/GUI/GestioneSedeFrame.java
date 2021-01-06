@@ -40,7 +40,6 @@ public class GestioneSedeFrame extends JFrame{
 	private Account gestoreSede;
 	private Point initialClick;
 	private JFrame parent=this;
-	DefaultTableModel tblRiderModel;
 	private JTextField txfNomeUtente;
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	private boolean NomeSedeModificato=false,TelefonoModificato=false,ProvinciaModificato=false,CittaModificato=false,ViaModificato=false,NumCivicoModificato=false,PasswordModificato=false;
@@ -381,36 +380,39 @@ public class GestioneSedeFrame extends JFrame{
 		tblRider.setRowHeight(30);
 		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblRider.getTableHeader().setReorderingAllowed(false);
-		tblRiderModel = new DefaultTableModel(
-				controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
-				new String[] {
-					"ID", "Nome", "Cognome", "Telefono", "Veicolo"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					Integer.class, String.class, String.class, String.class, String.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-				boolean[] columnEditables = new boolean[] {
-					false, false, false, false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-		};
-		tblRider.setModel(tblRiderModel);
+		tblRider.setModel(new DefaultTableModel(
+			controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
+			new String[] {
+				"ID", "Nome", "Cognome", "Telefono", "Veicolo"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
 		tblRider.getColumnModel().getColumn(0).setResizable(false);
 		tblRider.getColumnModel().getColumn(0).setPreferredWidth(40);
 		tblRider.getColumnModel().getColumn(0).setMinWidth(40);
 		tblRider.getColumnModel().getColumn(0).setMaxWidth(40);
 		tblRider.getColumnModel().getColumn(1).setResizable(false);
+		tblRider.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblRider.getColumnModel().getColumn(1).setMinWidth(150);
+		tblRider.getColumnModel().getColumn(1).setMaxWidth(150);
 		tblRider.getColumnModel().getColumn(2).setResizable(false);
+		tblRider.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblRider.getColumnModel().getColumn(2).setMinWidth(150);
+		tblRider.getColumnModel().getColumn(2).setMaxWidth(150);
 		tblRider.getColumnModel().getColumn(3).setResizable(false);
-		tblRider.getColumnModel().getColumn(3).setPreferredWidth(80);
-		tblRider.getColumnModel().getColumn(3).setMinWidth(80);
+		tblRider.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblRider.getColumnModel().getColumn(3).setMinWidth(100);
+		tblRider.getColumnModel().getColumn(3).setMaxWidth(100);
 		tblRider.getColumnModel().getColumn(4).setResizable(false);
+		tblRider.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblRider.getColumnModel().getColumn(4).setMinWidth(150);
+		tblRider.getColumnModel().getColumn(4).setMaxWidth(150);
 		scpRider.setViewportView(tblRider);
 		
 		JButton btnEliminaProdotto = new JButton("ELIMINA");
@@ -590,10 +592,45 @@ public class GestioneSedeFrame extends JFrame{
 	}
 	
 	public void AggiornaRider() {
-		for(int i=0;i<tblRider.getRowCount();i++) {
-			tblRiderModel.removeRow(i);
-		}
-		tblRiderModel.setDataVector(controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()), controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()));
+		tblRider.setModel(new DefaultTableModel(
+				controllerAmministratore.getRiderDaSede(gestoreSede.getSede().getIdSede()),
+				new String[] {
+					"ID", "Nome", "Cognome", "Telefono", "Veicolo"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					Integer.class, String.class, String.class, String.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+		});
+		tblRider.getColumnModel().getColumn(0).setResizable(false);
+		tblRider.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblRider.getColumnModel().getColumn(0).setMinWidth(40);
+		tblRider.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblRider.getColumnModel().getColumn(1).setResizable(false);
+		tblRider.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblRider.getColumnModel().getColumn(1).setMinWidth(150);
+		tblRider.getColumnModel().getColumn(1).setMaxWidth(150);
+		tblRider.getColumnModel().getColumn(2).setResizable(false);
+		tblRider.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblRider.getColumnModel().getColumn(2).setMinWidth(150);
+		tblRider.getColumnModel().getColumn(2).setMaxWidth(150);
+		tblRider.getColumnModel().getColumn(3).setResizable(false);
+		tblRider.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblRider.getColumnModel().getColumn(3).setMinWidth(100);
+		tblRider.getColumnModel().getColumn(3).setMaxWidth(100);
+		tblRider.getColumnModel().getColumn(4).setResizable(false);
+		tblRider.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblRider.getColumnModel().getColumn(4).setMinWidth(150);
+		tblRider.getColumnModel().getColumn(4).setMaxWidth(150);
 	}
 	
 	private void Errore() {
