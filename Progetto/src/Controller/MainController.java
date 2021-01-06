@@ -1,5 +1,6 @@
 package Controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import GUI.LoginFrame;
 import GUI.VisualizzaCarrelloFrame;
 import GUI.VisualizzaOrdiniFrame;
 import GUI.VisualizzaProdottiFrame;
+import Utility.DatiExcel;
 import GUI.CreaOrdineFrame;
 
 //simbolo euro : \u20AC
@@ -37,8 +39,8 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();
-		//LoginTry("A001","pass12"); //amministratore
-		LoginTry("U001","pass123");//gestore
+		LoginTry("A001","pass12"); //amministratore
+		//LoginTry("U001","pass123");//gestore
 	}
 	
 	public static void main(String[] args) {
@@ -329,6 +331,40 @@ public class MainController {
 		return result;
 	}
 	
+	
+	public Object[] getProvince() {
+		
+		List<String> risultato = new ArrayList<String>();
+		DatiExcel DE = new DatiExcel();
+		try {
+			risultato = DE.ottieniProvince();
+		} catch (IOException e) {
+			if(this.controllerAmministratore != null) {
+				this.controllerAmministratore.ErroreFile(e.getMessage());
+			}else {
+				//ControllerGestore
+			}
+		}
+		
+		return risultato.toArray();
+	}
+	
+	public List<String> getComuniProvincia(String Provincia) {
+		
+		List<String> risultato = new ArrayList<String>();
+		DatiExcel DE = new DatiExcel();
+		try {
+			risultato = DE.ottieniComuniProvincia(Provincia);
+		} catch (IOException e) {
+			if(this.controllerAmministratore != null) {
+				this.controllerAmministratore.ErroreFile(e.getMessage());
+			}else {
+				//ControllerGestore
+			}
+		}
+		
+		return risultato;
+	}
 	
 
 

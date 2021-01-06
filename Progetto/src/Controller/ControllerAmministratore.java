@@ -3,6 +3,7 @@ package Controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.ComboBoxModel;
@@ -46,11 +47,26 @@ public class ControllerAmministratore {
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
 		
-		
 		this.mainController = mainController;
 		this.account = account;
 		amministratoreFrame = new AmministratoreFrame(this);
 		
+	}
+	
+	public void ErroreFile(String Messaggio) {
+		if(this.creaSedeFrame == null) {
+			JOptionPane.showMessageDialog(this.gestioneSedeFrame,Messaggio,"Error",JOptionPane.ERROR_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(this.creaSedeFrame,Messaggio,"Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public List<String> getComuniProvincia(String Provincia) {
+		return this.mainController.getComuniProvincia(Provincia);
+	}
+	
+	public Object[] getProvince(){
+		return this.mainController.getProvince();
 	}
 	
 	public Account getAccount() {
@@ -576,7 +592,6 @@ public class ControllerAmministratore {
 	}
 	
 	
-	
 	public List<Integer> getIDProdottiPerAllergeni(String Allergeni) {
 		List<Integer> risultato = new ArrayList<>();
 			if(Allergeni.isBlank()== false) {
@@ -601,8 +616,6 @@ public class ControllerAmministratore {
 
 	}
 
-	
-	
 	public Object[][] ricercaProdotto(String Categoria, Integer Min, Integer Max, List<Integer>idProdottiConAllergeni){
 		Object[][] risultato = null;
 		if(this.imp == postgresImp) {
@@ -621,15 +634,7 @@ public class ControllerAmministratore {
 		
 		return risultato;
 	}
-	
-	
-	
 
-	
-	
-	
-	
-	
 	
 	public void ConfermaEliminaProdotto(String password, int idProdotto) {
 		int risultato = 0;
@@ -696,40 +701,6 @@ public class ControllerAmministratore {
 
 	public void setAltraImp(String altraImp) {
 		this.altraImp = altraImp;
-	}
-
-	public Object[] getProvince() {
-		
-		List<String> risultato = new ArrayList<String>();
-		DatiExcel DE = new DatiExcel();
-		try {
-			risultato = DE.ottieniProvince();
-		} catch (IOException e) {
-			if(this.creaSedeFrame == null) {
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}else {
-				JOptionPane.showMessageDialog(this.creaSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		
-		return risultato.toArray();
-	}
-	
-	public List<String> getComuniProvincia(String Provincia) {
-		
-		List<String> risultato = new ArrayList<String>();
-		DatiExcel DE = new DatiExcel();
-		try {
-			risultato = DE.ottieniComuniProvincia(Provincia);
-		} catch (IOException e) {
-			if(this.creaSedeFrame == null) {
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}else {
-				JOptionPane.showMessageDialog(this.creaSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		
-		return risultato;
 	}
 
 }
