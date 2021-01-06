@@ -118,7 +118,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)   //controlla che si usi il tasto sinistro del mouse
-					controllerGestore.chiudiGestoreFrame(true); //dopo aver chiuso il frame, apre login
+					controllerGestore.ChiudiGestoreFrame(true); //dopo aver chiuso il frame, apre login
 			}
 		});
 		
@@ -130,7 +130,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.chiudiGestoreFrame(false);
+					controllerGestore.ChiudiGestoreFrame(false);
 			}
 		});
 		
@@ -166,7 +166,7 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriVisualizzaProdottiFrame(); 
+					controllerGestore.ApriVisualizzaProdotti(); 
 			}
 		});
 		

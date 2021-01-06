@@ -74,19 +74,19 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.setFillsViewportHeight(true);
 		//
 		tblProdotti.setModel(new DefaultTableModel(
-			getNomePrezzo(this.controllerGestore),
+			controllerGestore.getDatiProdotti("Tutte"),
 			new String[] {
-				"Nome", "Prezzo"
+				"Nome", "Prezzo", "ID"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class
+				String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false
+				false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -94,13 +94,16 @@ public class CreaOrdineFrame extends JFrame {
 		});
 		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
 		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(0);
+		tblProdotti.getColumnModel().getColumn(2).setMinWidth(0);
+		tblProdotti.getColumnModel().getColumn(2).setMaxWidth(0);
 		//
 		scpProdotti.setViewportView(tblProdotti);
 		
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); 
-		
 		
 		JScrollPane scpCarrello = new JScrollPane();
 		scpCarrello.setBounds(404, 181, 308, 351);
@@ -125,13 +128,17 @@ public class CreaOrdineFrame extends JFrame {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
 		});
 		tblCarrello.getColumnModel().getColumn(0).setResizable(false);
 		tblCarrello.getColumnModel().getColumn(1).setResizable(false);
 		tblCarrello.getColumnModel().getColumn(2).setResizable(false);
 		scpCarrello.setViewportView(tblCarrello);
-		
-		tblCarrello.getColumnModel().getColumn(2).setCellRenderer(rightRenderer); 
 		
 			
 		String[] categorie =controllerGestore.getCategorieBox();
@@ -203,8 +210,7 @@ public class CreaOrdineFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 					if(tblProdotti.getSelectedColumnCount() != 0)
 					{
-						
-					
+						controllerGestore.ApriInfoProdottoFrame(Integer.parseInt((tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 2).toString()))); 
 					}else 
 					{
 						//Errore();	
@@ -409,10 +415,5 @@ public class CreaOrdineFrame extends JFrame {
 			tblProdotti.getColumnModel().getColumn(1).setResizable(false);
 	}
 	
-	public Object[][] getNomePrezzo(ControllerGestore controllerGestore) {
-		Object[][] result = null;
-		result=controllerGestore.getDatiProdotti("Tutte");
-		return result;
-	}
 	
 }

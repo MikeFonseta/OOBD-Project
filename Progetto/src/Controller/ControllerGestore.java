@@ -9,6 +9,7 @@ import DAO.ProdottoDAOPostgresImp;
 import Entities.Account;
 import GUI.CreaOrdineFrame;
 import GUI.GestoreFrame;
+import GUI.InfoProdottoFrame;
 
 
 public class ControllerGestore {
@@ -20,7 +21,7 @@ public class ControllerGestore {
 	private Account account;
 	private GestoreFrame gestoreFrame = null;
 	private CreaOrdineFrame creaOrdineFrame = null;
-	
+	private InfoProdottoFrame infoProdottoFrame = null;
 
 	public ControllerGestore(MainController mainController, Account account) {
 		
@@ -36,7 +37,7 @@ public class ControllerGestore {
 		this.mainController.ApriVisualizzaCarrelloFrame(indice); 
     }
 	
-	public void chiudiGestoreFrame(boolean logout) {
+	public void ChiudiGestoreFrame(boolean logout) {
 		if(logout==true) {
 			this.mainController.ApriLogin();
 		}
@@ -84,7 +85,28 @@ public Object[][] getDatiProdotti(String categoria) { //prodotti
 		return result;
 	}
 	
-	
+	public String[] getSingoloProdotto(int idProdotto) {
+		
+		String[] result = null;
+		
+		if(this.imp.equals(this.postgresImp))
+		{
+			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+			try {
+				result = prodottoDao.getDatiSingoloProdotto(idProdotto);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		return result;
+	}
+
+
+
 	public String[] getCategorieBox() {
 		
 		String[] result = this.mainController.getCategorie();
@@ -103,10 +125,33 @@ public Object[][] getDatiProdotti(String categoria) { //prodotti
 		mainController.ApriVisualizzaOrdiniFrame();
 	}
 	
-	public void ApriVisualizzaProdottiFrame(){
+	public void ApriVisualizzaProdotti(){
 		//this.gestoreFrame.setEnabled(false);	//da reimpostare dopo aver finito i test
 		this.mainController.ApriVisualizzaProdottiFrame(); 
 	}
+	
+	public void ApriInfoProdottoFrame(int idProdotto){
+		if(this.infoProdottoFrame!=null) {
+			if(this.infoProdottoFrame.getID()==idProdotto) {
+				JOptionPane.showMessageDialog(this.creaOrdineFrame,"Queste info sono gi\u00E0 aperte");
+				this.infoProdottoFrame.setVisible(true);
+				return;
+			}
+			else {
+				infoProdottoFrame.dispose();
+				JOptionPane.showMessageDialog(this.creaOrdineFrame,"Le info sul prodotto aperte verranno chiuse");
+			}
+		}
+		
+		infoProdottoFrame = new InfoProdottoFrame(this, idProdotto);
+		
+	}
+	
+	public void ChiudiInfoProdottoFrame() {
+		infoProdottoFrame.dispose();
+		infoProdottoFrame=null;
+	}
+	
 	
 	public void ImpostaFineConsegna(int idOrdine) {
 		

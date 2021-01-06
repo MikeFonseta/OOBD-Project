@@ -11,6 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import Controller.ControllerGestore;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Point;
@@ -21,10 +24,17 @@ import java.awt.event.MouseMotionAdapter;
 public class InfoProdottoFrame extends JFrame {
 
 	private JPanel pnlinfo;
+	private ControllerGestore controllerGestore=null;
 	private Point initialClick;
 	private JFrame parent=this;
+	private int ID;
 
-	public InfoProdottoFrame() {
+	public InfoProdottoFrame(ControllerGestore controllerGestore, int idProdotto) {
+		
+		this.controllerGestore=controllerGestore;
+		String[] dati=this.controllerGestore.getSingoloProdotto(idProdotto);
+		this.ID=idProdotto;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 500);
 		pnlinfo = new JPanel();
@@ -33,31 +43,37 @@ public class InfoProdottoFrame extends JFrame {
 		setContentPane(pnlinfo);
 		pnlinfo.setLayout(null);
 		
-		JLabel lblNome = new JLabel("Nome");
+		JLabel lblNome = new JLabel(dati[0]);
 		lblNome.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNome.setBounds(122, 66, 46, 14);
+		lblNome.setBounds(108, 66, 180, 60);
 		pnlinfo.add(lblNome);
 		
-		JLabel lblDescrizione = new JLabel("Descrizione");
+		JLabel lblDescrizione = new JLabel(dati[1]);
 		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblDescrizione.setBounds(122, 142, 61, 14);
+		lblDescrizione.setBounds(108, 137, 180, 60);
 		pnlinfo.add(lblDescrizione);
 		
-		JLabel lblAllergeni = new JLabel("Allergeni");
+		JLabel lblAllergeni = new JLabel(dati[2]);
 		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblAllergeni.setBounds(123, 211, 46, 14);
+		lblAllergeni.setBounds(108, 219, 180, 60);
 		pnlinfo.add(lblAllergeni);
 		
-		JLabel lblPrezzo = new JLabel("Prezzo");
+		JLabel lblPrezzo = new JLabel(dati[3]);
 		lblPrezzo.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblPrezzo.setBounds(123, 279, 46, 14);
+		lblPrezzo.setBounds(108, 293, 180, 60);
 		pnlinfo.add(lblPrezzo);
 		
 		JButton btnChiudi = new JButton("Chiudi");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnChiudi.setBounds(94, 335, 89, 23);
+		btnChiudi.setBounds(145, 434, 89, 23);
 		pnlinfo.add(btnChiudi);
-		
+		btnChiudi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					controllerGestore.ChiudiInfoProdottoFrame();	
+			}
+		});
 
 		JPanel pnlBarra = new JPanel();
 		pnlBarra.setBackground(Color.DARK_GRAY);
@@ -102,4 +118,9 @@ public class InfoProdottoFrame extends JFrame {
 		setUndecorated(true);
 		setVisible(true);
 	}
+	
+	public int getID() {
+		return this.ID;
+	}
+	
 }

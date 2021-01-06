@@ -42,6 +42,36 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	}
 	
 	@Override
+	public String[] getDatiSingoloProdotto(int idProdotto) throws SQLException{
+		
+		Connection conn=DBConnection.getInstance().getConnection();
+		Statement st=conn.createStatement();
+		ResultSet rs=st.executeQuery("SELECT nomep AS nome,descrizione,STRING_AGG(nomea,',') AS allergeni,prezzo FROM prodotto \r\n"
+				+ "LEFT JOIN etichetta ON prodotto.id_prodotto=etichetta.id_prodotto\r\n"
+				+ "Where prodotto.id_prodotto='"+idProdotto+"'\r\n"
+				+ "GROUP BY nome,descrizione,prezzo");
+		
+		String descrizione="<html>Nessuna descrizione</html>";
+		String allergeni="<html>Nessun allergene presente</html>";
+		
+		rs.next();
+		String nome ="<html>"+rs.getString(1)+"</html>";
+		if(rs.getString(2)!=null) descrizione ="<html>"+ rs.getString(2)+"</html>";
+		if(rs.getString(3)!=null) allergeni ="<html>"+ rs.getString(3)+"</html>";
+		String prezzo ="<html> \u20AC "+ rs.getString(4)+"</html>";
+		
+		
+		String dati[]=new String[] {nome,descrizione,allergeni,prezzo};
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return dati;
+	}
+	
+	
+	@Override
 	public List<Object[]> getProdottiPerUnaSede(int idSede)  throws SQLException {
 		
 		List<Object[]> prodotti = new ArrayList<Object[]>();
@@ -211,7 +241,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 			filtro = " WHERE categoria = '"+categoria+"' ";
 		}
 		
-		ResultSet rs = st.executeQuery("SELECT nomep AS Nome, prezzo AS Prezzo "
+		ResultSet rs = st.executeQuery("SELECT nomep AS Nome, prezzo AS Prezzo, id_prodotto "
 				+ "FROM prodotto "
 				+ filtro
 				+ "ORDER BY Nome ASC");
@@ -220,8 +250,9 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 				
 			String Nome= rs.getString(1);
 			String Prezzo= "\u20AC "+String.valueOf(rs.getFloat(2));
+			String ID= rs.getString(3);
 			
-			Object[] object = new Object[] {Nome,Prezzo};
+			Object[] object = new Object[] {Nome,Prezzo,ID};
 				
 			prodotti.add(object);
 		}
