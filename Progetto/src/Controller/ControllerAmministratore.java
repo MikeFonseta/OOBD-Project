@@ -103,6 +103,7 @@ public class ControllerAmministratore {
 	public void ChiudiEliminaProdottoFrame() {
 		this.eliminaProdottoFrame.dispose();
 		this.gestioneProdottiFrame.setEnabled(true);
+		this.gestioneProdottiFrame.setVisible(true);
 	}
 	
 	public void ApriModificaSediFrame(int idSede) {
@@ -635,6 +636,8 @@ public class ControllerAmministratore {
 		this.eliminaProdottoFrame.setVisible(false);
 		this.eliminaProdottoFrame.dispose();
 		this.gestioneProdottiFrame.setEnabled(true);
+		this.gestioneProdottiFrame.setVisible(true);
+		
 		if(this.account.getPassword().equals(password)) {
 			if(this.imp == this.postgresImp) {
 				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();

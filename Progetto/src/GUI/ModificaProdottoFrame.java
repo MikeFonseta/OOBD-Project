@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.JTextArea;
 
-public class AggModProdottoFrame extends JFrame {
+public class ModificaProdottoFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txfNomeP;
@@ -42,7 +42,7 @@ public class AggModProdottoFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AggModProdottoFrame frame = new AggModProdottoFrame();
+					ModificaProdottoFrame frame = new ModificaProdottoFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,8 +54,8 @@ public class AggModProdottoFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AggModProdottoFrame() {
-		setTitle("Aggiungi/Modifica Prodotto");
+	public ModificaProdottoFrame() {
+		setTitle("Modifica Prodotto");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		contentPane = new JPanel();
@@ -63,12 +63,12 @@ public class AggModProdottoFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		txfNomeP = new JTextField();
-		txfNomeP.setBounds(145, 67, 197, 24);
+		txfNomeP.setBounds(145, 87, 197, 24);
 		txfNomeP.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfNomeP.setColumns(10);
 		
 		JScrollPane spnlSedi = new JScrollPane();
-		spnlSedi.setBounds(451, 67, 668, 462);
+		spnlSedi.setBounds(489, 83, 630, 407);
 		
 		txpDescrizione = new JTextArea();
 		txpDescrizione.setLineWrap(true);
@@ -77,24 +77,28 @@ public class AggModProdottoFrame extends JFrame {
 		txpDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
 		
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(46, 73, 34, 18);
+		lblNome.setBounds(79, 90, 34, 18);
 		lblNome.setFont(new Font("Calibri", Font.PLAIN, 14));
 		
 		JLabel lblDescrizione = new JLabel("Descrizione");
 		lblDescrizione.setBounds(46, 141, 65, 18);
 		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
 		
-		JButton btnSelezionaSede = new JButton("Seleziona/Deseleziona Tutto");
-		btnSelezionaSede.setBounds(451, 535, 167, 43);
+		JButton btnAggiungiSede = new JButton("Aggiungi Prodotto");
+		btnAggiungiSede.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnAggiungiSede.setBounds(834, 490, 145, 32);
 		
 		JLabel lblAllergeni = new JLabel("Allergeni");
-		lblAllergeni.setBounds(70, 298, 41, 20);
+		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblAllergeni.setBounds(63, 298, 50, 20);
 		
 		JLabel lblPrezzo = new JLabel("Prezzo");
-		lblPrezzo.setBounds(91, 537, 32, 14);
+		lblPrezzo.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblPrezzo.setBounds(79, 590, 32, 14);
 		
 		txfPrezzo = new JTextField();
-		txfPrezzo.setBounds(145, 528, 86, 23);
+		txfPrezzo.setFont(new Font("Calibri", Font.PLAIN, 14));
+		txfPrezzo.setBounds(145, 586, 86, 23);
 		txfPrezzo.setColumns(10);
 		
 		JButton btnAnnulla = new JButton("ANNULLA");
@@ -136,7 +140,7 @@ public class AggModProdottoFrame extends JFrame {
 		contentPane.add(txfPrezzo);
 		contentPane.add(txfNomeP);
 		contentPane.add(txpDescrizione);
-		contentPane.add(btnSelezionaSede);
+		contentPane.add(btnAggiungiSede);
 		contentPane.add(spnlSedi);
 		contentPane.add(btnAnnulla);
 		contentPane.add(btnConferma);
@@ -146,9 +150,50 @@ public class AggModProdottoFrame extends JFrame {
 		contentPane.add(spnlAllergeni);
 		
 		tblAllergeni = new JTable();
+		tblAllergeni.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Allergeni"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tblAllergeni.getColumnModel().getColumn(0).setResizable(false);
 		tblAllergeni.setFillsViewportHeight(true);
 		tblAllergeni.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 16));
+		tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
 		spnlAllergeni.setViewportView(tblAllergeni);
+		
+		JButton btnEliminaAllergeni = new JButton("Elimina");
+		btnEliminaAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnEliminaAllergeni.setBounds(344, 495, 89, 23);
+		contentPane.add(btnEliminaAllergeni);
+		
+		JButton btnAggiungiAllergene = new JButton("Aggiungi");
+		btnAggiungiAllergene.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnAggiungiAllergene.setBounds(253, 495, 89, 23);
+		contentPane.add(btnAggiungiAllergene);
+		
+		JButton btnElimina = new JButton("Elimina Prodotto");
+		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnElimina.setBounds(974, 490, 145, 32);
+		contentPane.add(btnElimina);
+		
+		JLabel lblIDProdotto = new JLabel("ID Prodotto :");
+		lblIDProdotto.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblIDProdotto.setBounds(46, 28, 185, 18);
+		contentPane.add(lblIDProdotto);
 	}
 }

@@ -401,7 +401,8 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		
 		if(ClausolaWhere.length()>0)
-			sql.append( " WHERE " ).append( ClausolaWhere );	
+			sql.append( " WHERE " ).append( ClausolaWhere );
+			sql.append(" ORDER BY id_prodotto ASC ");
 		
 		connection = DBConnection.getInstance().getConnection();
 		query = connection.prepareStatement(sql.toString());
