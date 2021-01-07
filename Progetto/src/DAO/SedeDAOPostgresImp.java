@@ -15,7 +15,6 @@ import Entities.Sede;
 
 public class SedeDAOPostgresImp implements SedeDAO{
 	
-	
 	@Override
 	public List<String> CercaTutteLeSedi() throws SQLException {
 		List<String> sedi = new ArrayList<String>();
@@ -24,7 +23,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT ID_Sede FROM Sede");
+		ResultSet rs = st.executeQuery("SELECT id_sede FROM Sede ORDER BY id_sede");
 			
 		while(rs.next()){
 			sedi.add(rs.getString(1));

@@ -82,33 +82,28 @@ public class ControllerAmministratore {
 		this.amministratoreFrame.setEnabled(true);
 		this.mainController.ChiudiVisualizzaOrdiniFrame();
 	}
-	
-	
+		
 	public void ApriGestioneProdottiFrame() {
 		this.amministratoreFrame.setEnabled(false);
 		this.amministratoreFrame.setVisible(false);
 		this.gestioneProdottiFrame = new GestioneProdottiFrame(this);
 	}
-
 	
 	public void ChiudiGestioneProdottiFrame(){
 		this.gestioneProdottiFrame.dispose();
 		this.amministratoreFrame.setEnabled(true);
 		this.amministratoreFrame.setVisible(true);
 	}
-	
-	
+		
 	public void ApriEliminaProdottoFrame(String NomeProdottoDaEliminare, int idProdottoDaEliminare) {
 		this.gestioneProdottiFrame.setEnabled(false);
 		this.eliminaProdottoFrame = new EliminaProdottoFrame(this,NomeProdottoDaEliminare, idProdottoDaEliminare);
 	}
 	
-	
 	public void ChiudiEliminaProdottoFrame() {
 		this.eliminaProdottoFrame.dispose();
 		this.gestioneProdottiFrame.setEnabled(true);
 	}
-	
 	
 	public void ApriModificaSediFrame(int idSede) {
 		
@@ -182,7 +177,6 @@ public class ControllerAmministratore {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.aggiungiProdottoFrame.dispose();
 	}
-	
 	
 	public void chiudiAmministratoreFrame(boolean logout) {
 		
