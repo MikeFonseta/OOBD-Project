@@ -5,14 +5,24 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.text.DecimalFormat;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.PlainDocument;
+
+import Controller.ControllerAmministratore;
+import Utility.FiltroInteri;
+
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
@@ -21,24 +31,29 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Cursor;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 
 public class CreaProdottoFrame extends JFrame {
-
-	private JPanel contentPane;
 	private Point initialClick;
 	private JFrame parent = this;
 	private JTextField txfNome;
-	private JTextField txfPrezzo;
-
+	private JFormattedTextField txfPrezzo;
+	private ControllerAmministratore controllerAmministratore= null;
+	private boolean PrezzoInserito, NomeInserito, CategoriaInserita;
+	private JButton btnCrea;
+	private JButton btnAnnulla;
+	private JComboBox cbxCategorie;
 
 
 	/**
 	 * Create the frame.
+	 * @param idProssimoProdotto 
 	 */
-	public CreaProdottoFrame() {
+	public CreaProdottoFrame(ControllerAmministratore ControllerAmministratore, int idProssimoProdotto) {
+		this.controllerAmministratore = ControllerAmministratore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 608);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -57,6 +72,35 @@ public class CreaProdottoFrame extends JFrame {
 		pnlBarra.add(lblCreaProdotto);
 		
 		txfNome = new JTextField();
+		txfNome.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(txfNome.getText().isBlank())
+					NomeInserito = false;
+				else 
+					NomeInserito = true;
+				ControllaModifiche();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(txfNome.getText().isBlank())
+					NomeInserito = false;
+				else 
+					NomeInserito = true;
+				ControllaModifiche();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if(txfNome.getText().isBlank())
+					NomeInserito = false;
+				else 
+					NomeInserito = true;
+				ControllaModifiche();
+			}
+		});
 		txfNome.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 		txfNome.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfNome.setColumns(10);
@@ -84,7 +128,7 @@ public class CreaProdottoFrame extends JFrame {
 		lblNome.setBounds(39, 146, 62, 26);
 		contentPane.add(lblNome);
 		
-		JLabel lblIDProdotto = new JLabel("ID Prodotto :");
+		JLabel lblIDProdotto = new JLabel("ID Prodotto : "+idProssimoProdotto+"");
 		lblIDProdotto.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblIDProdotto.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblIDProdotto.setBounds(10, 89, 228, 23);
@@ -97,16 +141,60 @@ public class CreaProdottoFrame extends JFrame {
 		lblPrezzo.setBounds(39, 480, 62, 24);
 		contentPane.add(lblPrezzo);
 		
-		txfPrezzo = new JTextField();
+		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
+		txfPrezzo.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!txfPrezzo.getText().isBlank()) {
+					if(Float.parseFloat(txfPrezzo.getText().toString()) > 0)
+					PrezzoInserito = true;
+				}
+				else 
+					PrezzoInserito = false;
+					
+				ControllaModifiche();
+				
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(txfPrezzo.getText().isBlank()&& Float.parseFloat(txfPrezzo.getText()) <= 0)
+					PrezzoInserito = false;
+				else 
+					PrezzoInserito = true;
+				ControllaModifiche();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if(txfPrezzo.getText().isBlank()&& Float.parseFloat(txfPrezzo.getText()) <= 0)
+					PrezzoInserito = false;
+				else
+					PrezzoInserito = true;
+				ControllaModifiche();
+			}
+		});
 		txfPrezzo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfPrezzo.setColumns(10);
-		txfPrezzo.setBounds(131, 475, 89, 29);
+		txfPrezzo.setBounds(131, 475, 77, 29);
 		contentPane.add(txfPrezzo);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setFont(new Font("Calibri", Font.PLAIN, 18));
-		comboBox.setBounds(131, 207, 288, 29);
-		contentPane.add(comboBox);
+		cbxCategorie = new JComboBox(new String[] {"", "Pizze", "Panini", "Bibite"});
+		cbxCategorie.setFont(new Font("Calibri", Font.PLAIN, 18));
+		cbxCategorie.setBounds(131, 207, 288, 29);
+		contentPane.add(cbxCategorie);
+		cbxCategorie.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(cbxCategorie.getSelectedItem()!= null && cbxCategorie.getSelectedItem().toString() != "" )
+					CategoriaInserita = true;
+				else 
+					CategoriaInserita = false;
+				ControllaModifiche();
+			} 
+		});
 		
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -115,16 +203,38 @@ public class CreaProdottoFrame extends JFrame {
 		lblCategoria.setBounds(24, 207, 77, 29);
 		contentPane.add(lblCategoria);
 		
-		JButton btnNewButton = new JButton("Annulla");
-		btnNewButton.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnNewButton.setBounds(91, 556, 99, 41);
-		contentPane.add(btnNewButton);
+		btnAnnulla = new JButton("Annulla");
+		btnAnnulla.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.ChiudiCreaProdottoFrame();
+				}
+			}
+		});
+		btnAnnulla.setFont(new Font("Calibri", Font.PLAIN, 18));
+		btnAnnulla.setBounds(91, 556, 99, 41);
+		contentPane.add(btnAnnulla);
 		
-		JButton btnConferma = new JButton("Conferma");
-		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnConferma.setBounds(253, 556, 105, 41);
-		contentPane.add(btnConferma);
-
+		btnCrea = new JButton("Crea");
+		btnCrea.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1 && btnCrea.isEnabled()) {
+					controllerAmministratore.CreaProdotto(idProssimoProdotto, txfNome.getText(), txpDescrizione.getText(), Float.parseFloat(txfPrezzo.getText().toString()), cbxCategorie.getSelectedItem().toString());
+				}
+			}
+		});
+		btnCrea.setFont(new Font("Calibri", Font.PLAIN, 18));
+		btnCrea.setBounds(253, 556, 105, 41);
+		contentPane.add(btnCrea);
+		btnCrea.setEnabled(false);
+		
+		JLabel lblEuro = new JLabel("\u20AC");
+		lblEuro.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblEuro.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblEuro.setBounds(218, 481, 46, 23);
+		contentPane.add(lblEuro);
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
@@ -156,4 +266,23 @@ public class CreaProdottoFrame extends JFrame {
 		setUndecorated(true);
 		this.setVisible(true);
 	}
+	
+	
+	
+	public void ControllaModifiche() {
+		if(NomeInserito == true && CategoriaInserita == true && PrezzoInserito == true )
+			btnCrea.setEnabled(true);
+		else
+			btnCrea.setEnabled(false);
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

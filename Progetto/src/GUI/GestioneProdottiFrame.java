@@ -205,6 +205,14 @@ public class GestioneProdottiFrame extends JFrame {
 		
 		
 		JButton btnAggiungi = new JButton("AGGIUNGI");
+		btnAggiungi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() ==MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriCreaProdottoFrame();
+				}
+			}
+		});
 		btnAggiungi.setBounds(312, 644, 195, 45);
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(btnAggiungi);

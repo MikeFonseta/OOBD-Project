@@ -459,6 +459,41 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return risultato;
 		
 	}
+
+	@Override
+	public int idProssimoProdotto() throws SQLException {
+		int risultato = 0;
+		Connection connection = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st = connection.createStatement();
+		rs = st.executeQuery("SELECT IdProssimoProdotto()");
+		if(rs.next())
+			risultato = rs.getInt(1);
+		
+		rs.close();
+		st.close();
+		connection.close();
+		
+		return risultato;
+	}
+
+	@Override
+	public int CreaProdotto(int idProssimoProdotto, String nome, String descrizione, float prezzo, String categoria) throws SQLException {
+		Connection connection = null;
+		Statement st = null;
+		int risultato = 0;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st = connection.createStatement();
+		risultato = st.executeUpdate("INSERT INTO Prodotto VALUES ("+idProssimoProdotto+", '"+nome+"', '"+descrizione+"', "+prezzo+", '"+categoria+"') ");
+		
+		st.close();
+		connection.close();
+		return risultato;
+	}
 	
 	
 	

@@ -15,16 +15,19 @@ import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.Account;
+import Entities.Prodotto;
 import Entities.Rider;
 import Entities.Sede;
 import GUI.AggiungiProdottoFrame;
 import GUI.AmministratoreFrame;
+import GUI.CreaProdottoFrame;
 import GUI.CreaSedeFrame;
 import GUI.EliminaProdottoFrame;
 import GUI.EliminaSedeFrame;
 import GUI.GestioneProdottiFrame;
 import GUI.GestioneRiderFrame;
 import GUI.GestioneSedeFrame;
+import GUI.ModificaProdottoFrame;
 import Utility.DatiExcel;
 
 public class ControllerAmministratore {
@@ -41,6 +44,8 @@ public class ControllerAmministratore {
 	private CreaSedeFrame creaSedeFrame=null;
 	private GestioneProdottiFrame gestioneProdottiFrame = null;
 	private EliminaProdottoFrame eliminaProdottoFrame = null;
+	private CreaProdottoFrame creaProdottoFrame = null;
+	private ModificaProdottoFrame modificaProdottoFrame = null;
 	private Account account;
 	
 	
@@ -664,16 +669,58 @@ public class ControllerAmministratore {
 	
 	
 	
+		public void ApriCreaProdottoFrame() {
+			int idProssimoProdotto = 0;
+			if(this.imp == this.postgresImp) {
+				
+				try {
+					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+					idProssimoProdotto = prodottoDAO.idProssimoProdotto();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else if(this.imp == this.altraImp) {
+				//Altra Imp
+			}
+			this.gestioneProdottiFrame.setEnabled(false);
+			this.creaProdottoFrame = new CreaProdottoFrame(this, idProssimoProdotto);
+	}
 	
+		
+	public void ChiudiCreaProdottoFrame() {
+		this.creaProdottoFrame.dispose();
+		this.gestioneProdottiFrame.setEnabled(true);
+		this.gestioneProdottiFrame .setVisible(true);
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	public void CreaProdotto(int idProssimoProdotto, String Nome, String Descrizione, float Prezzo, String Categoria) {
+		int risultato = 0;
+		Prodotto prodotto = new Prodotto(idProssimoProdotto, Nome, Descrizione, Prezzo, Categoria);
+			if(this.imp == this.postgresImp) {
+				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+				try {
+					risultato = prodottoDAO.CreaProdotto(idProssimoProdotto, Nome, Descrizione, Prezzo, Categoria);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else if (this.imp == this.altraImp) {
+				//Altra Imp
+			}
+		if(risultato == 1) {
+			this.creaProdottoFrame.dispose();
+			this.gestioneProdottiFrame.setEnabled(false);
+			this.gestioneProdottiFrame.setVisible(false);
+			this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
+		}
+	}
+
+
+
+
 
 	//getter e setter
 	public String getImp() {
@@ -699,6 +746,7 @@ public class ControllerAmministratore {
 	public void setAltraImp(String altraImp) {
 		this.altraImp = altraImp;
 	}
+
 
 }
 
