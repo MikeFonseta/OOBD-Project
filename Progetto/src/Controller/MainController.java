@@ -62,9 +62,11 @@ public class MainController {
 		
 		AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
 			
-		account = accountDao.ControlloCredenziali(NomeUtente, password);
-			if(account != null){
-				
+		try {
+			account = accountDao.ControlloCredenziali(NomeUtente, password);
+			
+			if(account != null)
+			{
 				if(account.getAmministratore() == false) {
 					this.controllerGestore = new ControllerGestore(this, account);
 				}else {
@@ -77,7 +79,10 @@ public class MainController {
 			{
 				JOptionPane.showMessageDialog(this.loginFrame,"Credenziali invalide!","Errore",JOptionPane.ERROR_MESSAGE);
 			}
-
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(this.loginFrame,"Credenziali invalide!","Errore",JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	public void ApriLogin() {

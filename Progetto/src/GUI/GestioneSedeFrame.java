@@ -40,7 +40,6 @@ public class GestioneSedeFrame extends JFrame{
 	private Account gestoreSede;
 	private Point initialClick;
 	private JFrame parent=this;
-	private JTextField txfNomeUtente;
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	private boolean NomeSedeModificato=false,TelefonoModificato=false,ProvinciaModificato=false,CittaModificato=false,ViaModificato=false,NumCivicoModificato=false,PasswordModificato=false;
 	

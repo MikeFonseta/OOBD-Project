@@ -1,10 +1,12 @@
 package DAO;
 
+import java.sql.SQLException;
+
 import Entities.Account;
 
 public interface AccountDAO{
 	
-	public Account ControlloCredenziali(String username, String Password);
-	public Account CercaAccountPerIdSede(int idSede);
-	public String NomeUtentePerNuovaSede(int idSede);
+	public Account ControlloCredenziali(String username, String Password) throws SQLException ;
+	public Account CercaAccountPerIdSede(int idSede) throws SQLException ;
+	public String NomeUtentePerNuovaSede(int idSede) throws SQLException ;
 }
