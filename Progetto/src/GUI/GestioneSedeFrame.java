@@ -100,7 +100,7 @@ public class GestioneSedeFrame extends JFrame{
 		JComboBox cbxProvincia = new JComboBox(controllerAmministratore.getProvince());
 		cbxProvincia.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-            	if(cbxProvincia.getSelectedItem() != null && !cbxProvincia.getSelectedItem().toString().equals(gestoreSede.getSede().getProvincia()) && !cbxProvincia.getSelectedItem().toString().equals("")) {	
+            	if(cbxProvincia.getSelectedItem() != null && !cbxProvincia.getSelectedItem().toString().equals("")) {	
         			
             		
             		CittaModel.removeAllElements();
@@ -281,7 +281,7 @@ public class GestioneSedeFrame extends JFrame{
 					if(rdbtnVisualizzaPassword.isSelected()) {
 						psfPassword.setEchoChar((char)0);
 					}else {
-						psfPassword.setEchoChar('\u0000');
+						psfPassword.setEchoChar((char)'●');
 					}
 				}
 			}
@@ -301,7 +301,7 @@ public class GestioneSedeFrame extends JFrame{
 		txfTelefono.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()==10) {
+				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()>0) {
 					TelefonoModificato=true;
 				}else {
 					TelefonoModificato=false;
@@ -310,7 +310,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()==10) {
+				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()>0) {
 					TelefonoModificato=true;
 				}else {
 					TelefonoModificato=false;

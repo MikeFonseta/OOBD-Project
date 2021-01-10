@@ -365,7 +365,7 @@ public class CreaSedeFrame extends JFrame{
 					if(rdbtnVisualizzaPassword.isSelected()) {
 						psfPassword.setEchoChar((char)0);
 					}else {
-						psfPassword.setEchoChar((char)0);
+						psfPassword.setEchoChar((char)'●');
 					}
 				}
 			}
