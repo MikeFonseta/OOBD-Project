@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import Controller.MainController;
 import Controller.ControllerGestore;
@@ -37,7 +38,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListSelectionModel;
 
 public class CreaOrdineFrame extends JFrame {
-	//ultima riga contiene risultato di query con nome=totale descrizione=null prezzo=sommadeiprezzi
 
 	private JPanel pnlCreaOrdine;
 	private JTable tblProdotti;
@@ -122,17 +122,17 @@ public class CreaOrdineFrame extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Nome", "Quantit\u00E0", "Prezzo"
+				"Nome", "Quantit\u00E0", "Prezzo", "ID"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, String.class
+				String.class, Integer.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -141,6 +141,10 @@ public class CreaOrdineFrame extends JFrame {
 		tblCarrello.getColumnModel().getColumn(0).setResizable(false);
 		tblCarrello.getColumnModel().getColumn(1).setResizable(false);
 		tblCarrello.getColumnModel().getColumn(2).setResizable(false);
+		tblCarrello.getColumnModel().getColumn(3).setResizable(false);
+		tblCarrello.getColumnModel().getColumn(3).setPreferredWidth(0);
+		tblCarrello.getColumnModel().getColumn(3).setMinWidth(0);
+		tblCarrello.getColumnModel().getColumn(3).setMaxWidth(0);
 		DefaultTableModel modelloCarrello = (DefaultTableModel) tblCarrello.getModel();
 		scpCarrello.setViewportView(tblCarrello);
 		
@@ -200,6 +204,7 @@ public class CreaOrdineFrame extends JFrame {
 					if(tblProdotti.getSelectedColumnCount() != 0)
 					{
 						controllerGestore.ApriInfoProdottoFrame(Integer.parseInt((tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 2).toString()))); 
+ 
 					}else 
 					{
 						//Errore();	
@@ -213,13 +218,14 @@ public class CreaOrdineFrame extends JFrame {
 		JButton btnAggiungi1 = new JButton("");
 		btnAggiungi1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(tblProdotti.getSelectedColumnCount() != 0)
+				if(tblCarrello.getSelectedColumnCount() != 0)
 				{
-					
-					
+					AggiornaQuantita(modelloCarrello,"AggiungiCarrello");
+					modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
+
 				}else 
 				{
-					//Errore();	
+					//Errore();		
 				}
 			}
 		});
@@ -229,14 +235,59 @@ public class CreaOrdineFrame extends JFrame {
 		JButton btnRimuovi1 = new JButton("");
 		btnRimuovi1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(tblCarrello.getSelectedColumnCount() != 0)
+				{
+					AggiornaQuantita(modelloCarrello,"Rimuovi");
+					if(modelloCarrello.getRowCount()!=0) {
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
+					}
+				}else 
+				{
+					//Errore();		
+				}
 			}
 		});
 		btnRimuovi1.setBounds(534, 532, 45, 23);
 		pnlCreaOrdine.add(btnRimuovi1);
 		
+		
 		JButton btnElimina = new JButton("");
+		btnElimina.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				if(tblCarrello.getSelectedColumnCount() != 0)
+				{
+					AggiornaQuantita(modelloCarrello,"Elimina");
+					if(modelloCarrello.getRowCount()!=0) {
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
+					}
+				}else 
+				{
+					//Errore();		
+				}
+			}
+		});
+		
 		btnElimina.setBounds(578, 532, 45, 23);
 		pnlCreaOrdine.add(btnElimina);
+		
+		
+		
+		JButton btnSvuota = new JButton("");
+		btnSvuota.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(MessaggioElimina("Svuotare il carrello?")) {
+					int rowCount = modelloCarrello.getRowCount();
+					//Rimuove le righe a partire dall ultima
+					for (int i = rowCount - 1; i >= 0; i--) {
+					    modelloCarrello.removeRow(i);
+					}
+				}
+			}
+		});
+		btnSvuota.setBounds(623, 532, 89, 23);
+		pnlCreaOrdine.add(btnSvuota);
+		
 		
 		JLabel lblNome = new JLabel("NomeCliente");
 		lblNome.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -303,10 +354,6 @@ public class CreaOrdineFrame extends JFrame {
 		txfVia.setBounds(873, 425, 140, 20);
 		pnlCreaOrdine.add(txfVia);
 		
-		JButton btnSvuota = new JButton("");
-		btnSvuota.setBounds(624, 532, 88, 23);
-		pnlCreaOrdine.add(btnSvuota);
-		
 		JLabel lblCodice = new JLabel("CodiceCliente");
 		lblCodice.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblCodice.setBounds(822, 65, 98, 14);
@@ -355,6 +402,7 @@ public class CreaOrdineFrame extends JFrame {
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
 
+
 			
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
@@ -388,42 +436,88 @@ public class CreaOrdineFrame extends JFrame {
 
 	}
 	
-	public void FiltraPerCategorie(String categoria) {
+	
+	public void FiltraPerCategorie(String categoria) {		
 		tblProdotti.setModel(new DefaultTableModel(
 				controllerGestore.getDatiProdotti(categoria),
 				new String[] {
-					"Nome", "Prezzo"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					String.class, String.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-				boolean[] columnEditables = new boolean[] {
-					false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			});
-			tblProdotti.getColumnModel().getColumn(0).setResizable(false);
-			tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+						"Nome", "Prezzo", "ID"
+					}
+				) {
+					Class[] columnTypes = new Class[] {
+						String.class, String.class, String.class
+					};
+					public Class getColumnClass(int columnIndex) {
+						return columnTypes[columnIndex];
+					}
+					boolean[] columnEditables = new boolean[] {
+						false, false, false
+					};
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
+				tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+				tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+				tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+				tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(0);
+				tblProdotti.getColumnModel().getColumn(2).setMinWidth(0);
+				tblProdotti.getColumnModel().getColumn(2).setMaxWidth(0);
+	
+				DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+				rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+				tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
 	}
+	
+	
+	
 	
 	public void AggiungiAlCarrello(DefaultTableModel modCarrello,String azione) {
 		
 		if(AggiornaQuantita(modCarrello,azione)) {
-			modCarrello.addRow(new Object[]{tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0), 1,tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 1)});
+			modCarrello.addRow(new Object[]{tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0), 
+											1,
+											tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 1),
+											tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 2)
+											});
 		}
 		
-		modCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
+
+		modCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});	
 		
 	}
 	
 	public boolean AggiornaQuantita(DefaultTableModel modCarrello, String azione) {
 		boolean nuovo=true;
+		
+		if(azione.equals("AggiungiCarrello")) {
+			int quantita= (int) tblCarrello.getValueAt(tblCarrello.getSelectedRow(),1);
+			if(quantita==99) {
+				JOptionPane.showMessageDialog(this,"Impossibile aumentare la quantit\u00E0");
+			}else {
+				tblCarrello.setValueAt(++quantita,tblCarrello.getSelectedRow(),1);
+			}
+		}
+		
+		
+		else if(azione.equals("Rimuovi")) {
+			int quantita= (int) tblCarrello.getValueAt(tblCarrello.getSelectedRow(),1);
+			if(quantita==1) {
+				if(MessaggioElimina("Eliminare il prodotto?")) {
+					modCarrello.removeRow(tblCarrello.getSelectedRow());
+				}
+			}else {
+				tblCarrello.setValueAt(--quantita,tblCarrello.getSelectedRow(),1);
+			}
+		}
+		
+		else if(azione.equals("Elimina")) {
+			if(MessaggioElimina("Eliminare il prodotto?")) {
+				modCarrello.removeRow(tblCarrello.getSelectedRow());
+			}
+		}
+		
+		
 		for (int i = 0; i < tblCarrello.getRowCount(); i++) {   
 			if(azione.equals("AggiungiProdotto")) {
 				if(tblProdotti.getValueAt(tblProdotti.getSelectedRow(),0).equals(tblCarrello.getValueAt(i, 0)) ){
@@ -435,18 +529,13 @@ public class CreaOrdineFrame extends JFrame {
 					}
 					nuovo=false;
 				}
-			}else if(azione.equals("AggiungiCarrello")){
+			}
 				
-			}
-			else {
-				//rimuovicarrello
-			}
-			
-			
 			if(tblCarrello.getValueAt(i, 0).equals("Totale")) {
 				modCarrello.removeRow(i);
 			}
 		}
+		
 		return nuovo;
 	}
 	
@@ -464,8 +553,21 @@ public class CreaOrdineFrame extends JFrame {
 	}
 	
 	
-	public void Errore() {
-		JOptionPane.showMessageDialog(this,"errore","Error",JOptionPane.ERROR_MESSAGE);
+	public void Errore(String stringa) {
+		JOptionPane.showMessageDialog(this,stringa,"Error",JOptionPane.ERROR_MESSAGE);
 	}
 	
+	public boolean MessaggioElimina(String messaggio) {
+		boolean elimina=true;
+		Object[] opzioni = { "Annulla", "Conferma"};
+		
+		 int result = JOptionPane.showOptionDialog(this, messaggio,null,
+	                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+	                null, opzioni, null);
+	        if (result == JOptionPane.YES_OPTION){
+	            elimina=false;
+	        }
+		
+		return elimina;
+	}
 }
