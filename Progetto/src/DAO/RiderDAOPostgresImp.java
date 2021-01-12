@@ -144,4 +144,43 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 
+	public List<Object[]> getRiderPerSede(int idSede) throws SQLException {
+		
+		List<Object[]> rider = new ArrayList<Object[]>();
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT disponibilit\u00E0, id_rider, nomer || ' ' || cognomer AS nome, telefonor AS telefono,\r\n"
+				+ "numeroordini \r\n"
+				+ "FROM rider\r\n"
+				+ "WHERE id_sede = '" + idSede +"'");
+		
+		while(rs.next()) {
+				
+			char disponibilita;	
+			int idRider = rs.getInt(2);
+			String nomeRider = rs.getString(3);
+			String telefonoRider = rs.getString(4);
+			int numeroordini = rs.getInt(5);
+			
+			boolean libero=rs.getBoolean(1);
+			if(libero) disponibilita='L'; //libero
+			else if(!libero && numeroordini>0) disponibilita='C'; //in consegna 
+			else disponibilita='X'; //non disponibile
+			
+			Object[] object = new Object[] {disponibilita,idRider,nomeRider,telefonoRider,numeroordini};
+				
+			rider.add(object);
+		}
+				
+		rs.close();
+		st.close();
+		conn.close();
+			
+		return rider;
+		
+		
+		
+	}
 }

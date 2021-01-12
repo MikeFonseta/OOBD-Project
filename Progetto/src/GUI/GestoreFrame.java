@@ -36,6 +36,7 @@ public class GestoreFrame extends JFrame {
 	private ControllerGestore controllerGestore=null;
 	private Point initialClick;
 	private JFrame parent=this;
+	private JTable tblRider;
 
 	public GestoreFrame(ControllerGestore controllerGestore) {
 		setResizable(false);
@@ -48,9 +49,43 @@ public class GestoreFrame extends JFrame {
 		setContentPane(pnlGestore);
 		pnlGestore.setLayout(null);
 		
+		JScrollPane scpRider = new JScrollPane();
+		scpRider.setFont(new Font("Calibri", Font.PLAIN, 11));
+		scpRider.setBounds(10, 207, 371, 389);
+		pnlGestore.add(scpRider);
+		
+		tblRider = new JTable();
+		tblRider.setFillsViewportHeight(true);
+		tblRider.setModel(new DefaultTableModel(
+			controllerGestore.getDatiRider(),
+			new String[] {
+				"Disponibilit\u00E0", "Nome", "Telefono", "ID", "Ordini"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, String.class, Integer.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tblRider.getColumnModel().getColumn(0).setResizable(false);
+		tblRider.getColumnModel().getColumn(1).setResizable(false);
+		tblRider.getColumnModel().getColumn(2).setResizable(false);
+		tblRider.getColumnModel().getColumn(3).setResizable(false);
+		tblRider.getColumnModel().getColumn(4).setResizable(false);
+		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
+		scpRider.setViewportView(tblRider);
+		
 		JScrollPane scpGestore = new JScrollPane();
 		scpGestore.setFont(new Font("Calibri", Font.PLAIN, 11));
-		scpGestore.setBounds(43, 225, 1006, 347);
+		scpGestore.setBounds(391, 207, 799, 389);
 		pnlGestore.add(scpGestore);
 		
 		tblOrdini = new JTable();
@@ -102,17 +137,17 @@ public class GestoreFrame extends JFrame {
 		
 		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNomeUtente.setBounds(43, 46, 88, 14);
+		lblNomeUtente.setBounds(10, 51, 88, 14);
 		pnlGestore.add(lblNomeUtente);
 		
 		JLabel lblNomeSede = new JLabel(controllerGestore.getAccount().getSede().getNomeSede());
 		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNomeSede.setBounds(347, 46, 88, 14);
+		lblNomeSede.setBounds(391, 51, 88, 14);
 		pnlGestore.add(lblNomeSede);
 		
 		JButton btnEsci = new JButton("Esci");
 		btnEsci.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnEsci.setBounds(806, 42, 89, 23);
+		btnEsci.setBounds(1002, 47, 89, 23);
 		pnlGestore.add(btnEsci);
 		btnEsci.addMouseListener(new MouseAdapter() {
 			@Override
@@ -124,7 +159,7 @@ public class GestoreFrame extends JFrame {
 		
 		JButton btnChiudi = new JButton("Chiudi");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnChiudi.setBounds(1023, 42, 89, 23);
+		btnChiudi.setBounds(1101, 47, 89, 23);
 		pnlGestore.add(btnChiudi);
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
@@ -136,7 +171,7 @@ public class GestoreFrame extends JFrame {
 		
 		JButton btnCreaOrdine = new JButton("Crea Ordine");
 		btnCreaOrdine.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnCreaOrdine.setBounds(43, 116, 339, 63);
+		btnCreaOrdine.setBounds(10, 98, 371, 63);
 		pnlGestore.add(btnCreaOrdine);
 		btnCreaOrdine.addMouseListener(new MouseAdapter() {
 			@Override
@@ -148,7 +183,7 @@ public class GestoreFrame extends JFrame {
 		
 		JButton btnVisualizzaOrdini = new JButton("Visualizza Ordini");
 		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnVisualizzaOrdini.setBounds(391, 116, 372, 63);
+		btnVisualizzaOrdini.setBounds(391, 98, 407, 63);
 		pnlGestore.add(btnVisualizzaOrdini);
 		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
 			@Override
@@ -160,7 +195,7 @@ public class GestoreFrame extends JFrame {
 		
 		JButton btnVisualizzaProdotti = new JButton("Visualizza Prodotti");
 		btnVisualizzaProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnVisualizzaProdotti.setBounds(773, 116, 339, 63);
+		btnVisualizzaProdotti.setBounds(808, 98, 382, 63);
 		pnlGestore.add(btnVisualizzaProdotti);
 		btnVisualizzaProdotti.addMouseListener(new MouseAdapter() {
 			@Override
@@ -170,12 +205,12 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnFineConsegna = new JButton("Immagine");			//da testare
+		JButton btnFineConsegna = new JButton("FineConsegna");			//da testare
 		btnFineConsegna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnFineConsegna.setBounds(1085, 260, 89, 63);
+		btnFineConsegna.setBounds(760, 626, 89, 63);
 		pnlGestore.add(btnFineConsegna);
 		btnFineConsegna.addMouseListener(new MouseAdapter() {
 			@Override
@@ -193,12 +228,12 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnIniziaConsegna = new JButton("Immagine");		//da testare
+		JButton btnIniziaConsegna = new JButton("IniziaConsegna");		//da testare
 		btnIniziaConsegna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnIniziaConsegna.setBounds(1085, 324, 89, 63);
+		btnIniziaConsegna.setBounds(846, 626, 89, 63);
 		pnlGestore.add(btnIniziaConsegna);
 		btnIniziaConsegna.addMouseListener(new MouseAdapter() {
 			@Override
@@ -218,12 +253,12 @@ public class GestoreFrame extends JFrame {
 			
 		});
 		
-		JButton btnModifica = new JButton("Immagine");
+		JButton btnModifica = new JButton("Modifica");
 		btnModifica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnModifica.setBounds(1085, 385, 89, 63);
+		btnModifica.setBounds(933, 626, 89, 63);
 		pnlGestore.add(btnModifica);
 		btnModifica.addMouseListener(new MouseAdapter() {
 			@Override
@@ -234,12 +269,12 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnInfo = new JButton("Immagine");
+		JButton btnInfo = new JButton("Info");
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnInfo.setBounds(1085, 446, 89, 63);
+		btnInfo.setBounds(1018, 626, 89, 63);
 		pnlGestore.add(btnInfo);
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -252,8 +287,8 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnElimina = new JButton("Immagine");	//da testare
-		btnElimina.setBounds(1085, 509, 89, 63);
+		JButton btnElimina = new JButton("Elimina");	//da testare
+		btnElimina.setBounds(1101, 626, 89, 63);
 		pnlGestore.add(btnElimina);
 		btnElimina.addMouseListener(new MouseAdapter() {
 			
@@ -264,7 +299,7 @@ public class GestoreFrame extends JFrame {
 					if(tblOrdini.getSelectedColumnCount() != 0)
 					{
 						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 8))=='A') {
-							controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));
+							controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0))); //modificare
 						}
 						else {
 							OrdineSpedito();
@@ -290,6 +325,22 @@ public class GestoreFrame extends JFrame {
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
+		
+		JButton btnDisponibile = new JButton("Disponibilit");
+		btnDisponibile.setBounds(10, 626, 89, 63);
+		pnlGestore.add(btnDisponibile);
+		
+		JButton btnFiltro = new JButton("Filtro");
+		btnFiltro.setBounds(107, 626, 89, 63);
+		pnlGestore.add(btnFiltro);
+		
+		JButton btnPartenza = new JButton("Partenza");
+		btnPartenza.setBounds(203, 626, 89, 63);
+		pnlGestore.add(btnPartenza);
+		
+		JButton btnConsegnato = new JButton("Consegnato");
+		btnConsegnato.setBounds(292, 626, 89, 63);
+		pnlGestore.add(btnConsegnato);
 		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {

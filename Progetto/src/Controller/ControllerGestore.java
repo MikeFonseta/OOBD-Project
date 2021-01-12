@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import DAO.AccountDAOPostgresImp;
 import DAO.OrdineDAOPostgresImp;
 import DAO.ProdottoDAOPostgresImp;
+import DAO.RiderDAOPostgresImp;
 import Entities.Account;
 import GUI.CreaOrdineFrame;
 import GUI.GestoreFrame;
@@ -58,7 +59,25 @@ public class ControllerGestore {
 		return this.mainController.getProvince();
 	}
 	
-public Object[][] getDatiOrdini() {
+	
+	public Object[][] getDatiRider(){
+		Object[][] result = null;
+		if(this.imp.equals(this.postgresImp))
+		{
+			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+			try {
+				result = riderDao.getRiderPerSede(this.account.getSede().getIdSede()).toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		return result;
+	}
+	
+	public Object[][] getDatiOrdini() {
 		
 		Object[][] result = null;
 		if(this.imp.equals(this.postgresImp))
@@ -77,7 +96,7 @@ public Object[][] getDatiOrdini() {
 	}
 	
 	
-public Object[][] getDatiProdotti(String categoria) { //prodotti
+	public Object[][] getDatiProdotti(String categoria) { //prodotti
 		
 		Object[][] result = null;
 		if(this.imp.equals(this.postgresImp))
