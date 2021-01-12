@@ -241,18 +241,20 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 			filtro = " WHERE categoria = '"+categoria+"' ";
 		}
 		
-		ResultSet rs = st.executeQuery("SELECT nomep AS Nome, prezzo AS Prezzo, id_prodotto "
-				+ "FROM prodotto "
+		ResultSet rs = st.executeQuery("SELECT nomep AS nome, prezzo AS prezzo, prodotto.id_prodotto ,STRING_AGG(nomea,',') AS allergeni\r\n"
+				+ "FROM prodotto LEFT JOIN etichetta ON prodotto.id_prodotto=etichetta.id_prodotto\r\n"
 				+ filtro
-				+ "ORDER BY Nome ASC");
+				+ "GROUP BY nome,prezzo,prodotto.id_prodotto\r\n"
+				+ "ORDER BY nome ASC");
 		
 		while(rs.next()) {
 				
 			String Nome= rs.getString(1);
 			String Prezzo= "\u20AC "+String.valueOf(rs.getFloat(2));
 			String ID= rs.getString(3);
+			String allergeni= rs.getString(4);
 			
-			Object[] object = new Object[] {Nome,Prezzo,ID};
+			Object[] object = new Object[] {Nome,Prezzo,ID,allergeni};
 				
 			prodotti.add(object);
 		}

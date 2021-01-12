@@ -38,7 +38,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListSelectionModel;
 
 public class CreaOrdineFrame extends JFrame {
-
+	//aggiungere consistenze nei textfield (codice non puo contenere lettere ecc)
 	private JPanel pnlCreaOrdine;
 	private JTable tblProdotti;
 	private JTable tblCarrello;
@@ -46,12 +46,17 @@ public class CreaOrdineFrame extends JFrame {
 	private JTextField txfCivico;
 	private JTextField txfCognome;
 	private JTextField txfTelefono;
-	private JTextField txfCitta;
 	private JTextField txfVia;
 	private JTextField txfCodice;
+	private JLabel lblAllergeni;
 	private ControllerGestore controllerGestore;
 	private Point initialClick;
 	private JFrame parent=this;
+	//riparti da qui
+	private JComboBox cbxProvincia;
+	private JComboBox cbxCitta;
+	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
+	
 
 	public CreaOrdineFrame(ControllerGestore controllerGestore) {
 		setResizable(false);
@@ -79,20 +84,14 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.setModel(new DefaultTableModel(
 			controllerGestore.getDatiProdotti("Tutte"),
 			new String[] {
-				"Nome", "Prezzo", "ID"
+				"Nome", "Prezzo", "ID", "Allergeni"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class
+				String.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
@@ -101,12 +100,17 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(0);
 		tblProdotti.getColumnModel().getColumn(2).setMinWidth(0);
 		tblProdotti.getColumnModel().getColumn(2).setMaxWidth(0);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(0);
+		tblProdotti.getColumnModel().getColumn(3).setMinWidth(0);
+		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(0);
 		//
 		scpProdotti.setViewportView(tblProdotti);
 		
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); 
+		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+		
 		
 		JScrollPane scpCarrello = new JScrollPane();
 		scpCarrello.setBounds(404, 181, 308, 351);
@@ -122,17 +126,17 @@ public class CreaOrdineFrame extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Nome", "Quantit\u00E0", "Prezzo", "ID"
+				"Nome", "Quantit\u00E0", "Prezzo", "ID", "Allergeni"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, String.class, String.class
+				String.class, Integer.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
+				true, true, true, true, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -145,6 +149,10 @@ public class CreaOrdineFrame extends JFrame {
 		tblCarrello.getColumnModel().getColumn(3).setPreferredWidth(0);
 		tblCarrello.getColumnModel().getColumn(3).setMinWidth(0);
 		tblCarrello.getColumnModel().getColumn(3).setMaxWidth(0);
+		tblCarrello.getColumnModel().getColumn(4).setResizable(false);
+		tblCarrello.getColumnModel().getColumn(4).setPreferredWidth(0);
+		tblCarrello.getColumnModel().getColumn(4).setMinWidth(0);
+		tblCarrello.getColumnModel().getColumn(4).setMaxWidth(0);
 		DefaultTableModel modelloCarrello = (DefaultTableModel) tblCarrello.getModel();
 		scpCarrello.setViewportView(tblCarrello);
 		
@@ -169,14 +177,14 @@ public class CreaOrdineFrame extends JFrame {
 				FiltraPerCategorie(Categoria);
 			}
 		});
-		cbxCategorie.setBounds(203, 65, 151, 22);
-		pnlCreaOrdine.add(cbxCategorie);
 		
 		
 		JLabel lblCategoria = new JLabel("Categoria:");
 		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblCategoria.setBounds(46, 69, 88, 14);
 		pnlCreaOrdine.add(lblCategoria);
+		cbxCategorie.setBounds(203, 65, 151, 22);
+		pnlCreaOrdine.add(cbxCategorie);
 		
 		JButton btnAggiungiAlCarrello = new JButton("");
 		btnAggiungiAlCarrello.setBounds(309, 532, 45, 23);
@@ -238,6 +246,7 @@ public class CreaOrdineFrame extends JFrame {
 				if(tblCarrello.getSelectedColumnCount() != 0)
 				{
 					AggiornaQuantita(modelloCarrello,"Rimuovi");
+					lblAllergeni.setText(AggiornaAllergeni());
 					if(modelloCarrello.getRowCount()!=0) {
 						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
 					}
@@ -257,6 +266,7 @@ public class CreaOrdineFrame extends JFrame {
 				if(tblCarrello.getSelectedColumnCount() != 0)
 				{
 					AggiornaQuantita(modelloCarrello,"Elimina");
+					lblAllergeni.setText(AggiornaAllergeni());
 					if(modelloCarrello.getRowCount()!=0) {
 						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
 					}
@@ -282,31 +292,42 @@ public class CreaOrdineFrame extends JFrame {
 					for (int i = rowCount - 1; i >= 0; i--) {
 					    modelloCarrello.removeRow(i);
 					}
+					lblAllergeni.setText(AggiornaAllergeni());
 				}
 			}
 		});
 		btnSvuota.setBounds(623, 532, 89, 23);
 		pnlCreaOrdine.add(btnSvuota);
 		
+		JLabel lblCodice = new JLabel("CodiceCliente");
+		lblCodice.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblCodice.setBounds(822, 65, 98, 14);
+		pnlCreaOrdine.add(lblCodice);
 		
-		JLabel lblNome = new JLabel("NomeCliente");
+		
+		JLabel lblNome = new JLabel("Nome");
 		lblNome.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblNome.setBounds(822, 188, 98, 14);
 		pnlCreaOrdine.add(lblNome);
 		
-		JLabel lblCognome = new JLabel("CognomeCliente");
+		JLabel lblCognome = new JLabel("Cognome");
 		lblCognome.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblCognome.setBounds(822, 247, 98, 14);
 		pnlCreaOrdine.add(lblCognome);
 		
-		JLabel lblTelefono = new JLabel("TelefonoCliente");
+		JLabel lblTelefono = new JLabel("Telefono");
 		lblTelefono.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblTelefono.setBounds(822, 308, 98, 14);
 		pnlCreaOrdine.add(lblTelefono);
 		
+		JLabel lblProvincia = new JLabel("Provincia");
+		lblProvincia.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblProvincia.setBounds(822, 366, 46, 14);
+		pnlCreaOrdine.add(lblProvincia);
+		
 		JLabel lblCitta = new JLabel("Citt\u00E0");
 		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblCitta.setBounds(822, 368, 98, 14);
+		lblCitta.setBounds(942, 368, 44, 14);
 		pnlCreaOrdine.add(lblCitta);
 		
 		JLabel lblVia = new JLabel("Via");
@@ -314,50 +335,42 @@ public class CreaOrdineFrame extends JFrame {
 		lblVia.setBounds(822, 428, 98, 14);
 		pnlCreaOrdine.add(lblVia);
 		
-		JLabel lblPresentiProdottiCon = new JLabel("Presenti prodotti \r\ncon allergeni");
-		lblPresentiProdottiCon.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblPresentiProdottiCon.setBounds(822, 491, 169, 41);
-		pnlCreaOrdine.add(lblPresentiProdottiCon);
-		
 		JLabel lblCivico = new JLabel("N.");
 		lblCivico.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblCivico.setBounds(1034, 428, 11, 14);
+		lblCivico.setBounds(1084, 428, 11, 14);
 		pnlCreaOrdine.add(lblCivico);
 		
+		
+		this.lblAllergeni = new JLabel("<html> Qui verranno inseriti gli allergeni </html>");
+		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblAllergeni.setBounds(822, 473, 333, 82);
+		pnlCreaOrdine.add(lblAllergeni);
+		
+		
 		txfNome = new JTextField();
-		txfNome.setBounds(942, 185, 140, 20);
+		txfNome.setBounds(942, 185, 213, 20);
 		pnlCreaOrdine.add(txfNome);
 		txfNome.setColumns(10);
 		
 		txfCivico = new JTextField();
 		txfCivico.setColumns(10);
-		txfCivico.setBounds(1055, 425, 27, 20);
+		txfCivico.setBounds(1110, 423, 45, 20);
 		pnlCreaOrdine.add(txfCivico);
 		
 		txfCognome = new JTextField();
 		txfCognome.setColumns(10);
-		txfCognome.setBounds(942, 244, 140, 20);
+		txfCognome.setBounds(942, 244, 213, 20);
 		pnlCreaOrdine.add(txfCognome);
 		
 		txfTelefono = new JTextField();
 		txfTelefono.setColumns(10);
-		txfTelefono.setBounds(942, 305, 140, 20);
+		txfTelefono.setBounds(942, 305, 213, 20);
 		pnlCreaOrdine.add(txfTelefono);
-		
-		txfCitta = new JTextField();
-		txfCitta.setColumns(10);
-		txfCitta.setBounds(942, 365, 140, 20);
-		pnlCreaOrdine.add(txfCitta);
 		
 		txfVia = new JTextField();
 		txfVia.setColumns(10);
-		txfVia.setBounds(873, 425, 140, 20);
+		txfVia.setBounds(873, 425, 192, 20);
 		pnlCreaOrdine.add(txfVia);
-		
-		JLabel lblCodice = new JLabel("CodiceCliente");
-		lblCodice.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblCodice.setBounds(822, 65, 98, 14);
-		pnlCreaOrdine.add(lblCodice);
 		
 		txfCodice = new JTextField();
 		txfCodice.setColumns(10);
@@ -368,6 +381,21 @@ public class CreaOrdineFrame extends JFrame {
 		btnCompila.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnCompila.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				String [] datiUtente = controllerGestore.getDati(Integer.parseInt(txfCodice.getText())); //preleva i dati
+				
+				if(datiUtente[0]!=null) {//inserisci nei field i dati 
+					txfNome.setText(datiUtente[0]);
+					txfCognome.setText(datiUtente[1]);
+					txfTelefono.setText(datiUtente[2]);
+					cbxProvincia.setSelectedItem(datiUtente[3]);
+					cbxCitta.setSelectedItem(datiUtente[4]);
+					txfVia.setText(datiUtente[5]);
+					txfCivico.setText(datiUtente[6]);
+				}else {
+					Errore("");
+				}
+				
 			}
 		});
 		btnCompila.setBounds(1084, 64, 71, 23);
@@ -375,16 +403,48 @@ public class CreaOrdineFrame extends JFrame {
 		
 		JButton btnNuovo = new JButton("Nuovo");
 		btnNuovo.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnNuovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txfCodice.setText(controllerGestore.getProssimoID());
+			}
+		});
 		btnNuovo.setBounds(1019, 64, 63, 23);
 		pnlCreaOrdine.add(btnNuovo);
 		
 		JButton btnConferma = new JButton("Conferma");
 		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnConferma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//se il cliente non esiste lo crea inserendo id nome e cognome nella tabella cliente
+				
+				//creare l ordine inserendo il nome della sede, prelevandolo dall account salvato in controllerGestore (sede 1)
+				//assegnando al primo rider della sede disponibile per id
+					//NB bisogna avere accesso ai rider per settare la disponibilita ecc
+					// se non ce nessun rider disponibile?
+				//inserire il totale dal carrello
+				//usare returning per avere l ID dell ordine
+				
+				//in compordine inserire con l id dell ordine gli id dei prodotti 
+				//il numero di ogni pezzo, prelevando il tutto dal carrello
+				
+				//in infoordineinserire l id dell ordine e del cliente,
+				//il telefono e tutti gli altri dati relativi all indirizzo(citta via civico provincia)
+				
+			}
+		});
+		
+		
 		btnConferma.setBounds(1075, 605, 80, 23);
 		pnlCreaOrdine.add(btnConferma);
 		
 		JButton btnAnnulla = new JButton("Annulla");
 		btnAnnulla.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnAnnulla.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controllerGestore.ChiudiCreaOrdineFrame();
+			}
+		});
+		
 		btnAnnulla.setBounds(994, 605, 71, 23);
 		pnlCreaOrdine.add(btnAnnulla);
 	
@@ -401,6 +461,43 @@ public class CreaOrdineFrame extends JFrame {
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
+		
+		cbxProvincia = new JComboBox(controllerGestore.getProvince());
+		cbxProvincia.setFont(new Font("Calibri", Font.PLAIN, 11));
+		cbxProvincia.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	if(cbxProvincia.getSelectedItem() != null && !cbxProvincia.getSelectedItem().toString().equals("")) {	
+            			
+            		CittaModel.removeAllElements();
+            		CittaModel.addAll(controllerGestore.getComuniProvincia(cbxProvincia.getSelectedItem().toString()));
+            		
+            	}else {
+            		CittaModel.removeAllElements();
+            		
+            	}
+            	
+            
+            }
+		});
+		cbxProvincia.setBounds(874, 362, 46, 22);
+		pnlCreaOrdine.add(cbxProvincia);
+		
+		cbxCitta = new JComboBox(CittaModel);
+		cbxCitta.setFont(new Font("Calibri", Font.PLAIN, 11));
+		cbxCitta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	          	
+            	if(cbxCitta.getSelectedItem() != null && !cbxCitta.getSelectedItem().toString().equals("")) {
+            		
+            	}else {
+            		
+            	}
+            	
+            	
+            }
+		});
+		cbxCitta.setBounds(994, 362, 161, 22);
+		pnlCreaOrdine.add(cbxCitta);
 
 
 			
@@ -438,35 +535,34 @@ public class CreaOrdineFrame extends JFrame {
 	
 	
 	public void FiltraPerCategorie(String categoria) {		
+		//
 		tblProdotti.setModel(new DefaultTableModel(
 				controllerGestore.getDatiProdotti(categoria),
 				new String[] {
-						"Nome", "Prezzo", "ID"
-					}
-				) {
-					Class[] columnTypes = new Class[] {
-						String.class, String.class, String.class
-					};
-					public Class getColumnClass(int columnIndex) {
-						return columnTypes[columnIndex];
-					}
-					boolean[] columnEditables = new boolean[] {
-						false, false, false
-					};
-					public boolean isCellEditable(int row, int column) {
-						return columnEditables[column];
-					}
-				});
-				tblProdotti.getColumnModel().getColumn(0).setResizable(false);
-				tblProdotti.getColumnModel().getColumn(1).setResizable(false);
-				tblProdotti.getColumnModel().getColumn(2).setResizable(false);
-				tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(0);
-				tblProdotti.getColumnModel().getColumn(2).setMinWidth(0);
-				tblProdotti.getColumnModel().getColumn(2).setMaxWidth(0);
+					"Nome", "Prezzo", "ID", "Allergeni"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+			});
+			tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(0);
+			tblProdotti.getColumnModel().getColumn(2).setMinWidth(0);
+			tblProdotti.getColumnModel().getColumn(2).setMaxWidth(0);
+			tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+			tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(0);
+			tblProdotti.getColumnModel().getColumn(3).setMinWidth(0);
+			tblProdotti.getColumnModel().getColumn(3).setMaxWidth(0);
 	
-				DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-				rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-				tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+			DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+			rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+			tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
 	}
 	
 	
@@ -478,12 +574,15 @@ public class CreaOrdineFrame extends JFrame {
 			modCarrello.addRow(new Object[]{tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0), 
 											1,
 											tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 1),
-											tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 2)
+											tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 2),
+											tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 3)
 											});
 		}
 		
+	
+		lblAllergeni.setText(AggiornaAllergeni());
 
-		modCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});	
+		modCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale()),null,null});	
 		
 	}
 	
@@ -552,6 +651,20 @@ public class CreaOrdineFrame extends JFrame {
 		return totale;
 	}
 	
+	public String AggiornaAllergeni() {
+		String allergeni="<html>";
+		for (int i = 0; i < tblCarrello.getRowCount(); i++) {    
+			if(tblCarrello.getValueAt(i, 4)!=null) {
+				allergeni+= (tblCarrello.getValueAt(i, 0)+" contiene "+tblCarrello.getValueAt(i, 4)+"<br>" );
+			}
+		}
+		if(tblCarrello.getRowCount()==0 || allergeni=="<html>") {
+			allergeni+=" Nessun allergene presente ";
+		}
+		
+		return allergeni+" </html>";
+	}
+	
 	
 	public void Errore(String stringa) {
 		JOptionPane.showMessageDialog(this,stringa,"Error",JOptionPane.ERROR_MESSAGE);
@@ -570,4 +683,10 @@ public class CreaOrdineFrame extends JFrame {
 		
 		return elimina;
 	}
+	
+	
+	
+	
+	
+	
 }

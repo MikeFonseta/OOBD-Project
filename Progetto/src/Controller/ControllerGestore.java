@@ -1,9 +1,11 @@
 package Controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import DAO.AccountDAOPostgresImp;
 import DAO.OrdineDAOPostgresImp;
 import DAO.ProdottoDAOPostgresImp;
 import Entities.Account;
@@ -46,6 +48,14 @@ public class ControllerGestore {
 
 	public Account getAccount() {
 		return this.account;
+	}
+	
+	public List<String> getComuniProvincia(String Provincia) {
+		return this.mainController.getComuniProvincia(Provincia);
+	}
+	
+	public Object[] getProvince(){
+		return this.mainController.getProvince();
 	}
 	
 public Object[][] getDatiOrdini() {
@@ -106,7 +116,6 @@ public Object[][] getDatiProdotti(String categoria) { //prodotti
 	}
 
 
-
 	public String[] getCategorieBox() {
 		
 		String[] result = this.mainController.getCategorie();
@@ -114,6 +123,44 @@ public Object[][] getDatiProdotti(String categoria) { //prodotti
 		return result;
 	}
 
+	public String[] getDati(int id) {
+		String [] dati =null;
+		
+		if(this.imp.equals(this.postgresImp)) {
+			AccountDAOPostgresImp accountDAO = new AccountDAOPostgresImp();
+			try {
+				dati=accountDAO.getDatiCliente(id);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		return dati ;
+	}
+	
+	public String getProssimoID() {
+		String ID=null;
+		
+		if(this.imp.equals(this.postgresImp)) {
+			AccountDAOPostgresImp accountDAO = new AccountDAOPostgresImp();
+			try {
+				int id = accountDAO.getClienteID();
+				ID=String.valueOf(++id);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		return ID;
+	}
 
 	public void ApriCreaOrdineFrame() {
 		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
@@ -152,6 +199,10 @@ public Object[][] getDatiProdotti(String categoria) { //prodotti
 		infoProdottoFrame=null;
 	}
 	
+	public void ChiudiCreaOrdineFrame() {
+		creaOrdineFrame.dispose();
+		creaOrdineFrame=null;
+	}
 	
 	public void ImpostaFineConsegna(int idOrdine) {
 		

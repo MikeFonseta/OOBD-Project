@@ -90,4 +90,62 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		return nomeUtente;
 	}
 
+	@Override
+	public String[] getDatiCliente(int idCliente) throws SQLException{
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT nomec AS nome, cognomec AS cognome, telefonoc AS telefono, provincia, citt\u00E0, via, numcivico\r\n"
+				+ "FROM cliente LEFT JOIN infoordine ON cliente.id_cliente=infoordine.id_cliente\r\n"
+				+ "WHERE cliente.id_cliente='"+idCliente+"' \r\n"
+				+ "ORDER BY id_ordine DESC\r\n"
+				+ "LIMIT 1 ");
+		
+		String[] dati;
+		
+		if(rs.next()){
+			String nome= rs.getString(1);	
+			String cognome= rs.getString(2);	
+			String telefono= rs.getString(3);	
+			String provincia= rs.getString(4);	
+			String citta= rs.getString(5);	
+			String via = rs.getString(6);	
+			String civico= rs.getString(7);	
+			dati=new String[] {nome,cognome,telefono,provincia,citta,via,civico};
+		}
+		else {
+			dati=new String[] {null};
+		}
+		
+		rs.close();
+		st.close();
+		conn.close();
+	
+		return dati;
+	}
+	
+	
+	@Override
+	public int getClienteID() throws SQLException{
+	
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT MAX(id_cliente) \r\n"
+				+ "FROM cliente");
+
+		int id;
+		if(rs.next()){
+			id=rs.getInt(1);
+		}
+		else {
+			id=0;
+		}
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return id;
+	}
+	
 }
