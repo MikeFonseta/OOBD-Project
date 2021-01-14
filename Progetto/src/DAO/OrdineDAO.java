@@ -6,14 +6,12 @@ import java.util.List;
 public interface OrdineDAO {
 	
 	List<Object[]> ricercaComplessaOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) throws SQLException;
-	void IniziaConsegna(Integer idOrdine);
-	void TerminaConsegna(Integer idOrdine);
+	void IniziaConsegna(Integer idRider,boolean annulla);
+	void TerminaConsegna(Integer idRider);
 	void CancellaOrdine(Integer idOrdine);
-	public List<Object[]> getOrdiniTabella() throws SQLException;
-
+	public List<Object[]> getOrdiniTabella(int idSede) throws SQLException;
+	public List<Object[]> getOrdiniFiltroRider(int idRider) throws SQLException;
 	
-	
-
 }
 
 

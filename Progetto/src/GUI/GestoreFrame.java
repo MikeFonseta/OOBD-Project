@@ -28,8 +28,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Point;
+import javax.swing.ListSelectionModel;
 
-public class GestoreFrame extends JFrame {
+public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un rider
 
 	private JPanel pnlGestore;
 	private JTable tblOrdini;
@@ -37,8 +38,10 @@ public class GestoreFrame extends JFrame {
 	private Point initialClick;
 	private JFrame parent=this;
 	private JTable tblRider;
+	private boolean filtroRider=false;
 
 	public GestoreFrame(ControllerGestore controllerGestore) {
+		this.controllerGestore= controllerGestore;
 		setResizable(false);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,11 +58,14 @@ public class GestoreFrame extends JFrame {
 		pnlGestore.add(scpRider);
 		
 		tblRider = new JTable();
+		tblRider.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblRider.setRowHeight(30);
 		tblRider.setFillsViewportHeight(true);
+		//
 		tblRider.setModel(new DefaultTableModel(
 			controllerGestore.getDatiRider(),
 			new String[] {
-				"Disponibilit\u00E0", "Nome", "Telefono", "ID", "Ordini"
+				"Disponibilit\u00E0", "Nome", "Telefono", "Codice", "Ordini"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -80,6 +86,7 @@ public class GestoreFrame extends JFrame {
 		tblRider.getColumnModel().getColumn(2).setResizable(false);
 		tblRider.getColumnModel().getColumn(3).setResizable(false);
 		tblRider.getColumnModel().getColumn(4).setResizable(false);
+		//
 		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
 		scpRider.setViewportView(tblRider);
 		
@@ -95,19 +102,19 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getTableHeader().setReorderingAllowed(false);
 		//
 		tblOrdini.setModel(new DefaultTableModel(
-			controllerGestore.getDatiOrdini(),
+			controllerGestore.getDatiOrdini(0),
 			new String[] {
-				"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale", "Stato"
+				"CodOrdine", "CodRider", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "Totale", "Stato"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-					String.class, String.class, String.class, String.class,String.class, String.class, String.class, String.class,String.class
+					String.class, String.class, String.class, String.class,String.class, String.class,String.class,String.class
 				};
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false, false, false
+				false, false, false, false, false, false, false,false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -120,19 +127,17 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getColumnModel().getColumn(4).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(5).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(6).setResizable(false);
-		tblOrdini.getColumnModel().getColumn(6).setPreferredWidth(74);
 		tblOrdini.getColumnModel().getColumn(7).setResizable(false);
-		tblOrdini.getColumnModel().getColumn(8).setResizable(false);
 		//
 		scpGestore.setViewportView(tblOrdini);
 		
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-		tblOrdini.getColumnModel().getColumn(7).setCellRenderer(rightRenderer); //allinea  a destra gli elementi della colonna
+		tblOrdini.getColumnModel().getColumn(6).setCellRenderer(rightRenderer); //allinea  a destra gli elementi della colonna
 		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		tblOrdini.getColumnModel().getColumn(8).setCellRenderer( centerRenderer );
+		tblOrdini.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
 		
 		
 		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
@@ -204,55 +209,7 @@ public class GestoreFrame extends JFrame {
 					controllerGestore.ApriVisualizzaProdotti(); 
 			}
 		});
-		
-		JButton btnFineConsegna = new JButton("FineConsegna");			//da testare
-		btnFineConsegna.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnFineConsegna.setBounds(760, 626, 89, 63);
-		pnlGestore.add(btnFineConsegna);
-		btnFineConsegna.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1)
-				{
-					if(tblOrdini.getSelectedColumnCount() != 0)
-					{
-						controllerGestore.ImpostaFineConsegna((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));
-					}else 
-					{
-						Errore();	
-					}
-				}
-			}
-		});
-		
-		JButton btnIniziaConsegna = new JButton("IniziaConsegna");		//da testare
-		btnIniziaConsegna.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnIniziaConsegna.setBounds(846, 626, 89, 63);
-		pnlGestore.add(btnIniziaConsegna);
-		btnIniziaConsegna.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1)
-				{
-					if(tblOrdini.getSelectedColumnCount() != 0)
-					{
-						controllerGestore.ImpostaInizioConsegna((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));
-					}else 
-					{
-						Errore();	
-					}
-				}
-					
-			}
-			
-		});
-		
+				
 		JButton btnModifica = new JButton("Modifica");
 		btnModifica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -279,7 +236,7 @@ public class GestoreFrame extends JFrame {
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) { //codice da rivedere
+				if(e.getButton() == MouseEvent.BUTTON1) { 
 					int indice = getTblOrdini().getSelectedRow();
 					if(indice!= -1)
 						controllerGestore.ApriVisualizzaCarrello(getIdOrdineAllaRigaSelezionata(indice));
@@ -287,7 +244,7 @@ public class GestoreFrame extends JFrame {
 			}
 		});
 		
-		JButton btnElimina = new JButton("Elimina");	//da testare
+		JButton btnElimina = new JButton("Elimina");	//da modificare dopo l aggiunta della tabella rider
 		btnElimina.setBounds(1101, 626, 89, 63);
 		pnlGestore.add(btnElimina);
 		btnElimina.addMouseListener(new MouseAdapter() {
@@ -326,19 +283,105 @@ public class GestoreFrame extends JFrame {
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
 		
-		JButton btnDisponibile = new JButton("Disponibilit");
+		JButton btnDisponibile = new JButton("Disponibilit\u00E0");
+		btnDisponibile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tblRider.getSelectedColumnCount() != 0){
+					if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='L') {
+						controllerGestore.AggiornaDisposizioneRider( (int) tblRider.getValueAt(tblRider.getSelectedRow(),3),false);
+					}
+					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='X') {
+						controllerGestore.AggiornaDisposizioneRider((int) tblRider.getValueAt(tblRider.getSelectedRow(),3),true);
+					}
+					else //non puoi aggiornare la disponibilita di un rider in consegna 
+						;
+					
+					AggiornaRider();
+				}else 
+				{
+					Errore();	
+				}
+			}
+		});
 		btnDisponibile.setBounds(10, 626, 89, 63);
 		pnlGestore.add(btnDisponibile);
 		
 		JButton btnFiltro = new JButton("Filtro");
+		btnFiltro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (filtroRider) {
+					AggiornaOrdini(0);
+					filtroRider=false;
+				}
+				else if(tblRider.getSelectedColumnCount() != 0 && !filtroRider){
+					AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
+					filtroRider=true;
+				}
+				else if(tblRider.getSelectedColumnCount() == 0 && !filtroRider) {
+					//messaggio seleziona una riga per attivare il filtro
+				}	
+			}
+		});
 		btnFiltro.setBounds(107, 626, 89, 63);
 		pnlGestore.add(btnFiltro);
 		
 		JButton btnPartenza = new JButton("Partenza");
+		btnPartenza.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tblRider.getSelectedColumnCount() != 0){
+					// se il rider non ha ordini o non e disponibile non puoi farlo partire
+					if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='X'){
+						//messaggio il rider non e disponibile
+					}
+					else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)==0) {
+						//messaggio il rider non ha ordini 
+					}
+					else if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){
+						controllerGestore.ImpostaInizioConsegna((int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3)),true);
+						AggiornaRider(); 
+						if (filtroRider) AggiornaOrdini(0);
+						else AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
+					}
+					else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)>0) {
+						controllerGestore.ImpostaInizioConsegna((int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3)),false); //inizia la consegna per tutti gli ordini assegnati al rider
+						AggiornaRider(); 
+						if (filtroRider) AggiornaOrdini(0);
+						else AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
+					}
+				}else {
+					//non hai selezionato una riga
+				}
+			}
+		});
 		btnPartenza.setBounds(203, 626, 89, 63);
 		pnlGestore.add(btnPartenza);
 		
 		JButton btnConsegnato = new JButton("Consegnato");
+		btnConsegnato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tblRider.getSelectedColumnCount() != 0){
+					//attivabile solo se lo stato del rider è C 
+					if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){
+						if(MessaggioElimina("Terminare la consegna?")) {
+							controllerGestore.ImpostaFineConsegna((int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3)));
+							AggiornaRider(); 
+							AggiornaOrdini(0);
+							filtroRider=false;
+						}
+					}
+					else {
+						//messaggio il rider deve essere in consegna 
+					}
+					
+				}else {
+					//non hai selezionato una riga
+				}
+			}
+		});
+		
+		
+		
+		
 		btnConsegnato.setBounds(292, 626, 89, 63);
 		pnlGestore.add(btnConsegnato);
 		
@@ -374,22 +417,48 @@ public class GestoreFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	
-	public void AggiornaOrdini() {
-		tblOrdini.setModel(new DefaultTableModel(
-				controllerGestore.getDatiOrdini(),
+	public void AggiornaRider() {
+		tblRider.setModel(new DefaultTableModel(
+				controllerGestore.getDatiRider(),
 				new String[] {
-					"CodOrdine", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "NomeRider", "TelefonoRider", "Totale", "Stato"
+					"Disponibilit\u00E0", "Nome", "Telefono", "Codice", "Ordini"
 				}
 			) {
 				Class[] columnTypes = new Class[] {
-						String.class, String.class, String.class, String.class,String.class, String.class, String.class, String.class,String.class
+					String.class, String.class, String.class, String.class, Integer.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			tblRider.getColumnModel().getColumn(0).setResizable(false);
+			tblRider.getColumnModel().getColumn(1).setResizable(false);
+			tblRider.getColumnModel().getColumn(2).setResizable(false);
+			tblRider.getColumnModel().getColumn(3).setResizable(false);
+			tblRider.getColumnModel().getColumn(4).setResizable(false);
+	}
+	
+	public void AggiornaOrdini(int idRider) {
+		tblOrdini.setModel(new DefaultTableModel(
+				controllerGestore.getDatiOrdini(idRider),
+				new String[] {
+					"CodOrdine","CodRider", "CodCliente", "NomeCliente", "indirizzo", "TelefonoCliente", "Totale", "Stato"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+						String.class, String.class, String.class, String.class,String.class, String.class, String.class, String.class
 					};
 					public Class getColumnClass(int columnIndex) {
 						return columnTypes[columnIndex];
 				}
 				boolean[] columnEditables = new boolean[] {
-					false, false, false, false, false, false, false, false, false
+					false, false, false, false, false, false, false, false
 				};
 				public boolean isCellEditable(int row, int column) {
 					return columnEditables[column];
@@ -402,9 +471,7 @@ public class GestoreFrame extends JFrame {
 			tblOrdini.getColumnModel().getColumn(4).setResizable(false);
 			tblOrdini.getColumnModel().getColumn(5).setResizable(false);
 			tblOrdini.getColumnModel().getColumn(6).setResizable(false);
-			tblOrdini.getColumnModel().getColumn(6).setPreferredWidth(74);
 			tblOrdini.getColumnModel().getColumn(7).setResizable(false);
-			tblOrdini.getColumnModel().getColumn(8).setResizable(false);
 	}
 	
 	private void Errore() {
@@ -423,4 +490,19 @@ public class GestoreFrame extends JFrame {
 		int idOrdine = Integer.parseInt(this.getTblOrdini().getValueAt(indice,0).toString());
 		return idOrdine;
 	}
+
+	public boolean MessaggioElimina(String messaggio) {
+		boolean elimina=true;
+		Object[] opzioni = { "Annulla", "Conferma"};
+		
+		 int result = JOptionPane.showOptionDialog(this, messaggio,null,
+	                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+	                null, opzioni, null);
+	        if (result == JOptionPane.YES_OPTION){
+	            elimina=false;
+	        }
+		
+		return elimina;
+	}
+
 }

@@ -30,7 +30,6 @@ public class MainController {
 	
 	public LoginFrame loginFrame = new LoginFrame(this);
 	private ControllerAmministratore controllerAmministratore = null;
-	//private AdminController AdminController = null;
 	private ControllerGestore controllerGestore = null;
 	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
 	private VisualizzaCarrelloFrame visualizzaCarrelloFrame = null;
@@ -40,7 +39,7 @@ public class MainController {
 	public MainController() {
 		//ApriLogin();
 		//LoginTry("A001","pass12"); //amministratore
-		LoginTry("U001","pass123");//gestore
+		LoginTry("U00001","pass123");//gestore
 	}
 	
 	public static void main(String[] args) {

@@ -15,32 +15,56 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 
 	
 	@Override
-	public void IniziaConsegna(Integer idOrdine) {
+	public void IniziaConsegna(Integer idRider,boolean annulla) {
 		Connection conn = null;
-		int result = 0;
-	
-		try {
-			conn = DBConnection.getInstance().getConnection();
-			Statement st = conn.createStatement();
-			result = st.executeUpdate("UPDATE ordine SET inizioconsegna = CURRENT_TIMESTAMP WHERE id_ordine='"+idOrdine+"'");	
-			st.close();
-			conn.close();
-		}catch(SQLException e){				
-			e.printStackTrace();	
+		String data=null;
+		String disponibile=null;
+		
+		if(annulla) {
+			data="NULL";
+			disponibile="true";
 		}
-
-	}
-	
-	
-	@Override
-	public void TerminaConsegna(Integer idOrdine) {
-		Connection conn = null;
-		int result = 0;
+		else {
+			data="CURRENT_TIMESTAMP";
+			disponibile="false";
+		}
 		
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			result = st.executeUpdate("UPDATE ordine SET fineconsegna = CURRENT_TIMESTAMP WHERE id_ordine='"+idOrdine+"'");	
+			conn.setAutoCommit(false);
+			String inizio="UPDATE ordine SET inizioconsegna = "+data+" WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL";	
+			st.addBatch(inizio);
+			String disposizione="UPDATE rider SET disponibilit\u00E0 = "+disponibile+" WHERE id_rider='"+idRider+"'"; 
+			st.addBatch(disposizione);
+			conn.commit();
+			conn.setAutoCommit(true);
+			st.close();
+			conn.close();
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+		
+	}
+	
+	
+	@Override
+	public void TerminaConsegna(Integer idRider) {
+		Connection conn = null;
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			conn.setAutoCommit(false);
+			
+			String termine="UPDATE ordine SET fineconsegna = CURRENT_TIMESTAMP WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL";	
+			st.addBatch(termine);
+			
+			String disponibile="UPDATE rider SET disponibilit\u00E0 = true , numeroordini=0  WHERE id_rider='"+idRider+"'"; 
+			st.addBatch(disponibile);
+			conn.commit();
+			
+			conn.setAutoCommit(true);
 			st.close();
 			conn.close();
 		}catch(SQLException e){				
@@ -48,6 +72,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		}
 
 	}
+	
 	
 
 	@Override
@@ -69,39 +94,37 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	
 	
 	@Override
-	public List<Object[]> getOrdiniTabella() throws SQLException {//controllare le lettere accentate
+	public List<Object[]> getOrdiniTabella(int idSede) throws SQLException {
 		
 		List<Object[]> ordini = new ArrayList<Object[]>();
 		Connection conn = null;
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
+		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine,id_rider AS CodRider, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
 				+ "				via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
-				+ "				nomer || ' ' || cognomer AS NomeRider, telefonor AS TelefonoRider,\r\n"
-				+ "			totale AS Totale, inizioconsegna AS Stato\r\n"
+				+ "			    totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "				FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
-				+ "				 NATURAL JOIN cliente AS C\r\n"
-				+ "			 NATURAL JOIN rider AS R\r\n"
+				+ "				NATURAL JOIN cliente AS C\r\n"
+				+ "				WHERE id_sede='"+idSede+"' AND fineconsegna IS NULL\r\n"
 				+ "				ORDER BY id_ordine ASC");
 		while(rs.next()) {
 				
 			int CodOrdine = rs.getInt(1);
-			int CodCliente = rs.getInt(2);
-			String NomeCliente= rs.getString(3);
-			String Indirizzo= rs.getString(4);
-			String TelefonoCliente = rs.getString(5);
-			String NomeRider = rs.getString(6);
-			String TelefonoRider = rs.getString(7);
-			String Totale= "\u20AC "+String.valueOf(rs.getFloat(8));		
-			java.sql.Timestamp InizioConsegna = rs.getTimestamp(9);
+			int CodRider = rs.getInt(2);
+			int CodCliente = rs.getInt(3);
+			String NomeCliente= rs.getString(4);
+			String Indirizzo= rs.getString(5);
+			String TelefonoCliente = rs.getString(6);
+			String Totale= "\u20AC "+String.valueOf(rs.getFloat(7));		
+			java.sql.Timestamp InizioConsegna = rs.getTimestamp(8);
 			
 			char Stato = 'A'; //Attesa default
 			if(InizioConsegna != null) {
 				Stato = 'S'; //Spedito se presente la data inizioConsegna
 			}
 				
-			Object[] object = new Object[] {CodOrdine,CodCliente,NomeCliente,Indirizzo,TelefonoCliente,NomeRider,TelefonoRider,Totale,Stato};
+			Object[] object = new Object[] {CodOrdine,CodRider,CodCliente,NomeCliente,Indirizzo,TelefonoCliente,Totale,Stato};
 				
 			ordini.add(object);
 		}
@@ -113,8 +136,51 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		return ordini;
 	}
 	
-	
-	
+	@Override
+	public List<Object[]> getOrdiniFiltroRider(int idRider) throws SQLException{
+		List<Object[]> ordini = new ArrayList<Object[]>();
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine,id_rider AS CodRider, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
+				+ "				via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
+				+ "			    totale AS Totale, inizioconsegna AS Stato\r\n"
+				+ "				FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
+				+ "				NATURAL JOIN cliente AS C\r\n"
+				+ "				WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL\r\n"
+				+ "				ORDER BY id_ordine ASC");
+		//inserire contenuto
+		
+		
+		while(rs.next()) {
+			
+			int CodOrdine = rs.getInt(1);
+			int CodRider = rs.getInt(2);
+			int CodCliente = rs.getInt(3);
+			String NomeCliente= rs.getString(4);
+			String Indirizzo= rs.getString(5);
+			String TelefonoCliente = rs.getString(6);
+			String Totale= "\u20AC "+String.valueOf(rs.getFloat(7));		
+			java.sql.Timestamp InizioConsegna = rs.getTimestamp(8);
+			
+			char Stato = 'A'; //Attesa default
+			if(InizioConsegna != null) {
+				Stato = 'S'; //Spedito se presente la data inizioConsegna
+			}
+				
+			Object[] object = new Object[] {CodOrdine,CodRider,CodCliente,NomeCliente,Indirizzo,TelefonoCliente,Totale,Stato};
+				
+			ordini.add(object);
+		}
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return ordini;
+		
+	}
 	
 
 	@Override

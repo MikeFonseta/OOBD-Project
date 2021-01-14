@@ -151,7 +151,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT disponibilit\u00E0, id_rider, nomer || ' ' || cognomer AS nome, telefonor AS telefono,\r\n"
+			ResultSet rs = st.executeQuery("SELECT disponibilit\u00E0, nomer || ' ' || cognomer AS nome, telefonor AS telefono, id_rider,\r\n"
 				+ "numeroordini \r\n"
 				+ "FROM rider\r\n"
 				+ "WHERE id_sede = '" + idSede +"'");
@@ -159,9 +159,9 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		while(rs.next()) {
 				
 			char disponibilita;	
-			int idRider = rs.getInt(2);
-			String nomeRider = rs.getString(3);
-			String telefonoRider = rs.getString(4);
+			String nomeRider = rs.getString(2);
+			String telefonoRider = rs.getString(3);
+			int idRider = rs.getInt(4);
 			int numeroordini = rs.getInt(5);
 			
 			boolean libero=rs.getBoolean(1);
@@ -169,7 +169,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 			else if(!libero && numeroordini>0) disponibilita='C'; //in consegna 
 			else disponibilita='X'; //non disponibile
 			
-			Object[] object = new Object[] {disponibilita,idRider,nomeRider,telefonoRider,numeroordini};
+			Object[] object = new Object[] {disponibilita,nomeRider,telefonoRider,idRider,numeroordini};
 				
 			rider.add(object);
 		}
@@ -179,8 +179,25 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		conn.close();
 			
 		return rider;
+
+	}
+	
+	public void AggiornaDisposizione(int idRider,boolean input) throws SQLException{
+		Connection conn = DBConnection.getInstance().getConnection();
 		
-		
+		Statement st = conn.createStatement();
+		st.executeUpdate("UPDATE rider SET disponibilit\u00E0='"+ input + "' WHERE id_rider=" + idRider);
+	
+		st.close();
+		conn.close();
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

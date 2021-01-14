@@ -59,6 +59,20 @@ public class ControllerGestore {
 		return this.mainController.getProvince();
 	}
 	
+	public void AggiornaDisposizioneRider(int idRider,boolean input) {
+		if(this.imp.equals(this.postgresImp))
+		{
+			RiderDAOPostgresImp riderDao=new RiderDAOPostgresImp();
+			try {
+				riderDao.AggiornaDisposizione(idRider,input);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+	}
 	
 	public Object[][] getDatiRider(){
 		Object[][] result = null;
@@ -77,14 +91,18 @@ public class ControllerGestore {
 		return result;
 	}
 	
-	public Object[][] getDatiOrdini() {
+	public Object[][] getDatiOrdini(int idRider) {
 		
 		Object[][] result = null;
 		if(this.imp.equals(this.postgresImp))
 		{
 			OrdineDAOPostgresImp ordineDao = new OrdineDAOPostgresImp();
 			try {
-				result = ordineDao.getOrdiniTabella().toArray(new Object[][] {});
+				if(idRider==0)
+					result = ordineDao.getOrdiniTabella(this.account.getSede().getIdSede()).toArray(new Object[][] {});
+				else 
+					result = ordineDao.getOrdiniFiltroRider(idRider).toArray(new Object[][] {});
+				
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -223,12 +241,12 @@ public class ControllerGestore {
 		creaOrdineFrame=null;
 	}
 	
-	public void ImpostaFineConsegna(int idOrdine) {
+	
+	public void ImpostaInizioConsegna(int idRider, boolean annulla) {
 		
 		if(this.imp.equals(this.postgresImp)) {
 			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
-			ordineDAO.TerminaConsegna(idOrdine);
-			this.gestoreFrame.AggiornaOrdini();
+			ordineDAO.IniziaConsegna(idRider,annulla);
 		}
 		else if(this.imp.equals(this.altraImp))
 		{
@@ -237,12 +255,11 @@ public class ControllerGestore {
 		
 	}
 	
-	public void ImpostaInizioConsegna(int idOrdine) {
+	public void ImpostaFineConsegna(int idRider) {
 		
 		if(this.imp.equals(this.postgresImp)) {
 			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
-			ordineDAO.IniziaConsegna(idOrdine);
-			this.gestoreFrame.AggiornaOrdini();
+			ordineDAO.TerminaConsegna(idRider);
 		}
 		else if(this.imp.equals(this.altraImp))
 		{
@@ -250,6 +267,8 @@ public class ControllerGestore {
 		}
 		
 	}
+	
+	
 	
 	public void ModificaCreaOrdineFrame() {//scrivere dopo aver caricato CreaOrdineFrame
 		
@@ -261,7 +280,7 @@ public class ControllerGestore {
 		if(this.imp.equals(this.postgresImp)) {
 			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
 			ordineDAO.CancellaOrdine(idOrdine);
-			this.gestoreFrame.AggiornaOrdini();
+			this.gestoreFrame.AggiornaOrdini(0);
 		}
 		else if(this.imp.equals(this.altraImp))
 		{
