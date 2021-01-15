@@ -13,6 +13,7 @@ public interface ProdottoDAO {
 	public List<Object[]> getProdottiPerUnaSede(int idSede) throws SQLException;
 	public List<Object[]> getProdottiSedeCategoria(int idSede,String categoria) throws SQLException;
 	public List<String> getCategorieProdotto() throws SQLException;
+	public List<String> getCategorieTotali() throws SQLException;
 	public List<Object[]> getProdottiTabella(String categoria) throws SQLException;
 	public List<Object[]> getProdottiPerId_Ordine(int idOrdine) throws SQLException;
 	public int eliminaProdottoDaTutteLeSedi(int idProdotto) throws SQLException;
@@ -22,5 +23,7 @@ public interface ProdottoDAO {
 	public int idProssimoProdotto() throws SQLException;
 	public int CreaProdotto(int idProssimoProdotto, String nome, String descrizione, float prezzo, String categoria) throws SQLException;
 	public int AggiornaProdotto(Prodotto prodotto) throws SQLException;
+	public int CreaCategoria(String NomeCategoria) throws SQLException;
+	public int EliminaCategoria(String NomeCategoria) throws SQLException;
 }
 

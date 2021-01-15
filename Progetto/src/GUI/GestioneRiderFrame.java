@@ -162,13 +162,12 @@ public class GestioneRiderFrame extends JFrame{
 		cbxVeicolo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	
-                String selected = cbxVeicolo.getSelectedItem().toString();
-                if(selected!="Nessun veicolo") {
+                if(!cbxVeicolo.getSelectedItem().toString().equals("Nessun veicolo")) {
                 	Veicolo=true;
                 }else {
                 	Veicolo=false;
                 }
-                ControllaModifiche("Modifica");
+                ControllaModifiche("Creazione");
             }
         });
 		cbxVeicolo.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -332,8 +331,7 @@ public class GestioneRiderFrame extends JFrame{
 		cbxVeicolo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	
-                String selected = cbxVeicolo.getSelectedItem().toString();
-                if(selected!="Nessun veicolo") {
+                if(!cbxVeicolo.getSelectedItem().toString().equals("Nessun veicolo")) {
                 	Veicolo=true;
                 }else {
                 	Veicolo=false;

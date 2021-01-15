@@ -50,6 +50,7 @@ public class GestioneProdottiFrame extends JFrame {
 	private Point initialClick;
 	private JFrame parent = this;
 	private JComboBox cbxCategorie;
+	private JButton  btnEliminaCategoria;
 	
 	public GestioneProdottiFrame(ControllerAmministratore controllerAmministratore) {
 		setResizable(false);
@@ -228,10 +229,34 @@ public class GestioneProdottiFrame extends JFrame {
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(btnAggiungi);
 		
+		btnEliminaCategoria = new JButton("Elimina");
+		btnEliminaCategoria.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1 && btnEliminaCategoria.isEnabled()) {
+					controllerAmministratore.EliminaCategoria(cbxCategorie.getSelectedItem().toString());
+				}
+			}
+		});
+		btnEliminaCategoria.setFont(new Font("Calibri", Font.PLAIN, 16));
+		btnEliminaCategoria.setBounds(386, 46, 98, 32);
+		contentPane.add(btnEliminaCategoria);
+		
+		
 		cbxCategorie = new JComboBox();
+		cbxCategorie.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	
+                if(cbxCategorie.getSelectedItem().toString().equals("Nessuna")) {
+                	btnEliminaCategoria.setEnabled(false);
+                }else {
+                	btnEliminaCategoria.setEnabled(true);
+                }
+            }
+        });
 		cbxCategorie.setFont(new Font("Calibri", Font.PLAIN, 14));
-		cbxCategorie.setModel(new DefaultComboBoxModel(new String[] {"Tutte le categorie", "Pizze", "Panini", "Dessert", "Bibite"}));
-		cbxCategorie.setSelectedIndex(0);
+		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
+		cbxCategorie.setSelectedItem("Nessuna");
 		cbxCategorie.setMaximumRowCount(20);
 		cbxCategorie.setBounds(82, 46, 206, 32);
 		contentPane.add(cbxCategorie);
@@ -301,6 +326,19 @@ public class GestioneProdottiFrame extends JFrame {
 		lblGestioneProdotti.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblGestioneProdotti.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblGestioneProdotti);
+		
+		JButton btnNuovaCategoria = new JButton("Nuova");
+		btnNuovaCategoria.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriCreaCategoriaFrame();
+				}
+			}
+		});
+		btnNuovaCategoria.setFont(new Font("Calibri", Font.PLAIN, 16));
+		btnNuovaCategoria.setBounds(298, 46, 78, 32);
+		contentPane.add(btnNuovaCategoria);
 		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
@@ -377,11 +415,6 @@ public class GestioneProdottiFrame extends JFrame {
 	}
 			
 
-	
-	
-
-
-
 	public void controllaValoriMin() {
 		if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
 			try {
@@ -413,10 +446,8 @@ public class GestioneProdottiFrame extends JFrame {
 			return this.cbxCategorie.getSelectedItem().toString();
 	
 	}
-	
-	
-	
-	
+		
+		
 	public Integer getMinSelezionato() {
 		if(this.txfMin.getText().isBlank())
 			return null;
@@ -425,7 +456,6 @@ public class GestioneProdottiFrame extends JFrame {
 			return min;
 		}
 	}
-	
 	
 	
 	public Integer getMaxSelezionato() {
@@ -437,24 +467,18 @@ public class GestioneProdottiFrame extends JFrame {
 		}
 	}
 	
-	
-	
-	
-	
 	public List<Integer> getIdProdottiPerAllergeni() {
 		
 		return controllerAmministratore.getIDProdottiPerAllergeni(txfAllergeni.getText().toString());
 		
 	}
+
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public void AggiornaCategorie() {
+		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
+		cbxCategorie.setSelectedItem("Nessuna");
+
+	}
 }		
 

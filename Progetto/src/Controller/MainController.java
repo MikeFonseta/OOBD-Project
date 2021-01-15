@@ -38,8 +38,8 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();
-		//LoginTry("A001","pass12"); //amministratore
-		LoginTry("U00001","pass123");//gestore
+		LoginTry("A001","pass12"); //amministratore
+		//LoginTry("U00001","pass123");//gestore
 	}
 	
 	public static void main(String[] args) {
@@ -317,7 +317,9 @@ public class MainController {
 				try {
 					result = prodottoDao.getCategorieProdotto().toArray(new String[] {});
 				} catch (SQLException e) {
-					//Errore
+					this.controllerAmministratore.amministratoreFrame.setVisible(true);
+					this.controllerAmministratore.amministratoreFrame.setEnabled(true);
+					JOptionPane.showMessageDialog(this.controllerAmministratore.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 				
 				
@@ -327,7 +329,22 @@ public class MainController {
 			}
 		}
 		else {//controllerAmministratore
-			
+			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp())
+			{
+				
+				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+				try {
+					result = prodottoDao.getCategorieTotali().toArray(new String[] {});
+				} catch (SQLException e) {
+					//??????
+					//JOptionPane.showMessageDialog(this.controllerAmministratore.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp())
+			{
+				//altre implementazioni
+			}
 			
 		}
 		

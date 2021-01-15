@@ -71,7 +71,6 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return dati;
 	}
 	
-	
 	@Override
 	public List<Object[]> getProdottiPerUnaSede(int idSede)  throws SQLException {
 		
@@ -161,10 +160,6 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return prodotti;
 	}
 
-	
-	
-	
-	
 	@Override
 	public List<Integer> getTuttiProdottiPerNome(String[] Prodotti) throws SQLException {
 		int i =0; boolean isEmpty = false;
@@ -204,7 +199,6 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	
 	}
 	
-	
 	@Override
 	public List<String> getCategorieProdotto() throws SQLException{
 		List<String> categorie = new ArrayList<String>();
@@ -226,7 +220,6 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		return categorie;
 	}
-	
 	
 	@Override
 	public List<Object[]> getProdottiTabella(String categoria) throws SQLException {
@@ -267,7 +260,6 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return prodotti;
 	}
 
-	
 	@Override
 	public List<Object[]> getProdottiPerId_Ordine(int idOrdine) throws SQLException {
 		List<Object[]> risultato = new ArrayList<Object[]>();
@@ -350,8 +342,6 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return risultato;
 	}
 	
-	
-	
 	public List<Object[]> ricercaComplessaProdotti(String Categoria, Integer Min, Integer Max, List<Integer> idProdottiConAllergeni) throws SQLException{
 		List<Object[]> risultato = new ArrayList<Object[]>();
 		Connection connection = null;
@@ -359,6 +349,10 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		PreparedStatement query = null;
 		ResultSet rs = null;
 
+		
+		if(Categoria.equals("Nessuna") || Categoria.equals("Tutte")) {
+			Categoria = null;
+		}
 		
 		StringBuilder sql = new  StringBuilder(1024); 
 		sql.append("SELECT DISTINCT ID_Prodotto, NomeP, Categoria, Descrizione, Prezzo " 
@@ -539,6 +533,63 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		st.close();
 		connection.close();
 		return risultato;
+	}
+
+	@Override
+	public int CreaCategoria(String NomeCategoria) throws SQLException {
+		Connection connection = null;
+		Statement st = null;
+		int risultato = 0;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st = connection.createStatement();
+		risultato = st.executeUpdate("INSERT INTO categorie VALUES('" + NomeCategoria+ "')");
+		
+		st.close();
+		connection.close();
+		return risultato;
+	}
+
+	@Override
+	public int EliminaCategoria(String NomeCategoria) throws SQLException {
+		Connection connection = null;
+		Statement st = null;
+		ResultSet rs = null;
+		int risultato = 0;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st = connection.createStatement();
+		rs = st.executeQuery("SELECT EliminaCategoria('"+NomeCategoria+"')");
+		
+		if(rs.next()) {
+			risultato = rs.getInt(1);
+		}
+		
+		rs.close();
+		st.close();
+		connection.close();
+		return risultato;
+	}
+
+	@Override
+	public List<String> getCategorieTotali() throws SQLException {
+		List<String> categorie = new ArrayList<String>();
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		ResultSet rs = st.executeQuery("SELECT nomecategoria FROM categorie");
+		
+		while(rs.next()) {
+			categorie.add(rs.getString(1));
+		}
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return categorie;
 	}
 	
 	
