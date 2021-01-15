@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import Database.DBConnection;
+import Entities.Prodotto;
 
 public class ProdottoDAOPostgresImp implements ProdottoDAO{
 
@@ -492,6 +493,49 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		st = connection.createStatement();
 		risultato = st.executeUpdate("INSERT INTO Prodotto VALUES ("+idProssimoProdotto+", '"+nome+"', '"+descrizione+"', "+prezzo+", '"+categoria+"') ");
 		
+		st.close();
+		connection.close();
+		return risultato;
+	}
+
+	@Override
+	public Prodotto getProdottoPerId(int idProdotto) throws SQLException {
+		Prodotto risultato = null;
+		Connection connection  =null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st = connection.createStatement();
+		rs = st.executeQuery("SELECT * FROM Prodotto "
+							+ "WHERE ID_Prodotto = "+idProdotto+" ");
+		
+		while(rs.next()) {
+			int id = rs.getInt(1);  
+			String nome = rs.getString(2);
+			String descrizione = rs.getString(3);
+ 			float prezzo = rs.getFloat(4);
+			String categoria = rs.getString(5);
+			risultato = new Prodotto(id, nome, descrizione, prezzo, categoria);
+		}
+		
+		rs.close();
+		st.close();
+		connection.close();
+		return risultato;
+	}
+
+	@Override
+	public int AggiornaProdotto(Prodotto prodotto) throws SQLException {
+		int risultato = 0;
+		Connection connection = null;
+		Statement st = null;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st = connection.createStatement();
+		risultato = st.executeUpdate("UPDATE Prodotto "
+									+ "SET nomep= '"+prodotto.getNomeProdotto()+"', descrizione= '"+prodotto.getDescrizione()+"', prezzo= "+prodotto.getPrezzo()+", categoria= '"+prodotto.getCategoria()+"' "
+									+ "WHERE ID_Prodotto = "+prodotto.getIdProdotto()+"; ");
 		st.close();
 		connection.close();
 		return risultato;

@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
@@ -15,9 +17,11 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Point;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.BatchUpdateException;
 import java.text.DecimalFormat;
 import java.awt.Insets;
 import javax.swing.JLabel;
@@ -35,6 +39,9 @@ import Entities.Prodotto;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.JTextArea;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
 
 public class ModificaProdottoFrame extends JFrame {
 
@@ -45,12 +52,15 @@ public class ModificaProdottoFrame extends JFrame {
 	private JTable tblSedi;
 	private JTable tblAllergeni;
 	private ControllerAmministratore controllerAmministratore = null;
-	private JFrame parent;
+	private JFrame parent = this;
 	private Point initialClick;
+	private Prodotto prodotto = null;
+	private boolean NomeInserito, DescrizioneInserita, PrezzoInserito, CategoriaInserita;
+	private JButton btnAggiorna;
 
-
-	public ModificaProdottoFrame(ControllerAmministratore controllerAmministratore, Prodotto prodotto) {
-		this.controllerAmministratore = controllerAmministratore;
+	public ModificaProdottoFrame(ControllerAmministratore ControllerAmministratore, Prodotto prodotto) {
+		this.controllerAmministratore = ControllerAmministratore;
+		this.prodotto = prodotto;
 		setTitle("Modifica Prodotto");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,37 +71,125 @@ public class ModificaProdottoFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		txfNomeP = new JTextField(prodotto.getNomeProdotto());
-		txfNomeP.setBounds(145, 128, 197, 24);
+		txfNomeP.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!txfNomeP.getText().isBlank() && !txfNomeP.getText().equals(prodotto.getNomeProdotto())) 
+					NomeInserito = true;
+				else 
+					NomeInserito = false;
+				ControllaModifiche();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!txfNomeP.getText().isBlank() && !txfNomeP.getText().equals(prodotto.getNomeProdotto())) 
+					NomeInserito = true;
+				else 
+					NomeInserito = false;
+				ControllaModifiche();	
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if(!txfNomeP.getText().isBlank() && !txfNomeP.getText().equals(prodotto.getNomeProdotto())) 
+					NomeInserito = true;
+				else 
+					NomeInserito = false;
+				ControllaModifiche();
+				
+			}
+		});
+		txfNomeP.setBounds(145, 104, 197, 24);
 		txfNomeP.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfNomeP.setColumns(10);
 		contentPane.add(txfNomeP);
 		
 		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
 		txfPrezzo.setValue(prodotto.getPrezzo());
+		txfPrezzo.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
+					NomeInserito = true;
+				else 
+					NomeInserito = false;
+				ControllaModifiche();
+			}
+				
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
+					NomeInserito = true;
+				else 
+					NomeInserito = false;
+				ControllaModifiche();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
+					NomeInserito = true;
+				else 
+					NomeInserito = false;
+				ControllaModifiche();	
+			}
+		});
 		txfPrezzo.setFont(new Font("Calibri", Font.PLAIN, 14));
-		txfPrezzo.setBounds(145, 627, 86, 23);
+		txfPrezzo.setBounds(145, 634, 86, 23);
 		txfPrezzo.setColumns(10);
 		contentPane.add(txfPrezzo);
 		
 		txpDescrizione = new JTextArea(prodotto.getDescrizione());
+		txpDescrizione.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(txpDescrizione!= null && !txpDescrizione.getText().toString().equals(prodotto.getDescrizione()))
+					DescrizioneInserita = true;
+				else
+					DescrizioneInserita = false;
+				ControllaModifiche();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(txpDescrizione!= null && !txpDescrizione.getText().toString().equals(prodotto.getDescrizione()))
+					DescrizioneInserita = true;
+				else
+					DescrizioneInserita = false;
+				ControllaModifiche();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if(txpDescrizione!= null && !txpDescrizione.getText().toString().equals(prodotto.getDescrizione()))
+					DescrizioneInserita = true;
+				else
+					DescrizioneInserita = false;
+				ControllaModifiche();	
+			}
+		});
 		txpDescrizione.setLineWrap(true);
 		txpDescrizione.setSize(288, 136);
-		txpDescrizione.setLocation(new Point(145, 182));
+		txpDescrizione.setLocation(new Point(145, 226));
 		txpDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(txpDescrizione);
 
 		JLabel lblIDProdotto = new JLabel("ID Prodotto :  "+prodotto.getIdProdotto()+"");
 		lblIDProdotto.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblIDProdotto.setBounds(46, 75, 185, 18);
+		lblIDProdotto.setBounds(46, 60, 185, 18);
 		contentPane.add(lblIDProdotto);
 		
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(79, 131, 34, 18);
+		lblNome.setBounds(79, 107, 34, 18);
 		lblNome.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(lblNome);
 		
 		JLabel lblDescrizione = new JLabel("Descrizione");
-		lblDescrizione.setBounds(46, 182, 65, 18);
+		lblDescrizione.setBounds(46, 226, 65, 18);
 		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(lblDescrizione);
 		
@@ -100,41 +198,89 @@ public class ModificaProdottoFrame extends JFrame {
 		btnAggiungiSede.setBounds(834, 540, 145, 32);
 		contentPane.add(btnAggiungiSede);
 		
-		JLabel lblAllergeni = new JLabel("Allergeni");
+		JComboBox cbxCategorie = new JComboBox();
+		cbxCategorie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(cbxCategorie != null  && !cbxCategorie.getSelectedItem().toString().equals(prodotto.getCategoria())) 
+					CategoriaInserita = true;
+				else
+				CategoriaInserita = false;
+				ControllaModifiche();
+			}
+		});
+		cbxCategorie.setModel(new DefaultComboBoxModel(new String[] {"Pizze", "Panini", "Bibite"}));
+		cbxCategorie.getModel().setSelectedItem(prodotto.getCategoria());
+		cbxCategorie.setBounds(145, 163, 197, 22);
+		contentPane.add(cbxCategorie);
+		
+		JLabel lblAllergeni = new JLabel("Allergeni presenti");
 		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblAllergeni.setBounds(63, 339, 50, 20);
+		lblAllergeni.setBounds(10, 383, 103, 20);
 		contentPane.add(lblAllergeni);
 		
 		JLabel lblPrezzo = new JLabel("Prezzo");
 		lblPrezzo.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblPrezzo.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblPrezzo.setBounds(63, 595, 50, 14);
+		lblPrezzo.setBounds(63, 643, 50, 14);
 		contentPane.add(lblPrezzo);
 		
 		JLabel lblEuro = new JLabel("\u20AC");
 		lblEuro.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblEuro.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblEuro.setBounds(241, 632, 25, 18);
+		lblEuro.setBounds(239, 639, 25, 18);
 		contentPane.add(lblEuro);
 		
-		JButton btnAnnulla = new JButton("ANNULLA");
-		btnAnnulla.setBounds(764, 651, 163, 38);
-		btnAnnulla.setFont(new Font("Calibri", Font.PLAIN, 14));
-		contentPane.add(btnAnnulla);
+		JButton btnChiudi = new JButton("CHIUDI");
+		btnChiudi.setBounds(764, 651, 163, 38);
+		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 14));
+		contentPane.add(btnChiudi);
 		
-		JButton btnConferma = new JButton("CONFERMA");
-		btnConferma.setBounds(958, 651, 163, 38);
-		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 14));
-		contentPane.add(btnConferma);
+		btnAggiorna = new JButton("AGGIORNA");
+		btnAggiorna.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1 && btnAggiorna.isEnabled()) {
+					controllerAmministratore.AggiornaProdotto(prodotto.getIdProdotto(), txfNomeP.getText(), txpDescrizione.getText(), Float.parseFloat(txfPrezzo.getText()), cbxCategorie.getSelectedItem().toString());
+				}
+			}
+		});
+		btnAggiorna.setBounds(958, 651, 163, 38);
+		btnAggiorna.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnAggiorna.setEnabled(false);
+		contentPane.add(btnAggiorna);
 		
 		JButton btnEliminaAllergeni = new JButton("Elimina");
+		btnEliminaAllergeni.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(tblAllergeni.getSelectedRowCount() > 0) {
+						
+						String[] Allergeni = new String[tblAllergeni.getSelectedRowCount()];
+						int righe[] = tblAllergeni.getSelectedRows();
+							for(int i = 0; i<tblAllergeni.getSelectedRowCount(); i++)
+								Allergeni[i] = (String) tblAllergeni.getValueAt(righe[i], 0);
+				
+								controllerAmministratore.EliminaAllergeniDaProdotto(prodotto.getIdProdotto(), Allergeni);
+					}
+				}
+			}
+		});
 		btnEliminaAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnEliminaAllergeni.setBounds(344, 536, 89, 23);
+		btnEliminaAllergeni.setBounds(344, 580, 89, 23);
 		contentPane.add(btnEliminaAllergeni);
 		
 		JButton btnAggiungiAllergene = new JButton("Aggiungi");
+		btnAggiungiAllergene.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			if(e.getButton() == MouseEvent.BUTTON1) {
+				controllerAmministratore.ApriAggiungiAllergeniFrame(prodotto.getIdProdotto());
+			}
+			}
+		});
 		btnAggiungiAllergene.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnAggiungiAllergene.setBounds(253, 536, 89, 23);
+		btnAggiungiAllergene.setBounds(253, 580, 89, 23);
 		contentPane.add(btnAggiungiAllergene);
 		
 		JButton btnElimina = new JButton("Elimina Prodotto");
@@ -174,13 +320,12 @@ public class ModificaProdottoFrame extends JFrame {
 	
 		
 		JScrollPane spnlAllergeni = new JScrollPane();
-		spnlAllergeni.setBounds(142, 339, 291, 196);
+		spnlAllergeni.setBounds(142, 383, 291, 196);
 		contentPane.add(spnlAllergeni);
 		
 		tblAllergeni = new JTable();
 		tblAllergeni.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
+			controllerAmministratore.getAllergeniProdotto(prodotto.getIdProdotto()),
 			new String[] {
 				"Allergeni"
 			}
@@ -211,13 +356,19 @@ public class ModificaProdottoFrame extends JFrame {
 		pnlBarra.setBounds(0, 0, 1200, 35);
 		getContentPane().add(pnlBarra);
 		
-		JLabel lblVisualizzaOrdini = new JLabel("Visualizza Ordini");
+		JLabel lblVisualizzaOrdini = new JLabel("Modifica Prodotto");
 		lblVisualizzaOrdini.setForeground(Color.WHITE);
 		lblVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblVisualizzaOrdini.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblVisualizzaOrdini);
-
 		
+		JLabel lblCategoria = new JLabel("Categoria");
+		lblCategoria.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblCategoria.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblCategoria.setBounds(46, 163, 67, 22);
+		contentPane.add(lblCategoria);
+	
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
 	            initialClick = e.getPoint();
@@ -251,5 +402,41 @@ public class ModificaProdottoFrame extends JFrame {
 
 		
 
+	}
+
+
+	private void ControllaModifiche() {
+		if(NomeInserito == true || DescrizioneInserita == true || CategoriaInserita == true || PrezzoInserito == true)
+			btnAggiorna.setEnabled(true);
+		else 
+			btnAggiorna.setEnabled(false);
+	}
+
+
+	public void AggiornaTabellaAllergeni() {
+		tblAllergeni.setModel(new DefaultTableModel(
+				controllerAmministratore.getAllergeniProdotto(prodotto.getIdProdotto()),
+				new String[] {
+					"Allergeni"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			tblAllergeni.getColumnModel().getColumn(0).setResizable(false);
+			tblAllergeni.setFillsViewportHeight(true);
+			tblAllergeni.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));	
+		
 	}
 }

@@ -47,7 +47,7 @@ public class EliminaProdottoFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		
-		lblAvviso = new JLabel("<html>Per eliminare il prodotto "+NomeProdottoDaEliminare+" da tutte le sedi inserire la propria password:</html>");
+		lblAvviso = new JLabel("<html>Per eliminare il prodotto '"+NomeProdottoDaEliminare+"' da tutte le sedi inserire la propria password:</html>");
 		lblAvviso.setBounds(69, 41, 321, 72);
 		lblAvviso.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(lblAvviso);
@@ -78,7 +78,7 @@ public class EliminaProdottoFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					controllerAmministratore.ConfermaEliminaProdotto(psfPassword.getText(), idProdottoDaEliminare);
+					controllerAmministratore.ConfermaEliminaProdotto(psfPassword.getText(), idProdottoDaEliminare, NomeProdottoDaEliminare);
 				}
 			}
 		});

@@ -21,6 +21,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.PlainDocument;
 
 import Controller.ControllerAmministratore;
+import Utility.FiltroDecimali;
 import Utility.FiltroInteri;
 
 import javax.swing.JTextField;
@@ -37,7 +38,7 @@ public class CreaProdottoFrame extends JFrame {
 	private Point initialClick;
 	private JFrame parent = this;
 	private JTextField txfNome;
-	private JFormattedTextField txfPrezzo;
+	private JTextField txfPrezzo;
 	private ControllerAmministratore controllerAmministratore= null;
 	private boolean PrezzoInserito, NomeInserito, CategoriaInserita;
 	private JButton btnCrea;
@@ -141,14 +142,30 @@ public class CreaProdottoFrame extends JFrame {
 		lblPrezzo.setBounds(39, 480, 62, 24);
 		contentPane.add(lblPrezzo);
 		
-		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
+		JLabel lblCategoria = new JLabel("Categoria");
+		lblCategoria.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblCategoria.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblCategoria.setBounds(24, 207, 77, 29);
+		contentPane.add(lblCategoria);
+		
+		JLabel lblEuro = new JLabel("\u20AC");
+		lblEuro.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblEuro.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblEuro.setBounds(218, 481, 46, 23);
+		contentPane.add(lblEuro);
+		
+//		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
+		txfPrezzo = new JTextField();
+	      PlainDocument docMin = (PlainDocument) txfPrezzo.getDocument();
+	      docMin.setDocumentFilter(new FiltroDecimali());
 		txfPrezzo.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if(!txfPrezzo.getText().isBlank()) {
-					if(Float.parseFloat(txfPrezzo.getText().toString()) > 0)
-					PrezzoInserito = true;
+					
+						PrezzoInserito = true;
 				}
 				else 
 					PrezzoInserito = false;
@@ -159,21 +176,28 @@ public class CreaProdottoFrame extends JFrame {
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(txfPrezzo.getText().isBlank()&& Float.parseFloat(txfPrezzo.getText()) <= 0)
-					PrezzoInserito = false;
+				if(!txfPrezzo.getText().isBlank()) {
+					
+						PrezzoInserito = true;
+				}
 				else 
-					PrezzoInserito = true;
+					PrezzoInserito = false;
+					
 				ControllaModifiche();
+				
 			}
-			
+
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if(txfPrezzo.getText().isBlank()&& Float.parseFloat(txfPrezzo.getText()) <= 0)
+				if(!txfPrezzo.getText().isBlank()) {
+					
+						PrezzoInserito = true;
+				}
+				else 
 					PrezzoInserito = false;
-				else
-					PrezzoInserito = true;
+					
 				ControllaModifiche();
-			}
+			}		
 		});
 		txfPrezzo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfPrezzo.setColumns(10);
@@ -196,12 +220,6 @@ public class CreaProdottoFrame extends JFrame {
 			} 
 		});
 		
-		JLabel lblCategoria = new JLabel("Categoria");
-		lblCategoria.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblCategoria.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblCategoria.setBounds(24, 207, 77, 29);
-		contentPane.add(lblCategoria);
 		
 		btnAnnulla = new JButton("Annulla");
 		btnAnnulla.addMouseListener(new MouseAdapter() {
@@ -223,18 +241,16 @@ public class CreaProdottoFrame extends JFrame {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnCrea.isEnabled()) {
 					controllerAmministratore.CreaProdotto(idProssimoProdotto, txfNome.getText(), txpDescrizione.getText(), Float.parseFloat(txfPrezzo.getText().toString()), cbxCategorie.getSelectedItem().toString());
 				}
-			}
+			} 
 		});
 		btnCrea.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnCrea.setBounds(253, 556, 105, 41);
 		contentPane.add(btnCrea);
 		btnCrea.setEnabled(false);
 		
-		JLabel lblEuro = new JLabel("\u20AC");
-		lblEuro.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblEuro.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblEuro.setBounds(218, 481, 46, 23);
-		contentPane.add(lblEuro);
+
+		
+		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {

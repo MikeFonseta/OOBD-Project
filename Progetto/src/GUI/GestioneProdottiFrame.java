@@ -199,6 +199,17 @@ public class GestioneProdottiFrame extends JFrame {
 		
 		
 		JButton btnModifica = new JButton("MODIFICA");
+		btnModifica.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(table.getSelectedRow()!= -1) {
+						int idProdotto = (int) table.getValueAt(table.getSelectedRow(), 0);
+						controllerAmministratore.ApriModificaProdotto(idProdotto);
+					}
+				}
+			}
+		});
 		btnModifica.setBounds(517, 644, 195, 45);
 		btnModifica.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(btnModifica);

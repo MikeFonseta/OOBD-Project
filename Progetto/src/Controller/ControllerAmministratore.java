@@ -6,6 +6,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import DAO.AccountDAOPostgresImp;
+import DAO.AllergeneDaoPostgresImp;
+import DAO.EtichettaDAO;
+import DAO.EtichettaDaoPostgresImp;
 import DAO.ProdottoDAO;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
@@ -14,6 +17,7 @@ import Entities.Account;
 import Entities.Prodotto;
 import Entities.Rider;
 import Entities.Sede;
+import GUI.AggiungiAllergeniFrame;
 import GUI.AggiungiProdottoFrame;
 import GUI.AmministratoreFrame;
 import GUI.CreaProdottoFrame;
@@ -42,7 +46,9 @@ public class ControllerAmministratore {
 	private EliminaProdottoFrame eliminaProdottoFrame = null;
 	private CreaProdottoFrame creaProdottoFrame = null;
 	private ModificaProdottoFrame modificaProdottoFrame = null;
+	private AggiungiAllergeniFrame aggiungiAllergeneFrame = null;
 	private Account account;
+	
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
 		
@@ -171,6 +177,29 @@ public class ControllerAmministratore {
 		this.eliminaSedeFrame.dispose();
 	}
 	
+	public void ApriCreaProdottoFrame() {
+		int idProssimoProdotto = 0;
+		if(this.imp == this.postgresImp) {
+			try {
+				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+				idProssimoProdotto = prodottoDAO.idProssimoProdotto();
+			}catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp == this.altraImp){
+		//altra implementazione
+			}
+			this.gestioneProdottiFrame.setEnabled(false);
+			this.creaProdottoFrame = new CreaProdottoFrame(this, idProssimoProdotto);
+	}
+	
+	public void ChiudiCreaProdottoFrame() {
+		this.creaProdottoFrame.dispose();
+		this.gestioneProdottiFrame.setEnabled(true);
+		this.gestioneProdottiFrame .setVisible(true);
+	}
+
 	public void ApriAggiungiProdottoFrame(int idSede) {
 		this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
 		this.gestioneSedeFrame.setEnabled(false);
@@ -179,6 +208,39 @@ public class ControllerAmministratore {
 	public void ChiudiAggiungiProdottoFrame() {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.aggiungiProdottoFrame.dispose();
+	}
+	
+	public void ApriModificaProdotto(int idProdotto) {
+		Prodotto prodotto = null;
+			if(this.imp == this.postgresImp) {
+				ProdottoDAOPostgresImp ProdottoDAO = new ProdottoDAOPostgresImp();
+				try {
+					prodotto = ProdottoDAO.getProdottoPerId(idProdotto);
+					this.gestioneProdottiFrame.dispose();
+					this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else if (this.imp == this.altraImp) {
+				//Altra implementazione
+			}
+	}
+	
+	public void ChiudiModificaProdotto() {
+		this.modificaProdottoFrame.dispose();
+		this.ApriGestioneProdottiFrame();
+	}
+	
+	public void ApriAggiungiAllergeniFrame(int idProdotto) {
+		this.modificaProdottoFrame.setEnabled(false);
+		this.aggiungiAllergeneFrame = new AggiungiAllergeniFrame(this, idProdotto);
+	}
+	
+	public void ChiudiAggiungiAllergeniFrame() {
+		this.modificaProdottoFrame.setEnabled(true);
+		this.aggiungiAllergeneFrame.dispose();
+		this.modificaProdottoFrame.AggiornaTabellaAllergeni();	
 	}
 	
 	public void chiudiAmministratoreFrame(boolean logout) {
@@ -610,20 +672,16 @@ public class ControllerAmministratore {
 		return risultato;
 	}
 	
-	public void ConfermaEliminaProdotto(String password, int idProdotto) {
+	public void ConfermaEliminaProdotto(String password, int idProdotto, String nomeProdottoDaEliminare) {
 		int risultato = 0;
-		this.eliminaProdottoFrame.setVisible(false);
-		this.eliminaProdottoFrame.dispose();
-		this.gestioneProdottiFrame.setEnabled(true);
-		this.gestioneProdottiFrame.setVisible(true);
-		
+		this.ChiudiEliminaProdottoFrame();
 		if(this.account.getPassword().equals(password)) {
 			if(this.imp == this.postgresImp) {
 				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 				try {
 					risultato = prodottoDAO.eliminaProdottoDaTutteLeSedi(idProdotto);
 					if(risultato == 1) {
-						JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Prodotto '" + idProdotto + "' eliminato","",JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Prodotto '" + nomeProdottoDaEliminare + "' eliminato","",JOptionPane.PLAIN_MESSAGE);
 						this.gestioneProdottiFrame.AggiornaTabella();
 					}
 				} catch (SQLException e) {
@@ -642,30 +700,6 @@ public class ControllerAmministratore {
 		
 	}	
 			
-	public void ApriCreaProdottoFrame() {
-			int idProssimoProdotto = 0;
-			if(this.imp == this.postgresImp) {
-				
-				try {
-					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
-					idProssimoProdotto = prodottoDAO.idProssimoProdotto();
-				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			else if(this.imp == this.altraImp)
-			{
-				//altra implementazione
-			}
-			this.gestioneProdottiFrame.setEnabled(false);
-			this.creaProdottoFrame = new CreaProdottoFrame(this, idProssimoProdotto);
-	}
-		
-	public void ChiudiCreaProdottoFrame() {
-		this.creaProdottoFrame.dispose();
-		this.gestioneProdottiFrame.setEnabled(true);
-		this.gestioneProdottiFrame .setVisible(true);
-	}
 	
 	public void CreaProdotto(int idProssimoProdotto, String Nome, String Descrizione, float Prezzo, String Categoria) {
 		int risultato = 0;
@@ -688,8 +722,121 @@ public class ControllerAmministratore {
 			this.gestioneProdottiFrame.setVisible(false);
 			this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
 		}
-	}
+	}	
+	
+	public Object[][] getAllergeniMancanti(int idProdotto){
+		Object[][] risultato = null;
+		if(this.imp == this.postgresImp) {
+			AllergeneDaoPostgresImp AllergeneDAO = new AllergeneDaoPostgresImp();
+			try {
+				risultato = AllergeneDAO.getAllergeniMancanti(idProdotto).toArray(new Object[][] {});
+			} catch (SQLException e) {
 
+				JOptionPane.showMessageDialog(this.modificaProdottoFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp == this.altraImp) {
+			//Altra implementazione
+		}
+		return risultato;
+	}
+	
+	
+	public void AggiungiAllergeniAProdotto(int idProdotto, String[] Allergeni) {
+		int risultato = 0;
+		if(this.imp == this.postgresImp) {
+			try {
+				for(int i=0; i<Allergeni.length; i++) {
+					EtichettaDaoPostgresImp EtichettaDAO = new EtichettaDaoPostgresImp();
+					risultato += EtichettaDAO.AggiungiAllergeneAProdotto(idProdotto, Allergeni[i]);
+					}
+				if(risultato!=0) {
+					this.ChiudiAggiungiAllergeniFrame();
+					if(risultato==1) {	
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Allergene aggiunto!","",JOptionPane.PLAIN_MESSAGE);
+					}else if(risultato>1){
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Allergeni aggiunti!","",JOptionPane.PLAIN_MESSAGE);
+					}
+					
+				}	
+			}catch (SQLException e) {
+				this.ChiudiAggiungiAllergeniFrame();
+				JOptionPane.showMessageDialog(this.modificaProdottoFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp == altraImp) {
+		//Altra Implementazione 
+		}	
+	}
+	
+	
+	public void EliminaAllergeniDaProdotto(int idProdotto, String[] Allergeni) {
+		int risultato = 0;
+		if(this.imp == this.postgresImp) {
+			try {
+				for(int i=0; i<Allergeni.length; i++) {
+					EtichettaDaoPostgresImp EtichettaDAO = new EtichettaDaoPostgresImp();
+					risultato += EtichettaDAO.EliminaAllergeneDaProdotto(idProdotto, Allergeni[i]);
+					}
+				if(risultato!=0) {
+					if(risultato==1) {	
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Allergene eliminato!","",JOptionPane.PLAIN_MESSAGE);
+					}else if(risultato>1){
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Allergeni eliminati!","",JOptionPane.PLAIN_MESSAGE);
+					}			
+				}	
+				this.modificaProdottoFrame.AggiornaTabellaAllergeni();
+			}catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.modificaProdottoFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp == altraImp) {
+		//Altra Implementazione 
+		}	
+	}
+	
+	
+	public Object[][] getAllergeniProdotto(int idProdotto) {
+		Object[][] risultato = null;
+		if(this.imp == this.postgresImp){
+			EtichettaDaoPostgresImp EtichettaDAO = new EtichettaDaoPostgresImp();
+			try {
+				risultato = EtichettaDAO.getAllergeniProdotto(idProdotto).toArray(new Object[][] {});
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.modificaProdottoFrame, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp == this.altraImp) {
+		//Altra implementazione
+		}
+		return risultato;
+	}
+	
+	
+	public void AggiornaProdotto(int idProdotto, String nome, String descrizione, float prezzo, String categoria) {
+		int risultato = 0;
+		Prodotto prodotto = new Prodotto(idProdotto, nome, descrizione, prezzo, categoria);
+		if(this.imp == this.postgresImp) {
+			try {
+				ProdottoDAOPostgresImp ProdottoDAO = new ProdottoDAOPostgresImp();
+				risultato = ProdottoDAO.AggiornaProdotto(prodotto);
+				if(risultato == 1) {
+					ChiudiModificaProdotto();
+					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Prodotto aggiornato!","",JOptionPane.PLAIN_MESSAGE);
+				}
+			}catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Error!","",JOptionPane.ERROR_MESSAGE);	
+			}
+		}
+		else if(this.imp == this.altraImp) {
+		//Altra implementazione
+		}
+		
+	}
+	
+	
+
+	//getter e setter
 	public String getImp() {
 		return imp;
 	}
@@ -718,6 +865,7 @@ public class ControllerAmministratore {
 	public void setAltraImp(String altraImp) {
 		this.altraImp = altraImp;
 	}
+
 
 
 }
