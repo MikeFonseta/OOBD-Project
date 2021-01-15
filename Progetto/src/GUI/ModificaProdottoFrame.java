@@ -201,11 +201,11 @@ public class ModificaProdottoFrame extends JFrame {
 		JComboBox cbxCategorie = new JComboBox();
 		cbxCategorie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(cbxCategorie != null  && !cbxCategorie.getSelectedItem().toString().equals(prodotto.getCategoria())) 
+				if(cbxCategorie.getSelectedItem() != null  && !cbxCategorie.getSelectedItem().toString().equals(prodotto.getCategoria())) 
 					CategoriaInserita = true;
 				else
 				CategoriaInserita = false;
-				ControllaModifiche();
+//				ControllaModifiche();
 			}
 		});
 		cbxCategorie.setModel(new DefaultComboBoxModel(new String[] {"Pizze", "Panini", "Bibite"}));
@@ -231,11 +231,20 @@ public class ModificaProdottoFrame extends JFrame {
 		contentPane.add(lblEuro);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
+		btnChiudi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					controllerAmministratore.ChiudiModificaProdotto();
+			}
+		});
 		btnChiudi.setBounds(764, 651, 163, 38);
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(btnChiudi);
 		
+		
 		btnAggiorna = new JButton("AGGIORNA");
+		btnAggiorna.setEnabled(false);
 		btnAggiorna.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -246,7 +255,7 @@ public class ModificaProdottoFrame extends JFrame {
 		});
 		btnAggiorna.setBounds(958, 651, 163, 38);
 		btnAggiorna.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnAggiorna.setEnabled(false);
+		
 		contentPane.add(btnAggiorna);
 		
 		JButton btnEliminaAllergeni = new JButton("Elimina");
@@ -410,7 +419,7 @@ public class ModificaProdottoFrame extends JFrame {
 			btnAggiorna.setEnabled(true);
 		else 
 			btnAggiorna.setEnabled(false);
-	}
+	}			
 
 
 	public void AggiornaTabellaAllergeni() {
