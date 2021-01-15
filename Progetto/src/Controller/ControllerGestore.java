@@ -275,18 +275,25 @@ public class ControllerGestore {
 		//apre la schermata Crea ordine ma con i campi caricati dall ordine selezionato
 	}
 	
-	public void EliminaOrdine(int idOrdine) {
-		
+	
+	public int EliminaOrdine(int idOrdine,int idRider) {
+		int numeroordini=0;
 		if(this.imp.equals(this.postgresImp)) {
 			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
 			ordineDAO.CancellaOrdine(idOrdine);
-			this.gestoreFrame.AggiornaOrdini(0);
+			try {
+				RiderDAOPostgresImp riderDAO =new RiderDAOPostgresImp();
+				numeroordini=riderDAO.AggiornaNumeroOrdini(idRider,false);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		else if(this.imp.equals(this.altraImp))
 		{
 			//altre implementazioni
 		}
-		 
+		
+		 return numeroordini;
 	}
 
 	

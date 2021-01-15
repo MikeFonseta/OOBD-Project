@@ -75,15 +75,40 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	
 	
 
+//	@Override
+//	public void CancellaOrdine(Integer idOrdine, Integer idRider) {
+//		Connection conn = null;
+//		
+//		try {
+//			conn = DBConnection.getInstance().getConnection();
+//			Statement st = conn.createStatement();
+//			conn.setAutoCommit(false);
+//			
+//			st.addBatch("DELETE FROM ordine WHERE id_ordine='"+idOrdine+ "'");	
+//			st.addBatch("UPDATE rider SET numeroordini=numeroordini-1 WHERE id_rider='"+idRider+ "'");
+//			
+//			conn.commit();
+//			conn.setAutoCommit(true);
+//			st.close();
+//			conn.close();
+//		}catch(SQLException e){				
+//			e.printStackTrace();	
+//		}
+//
+//	}
+	
 	@Override
 	public void CancellaOrdine(Integer idOrdine) {
 		Connection conn = null;
-		int result = 0;
 		
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			result = st.executeUpdate("DELETE FROM ordine WHERE id_ordine='"+idOrdine+ "'");	
+			
+			
+			st.executeUpdate("DELETE FROM ordine WHERE id_ordine='"+idOrdine+ "'");	
+			
+	
 			st.close();
 			conn.close();
 		}catch(SQLException e){				

@@ -194,7 +194,34 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 	
 	
-	
+	public int AggiornaNumeroOrdini(int idRider,boolean aumenta)throws SQLException{
+		int risultato = 0;
+		String operazione=null;
+		if(aumenta) {
+			operazione="+";
+		}else operazione="-";
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		ResultSet rs = st.executeQuery("UPDATE rider SET numeroordini=numeroordini"
+				+ operazione
+				+ "1 WHERE id_rider="
+				+ idRider
+				+ " RETURNING numeroordini");	
+		
+		if(rs.next()){
+			 risultato = rs.getInt(1);
+		}
+		
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		
+		return risultato;
+	}
 	
 	
 	

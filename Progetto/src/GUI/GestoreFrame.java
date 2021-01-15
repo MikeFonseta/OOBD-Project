@@ -30,7 +30,7 @@ import java.awt.Font;
 import java.awt.Point;
 import javax.swing.ListSelectionModel;
 
-public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un rider
+public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un rider o toglierlo
 
 	private JPanel pnlGestore;
 	private JTable tblOrdini;
@@ -244,7 +244,7 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 			}
 		});
 		
-		JButton btnElimina = new JButton("Elimina");	//da modificare dopo l aggiunta della tabella rider
+		JButton btnElimina = new JButton("Elimina");
 		btnElimina.setBounds(1101, 626, 89, 63);
 		pnlGestore.add(btnElimina);
 		btnElimina.addMouseListener(new MouseAdapter() {
@@ -255,8 +255,16 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 				{
 					if(tblOrdini.getSelectedColumnCount() != 0)
 					{
+						int idRider=(int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1));
 						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 8))=='A') {
-							controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0))); //modificare
+							int numeroordini=controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)),idRider); 
+							if(filtroRider) {
+								if(numeroordini==0) {
+									AggiornaOrdini(0);
+									filtroRider=false;
+								}else AggiornaOrdini(idRider); 
+							}else AggiornaOrdini(0);
+							AggiornaRider();
 						}
 						else {
 							OrdineSpedito();
@@ -293,7 +301,7 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='X') {
 						controllerGestore.AggiornaDisposizioneRider((int) tblRider.getValueAt(tblRider.getSelectedRow(),3),true);
 					}
-					else //non puoi aggiornare la disponibilita di un rider in consegna 
+					else //messaggio non puoi aggiornare la disponibilita di un rider in consegna 
 						;
 					
 					AggiornaRider();
