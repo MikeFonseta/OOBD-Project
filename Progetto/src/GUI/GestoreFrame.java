@@ -30,7 +30,7 @@ import java.awt.Font;
 import java.awt.Point;
 import javax.swing.ListSelectionModel;
 
-public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un rider o toglierlo
+public class GestoreFrame extends JFrame {
 
 	private JPanel pnlGestore;
 	private JTable tblOrdini;
@@ -38,7 +38,7 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 	private Point initialClick;
 	private JFrame parent=this;
 	private JTable tblRider;
-	private boolean filtroRider=false;
+	private int filtroRider=0; 
 
 	public GestoreFrame(ControllerGestore controllerGestore) {
 		this.controllerGestore= controllerGestore;
@@ -210,12 +210,63 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 			}
 		});
 				
+		JButton btnRiassegna = new JButton("Riassegna");
+		btnRiassegna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tblOrdini.getSelectedColumnCount() != 0) 
+				{
+					int idRider=((int)tblRider.getValueAt(tblRider.getSelectedRow(), 3));
+					if((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1))==0) {//il codicerider è nullo ovvero l ordine e libero
+						if(tblRider.getSelectedColumnCount() != 0) 
+						{
+							if(((char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='L')){
+								int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,true);
+								if(numeroordini==3) {
+									controllerGestore.ImpostaInizioConsegna(idRider,false);
+								}
+								//il filtro sicuramente non e inserito 
+								AggiornaRider();
+								AggiornaOrdini(0);
+							}else
+								//messaggio il rider non e disponibile
+								;
+								
+						}else //messaggio seleziona un rider per assegnare l ordine
+							;
+					
+					}else //l ordine e gia assegnato ad un rider
+					{
+						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
+							int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,false);
+							if(filtroRider==0) {
+								AggiornaOrdini(0);
+							}else {
+								if(numeroordini>0) {
+									AggiornaOrdini(filtroRider);
+								}else {
+									AggiornaOrdini(0);
+									filtroRider=0;
+								}
+							}
+							AggiornaRider();
+						}else //messaggio non puoi dissociare un ordine gia spedito
+							;
+						
+					}				
+				
+				}else Errore();
+			}
+		});
+		btnRiassegna.setBounds(931, 626, 89, 63);
+		pnlGestore.add(btnRiassegna);
+		
+		
 		JButton btnModifica = new JButton("Modifica");
 		btnModifica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnModifica.setBounds(933, 626, 89, 63);
+		btnModifica.setBounds(1017, 626, 89, 63);
 		pnlGestore.add(btnModifica);
 		btnModifica.addMouseListener(new MouseAdapter() {
 			@Override
@@ -231,13 +282,13 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnInfo.setBounds(1018, 626, 89, 63);
+		btnInfo.setBounds(1101, 626, 89, 63);
 		pnlGestore.add(btnInfo);
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) { 
-					int indice = getTblOrdini().getSelectedRow();
+					int indice = getTblOrdini().getSelectedRow();//verificare che sia stata selezionata una riga
 					if(indice!= -1)
 						controllerGestore.ApriVisualizzaCarrello(getIdOrdineAllaRigaSelezionata(indice));
 				}
@@ -245,7 +296,7 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 		});
 		
 		JButton btnElimina = new JButton("Elimina");
-		btnElimina.setBounds(1101, 626, 89, 63);
+		btnElimina.setBounds(845, 626, 89, 63);
 		pnlGestore.add(btnElimina);
 		btnElimina.addMouseListener(new MouseAdapter() {
 			
@@ -253,15 +304,15 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
 				{
-					if(tblOrdini.getSelectedColumnCount() != 0)
+					if(tblOrdini.getSelectedColumnCount() != 0) //inserire messaggio di conferma dell eliminazione
 					{
 						int idRider=(int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1));
-						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 8))=='A') {
+						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
 							int numeroordini=controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)),idRider); 
-							if(filtroRider) {
+							if(filtroRider!=0) {
 								if(numeroordini==0) {
 									AggiornaOrdini(0);
-									filtroRider=false;
+									filtroRider=0;
 								}else AggiornaOrdini(idRider); 
 							}else AggiornaOrdini(0);
 							AggiornaRider();
@@ -295,16 +346,36 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 		btnDisponibile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblRider.getSelectedColumnCount() != 0){
+					int idRider=((int) tblRider.getValueAt(tblRider.getSelectedRow(),3));
+					
 					if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='L') {
-						controllerGestore.AggiornaDisposizioneRider( (int) tblRider.getValueAt(tblRider.getSelectedRow(),3),false);
+						if((int) tblRider.getValueAt(tblRider.getSelectedRow(),4)>0) {//messaggio di warning ci sono ordini in corso assegnati al rider
+							controllerGestore.CancellaCodiciRider(idRider);
+							if(filtroRider==0) {
+								AggiornaOrdini(0); 
+							}
+							else if(filtroRider==idRider) {
+								AggiornaOrdini(0);
+								filtroRider=0;
+							}
+						}
+						controllerGestore.AggiornaDisposizioneRider(idRider ,false);
+					}
+					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='C') {//messaggio di warning il rider e in consegna
+						controllerGestore.CancellaCodiciRider(idRider);
+						if(filtroRider==0) {
+							AggiornaOrdini(0); 
+						}
+						else if(filtroRider==idRider) {
+							AggiornaOrdini(0);
+							filtroRider=0;
+						}
 					}
 					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='X') {
-						controllerGestore.AggiornaDisposizioneRider((int) tblRider.getValueAt(tblRider.getSelectedRow(),3),true);
+						controllerGestore.AggiornaDisposizioneRider(idRider,true); 
 					}
-					else //messaggio non puoi aggiornare la disponibilita di un rider in consegna 
-						;
-					
 					AggiornaRider();
+				
 				}else 
 				{
 					Errore();	
@@ -317,17 +388,24 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 		JButton btnFiltro = new JButton("Filtro");
 		btnFiltro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (filtroRider) {
+				if (filtroRider!=0) {
 					AggiornaOrdini(0);
-					filtroRider=false;
+					filtroRider=0;
 				}
-				else if(tblRider.getSelectedColumnCount() != 0 && !filtroRider){
-					AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
-					filtroRider=true;
+				else { 
+					
+					if(tblRider.getSelectedColumnCount() != 0 ){
+						if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)!='X') {
+							AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
+							filtroRider=(int)tblRider.getValueAt(tblRider.getSelectedRow(),3);
+						}else {
+							//messaggio per aggiornare il filtro il rider deve essere disponibile
+						}
+					}
+					else if(tblRider.getSelectedColumnCount() == 0 ) {
+						//messaggio seleziona una riga per attivare il filtro
+					}	
 				}
-				else if(tblRider.getSelectedColumnCount() == 0 && !filtroRider) {
-					//messaggio seleziona una riga per attivare il filtro
-				}	
 			}
 		});
 		btnFiltro.setBounds(107, 626, 89, 63);
@@ -337,25 +415,33 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 		btnPartenza.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblRider.getSelectedColumnCount() != 0){
-					// se il rider non ha ordini o non e disponibile non puoi farlo partire
-					if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='X'){
-						//messaggio il rider non e disponibile
+					int idRider=(int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3));
+					if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)!=3) {
+						if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='X'){
+							//messaggio il rider non e disponibile
+						}
+						else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)==0) {
+							//messaggio il rider non ha ordini 
+						}
+						else if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){//annulla la consegna
+							controllerGestore.ImpostaInizioConsegna(idRider,true);
+							AggiornaRider(); 
+							if (filtroRider==0) AggiornaOrdini(0);
+							else if(filtroRider==idRider) {
+								AggiornaOrdini(filtroRider);
+							}
+						}
+						else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)>0) {
+							controllerGestore.ImpostaInizioConsegna(idRider,false); //inizia la consegna per tutti gli ordini assegnati al rider
+							AggiornaRider(); 
+							if (filtroRider==0) AggiornaOrdini(0);
+							else if(filtroRider==idRider) {
+								AggiornaOrdini(filtroRider);
+							}}
+					}else {
+						//messaggio se il rider ha 3 ordini non si puo annullare la partenza a meno che lo si rende non disponibile
 					}
-					else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)==0) {
-						//messaggio il rider non ha ordini 
-					}
-					else if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){
-						controllerGestore.ImpostaInizioConsegna((int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3)),true);
-						AggiornaRider(); 
-						if (filtroRider) AggiornaOrdini(0);
-						else AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
-					}
-					else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)>0) {
-						controllerGestore.ImpostaInizioConsegna((int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3)),false); //inizia la consegna per tutti gli ordini assegnati al rider
-						AggiornaRider(); 
-						if (filtroRider) AggiornaOrdini(0);
-						else AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
-					}
+						
 				}else {
 					//non hai selezionato una riga
 				}
@@ -371,10 +457,15 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 					//attivabile solo se lo stato del rider è C 
 					if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){
 						if(MessaggioElimina("Terminare la consegna?")) {
-							controllerGestore.ImpostaFineConsegna((int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3)));
+							int idRider=(int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3));
+							controllerGestore.ImpostaFineConsegna(idRider);
 							AggiornaRider(); 
-							AggiornaOrdini(0);
-							filtroRider=false;
+							if(filtroRider==0) {
+								AggiornaOrdini(0);
+							}else if(filtroRider==idRider) {
+								AggiornaOrdini(0);
+								filtroRider=0;
+							}
 						}
 					}
 					else {
@@ -392,6 +483,7 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 		
 		btnConsegnato.setBounds(292, 626, 89, 63);
 		pnlGestore.add(btnConsegnato);
+		
 		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
@@ -512,5 +604,4 @@ public class GestoreFrame extends JFrame {//poter assegnare un ordine ad un ride
 		
 		return elimina;
 	}
-
 }

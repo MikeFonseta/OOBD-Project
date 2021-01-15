@@ -14,6 +14,8 @@ public interface RiderDAO {
 	public int EliminaRider(int idRider,int idSede) throws SQLException;
 	public int AggiornaRider(int idRider, String telefono, String veicolo) throws SQLException;
 	public List<Object[]> getRiderPerSede(int idSede) throws SQLException ;
-	public void AggiornaDisposizione(int idRider,boolean input) throws SQLException;
+	public void AggiornaDisposizione(int idRider,boolean disponibile) throws SQLException;
 	public int AggiornaNumeroOrdini(int idRider,boolean aumenta)throws SQLException;
+	public void Assegnazione(int idOrdine,int idRider) throws SQLException;
+	public void Dissociazione(int idOrdine,int idRider) throws SQLException;
 }

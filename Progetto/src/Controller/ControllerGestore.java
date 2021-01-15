@@ -59,6 +59,43 @@ public class ControllerGestore {
 		return this.mainController.getProvince();
 	}
 	
+	public void CancellaCodiciRider(int idRider) {
+		
+		if(this.imp.equals(this.postgresImp)) {
+			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+			ordineDAO.CancellaCodiceRider(idRider);
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+	}
+	
+	public int AssegnaOrdineAlRider(int idOrdine,int idRider,boolean associa) {
+		int numeroordini=0;
+		if(this.imp.equals(this.postgresImp))
+		{
+			RiderDAOPostgresImp riderDao=new RiderDAOPostgresImp();
+			try {
+				if(associa) {
+					riderDao.Assegnazione(idOrdine,idRider);
+					numeroordini=riderDao.AggiornaNumeroOrdini(idRider,true);
+				}
+				else {
+					riderDao.Dissociazione(idOrdine,idRider);
+				}
+					
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		return numeroordini;
+	}
+	
 	public void AggiornaDisposizioneRider(int idRider,boolean input) {
 		if(this.imp.equals(this.postgresImp))
 		{
@@ -247,6 +284,14 @@ public class ControllerGestore {
 		if(this.imp.equals(this.postgresImp)) {
 			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
 			ordineDAO.IniziaConsegna(idRider,annulla);
+			
+			try {
+				RiderDAOPostgresImp riderDAO =new RiderDAOPostgresImp();
+				riderDAO.AggiornaDisposizione(idRider,annulla);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+			
 		}
 		else if(this.imp.equals(this.altraImp))
 		{
@@ -254,6 +299,21 @@ public class ControllerGestore {
 		}
 		
 	}
+	
+	public void AnnullaConsegna(int idRider) {
+		
+		if(this.imp.equals(this.postgresImp)) {
+			OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+			ordineDAO.IniziaConsegna(idRider,true);
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+	}
+	
+	
 	
 	public void ImpostaFineConsegna(int idRider) {
 		

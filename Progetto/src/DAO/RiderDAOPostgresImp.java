@@ -144,6 +144,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	}
 
 
+	
 	public List<Object[]> getRiderPerSede(int idSede) throws SQLException {
 		
 		List<Object[]> rider = new ArrayList<Object[]>();
@@ -182,11 +183,43 @@ public class RiderDAOPostgresImp implements RiderDAO{
 
 	}
 	
-	public void AggiornaDisposizione(int idRider,boolean input) throws SQLException{
+	@Override
+	public void Assegnazione(int idOrdine,int idRider) throws SQLException{
+		
 		Connection conn = DBConnection.getInstance().getConnection();
 		
 		Statement st = conn.createStatement();
-		st.executeUpdate("UPDATE rider SET disponibilit\u00E0='"+ input + "' WHERE id_rider=" + idRider);
+		st.executeUpdate("UPDATE ordine SET id_rider='"+ idRider + "' WHERE id_ordine=" + idOrdine);
+	
+		st.close();
+		conn.close();
+		
+	}
+	
+	@Override
+	public void Dissociazione(int idOrdine,int idRider) throws SQLException{
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		
+		Statement st = conn.createStatement();
+		st.executeUpdate("UPDATE ordine SET id_rider=NULL WHERE id_ordine=" + idOrdine);
+	
+		st.close();
+		conn.close();
+	    AggiornaNumeroOrdini(idRider,false);	
+	}
+	
+	public void AggiornaDisposizione(int idRider,boolean input) throws SQLException{
+		String disponibile=null;
+		if(input) {
+			disponibile="TRUE";
+		}else disponibile="FALSE";
+		
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		
+		Statement st = conn.createStatement();
+		st.executeUpdate("UPDATE rider SET disponibilit\u00E0='"+ disponibile + "' WHERE id_rider=" + idRider);
 	
 		st.close();
 		conn.close();

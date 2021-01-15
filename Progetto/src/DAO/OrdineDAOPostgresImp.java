@@ -18,27 +18,21 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	public void IniziaConsegna(Integer idRider,boolean annulla) {
 		Connection conn = null;
 		String data=null;
-		String disponibile=null;
 		
 		if(annulla) {
 			data="NULL";
-			disponibile="true";
 		}
 		else {
 			data="CURRENT_TIMESTAMP";
-			disponibile="false";
 		}
 		
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			conn.setAutoCommit(false);
+		
 			String inizio="UPDATE ordine SET inizioconsegna = "+data+" WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL";	
-			st.addBatch(inizio);
-			String disposizione="UPDATE rider SET disponibilit\u00E0 = "+disponibile+" WHERE id_rider='"+idRider+"'"; 
-			st.addBatch(disposizione);
-			conn.commit();
-			conn.setAutoCommit(true);
+			st.executeQuery(inizio);
+		
 			st.close();
 			conn.close();
 		}catch(SQLException e){				
@@ -46,7 +40,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		}
 		
 	}
-	
 	
 	@Override
 	public void TerminaConsegna(Integer idRider) {
@@ -72,30 +65,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		}
 
 	}
-	
-	
 
-//	@Override
-//	public void CancellaOrdine(Integer idOrdine, Integer idRider) {
-//		Connection conn = null;
-//		
-//		try {
-//			conn = DBConnection.getInstance().getConnection();
-//			Statement st = conn.createStatement();
-//			conn.setAutoCommit(false);
-//			
-//			st.addBatch("DELETE FROM ordine WHERE id_ordine='"+idOrdine+ "'");	
-//			st.addBatch("UPDATE rider SET numeroordini=numeroordini-1 WHERE id_rider='"+idRider+ "'");
-//			
-//			conn.commit();
-//			conn.setAutoCommit(true);
-//			st.close();
-//			conn.close();
-//		}catch(SQLException e){				
-//			e.printStackTrace();	
-//		}
-//
-//	}
 	
 	@Override
 	public void CancellaOrdine(Integer idOrdine) {
@@ -116,6 +86,30 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		}
 
 	}
+	
+	@Override
+	public void CancellaCodiceRider(Integer idRider) {
+		Connection conn = null;
+		
+		try {
+			conn = DBConnection.getInstance().getConnection();
+			Statement st = conn.createStatement();
+			conn.setAutoCommit(false);
+			
+			st.addBatch("UPDATE ordine SET id_rider=NULL WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL");	
+			st.addBatch("UPDATE rider SET numeroordini=0  WHERE id_rider='"+idRider+"'");
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			st.close();
+			conn.close();
+		}catch(SQLException e){				
+			e.printStackTrace();	
+		}
+
+	}
+	
+	
 	
 	
 	@Override
