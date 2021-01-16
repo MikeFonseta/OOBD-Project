@@ -204,11 +204,11 @@ public class ModificaProdottoFrame extends JFrame {
 				if(cbxCategorie.getSelectedItem() != null  && !cbxCategorie.getSelectedItem().toString().equals(prodotto.getCategoria())) 
 					CategoriaInserita = true;
 				else
-				CategoriaInserita = false;
-//				ControllaModifiche();
+					CategoriaInserita = false;
+				ControllaModifiche();
 			}
 		});
-		cbxCategorie.setModel(new DefaultComboBoxModel(new String[] {"Pizze", "Panini", "Bibite"}));
+		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
 		cbxCategorie.getModel().setSelectedItem(prodotto.getCategoria());
 		cbxCategorie.setBounds(145, 163, 197, 22);
 		contentPane.add(cbxCategorie);

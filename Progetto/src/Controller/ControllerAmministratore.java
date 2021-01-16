@@ -877,21 +877,30 @@ public class ControllerAmministratore {
 	
 	public void EliminaCategoria(String nomeCategoria) {
 		int risultato = 0;
-		if(this.imp.equals(this.postgresImp))
-		{
-			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
-			try {
-				risultato = prodottoDao.EliminaCategoria(nomeCategoria);
-				if(risultato==1) {	
-					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Categoria '"+ nomeCategoria+"' eliminata!","",JOptionPane.PLAIN_MESSAGE);
-					this.gestioneProdottiFrame.AggiornaCategorie();
-				}	
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		
+		int risposta = 0;
+		
+		
+		Object[] opzioni = {"SI","ANNULLA"};
+		risposta = JOptionPane.showOptionDialog(this.gestioneProdottiFrame,"Cancellando la categoria '"+ nomeCategoria+"' tutti i prodotti con questa categoria avranno come categoria 'Nessuna', continuare?","Attenzione",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,opzioni,opzioni[1]);
+		
+		if(risposta == 0){
+			if(this.imp.equals(this.postgresImp))
+			{
+				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
+				try {
+					risultato = prodottoDao.EliminaCategoria(nomeCategoria);
+					if(risultato==1) {	
+						JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Categoria '"+ nomeCategoria+"' eliminata!","",JOptionPane.PLAIN_MESSAGE);
+						this.gestioneProdottiFrame.AggiornaCategorie();
+					}	
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}else if(this.imp.equals(this.altraImp))
+			{
+				//altra implementazione
 			}
-		}else if(this.imp.equals(this.altraImp))
-		{
-			//altra implementazione
 		}
 	}
 	

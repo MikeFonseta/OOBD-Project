@@ -317,9 +317,7 @@ public class MainController {
 				try {
 					result = prodottoDao.getCategorieProdotto().toArray(new String[] {});
 				} catch (SQLException e) {
-					this.controllerAmministratore.amministratoreFrame.setVisible(true);
-					this.controllerAmministratore.amministratoreFrame.setEnabled(true);
-					JOptionPane.showMessageDialog(this.controllerAmministratore.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 				
 				
@@ -336,8 +334,7 @@ public class MainController {
 				try {
 					result = prodottoDao.getCategorieTotali().toArray(new String[] {});
 				} catch (SQLException e) {
-					//??????
-					//JOptionPane.showMessageDialog(this.controllerAmministratore.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 				
 				

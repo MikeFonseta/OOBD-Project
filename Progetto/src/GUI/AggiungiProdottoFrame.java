@@ -45,7 +45,7 @@ public class AggiungiProdottoFrame extends JFrame{
 		getContentPane().setLayout(null);
 		
 		cbxCategoria = new JComboBox();
-		cbxCategoria.setModel(new DefaultComboBoxModel(new String[] {"Nessuna categoria", "Pizze", "Panini", "Bibite"}));
+		cbxCategoria.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
 		cbxCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
 		cbxCategoria.setBounds(10, 52, 175, 30);
 		getContentPane().add(cbxCategoria);
