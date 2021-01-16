@@ -296,6 +296,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 			
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
+//		st.executeUpdate("DELETE )
 		risultato = st.executeUpdate("DELETE FROM Prodotto WHERE ID_Prodotto="+idProdotto+"");
 					
 		st.close();

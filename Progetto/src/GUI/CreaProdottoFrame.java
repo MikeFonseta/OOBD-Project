@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Cursor;
@@ -204,7 +205,8 @@ public class CreaProdottoFrame extends JFrame {
 		txfPrezzo.setBounds(131, 475, 77, 29);
 		contentPane.add(txfPrezzo);
 		
-		cbxCategorie = new JComboBox(new String[] {"", "Pizze", "Panini", "Bibite"});
+		cbxCategorie = new JComboBox();
+		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
 		cbxCategorie.setFont(new Font("Calibri", Font.PLAIN, 18));
 		cbxCategorie.setBounds(131, 207, 288, 29);
 		contentPane.add(cbxCategorie);
