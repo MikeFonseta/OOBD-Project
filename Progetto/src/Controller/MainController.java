@@ -37,7 +37,7 @@ public class MainController {
 	private CreaOrdineFrame creaOrdineFrame = null;
 
 	public MainController() {
-		//ApriLogin();
+		//ApriLogin();		
 		LoginTry("A001","pass12"); //amministratore
 		//LoginTry("U00001","pass123");//gestore
 	}

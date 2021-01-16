@@ -203,5 +203,32 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return risultato;
 	}
 
+	@Override
+	public List<Object[]> getSediMancanti(int idProdotto) throws SQLException {
+		List<Object[]> risultato = null;
+		Connection connection = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st= connection.createStatement();
+		rs = st.executeQuery("SELECT "
+						   + "FROM Sede AS  S "
+						   + "WHERE ID_Sede NOT IN (SELECT ID_Sede "
+						   + "FROM Sede NATURAL JOIN Prodotto "
+						   + "WHERE ID_Prodotto = "+idProdotto+" ");
+		
+		while(rs.next()) {
+			risultato.add(new Object[]{
+					rs.getInt(1)
+			});		
+		}
+		
+		
+		rs.close();
+		st.close();
+		connection.close();
+		return risultato;
+	}
 
 }

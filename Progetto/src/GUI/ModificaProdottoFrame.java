@@ -33,9 +33,11 @@ import javax.swing.JPasswordField;
 import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.PlainDocument;
 
 import Controller.ControllerAmministratore;
 import Entities.Prodotto;
+import Utility.FiltroDecimali;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.JTextArea;
@@ -48,7 +50,7 @@ public class ModificaProdottoFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField txfNomeP;
 	private JTextArea txpDescrizione;
-	private JFormattedTextField txfPrezzo;
+	private JTextField txfPrezzo;
 	private JTable tblSedi;
 	private JTable tblAllergeni;
 	private ControllerAmministratore controllerAmministratore = null;
@@ -105,37 +107,50 @@ public class ModificaProdottoFrame extends JFrame {
 		txfNomeP.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfNomeP.setColumns(10);
 		contentPane.add(txfNomeP);
-		
-		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
-		txfPrezzo.setValue(prodotto.getPrezzo());
+		//	if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
+//		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
+		  txfPrezzo = new JTextField((Float.valueOf(prodotto.getPrezzo()).toString()));
+	      PlainDocument docMin = (PlainDocument) txfPrezzo.getDocument();
+	      docMin.setDocumentFilter(new FiltroDecimali());
 		txfPrezzo.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
-					NomeInserito = true;
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) != prodotto.getPrezzo() ) {
+					
+						PrezzoInserito = true;
+				}
 				else 
-					NomeInserito = false;
+					PrezzoInserito = false;
+					
 				ControllaModifiche();
-			}
 				
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
-					NomeInserito = true;
-				else 
-					NomeInserito = false;
-				ControllaModifiche();
 			}
 			
 			@Override
-			public void changedUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
-					NomeInserito = true;
+			public void insertUpdate(DocumentEvent e) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) != prodotto.getPrezzo() ) {
+					
+						PrezzoInserito = true;
+				}
 				else 
-					NomeInserito = false;
-				ControllaModifiche();	
+					PrezzoInserito = false;
+					
+				ControllaModifiche();
+				
 			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) != prodotto.getPrezzo() ) {
+					
+						PrezzoInserito = true;
+				}
+				else 
+					PrezzoInserito = false;
+					
+				ControllaModifiche();
+			}		
 		});
 		txfPrezzo.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfPrezzo.setBounds(145, 634, 86, 23);
@@ -194,11 +209,21 @@ public class ModificaProdottoFrame extends JFrame {
 		contentPane.add(lblDescrizione);
 		
 		JButton btnAggiungiSede = new JButton("Aggiungi Prodotto");
+		btnAggiungiSede.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()==MouseEvent.BUTTON1)
+					controllerAmministratore.ApriAggiungiSedeFrame(prodotto.getIdProdotto());
+			}
+		});
 		btnAggiungiSede.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnAggiungiSede.setBounds(834, 540, 145, 32);
 		contentPane.add(btnAggiungiSede);
 		
 		JComboBox cbxCategorie = new JComboBox();
+		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
+		cbxCategorie.getModel().setSelectedItem(prodotto.getCategoria());
+		cbxCategorie.setBounds(145, 163, 197, 22);
 		cbxCategorie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(cbxCategorie.getSelectedItem() != null  && !cbxCategorie.getSelectedItem().toString().equals(prodotto.getCategoria())) 
@@ -208,9 +233,6 @@ public class ModificaProdottoFrame extends JFrame {
 				ControllaModifiche();
 			}
 		});
-		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
-		cbxCategorie.getModel().setSelectedItem(prodotto.getCategoria());
-		cbxCategorie.setBounds(145, 163, 197, 22);
 		contentPane.add(cbxCategorie);
 		
 		JLabel lblAllergeni = new JLabel("Allergeni presenti");

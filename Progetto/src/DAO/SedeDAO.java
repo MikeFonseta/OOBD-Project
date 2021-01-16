@@ -17,4 +17,5 @@ public interface SedeDAO {
 	public int CreaSede(Sede sede,String nomeUtente, String password) throws SQLException;
 	public int AggiornaSede(Sede sede, Account gestoreSede, String nuovaPassword) throws SQLException;
 	public int idProssimaSede() throws SQLException;
+	public List<Object[]> getSediMancanti(int idProdotto) throws SQLException; 
 }

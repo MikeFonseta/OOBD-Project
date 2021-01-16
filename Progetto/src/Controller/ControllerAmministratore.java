@@ -1,5 +1,6 @@
 package Controller;
 
+import java.awt.Component;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import Entities.Prodotto;
 import Entities.Rider;
 import Entities.Sede;
 import GUI.AggiungiAllergeniFrame;
+import GUI.AggiungiSedeFrame;
 import GUI.AggiungiProdottoFrame;
 import GUI.AmministratoreFrame;
 import GUI.CreaCategoriaFrame;
@@ -50,6 +52,7 @@ public class ControllerAmministratore {
 	private AggiungiAllergeniFrame aggiungiAllergeneFrame = null;
 	private CreaCategoriaFrame creaCategoriaFrame = null;
 	private Account account;
+	private AggiungiSedeFrame aggiungiSedeFrame = null;
 	
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
@@ -837,7 +840,35 @@ public class ControllerAmministratore {
 	}
 	
 	
-	public void ApriCreaCategoriaFrame() {
+	public Object[][] getSediMancanti(int idProdotto) {
+		Object[][] risultato = null;
+		if(this.imp == this.postgresImp) {
+			try {
+			SedeDAOPostgresImp SedeDAO = new SedeDAOPostgresImp();
+			risultato = SedeDAO.getSediMancanti(idProdotto).toArray(new Object[][] {});
+			}catch(SQLException e) {		
+				JOptionPane.showMessageDialog(this.aggiungiSedeFrame,"Error!","",JOptionPane.ERROR_MESSAGE);				
+			}		
+		}
+		else if(this.imp == this.altraImp) {
+			//altra implementazione
+		}
+		return risultato;
+	}	
+
+	
+	public void ApriAggiungiSedeFrame(int idProdotto) {
+		this.modificaProdottoFrame.setEnabled(false);
+		this.aggiungiSedeFrame = new AggiungiSedeFrame(this, idProdotto);
+	}
+	
+	
+	public void ChiudiAggiungiSedeFrame() {
+		this.aggiungiSedeFrame.dispose();
+		this.modificaProdottoFrame.setEnabled(true);
+		this.modificaProdottoFrame.setVisible(true);
+	}
+		public void ApriCreaCategoriaFrame() {
 		this.gestioneProdottiFrame.setEnabled(false);
 		this.creaCategoriaFrame = new CreaCategoriaFrame(this);
 	}
@@ -904,6 +935,11 @@ public class ControllerAmministratore {
 		}
 	}
 	
+
+
+	//getter e setter
+
+
 	public String getImp() {
 		return imp;
 	}
