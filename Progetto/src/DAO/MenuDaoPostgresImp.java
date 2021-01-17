@@ -9,7 +9,7 @@ import java.util.List;
 
 import Database.DBConnection;
 
-public class MenuDAOPostgresImp implements MenuDao {
+public class MenuDAOPostgresImp implements MenuDAO {
 
 	@Override
 	public int aggiungiProdottoASede(int idSede, int idProdotto) throws SQLException {

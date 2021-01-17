@@ -46,7 +46,7 @@ public class CreaCategoriaFrame extends JFrame {
 		JLabel lblTitolo = new JLabel("Crea Categoria");
 		lblTitolo.setForeground(Color.WHITE);
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblTitolo.setBounds(0, 0, 144, 34);
+		lblTitolo.setBounds(10, 0, 144, 34);
 		pnlBarra.add(lblTitolo);
 		
 		txfNomeCategoria = new JTextField();
