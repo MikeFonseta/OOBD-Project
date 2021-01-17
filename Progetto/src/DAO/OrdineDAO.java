@@ -13,7 +13,7 @@ public interface OrdineDAO {
 	public List<Object[]> getOrdiniTabella(int idSede) throws SQLException;
 	public List<Object[]> getOrdiniFiltroRider(int idRider) throws SQLException;
 	public int CreaOrdine(float totale,int idRider,int idSede) throws SQLException;
-	public void CreaCompOrdine(List<Integer[]> prodotti,int idNuovoOrdine) throws SQLException;
+	public void CreaCompOrdine(List<int[]> prodotti,int idNuovoOrdine) throws SQLException;
 	public void CreaInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia) throws SQLException;
 	
 }

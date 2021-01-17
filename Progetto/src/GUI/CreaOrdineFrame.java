@@ -61,7 +61,7 @@ public class CreaOrdineFrame extends JFrame {
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	
 
-	public CreaOrdineFrame(ControllerGestore controllerGestore) {
+	public CreaOrdineFrame(ControllerGestore controllerGestore,boolean modifica) {
 		setResizable(false);
 		this.idNuovo=controllerGestore.getProssimoID();
 		this.controllerGestore = controllerGestore;
@@ -91,7 +91,7 @@ public class CreaOrdineFrame extends JFrame {
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class
+				String.class, String.class, Integer.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -133,7 +133,7 @@ public class CreaOrdineFrame extends JFrame {
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, String.class, String.class, String.class
+				String.class, Integer.class, String.class, Integer.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -425,43 +425,63 @@ public class CreaOrdineFrame extends JFrame {
 					{
 						//messaggio riempi tutti i campi per proseguire
 					}
-					else {	
-						//creazione utente
-						int idCliente=Integer.parseInt(txfCodice.getText());
-						if(idCliente==Integer.parseInt(idNuovo)) {
-							controllerGestore.CreaNuovoCliente(idNuovo,txfNome.getText(),txfCognome.getText());
-						}else if(Integer.parseInt(idNuovo)<idCliente) {
-							//messaggio per creare un nuovo utente utilizzare il tasto 'nuovo'
-						}
-						//creare l ordine inserendo il nome della sede, prelevandolo dall account salvato in controllerGestore (sede 1)
-						//assegnando al primo rider della sede disponibile per id
-							//fai partire il rider se e a 3 ordini impostando data di consegna e aggiornando la disponibilita a falso
-						//inserire il totale dal carrello
-						//usare returning per avere l ID dell ordine
-						int idNuovoOrdine=controllerGestore.CreazioneOrdine(Totale);
-						
-						//in compordine inserire con l id dell ordine gli id dei prodotti 
-						//il numero di ogni pezzo, prelevando il tutto dal carrello
-						
-						//funzione che preleva tutti gli id dei prodotti nel carrello e le quantita
-						List<Integer[]> prodotti = new ArrayList<Integer[]>();
-						for (int i = 0; i < (tblCarrello.getRowCount())-1; i++) {
-							int idProdotto=((int) tblCarrello.getValueAt(i, 3));
-							int quantita=((int)tblCarrello.getValueAt(i, 1));
+					else 
+					{
+						if(!modifica) {
+							//creazione utente
+							int idCliente=Integer.parseInt(txfCodice.getText());
+							if(idCliente==Integer.parseInt(idNuovo)) {
+								controllerGestore.CreaNuovoCliente(idNuovo,txfNome.getText(),txfCognome.getText()); //ok
+							}else if(Integer.parseInt(idNuovo)<idCliente) {
+								//messaggio per creare un nuovo utente utilizzare il tasto 'nuovo'
+							}
+							//creare l ordine inserendo il nome della sede, prelevandolo dall account salvato in controllerGestore (sede 1)
+							//assegnando al primo rider della sede disponibile per id
+								//fai partire il rider se e a 3 ordini impostando data di consegna e aggiornando la disponibilita a falso
+							//inserire il totale dal carrello
+							//usare returning per avere l ID dell ordine
+							int idNuovoOrdine=controllerGestore.CreazioneOrdine(Totale);//ok
 							
-							Integer[] object = new Integer[] {idProdotto,quantita};
+							//in compordine inserire con l id dell ordine gli id dei prodotti 
+							//il numero di ogni pezzo, prelevando il tutto dal carrello
 							
-							prodotti.add(object);
+							//funzione che preleva tutti gli id dei prodotti nel carrello e le quantita
+							List<int[]> prodotti = new ArrayList<int[]>();
+							for (int i = 0; i < (tblCarrello.getRowCount())-1; i++) {
+							
+								int idProdotto=((int)(tblCarrello.getValueAt(i, 3)));
+								int quantita=((int)(tblCarrello.getValueAt(i, 1)));
+								
+								int[] object = new int[] {idProdotto,quantita};
+								
+								prodotti.add(object);
+							}
+							
+							controllerGestore.CreazioneCompOrdine(prodotti,idNuovoOrdine);
+							
+							//in infoordineinserire l id dell ordine e del cliente,
+							//il telefono e tutti gli altri dati relativi all indirizzo(citta via civico provincia)
+							//infoordine:id_ordine,id_cliente,citta,via,numcivico,telefonoc,provincia
+							controllerGestore.CreazioneInfoOrdine(idNuovoOrdine,idCliente,cbxCitta.getSelectedItem().toString(),txfVia.getText(),
+									txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString());
+							
+							
+							controllerGestore.ChiudiCreaOrdineFrame();
+						}else {//modifica==true
+						
+							//dato che infoordine e una riga si fa una update a prescindere
+							//in compordine si cancellano tutte le righe con l id dell ordine
+							//si va a riscriverle
+							//in ordine fai update del totale
+							
+							
+							
+							
+							
 						}
 						
-						controllerGestore.CreazioneCompOrdine(prodotti,idNuovoOrdine);
 						
-						//in infoordineinserire l id dell ordine e del cliente,
-						//il telefono e tutti gli altri dati relativi all indirizzo(citta via civico provincia)
-						//infoordine:id_ordine,id_cliente,citta,via,numcivico,telefonoc,provincia
-						controllerGestore.CreazioneInfoOrdine(idNuovoOrdine,idCliente,cbxCitta.getSelectedItem().toString(),txfVia.getText(),
-								txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString());
-					}	
+					}
 				}else //messaggio il carrello e vuoto
 					;
 			}
@@ -565,6 +585,20 @@ public class CreaOrdineFrame extends JFrame {
 		setUndecorated(true);
 		this.setVisible(true);
 
+		
+		
+		if(modifica) {
+			
+			//prelevare i dati di tutti i prodotti dell ordine e le quantita, inserire il tutto nel carrello aggiungendo la riga del totale alla fine
+			//prelevare tutti i dati e passarli ai textfield
+			//il field del codice viene reso non editabile dopo aver riempito la schermata
+			
+			
+			
+			
+		}
+		
+		
 	}
 	
 	
@@ -577,7 +611,7 @@ public class CreaOrdineFrame extends JFrame {
 				}
 			) {
 				Class[] columnTypes = new Class[] {
-					String.class, String.class, String.class, String.class
+					String.class, String.class, Integer.class, String.class
 				};
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];

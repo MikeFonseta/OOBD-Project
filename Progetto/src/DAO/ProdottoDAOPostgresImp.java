@@ -155,7 +155,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 				
 			String Nome= rs.getString(1);
 			String Prezzo= "\u20AC "+String.valueOf(rs.getFloat(2));
-			String ID= rs.getString(3);
+			int ID= rs.getInt(3);
 			String allergeni= rs.getString(4);
 			
 			Object[] object = new Object[] {Nome,Prezzo,ID,allergeni};

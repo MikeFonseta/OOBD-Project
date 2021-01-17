@@ -31,7 +31,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			Statement st = conn.createStatement();
 		
 			String inizio="UPDATE ordine SET inizioconsegna = "+data+" WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL";	
-			st.executeQuery(inizio);
+			st.executeUpdate(inizio);
 		
 			st.close();
 			conn.close();
@@ -48,16 +48,12 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			conn.setAutoCommit(false);
+		
 			
-			String termine="UPDATE ordine SET fineconsegna = CURRENT_TIMESTAMP WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL";	
-			st.addBatch(termine);
+				
+			st.executeUpdate("UPDATE ordine SET fineconsegna = CURRENT_TIMESTAMP WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL; "
+					+ " UPDATE rider SET disponibilit\u00E0 = true , numeroordini=0  WHERE id_rider='"+idRider+"'");
 			
-			String disponibile="UPDATE rider SET disponibilit\u00E0 = true , numeroordini=0  WHERE id_rider='"+idRider+"'"; 
-			st.addBatch(disponibile);
-			conn.commit();
-			
-			conn.setAutoCommit(true);
 			st.close();
 			conn.close();
 		}catch(SQLException e){				
@@ -74,11 +70,12 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
+
 			
-			
-			st.executeUpdate("DELETE FROM ordine WHERE id_ordine='"+idOrdine+ "'");	
-			
-	
+			st.executeUpdate("DELETE FROM ordine WHERE id_ordine='"+idOrdine+ "'; "
+							+"DELETE FROM infoordine WHERE id_ordine='"+idOrdine+ "'; "
+							+"DELETE FROM compordine WHERE id_ordine='"+idOrdine+ "'; ");		
+
 			st.close();
 			conn.close();
 		}catch(SQLException e){				
@@ -94,13 +91,11 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		try {
 			conn = DBConnection.getInstance().getConnection();
 			Statement st = conn.createStatement();
-			conn.setAutoCommit(false);
 			
-			st.addBatch("UPDATE ordine SET id_rider=NULL WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL");	
-			st.addBatch("UPDATE rider SET numeroordini=0  WHERE id_rider='"+idRider+"'");
 			
-			conn.commit();
-			conn.setAutoCommit(true);
+			st.executeUpdate("UPDATE ordine SET id_rider=NULL WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL; "
+					+ "UPDATE rider SET numeroordini=0  WHERE id_rider='"+idRider+"'");
+			
 			st.close();
 			conn.close();
 		}catch(SQLException e){				
@@ -129,7 +124,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	}
 	
 	@Override
-	public void CreaCompOrdine(List<Integer[]> prodotti,int idNuovoOrdine) throws SQLException
+	public void CreaCompOrdine(List<int[]> prodotti,int idNuovoOrdine) throws SQLException
 	{
 		Connection conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
@@ -171,15 +166,24 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		List<Object[]> ordini = new ArrayList<Object[]>();
 		Connection conn = null;
 		
+//		SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || 
+//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || città AS Indirizzo, 
+//		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato
+//		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine
+//		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente
+//		WHERE id_sede='1' AND fineconsegna IS NULL
+//		ORDER BY O.id_ordine ASC
+
+		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine,id_rider AS CodRider, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
-				+ "				via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
-				+ "			    totale AS Totale, inizioconsegna AS Stato\r\n"
-				+ "				FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
-				+ "				NATURAL JOIN cliente AS C\r\n"
-				+ "				WHERE id_sede='"+idSede+"' AND fineconsegna IS NULL\r\n"
-				+ "				ORDER BY id_ordine ASC");
+		ResultSet rs = st.executeQuery("SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || \r\n"
+				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || città AS Indirizzo, \r\n"
+				+ "		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato\r\n"
+				+ "		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine\r\n"
+				+ "		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente\r\n"
+				+ "		WHERE id_sede='"+idSede+"' AND fineconsegna IS NULL\r\n"
+				+ "		ORDER BY O.id_ordine ASC");
 		while(rs.next()) {
 				
 			int CodOrdine = rs.getInt(1);

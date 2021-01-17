@@ -182,7 +182,10 @@ public class GestoreFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
-					controllerGestore.ApriCreaOrdineFrame(); 	
+					if(e.getButton() == MouseEvent.BUTTON1) {
+						controllerGestore.ApriCreaOrdineFrame(); 
+					}
+					
 			}
 		});
 		
@@ -215,10 +218,10 @@ public class GestoreFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(tblOrdini.getSelectedColumnCount() != 0) 
 				{
-					int idRider=((int)tblRider.getValueAt(tblRider.getSelectedRow(), 3));
 					if((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1))==0) {//il codicerider è nullo ovvero l ordine e libero
 						if(tblRider.getSelectedColumnCount() != 0) 
 						{
+							int idRider=((int)tblRider.getValueAt(tblRider.getSelectedRow(), 3));
 							if(((char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='L')){
 								int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,true);
 								if(numeroordini==3) {
@@ -237,7 +240,7 @@ public class GestoreFrame extends JFrame {
 					}else //l ordine e gia assegnato ad un rider
 					{
 						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
-							int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,false);
+							int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),(int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1),false);
 							if(filtroRider==0) {
 								AggiornaOrdini(0);
 							}else {
@@ -262,17 +265,15 @@ public class GestoreFrame extends JFrame {
 		
 		
 		JButton btnModifica = new JButton("Modifica");
-		btnModifica.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnModifica.setBounds(1017, 626, 89, 63);
 		pnlGestore.add(btnModifica);
-		btnModifica.addMouseListener(new MouseAdapter() {
+		btnModifica.addMouseListener(new MouseAdapter() {//se l ordine e in attesa
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1)
+				if(e.getButton() == MouseEvent.BUTTON1) {
 					controllerGestore.ModificaCreaOrdineFrame(); //da scrivere dopo aver caricato CreaOrdineFrame
+					
+				}
 					
 			}
 		});
@@ -362,6 +363,7 @@ public class GestoreFrame extends JFrame {
 						controllerGestore.AggiornaDisposizioneRider(idRider ,false);
 					}
 					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='C') {//messaggio di warning il rider e in consegna
+						controllerGestore.AnnullaConsegna(idRider);
 						controllerGestore.CancellaCodiciRider(idRider);
 						if(filtroRider==0) {
 							AggiornaOrdini(0); 
@@ -604,4 +606,9 @@ public class GestoreFrame extends JFrame {
 		
 		return elimina;
 	}
+	
+	public int getFiltroRider() {
+		return filtroRider;
+	}
+	
 }

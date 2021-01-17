@@ -238,7 +238,7 @@ public class ControllerGestore {
 
 	public void ApriCreaOrdineFrame() {
 		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
-		creaOrdineFrame = new CreaOrdineFrame(this);
+		creaOrdineFrame = new CreaOrdineFrame(this,false);
 	}
 	
 	public void ApriVisualizzaOrdini() {
@@ -274,6 +274,8 @@ public class ControllerGestore {
 	}
 	
 	public void ChiudiCreaOrdineFrame() {
+		gestoreFrame.AggiornaOrdini(gestoreFrame.getFiltroRider());
+		gestoreFrame.AggiornaRider();
 		creaOrdineFrame.dispose();
 		creaOrdineFrame=null;
 	}
@@ -332,7 +334,8 @@ public class ControllerGestore {
 	
 	public void ModificaCreaOrdineFrame() {//scrivere dopo aver caricato CreaOrdineFrame
 		
-		//apre la schermata Crea ordine ma con i campi caricati dall ordine selezionato
+		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
+		creaOrdineFrame = new CreaOrdineFrame(this,true);
 	}
 	
 	
@@ -416,7 +419,7 @@ public class ControllerGestore {
 	}
 	
 	
-	public void CreazioneCompOrdine(List<Integer[]> prodotti,int idNuovoOrdine)
+	public void CreazioneCompOrdine(List<int[]> prodotti,int idNuovoOrdine)
 	{
 		if(this.imp.equals(this.postgresImp)) {
 			try {
