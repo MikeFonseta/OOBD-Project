@@ -30,6 +30,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Point;
@@ -49,10 +51,11 @@ public class CreaOrdineFrame extends JFrame {
 	private JTextField txfVia;
 	private JTextField txfCodice;
 	private JLabel lblAllergeni;
+	private String idNuovo;
+	private float Totale;
 	private ControllerGestore controllerGestore;
 	private Point initialClick;
 	private JFrame parent=this;
-	//riparti da qui
 	private JComboBox cbxProvincia;
 	private JComboBox cbxCitta;
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
@@ -60,7 +63,7 @@ public class CreaOrdineFrame extends JFrame {
 
 	public CreaOrdineFrame(ControllerGestore controllerGestore) {
 		setResizable(false);
-
+		this.idNuovo=controllerGestore.getProssimoID();
 		this.controllerGestore = controllerGestore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
@@ -349,8 +352,8 @@ public class CreaOrdineFrame extends JFrame {
 		
 		txfNome = new JTextField();
 		txfNome.setBounds(942, 185, 213, 20);
-		pnlCreaOrdine.add(txfNome);
 		txfNome.setColumns(10);
+		pnlCreaOrdine.add(txfNome);
 		
 		txfCivico = new JTextField();
 		txfCivico.setColumns(10);
@@ -405,7 +408,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnNuovo.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnNuovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				txfCodice.setText(controllerGestore.getProssimoID());
+				txfCodice.setText(idNuovo);
 			}
 		});
 		btnNuovo.setBounds(1019, 64, 63, 23);
@@ -415,21 +418,52 @@ public class CreaOrdineFrame extends JFrame {
 		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnConferma.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//se il cliente non esiste lo crea inserendo id nome e cognome nella tabella cliente
-				
-				//creare l ordine inserendo il nome della sede, prelevandolo dall account salvato in controllerGestore (sede 1)
-				//assegnando al primo rider della sede disponibile per id
-					//NB bisogna avere accesso ai rider per settare la disponibilita ecc
-					// se non ce nessun rider disponibile?
-				//inserire il totale dal carrello
-				//usare returning per avere l ID dell ordine
-				
-				//in compordine inserire con l id dell ordine gli id dei prodotti 
-				//il numero di ogni pezzo, prelevando il tutto dal carrello
-				
-				//in infoordineinserire l id dell ordine e del cliente,
-				//il telefono e tutti gli altri dati relativi all indirizzo(citta via civico provincia)
-				
+				if(tblCarrello.getRowCount()!=0) {	
+					if(txfCodice.getText().equals("") || txfNome.getText().equals("") || txfCognome.getText().equals("") || txfVia.getText().equals("")
+							|| txfCivico.getText().equals("") || txfTelefono.getText().equals("") || cbxCitta.getSelectedItem().toString().equals("") 
+							|| cbxProvincia.getSelectedItem().toString().equals("") ) 
+					{
+						//messaggio riempi tutti i campi per proseguire
+					}
+					else {	
+						//creazione utente
+						int idCliente=Integer.parseInt(txfCodice.getText());
+						if(idCliente==Integer.parseInt(idNuovo)) {
+							controllerGestore.CreaNuovoCliente(idNuovo,txfNome.getText(),txfCognome.getText());
+						}else if(Integer.parseInt(idNuovo)<idCliente) {
+							//messaggio per creare un nuovo utente utilizzare il tasto 'nuovo'
+						}
+						//creare l ordine inserendo il nome della sede, prelevandolo dall account salvato in controllerGestore (sede 1)
+						//assegnando al primo rider della sede disponibile per id
+							//fai partire il rider se e a 3 ordini impostando data di consegna e aggiornando la disponibilita a falso
+						//inserire il totale dal carrello
+						//usare returning per avere l ID dell ordine
+						int idNuovoOrdine=controllerGestore.CreazioneOrdine(Totale);
+						
+						//in compordine inserire con l id dell ordine gli id dei prodotti 
+						//il numero di ogni pezzo, prelevando il tutto dal carrello
+						
+						//funzione che preleva tutti gli id dei prodotti nel carrello e le quantita
+						List<Integer[]> prodotti = new ArrayList<Integer[]>();
+						for (int i = 0; i < (tblCarrello.getRowCount())-1; i++) {
+							int idProdotto=((int) tblCarrello.getValueAt(i, 3));
+							int quantita=((int)tblCarrello.getValueAt(i, 1));
+							
+							Integer[] object = new Integer[] {idProdotto,quantita};
+							
+							prodotti.add(object);
+						}
+						
+						controllerGestore.CreazioneCompOrdine(prodotti,idNuovoOrdine);
+						
+						//in infoordineinserire l id dell ordine e del cliente,
+						//il telefono e tutti gli altri dati relativi all indirizzo(citta via civico provincia)
+						//infoordine:id_ordine,id_cliente,citta,via,numcivico,telefonoc,provincia
+						controllerGestore.CreazioneInfoOrdine(idNuovoOrdine,idCliente,cbxCitta.getSelectedItem().toString(),txfVia.getText(),
+								txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString());
+					}	
+				}else //messaggio il carrello e vuoto
+					;
 			}
 		});
 		
@@ -641,13 +675,13 @@ public class CreaOrdineFrame extends JFrame {
 	public float CalcolaTotale() {
 		
 		float totale=0;
-		for (int i = 0; i < tblCarrello.getRowCount(); i++) {    
+		for (int i = 0; i < tblCarrello.getRowCount(); i++) { 
 			int quantita= (int) tblCarrello.getValueAt(i, 1);
 			String costoEuro=(String) tblCarrello.getValueAt(i, 2);
 			float costo= Float.valueOf(costoEuro.replace("\u20AC ", ""));
 			totale+=(quantita*costo);
 		}
-		
+		this.Totale=totale;
 		return totale;
 	}
 	

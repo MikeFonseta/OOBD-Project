@@ -18,4 +18,5 @@ public interface RiderDAO {
 	public int AggiornaNumeroOrdini(int idRider,boolean aumenta)throws SQLException;
 	public void Assegnazione(int idOrdine,int idRider) throws SQLException;
 	public void Dissociazione(int idOrdine,int idRider) throws SQLException;
+	public int TrovaRiderDisponibile(int idSede) throws SQLException;
 }

@@ -148,4 +148,17 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		return id;
 	}
 	
+	@Override
+	public void CreaCliente(int idCliente,String nome,String cognome) throws SQLException{
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		st.executeUpdate("INSERT INTO cliente VALUES("+idCliente+",'"+nome+"','"+cognome+"')");
+		
+		st.close();
+		conn.close();
+	}
+	
+	
+	
 }

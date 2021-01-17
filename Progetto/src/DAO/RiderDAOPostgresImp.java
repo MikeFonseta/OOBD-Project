@@ -258,6 +258,30 @@ public class RiderDAOPostgresImp implements RiderDAO{
 	
 	
 	
-	
-	
+	@Override
+	public int TrovaRiderDisponibile(int idSede) throws SQLException{
+		int idRider=0;
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT id_rider FROM rider \r\n"
+				+ "WHERE disponibilit\u00E0 IS TRUE AND id_sede='"+idSede+"' AND numeroordini= \r\n"
+				+ "(SELECT MAX(numeroordini) FROM rider)\r\n"
+				+ "ORDER BY id_rider ASC\r\n"
+				+ "LIMIT 1");
+		
+		if(rs.next()){
+			 idRider = rs.getInt(1);
+		}
+		
+		rs.close();
+		st.close();
+		conn.close();
+		return idRider;
+	}
+
+
+
+
+
+
 }

@@ -109,7 +109,60 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 
 	}
 	
+	public int CreaOrdine(float totale,int idRider,int idSede) throws SQLException{
+		int idOrdine=0;
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		ResultSet rs = st.executeQuery("INSERT INTO ordine (totale,id_rider,id_sede) "
+				+ "VALUES('"+totale+"','"+idRider+"','"+idSede+"') RETURNING id_ordine");
+		
+		if(rs.next()){
+			 idOrdine = rs.getInt(1);
+		}
+		
+		st.close();
+		conn.close();
+		
+		return idOrdine;
+	}
 	
+	@Override
+	public void CreaCompOrdine(List<Integer[]> prodotti,int idNuovoOrdine) throws SQLException
+	{
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		String inserisciProdotti="INSERT INTO compordine(id_prodotto,numpezzi,id_ordine)\r\n"
+				+ " VALUES ";
+		
+		for (int i = 0; i < prodotti.size(); i++) {
+			if(i>0) inserisciProdotti+=",";
+			int idProdotto=prodotti.get(i)[0];
+			int quantita=prodotti.get(i)[1];
+			inserisciProdotti+=" ('"+idProdotto+"','"+quantita+"','"+idNuovoOrdine+"') ";
+		}
+		
+		st.executeUpdate(inserisciProdotti);
+		
+		st.close();
+		conn.close();
+	}
+	
+	@Override
+	public void CreaInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia) throws SQLException
+	{
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		st.executeUpdate("INSERT INTO infoordine (id_ordine,id_cliente,citt\u00E0,via,numcivico,telefonoc,provincia)\r\n"
+				+ " VALUES ('"+idOrdine+"','"+idCliente+"','"+citta+"','"+via+"','"+civico+"','"+telefono+"','"+provincia+"')" );
+		
+		
+		st.close();
+		conn.close();
+	}
 	
 	
 	@Override
@@ -200,6 +253,9 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		return ordini;
 		
 	}
+	
+	
+	
 	
 
 	@Override

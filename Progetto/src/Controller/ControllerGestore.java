@@ -356,6 +356,105 @@ public class ControllerGestore {
 		 return numeroordini;
 	}
 
+	public void CreaNuovoCliente(String id,String nome,String cognome) {
+		
+		if(this.imp.equals(this.postgresImp)) {
+			
+			try {
+				AccountDAOPostgresImp accountDAO = new AccountDAOPostgresImp();
+				accountDAO.CreaCliente(Integer.parseInt(id),nome,cognome);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+	}
+	
+	public int CreazioneOrdine(float totale) {
+		int idOrdine=0;
+		int idSede=this.account.getSede().getIdSede();
+		int idRider=0;
+		
+		if(this.imp.equals(this.postgresImp)) {
+			RiderDAOPostgresImp riderDAO = new RiderDAOPostgresImp();
+			try {
+				idRider=riderDAO.TrovaRiderDisponibile(idSede);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+			
+			try {
+				OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+				idOrdine=ordineDAO.CreaOrdine(totale,idRider,idSede);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+			
+			try {
+				int numeroordini=0;
+				numeroordini=riderDAO.AggiornaNumeroOrdini(idRider,true);
+				if(numeroordini==3)
+				{
+					this.ImpostaInizioConsegna(idRider,false);
+				}
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+				
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		
+		return idOrdine;
+	}
+	
+	
+	public void CreazioneCompOrdine(List<Integer[]> prodotti,int idNuovoOrdine)
+	{
+		if(this.imp.equals(this.postgresImp)) {
+			try {
+				OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+				ordineDAO.CreaCompOrdine(prodotti,idNuovoOrdine);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+	}
+	
+	
+	public void CreazioneInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia){
+		
+		if(this.imp.equals(this.postgresImp)) {
+			try {
+				OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+				ordineDAO.CreaInfoOrdine(idOrdine,idCliente,citta,via,civico,telefono,provincia);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		
+		
+	}
+	
+	
+	
 	
 	//Getter e Setter
 	public String getImp() {
