@@ -231,7 +231,7 @@ public class ModificaProdottoFrame extends JFrame {
 		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(lblDescrizione);
 			
-		JLabel lblSedi = new JLabel("Sedi in cui è presente questo prodotto :");
+		JLabel lblSedi = new JLabel("Sedi in cui Ã¨ presente questo prodotto :");
 		lblSedi.setFont(new Font("Calibri", Font.PLAIN, 14));
 		lblSedi.setBounds(489, 100, 261, 32);
 		contentPane.add(lblSedi);

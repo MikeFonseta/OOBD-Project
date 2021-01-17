@@ -1,6 +1,5 @@
 package Controller;
 
-import java.awt.Component;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import DAO.AccountDAOPostgresImp;
 import DAO.AllergeneDaoPostgresImp;
-import DAO.EtichettaDAO;
 import DAO.EtichettaDaoPostgresImp;
 import DAO.MenuDAOPostgresImp;
-import DAO.MenuDaoPostgresImp;
 import DAO.ProdottoDAO;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
@@ -226,8 +223,8 @@ public class ControllerAmministratore {
 				ProdottoDAOPostgresImp ProdottoDAO = new ProdottoDAOPostgresImp();
 				try {
 					prodotto = ProdottoDAO.getProdottoPerId(idProdotto);
-					this.gestioneProdottiFrame.dispose();
 					this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
+					this.gestioneProdottiFrame.dispose();
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
