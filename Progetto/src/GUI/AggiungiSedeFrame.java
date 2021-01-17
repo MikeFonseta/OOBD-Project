@@ -107,11 +107,33 @@ public class AggiungiSedeFrame extends JFrame {
 		pnlBarra.add(lblTitolo);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
+		btnChiudi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+					controllerAmministratore.ChiudiAggiungiSedeFrame();
+			}
+		});
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnChiudi.setBounds(546, 490, 141, 44);
 		contentPane.add(btnChiudi);
 		
 		JButton btnAggiungi = new JButton("AGGIUNGI");
+		btnAggiungi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(tblSedi.getSelectedRowCount() > 0) {
+						int[] Sedi = new int[tblSedi.getSelectedRowCount()];
+						int righe[] = tblSedi.getSelectedRows();
+							for(int i = 0; i<tblSedi.getSelectedRowCount(); i++)
+								Sedi[i] = (int) tblSedi.getValueAt(righe[i], 0);
+							
+							controllerAmministratore.AggiungiProdottoASedi(idProdotto, Sedi);
+					}
+				}
+			}
+		});
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnAggiungi.setBounds(699, 488, 141, 44);
 		contentPane.add(btnAggiungi);

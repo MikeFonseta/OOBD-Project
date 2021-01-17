@@ -11,11 +11,10 @@ public interface SedeDAO {
 	public List<String> CercaTutteLeSedi() throws SQLException;
 	public Sede CercaSedePerId(int id) throws SQLException;
 	public List<Object[]> getSedi() throws SQLException;
-	public int aggiungiProdottoASede(int idSede,int idProdotto) throws SQLException;
-	public int EliminaProdottoDaSede(int idSede, int idProdotto) throws SQLException;
 	public int EliminaSede(int idSede) throws SQLException;
 	public int CreaSede(Sede sede,String nomeUtente, String password) throws SQLException;
 	public int AggiornaSede(Sede sede, Account gestoreSede, String nuovaPassword) throws SQLException;
 	public int idProssimaSede() throws SQLException;
+	public List<Object[]> getSediPerProdotto(int idProdotto) throws SQLException;
 	public List<Object[]> getSediMancanti(int idProdotto) throws SQLException; 
 }

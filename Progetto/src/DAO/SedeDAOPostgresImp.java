@@ -92,38 +92,6 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		return sedi;
 	}
-	
-	@Override
-	public int aggiungiProdottoASede(int idSede, int idProdotto) throws SQLException {
-		int risultato = 0;
-		Connection conn = null;
-		
-		conn = DBConnection.getInstance().getConnection();
-		Statement st = conn.createStatement();
-		risultato = st.executeUpdate("INSERT INTO men\u00F9 VALUES ("+idSede + "," + idProdotto +")");
-				
-		st.close();
-		conn.close();
-			
-		return risultato;
-	}
-
-	@Override
-	public int EliminaProdottoDaSede(int idSede, int idProdotto)  throws SQLException {
-
-		int risultato = 0;
-		Connection conn = null;
-		
-		conn = DBConnection.getInstance().getConnection();
-		Statement st = conn.createStatement();
-		risultato = st.executeUpdate("DELETE FROM men\u00F9 WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
-				
-		st.close();
-		conn.close();
-					
-		return risultato;
-	}
-
 
 	@Override
 	public int EliminaSede(int idSede) throws SQLException  {
@@ -203,24 +171,62 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return risultato;
 	}
 
+	
 	@Override
-	public List<Object[]> getSediMancanti(int idProdotto) throws SQLException {
-		List<Object[]> risultato = null;
+	public List<Object[]> getSediPerProdotto(int idProdotto) throws SQLException {
+		List<Object[]> risultato = new ArrayList<>();
 		Connection connection = null;
 		Statement st = null;
 		ResultSet rs = null;
 		
 		connection = DBConnection.getInstance().getConnection();
 		st= connection.createStatement();
-		rs = st.executeQuery("SELECT "
-						   + "FROM Sede AS  S "
-						   + "WHERE ID_Sede NOT IN (SELECT ID_Sede "
-						   + "FROM Sede NATURAL JOIN Prodotto "
-						   + "WHERE ID_Prodotto = "+idProdotto+" ");
+		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Citt\u00E0 AS Indirizzo "
+							+ "FROM Sede AS S "
+							+ "WHERE S.ID_Sede IN (SELECT DISTINCT ID_Sede "
+							+ "FROM Menù "
+							+ "WHERE ID_Prodotto = "+idProdotto+" ) ");
 		
 		while(rs.next()) {
 			risultato.add(new Object[]{
-					rs.getInt(1)
+					rs.getInt(1),
+					rs.getString(2),
+					rs.getString(3),
+					rs.getString(4)
+			});		
+		}
+		
+		
+		rs.close();
+		st.close();
+		connection.close();
+		return risultato;
+	}
+	
+	
+	
+	
+	@Override
+	public List<Object[]> getSediMancanti(int idProdotto) throws SQLException {
+		List<Object[]> risultato = new ArrayList<>();
+		Connection connection = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st= connection.createStatement();
+		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Citt\u00E0 AS Indirizzo "
+						   + "FROM Sede AS  S "
+						   + "WHERE S.ID_Sede NOT IN (SELECT DISTINCT ID_Sede "
+						   + "FROM Menù "
+						   + "WHERE ID_Prodotto = "+idProdotto+" ) ");
+		
+		while(rs.next()) {
+			risultato.add(new Object[]{
+					rs.getInt(1),
+					rs.getString(2),
+					rs.getString(3),
+					rs.getString(4)
 			});		
 		}
 		
@@ -231,4 +237,6 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return risultato;
 	}
 
+
+	
 }

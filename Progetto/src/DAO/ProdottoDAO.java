@@ -25,5 +25,6 @@ public interface ProdottoDAO {
 	public int AggiornaProdotto(Prodotto prodotto) throws SQLException;
 	public int CreaCategoria(String NomeCategoria) throws SQLException;
 	public int EliminaCategoria(String NomeCategoria) throws SQLException;
+	public int AggiungiProdottoACategoria(int idProdotto, String Categoria) throws SQLException;
 }
 

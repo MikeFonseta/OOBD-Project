@@ -156,7 +156,6 @@ public class CreaProdottoFrame extends JFrame {
 		lblEuro.setBounds(218, 481, 46, 23);
 		contentPane.add(lblEuro);
 		
-//		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
 		txfPrezzo = new JTextField();
 	      PlainDocument docMin = (PlainDocument) txfPrezzo.getDocument();
 	      docMin.setDocumentFilter(new FiltroDecimali());

@@ -10,6 +10,7 @@ import DAO.AccountDAOPostgresImp;
 import DAO.AllergeneDaoPostgresImp;
 import DAO.EtichettaDAO;
 import DAO.EtichettaDaoPostgresImp;
+import DAO.MenuDaoPostgresImp;
 import DAO.ProdottoDAO;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
@@ -18,6 +19,7 @@ import Entities.Account;
 import Entities.Prodotto;
 import Entities.Rider;
 import Entities.Sede;
+import GUI.AggiungiACategoriaFrame;
 import GUI.AggiungiAllergeniFrame;
 import GUI.AggiungiSedeFrame;
 import GUI.AggiungiProdottoFrame;
@@ -51,8 +53,10 @@ public class ControllerAmministratore {
 	private ModificaProdottoFrame modificaProdottoFrame = null;
 	private AggiungiAllergeniFrame aggiungiAllergeneFrame = null;
 	private CreaCategoriaFrame creaCategoriaFrame = null;
-	private Account account;
 	private AggiungiSedeFrame aggiungiSedeFrame = null;
+	private AggiungiACategoriaFrame aggiungiACategoriaFrame = null;
+	private Account account;
+
 	
 	
 	public ControllerAmministratore(MainController mainController, Account account) {
@@ -432,10 +436,10 @@ public class ControllerAmministratore {
 		int risultato = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
-			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+			MenuDaoPostgresImp MenuDao = new MenuDaoPostgresImp();
 			try {
 				for(int i=0;i<prodotti.length;i++) {
-				risultato+= sedeDao.aggiungiProdottoASede(idSede, prodotti[i]);
+				risultato+= MenuDao.aggiungiProdottoASede(idSede, prodotti[i]);
 				}
 				if(risultato==prodotti.length) {	
 					if(prodotti.length==1) {
@@ -464,9 +468,9 @@ public class ControllerAmministratore {
 		int risultato = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
-			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+			MenuDaoPostgresImp MenuDao = new MenuDaoPostgresImp();
 			try {
-				risultato = sedeDao.EliminaProdottoDaSede(idSede, idProdotto);	
+				risultato = MenuDao.EliminaProdottoDaSede(idSede, idProdotto);	
 				if(risultato==1) {	
 					JOptionPane.showMessageDialog(this.gestioneSedeFrame,"Prodotto eliminato!","",JOptionPane.PLAIN_MESSAGE);
 					this.gestioneSedeFrame.AggiornaProdotti();
@@ -840,6 +844,23 @@ public class ControllerAmministratore {
 	}
 	
 	
+	public Object[][] getSediPerProdotto(int idProdotto) {
+		Object[][] risultato = null;
+		if(this.imp == this.postgresImp) {
+			try {
+			SedeDAOPostgresImp SedeDAO = new SedeDAOPostgresImp();
+			risultato = SedeDAO.getSediPerProdotto(idProdotto).toArray(new Object[][] {});
+			}catch(SQLException e) {		
+				JOptionPane.showMessageDialog(this.aggiungiSedeFrame,"Error!","",JOptionPane.ERROR_MESSAGE);				
+			}		
+		}
+		else if(this.imp == this.altraImp) {
+			//altra implementazione
+		}
+		return risultato;
+	}
+	
+	
 	public Object[][] getSediMancanti(int idProdotto) {
 		Object[][] risultato = null;
 		if(this.imp == this.postgresImp) {
@@ -868,7 +889,63 @@ public class ControllerAmministratore {
 		this.modificaProdottoFrame.setEnabled(true);
 		this.modificaProdottoFrame.setVisible(true);
 	}
-		public void ApriCreaCategoriaFrame() {
+	
+	public int AggiungiProdottoASedi(int idProdotto, int[] Sedi) {
+		int risultato = 0;
+		if(this.imp == this.postgresImp) {
+			try {
+				for(int i=0; i<Sedi.length; i++) {
+					MenuDaoPostgresImp MenuDao = new MenuDaoPostgresImp();
+					risultato += MenuDao.aggiungiProdottoASede(Sedi[i], idProdotto);
+					}
+				if(risultato!=0) {
+					this.ChiudiAggiungiSedeFrame();
+					if(risultato==1) {	
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Prodotto aggiunto alla sede selezionata!","",JOptionPane.PLAIN_MESSAGE);
+					}else if(risultato>1){
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Prodotto aggiunto alle sedi selezionate!","",JOptionPane.PLAIN_MESSAGE);
+						this.modificaProdottoFrame.AggiornaTabellaSedi();
+					}
+					
+				}	
+			}catch (SQLException e) {
+				this.ChiudiAggiungiAllergeniFrame();
+				JOptionPane.showMessageDialog(this.modificaProdottoFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp == altraImp) {
+		//Altra Implementazione 
+		}	
+		return risultato;
+	}
+	
+	public void EliminaProdottoDaSedi(int idProdotto, int[] sedi) { 
+		int risultato = 0;
+		if(this.imp == this.postgresImp) {
+			try {
+				for(int i=0; i<sedi.length; i++) {
+					MenuDaoPostgresImp MenuDao = new MenuDaoPostgresImp();
+					risultato += MenuDao.EliminaProdottoDaSede(sedi[i], idProdotto);
+					}
+				if(risultato!=0) {
+					if(risultato==1) {	
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Prodotto eliminato dalla sede!","",JOptionPane.PLAIN_MESSAGE);
+					}else if(risultato>1){
+						JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Prodotto eliminati dalle sedi!","",JOptionPane.PLAIN_MESSAGE);
+					}			
+				}	
+				this.modificaProdottoFrame.AggiornaTabellaSedi();
+			}catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.modificaProdottoFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp == altraImp) {
+		//Altra Implementazione 
+		}	
+	}
+	
+	
+	public void ApriCreaCategoriaFrame() {
 		this.gestioneProdottiFrame.setEnabled(false);
 		this.creaCategoriaFrame = new CreaCategoriaFrame(this);
 	}
@@ -936,6 +1013,47 @@ public class ControllerAmministratore {
 	}
 	
 
+	public void ApriAggiungiProdottiACategoriaFrame(int[] prodotti) {
+		this.gestioneProdottiFrame.setEnabled(false);
+		this.aggiungiACategoriaFrame = new AggiungiACategoriaFrame(this, prodotti);
+	}
+
+	public void ChiudiAggiungiACategoriaFrame() {
+		this.aggiungiACategoriaFrame.dispose();
+		this.gestioneProdottiFrame.setEnabled(true);
+		this.gestioneProdottiFrame.setVisible(true);
+		
+	}
+
+	public int AggiungiProdottiACategoria(int[] Prodotti, String Categoria) {
+		int risultato = 0;
+		if(this.imp == this.postgresImp) {
+			try {
+				for(int i=0; i<Prodotti.length; i++) {
+					ProdottoDAOPostgresImp ProdottoDao = new ProdottoDAOPostgresImp();
+					risultato += ProdottoDao.AggiungiProdottoACategoria(Prodotti[i], Categoria);
+				}
+					if(risultato!=0) {
+						this.ChiudiAggiungiACategoriaFrame();
+						if(risultato==1) {	
+							JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Prodotto aggiunto a categoria "+Categoria+"!","",JOptionPane.PLAIN_MESSAGE);
+						}else if(risultato>1){
+							JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Prodotti aggiunti a categoria "+Categoria+"!","",JOptionPane.PLAIN_MESSAGE);
+						}
+						this.gestioneProdottiFrame.AggiornaTabella();
+					}	
+				}catch (SQLException e) {
+					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+		}
+		else if(this.imp == this.altraImp) {
+		//altra implementazione
+		}
+		
+		return risultato;
+	}
+	
+	
 
 	//getter e setter
 
@@ -968,7 +1086,6 @@ public class ControllerAmministratore {
 	public void setAltraImp(String altraImp) {
 		this.altraImp = altraImp;
 	}
-
 
 
 

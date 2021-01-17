@@ -107,8 +107,7 @@ public class ModificaProdottoFrame extends JFrame {
 		txfNomeP.setFont(new Font("Calibri", Font.PLAIN, 14));
 		txfNomeP.setColumns(10);
 		contentPane.add(txfNomeP);
-		//	if(!txfPrezzo.getText().isBlank() && !(Float.parseFloat(txfPrezzo.getText()) == prodotto.getPrezzo()))
-//		txfPrezzo = new JFormattedTextField(new DecimalFormat("#.##"));
+
 		  txfPrezzo = new JTextField((Float.valueOf(prodotto.getPrezzo()).toString()));
 	      PlainDocument docMin = (PlainDocument) txfPrezzo.getDocument();
 	      docMin.setDocumentFilter(new FiltroDecimali());
@@ -193,48 +192,6 @@ public class ModificaProdottoFrame extends JFrame {
 		txpDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(txpDescrizione);
 
-		JLabel lblIDProdotto = new JLabel("ID Prodotto :  "+prodotto.getIdProdotto()+"");
-		lblIDProdotto.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblIDProdotto.setBounds(46, 60, 185, 18);
-		contentPane.add(lblIDProdotto);
-		
-		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(79, 107, 34, 18);
-		lblNome.setFont(new Font("Calibri", Font.PLAIN, 14));
-		contentPane.add(lblNome);
-		
-		JLabel lblDescrizione = new JLabel("Descrizione");
-		lblDescrizione.setBounds(46, 226, 65, 18);
-		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
-		contentPane.add(lblDescrizione);
-		
-		JButton btnAggiungiSede = new JButton("Aggiungi Prodotto");
-		btnAggiungiSede.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton()==MouseEvent.BUTTON1)
-					controllerAmministratore.ApriAggiungiSedeFrame(prodotto.getIdProdotto());
-			}
-		});
-		btnAggiungiSede.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnAggiungiSede.setBounds(834, 540, 145, 32);
-		contentPane.add(btnAggiungiSede);
-		
-		JComboBox cbxCategorie = new JComboBox();
-		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
-		cbxCategorie.getModel().setSelectedItem(prodotto.getCategoria());
-		cbxCategorie.setBounds(145, 163, 197, 22);
-		cbxCategorie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(cbxCategorie.getSelectedItem() != null  && !cbxCategorie.getSelectedItem().toString().equals(prodotto.getCategoria())) 
-					CategoriaInserita = true;
-				else
-					CategoriaInserita = false;
-				ControllaModifiche();
-			}
-		});
-		contentPane.add(cbxCategorie);
-		
 		JLabel lblAllergeni = new JLabel("Allergeni presenti");
 		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
 		lblAllergeni.setBounds(10, 383, 103, 20);
@@ -252,6 +209,121 @@ public class ModificaProdottoFrame extends JFrame {
 		lblEuro.setBounds(239, 639, 25, 18);
 		contentPane.add(lblEuro);
 		
+		JLabel lblCategoria = new JLabel("Categoria");
+		lblCategoria.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblCategoria.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblCategoria.setBounds(46, 163, 67, 22);
+		contentPane.add(lblCategoria);
+		
+		JLabel lblIDProdotto = new JLabel("ID Prodotto :  "+prodotto.getIdProdotto()+"");
+		lblIDProdotto.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblIDProdotto.setBounds(46, 60, 185, 18);
+		contentPane.add(lblIDProdotto);
+		
+		JLabel lblNome = new JLabel("Nome");
+		lblNome.setBounds(79, 107, 34, 18);
+		lblNome.setFont(new Font("Calibri", Font.PLAIN, 14));
+		contentPane.add(lblNome);
+		
+		JLabel lblDescrizione = new JLabel("Descrizione");
+		lblDescrizione.setBounds(46, 226, 65, 18);
+		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
+		contentPane.add(lblDescrizione);
+			
+		JLabel lblSedi = new JLabel("Sedi in cui è presente questo prodotto :");
+		lblSedi.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblSedi.setBounds(489, 100, 261, 32);
+		contentPane.add(lblSedi);
+						
+		JComboBox cbxCategorie = new JComboBox();
+		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
+		cbxCategorie.getModel().setSelectedItem(prodotto.getCategoria());
+		cbxCategorie.setBounds(145, 163, 197, 22);
+		cbxCategorie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(cbxCategorie.getSelectedItem() != null  && !cbxCategorie.getSelectedItem().toString().equals(prodotto.getCategoria())) 
+					CategoriaInserita = true;
+				else
+					CategoriaInserita = false;
+				ControllaModifiche();
+			}
+		});
+		contentPane.add(cbxCategorie);
+
+		JScrollPane spnlSedi = new JScrollPane();
+		spnlSedi.setBounds(489, 133, 630, 407);
+		contentPane.add(spnlSedi);
+		
+		tblSedi = new JTable();
+		tblSedi.setRowHeight(20);
+		tblSedi.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblSedi.setModel(new DefaultTableModel(
+			controllerAmministratore.getSediPerProdotto(prodotto.getIdProdotto()),
+			new String[] {
+				"ID_Sede", "Nome Sede", "Indirizzo", "Telefono"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tblSedi.getColumnModel().getColumn(0).setResizable(false);
+		tblSedi.getColumnModel().getColumn(1).setResizable(false);
+		tblSedi.getColumnModel().getColumn(2).setResizable(false);
+		tblSedi.getColumnModel().getColumn(3).setResizable(false);
+		tblSedi.setFillsViewportHeight(true);
+		tblSedi.setFont(new Font("Calibri", Font.PLAIN, 14));
+		spnlSedi.setViewportView(tblSedi);
+		
+	
+		
+		JScrollPane spnlAllergeni = new JScrollPane();
+		spnlAllergeni.setBounds(142, 383, 291, 196);
+		contentPane.add(spnlAllergeni);
+		
+		tblAllergeni = new JTable();
+		tblAllergeni.setModel(new DefaultTableModel(
+			controllerAmministratore.getAllergeniProdotto(prodotto.getIdProdotto()),
+			new String[] {
+				"Allergeni"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tblAllergeni.getColumnModel().getColumn(0).setResizable(false);
+		tblAllergeni.setFillsViewportHeight(true);
+		tblAllergeni.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
+		spnlAllergeni.setViewportView(tblAllergeni);
+		
+		
+		JButton btnAggiungiSede = new JButton("Aggiungi prodotto a sede");
+		btnAggiungiSede.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()==MouseEvent.BUTTON1)
+					controllerAmministratore.ApriAggiungiSedeFrame(prodotto.getIdProdotto());
+			}
+		});
+		btnAggiungiSede.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnAggiungiSede.setBounds(714, 547, 197, 32);
+		contentPane.add(btnAggiungiSede);
+
 		JButton btnChiudi = new JButton("CHIUDI");
 		btnChiudi.addMouseListener(new MouseAdapter() {
 			@Override
@@ -314,71 +386,24 @@ public class ModificaProdottoFrame extends JFrame {
 		btnAggiungiAllergene.setBounds(253, 580, 89, 23);
 		contentPane.add(btnAggiungiAllergene);
 		
-		JButton btnElimina = new JButton("Elimina Prodotto");
-		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnElimina.setBounds(974, 540, 145, 32);
-		contentPane.add(btnElimina);
-		
-		
-		JScrollPane spnlSedi = new JScrollPane();
-		spnlSedi.setBounds(489, 133, 630, 407);
-		contentPane.add(spnlSedi);
-		
-		tblSedi = new JTable();
-		tblSedi.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		tblSedi.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID_Sede", "Nome Sede", "Indirizzo", "Telefono"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
+		JButton btnEliminaSede = new JButton("Elimina prodotto da sede");
+		btnEliminaSede.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(tblSedi.getSelectedRowCount() > 0) {
+						int[] Sedi = new int[tblSedi.getSelectedRowCount()];
+						int righe[] = tblSedi.getSelectedRows();
+							for(int i = 0; i<tblSedi.getSelectedRowCount(); i++)
+								Sedi[i] = (int) tblSedi.getValueAt(righe[i], 0);
+							controllerAmministratore.EliminaProdottoDaSedi(prodotto.getIdProdotto(), Sedi);
+					}
+				}
 			}
 		});
-		tblSedi.getColumnModel().getColumn(0).setResizable(false);
-		tblSedi.getColumnModel().getColumn(1).setResizable(false);
-		tblSedi.getColumnModel().getColumn(2).setResizable(false);
-		tblSedi.getColumnModel().getColumn(3).setResizable(false);
-		tblSedi.setFillsViewportHeight(true);
-		tblSedi.setFont(new Font("Calibri", Font.PLAIN, 14));
-		spnlSedi.setViewportView(tblSedi);
-		
-	
-		
-		JScrollPane spnlAllergeni = new JScrollPane();
-		spnlAllergeni.setBounds(142, 383, 291, 196);
-		contentPane.add(spnlAllergeni);
-		
-		tblAllergeni = new JTable();
-		tblAllergeni.setModel(new DefaultTableModel(
-			controllerAmministratore.getAllergeniProdotto(prodotto.getIdProdotto()),
-			new String[] {
-				"Allergeni"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		tblAllergeni.getColumnModel().getColumn(0).setResizable(false);
-		tblAllergeni.setFillsViewportHeight(true);
-		tblAllergeni.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
-		spnlAllergeni.setViewportView(tblAllergeni);
+		btnEliminaSede.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnEliminaSede.setBounds(924, 547, 197, 32);
+		contentPane.add(btnEliminaSede);
 		
 
 		JPanel pnlBarra = new JPanel();
@@ -387,18 +412,12 @@ public class ModificaProdottoFrame extends JFrame {
 		pnlBarra.setBounds(0, 0, 1200, 35);
 		getContentPane().add(pnlBarra);
 		
-		JLabel lblVisualizzaOrdini = new JLabel("Modifica Prodotto");
-		lblVisualizzaOrdini.setForeground(Color.WHITE);
-		lblVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblVisualizzaOrdini.setBounds(10, 0, 209, 35);
-		pnlBarra.add(lblVisualizzaOrdini);
-		
-		JLabel lblCategoria = new JLabel("Categoria");
-		lblCategoria.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblCategoria.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblCategoria.setBounds(46, 163, 67, 22);
-		contentPane.add(lblCategoria);
+		JLabel ModificaProdotto = new JLabel("Modifica Prodotto");
+		ModificaProdotto.setForeground(Color.WHITE);
+		ModificaProdotto.setFont(new Font("Calibri", Font.PLAIN, 18));
+		ModificaProdotto.setBounds(10, 0, 209, 35);
+		pnlBarra.add(ModificaProdotto);
+
 	
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
@@ -469,5 +488,31 @@ public class ModificaProdottoFrame extends JFrame {
 			tblAllergeni.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));	
 		
+	}
+
+
+	public void AggiornaTabellaSedi() {
+		tblSedi.setRowHeight(20);
+		tblSedi.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblSedi.setModel(new DefaultTableModel(
+			controllerAmministratore.getSediPerProdotto(prodotto.getIdProdotto()),
+			new String[] {
+				"ID_Sede", "Nome Sede", "Indirizzo", "Telefono"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tblSedi.getColumnModel().getColumn(0).setResizable(false);
+		tblSedi.getColumnModel().getColumn(1).setResizable(false);
+		tblSedi.getColumnModel().getColumn(2).setResizable(false);
+		tblSedi.getColumnModel().getColumn(3).setResizable(false);
+		tblSedi.setFillsViewportHeight(true);
+		tblSedi.setFont(new Font("Calibri", Font.PLAIN, 14));
+
 	}
 }

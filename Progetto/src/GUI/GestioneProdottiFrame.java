@@ -23,6 +23,7 @@ import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
@@ -34,9 +35,13 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JComboBox;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
 public class GestioneProdottiFrame extends JFrame {
@@ -179,7 +184,7 @@ public class GestioneProdottiFrame extends JFrame {
 				}
 			}
 		});
-		btnChiudi.setBounds(927, 644, 195, 45);
+		btnChiudi.setBounds(946, 644, 195, 45);
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(btnChiudi);
 		
@@ -188,13 +193,13 @@ public class GestioneProdottiFrame extends JFrame {
 		btnElimina.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int riga = table.getSelectedRow();
-				if(riga != -1) {
-					controllerAmministratore.ApriEliminaProdottoFrame((String) table.getValueAt(riga, 1), (int) table.getValueAt(riga, 0));
+				if(table.getSelectedRowCount() == 1) {
+					int riga = table.getSelectedRow();
+						controllerAmministratore.ApriEliminaProdottoFrame((String) table.getValueAt(riga, 1), (int) table.getValueAt(riga, 0));
 				}
 			}
 		});
-		btnElimina.setBounds(722, 644, 195, 45);
+		btnElimina.setBounds(741, 644, 195, 45);
 		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(btnElimina);
 		
@@ -204,14 +209,17 @@ public class GestioneProdottiFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					if(table.getSelectedRow()!= -1) {
-						int idProdotto = (int) table.getValueAt(table.getSelectedRow(), 0);
-						controllerAmministratore.ApriModificaProdotto(idProdotto);
+					if(table.getSelectedRowCount() == 1) {
+							int idProdotto = (int) table.getValueAt(table.getSelectedRow(), 0);
+							controllerAmministratore.ApriModificaProdotto(idProdotto);
+					}
+					else if(table.getSelectedRowCount()>1){
+						JOptionPane.showMessageDialog(parent, new String("Selezionare una sola sede"),"Error",JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
 		});
-		btnModifica.setBounds(517, 644, 195, 45);
+		btnModifica.setBounds(536, 644, 195, 45);
 		btnModifica.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(btnModifica);
 		
@@ -225,7 +233,7 @@ public class GestioneProdottiFrame extends JFrame {
 				}
 			}
 		});
-		btnAggiungi.setBounds(312, 644, 195, 45);
+		btnAggiungi.setBounds(331, 644, 195, 45);
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 16));
 		contentPane.add(btnAggiungi);
 		
@@ -247,7 +255,7 @@ public class GestioneProdottiFrame extends JFrame {
 		cbxCategorie.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	
-                if(cbxCategorie.getSelectedItem().toString().equals("Nessuna")) {
+                if(cbxCategorie.getSelectedItem().toString().equals("Nessuna") || cbxCategorie.getSelectedItem().equals("Tutte le categorie")) {
                 	btnEliminaCategoria.setEnabled(false);
                 }else {
                 	btnEliminaCategoria.setEnabled(true);
@@ -255,8 +263,11 @@ public class GestioneProdottiFrame extends JFrame {
             }
         });
 		cbxCategorie.setFont(new Font("Calibri", Font.PLAIN, 14));
-		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
-		cbxCategorie.setSelectedItem("Nessuna");
+		DefaultComboBoxModel Modello  = new DefaultComboBoxModel();		
+		Modello.addElement("Tutte le categorie");
+		Modello.addAll(Arrays.asList(controllerAmministratore.getCategorie()));
+		cbxCategorie.setModel(Modello);
+		cbxCategorie.setSelectedItem("Tutte le categorie");
 		cbxCategorie.setMaximumRowCount(20);
 		cbxCategorie.setBounds(82, 46, 206, 32);
 		contentPane.add(cbxCategorie);
@@ -271,7 +282,7 @@ public class GestioneProdottiFrame extends JFrame {
 
 		table = new JTable();
 		table.setRowHeight(30);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.setModel(new DefaultTableModel(
 			controllerAmministratore.ricercaProdotto(getCategoriaSelezionata(), getMinSelezionato(), getMaxSelezionato(), getIdProdottiPerAllergeni()),
 			new String[] {
@@ -305,7 +316,6 @@ public class GestioneProdottiFrame extends JFrame {
 		table.getColumnModel().getColumn(5).setPreferredWidth(35);
 		table.setFont(new Font("Calibri", Font.PLAIN, 14));
 		table.getTableHeader().setReorderingAllowed(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);
 		
 		
@@ -339,6 +349,26 @@ public class GestioneProdottiFrame extends JFrame {
 		btnNuovaCategoria.setFont(new Font("Calibri", Font.PLAIN, 16));
 		btnNuovaCategoria.setBounds(298, 46, 78, 32);
 		contentPane.add(btnNuovaCategoria);
+		
+		JButton btnAggiungiACategoria = new JButton("AGGIUNGI A CATEGORIA");
+		btnAggiungiACategoria.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			if(e.getButton() == MouseEvent.BUTTON1) {				
+				if(table.getSelectedRowCount() > 0) {	
+					System.out.println("ciao");
+					int[] Prodotti = new int[table.getSelectedRowCount()];
+					int righe[] = table.getSelectedRows();
+						for(int i = 0; i<table.getSelectedRowCount(); i++)
+							Prodotti[i] = (int) table.getValueAt(righe[i], 0);
+							controllerAmministratore.ApriAggiungiProdottiACategoriaFrame(Prodotti);
+				}
+			}
+		}
+		});
+		btnAggiungiACategoria.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnAggiungiACategoria.setBounds(494, 46, 186, 32);
+		contentPane.add(btnAggiungiACategoria);
 		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
@@ -410,7 +440,7 @@ public class GestioneProdottiFrame extends JFrame {
 		table.getColumnModel().getColumn(5).setPreferredWidth(35);
 		table.setFont(new Font("Calibri", Font.PLAIN, 14));
 		table.getTableHeader().setReorderingAllowed(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
 		table.setFillsViewportHeight(true);
 	}
 			
@@ -476,9 +506,11 @@ public class GestioneProdottiFrame extends JFrame {
 
 	
 	public void AggiornaCategorie() {
-		cbxCategorie.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
-		cbxCategorie.setSelectedItem("Nessuna");
-
+		DefaultComboBoxModel Modello  = new DefaultComboBoxModel();		
+		Modello.addElement("Tutte le categorie");
+		Modello.addAll(Arrays.asList(controllerAmministratore.getCategorie()));
+		cbxCategorie.setModel(Modello);
+		cbxCategorie.setSelectedItem("Tutte le categorie");
 	}
 }		
 

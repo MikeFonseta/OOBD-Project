@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import Database.DBConnection;
 import Entities.Prodotto;
 
@@ -349,11 +348,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		Statement st = null;
 		PreparedStatement query = null;
 		ResultSet rs = null;
-
 		
-		if(Categoria.equals("Nessuna") || Categoria.equals("Tutte")) {
-			Categoria = null;
-		}
 		
 		StringBuilder sql = new  StringBuilder(1024); 
 		sql.append("SELECT DISTINCT ID_Prodotto, NomeP, Categoria, Descrizione, Prezzo " 
@@ -594,7 +589,20 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 	}
 	
 	
-	
+	@Override
+	public int AggiungiProdottoACategoria(int idProdotto, String Categoria) throws SQLException{
+		int risultato = 0;
+		Connection connection = null;
+		Statement st = null;
+		
+		connection = DBConnection.getInstance().getConnection();
+		st = connection.createStatement();
+		risultato = st.executeUpdate("UPDATE Prodotto SET Categoria = '"+Categoria+"' WHERE ID_Prodotto = "+idProdotto+" ");
+		
+		st.close();
+		connection.close();
+		return risultato;
+	}
 	
 	
 	
