@@ -253,7 +253,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return risultato;
 	}
 	
-	public List<Object[]> ricercaComplessaProdotti(String Categoria, Integer Min, Integer Max, List<Integer> idProdottiConAllergeni) throws SQLException{
+	public List<Object[]> ricercaComplessaProdotti(String Categoria, Integer Min, Integer Max, Integer idSede, List<Integer> idProdottiConAllergeni) throws SQLException{
 		List<Object[]> risultato = new ArrayList<Object[]>();
 		Connection connection = null;
 		Statement st = null;
@@ -263,7 +263,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		StringBuilder sql = new  StringBuilder(1024); 
 		sql.append("SELECT DISTINCT ID_Prodotto, NomeP, Categoria, Descrizione, Prezzo " 
-		+ "FROM Prodotto AS P " );
+		+ "FROM Prodotto AS P NATURAL JOIN Sede AS S " );
 	
 		if(idProdottiConAllergeni != null )
 			sql.append("NATURAL JOIN Etichetta AS E ");
@@ -281,6 +281,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 				ClausolaWhere += "";
 		ClausolaWhere += "Prezzo >= ?";
 		}
+		
 		if(Max!= null) {
 			if(ClausolaWhere.length()>0) 
 				ClausolaWhere += " AND ";
@@ -288,6 +289,15 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 				ClausolaWhere += "";
 		ClausolaWhere += "Prezzo <= ?";
 		}
+		
+		if(idSede!= null) {
+			if(ClausolaWhere.length()>0) 
+				ClausolaWhere += " AND ";
+			else 
+				ClausolaWhere += "";
+		ClausolaWhere += "S.ID_Sede = ?";
+		}
+		
 		if(idProdottiConAllergeni!= null) {
 			if(ClausolaWhere.length()>0) 
 				ClausolaWhere += " AND " ;
@@ -320,7 +330,10 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		if(Max != null) 
 			query.setInt(indice++, Max);
-			
+		
+		if(idSede != null)
+			query.setInt(indice++, idSede);
+		
 		if(idProdottiConAllergeni != null) {
 			for(int s = 0;s<idProdottiConAllergeni.size(); s++) {
 				query.setInt(indice++, idProdottiConAllergeni.get(s));

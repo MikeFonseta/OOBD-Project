@@ -16,7 +16,7 @@ public interface ProdottoDAO {
 	public int eliminaProdottoDaTutteLeSedi(int idProdotto) throws SQLException;
 	public List<Integer> getProdottiPerAllergeni(String[] NomiAllergeni) throws SQLException;	
 	public String[] getDatiSingoloProdotto(int idProdotto) throws SQLException;
-	public List<Object[]> ricercaComplessaProdotti(String Categoria, Integer Min, Integer Max, List<Integer> idProdottiConAllergeni) throws SQLException;
+	public List<Object[]> ricercaComplessaProdotti(String Categoria, Integer Min, Integer Max, Integer idSede, List<Integer> idProdottiConAllergeni) throws SQLException;
 	public int idProssimoProdotto() throws SQLException;
 	public int CreaProdotto(int idProssimoProdotto, String nome, String descrizione, float prezzo, String categoria) throws SQLException;
 	public int AggiornaProdotto(Prodotto prodotto) throws SQLException;

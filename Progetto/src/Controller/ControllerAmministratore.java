@@ -636,47 +636,14 @@ public class ControllerAmministratore {
 		this.gestioneRiderFrame.dispose();
 	}
 	
-	public List<Integer> getIDProdottiPerAllergeni(String Allergeni) {
-		List<Integer> risultato = new ArrayList<>();
-			if(Allergeni.isBlank()== false) {
-				String NomiAllergeni[] = Allergeni.split(","); 		
-					if(this.imp == this.postgresImp) {
-						try {
-							ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
-							risultato = prodottoDAO.getProdottiPerAllergeni(NomiAllergeni);
 	
-						}catch (SQLException e) {		
-							JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-						}
-					}
-					else if(this.imp == this.altraImp)
-					{ 
-						//altra implementazione
-					}				
-
-			}
-			else risultato = null;
-
-		return risultato;
-
+	public List<Integer> ApriGetIdProdottiPerAllergeni(String Allergeni) {
+		return this.mainController.getIDProdottiPerAllergeni(Allergeni);
 	}
-
-	public Object[][] ricercaProdotto(String Categoria, Integer Min, Integer Max, List<Integer>idProdottiConAllergeni){
-		Object[][] risultato = null;
-		if(this.imp == postgresImp) {
-			try {
-				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
-				risultato = prodottoDAO.ricercaComplessaProdotti(Categoria, Min, Max, idProdottiConAllergeni).toArray(new Object[][] {});
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		else if(this.imp == altraImp)
-		{
-			//altra implementazione
-		}
-		
-		return risultato;
+	
+	
+	public Object[][] ApriRicercaProdotto(String Categoria, Integer Min, Integer Max, Integer idSede, List<Integer>idProdottiConAllergeni){
+		return this.mainController.ricercaProdotto(Categoria, Min, Max, idSede, idProdottiConAllergeni);
 	}
 	
 	public void ConfermaEliminaProdotto(String password, int idProdotto, String nomeProdottoDaEliminare) {
@@ -1083,6 +1050,14 @@ public class ControllerAmministratore {
 	
 	public void setAltraImp(String altraImp) {
 		this.altraImp = altraImp;
+	}
+
+	public GestioneProdottiFrame getGestioneProdottiFrame() {
+		return gestioneProdottiFrame;
+	}
+
+	public void setGestioneProdottiFrame(GestioneProdottiFrame gestioneProdottiFrame) {
+		this.gestioneProdottiFrame = gestioneProdottiFrame;
 	}
 
 

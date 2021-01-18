@@ -12,6 +12,7 @@ import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
 import Entities.Account;
 import GUI.CreaOrdineFrame;
+import GUI.GestioneProdottiFrame;
 import GUI.GestoreFrame;
 import GUI.InfoProdottoFrame;
 
@@ -26,6 +27,7 @@ public class ControllerGestore {
 	private GestoreFrame gestoreFrame = null;
 	private CreaOrdineFrame creaOrdineFrame = null;
 	private InfoProdottoFrame infoProdottoFrame = null;
+	private GestioneProdottiFrame gestioneProdottiFrame = null;
 
 	public ControllerGestore(MainController mainController, Account account) {
 		
@@ -270,8 +272,15 @@ public class ControllerGestore {
 	}
 	
 	public void ApriVisualizzaProdotti(){
-		//this.gestoreFrame.setEnabled(false);	//da reimpostare dopo aver finito i test
-		this.mainController.ApriVisualizzaProdottiFrame(); 
+		this.gestoreFrame.setEnabled(false);	//da reimpostare dopo aver finito i test
+		this.gestoreFrame.setVisible(false);
+		this.gestioneProdottiFrame  = new GestioneProdottiFrame(this);
+	}
+	
+	public void ChiudiVisualizzaProdottiFrame() {
+		this.gestioneProdottiFrame.dispose();
+		this.gestoreFrame.setEnabled(true);
+		this.gestoreFrame.setVisible(true);
 	}
 	
 	public void ApriInfoProdottoFrame(int idProdotto){
@@ -528,7 +537,7 @@ public class ControllerGestore {
 	
 	}
 	
-	
+
 	public Object[][] PrelevaProdottiCarrello(int idOrdine){
 		
 		Object[][] prodotti = null;
@@ -554,6 +563,13 @@ public class ControllerGestore {
 	}
 
 	
+	public Object[][] ApriRicercaProdotto(String categoriaSelezionata, Integer minSelezionato, Integer maxSelezionato, Integer idSede, List<Integer> idProdottiPerAllergeni) {
+			return  this.mainController.ricercaProdotto(categoriaSelezionata, minSelezionato, maxSelezionato, idSede, idProdottiPerAllergeni);
+	}
+	
+	public List<Integer> ApriGetIdProdottiPerAllergeni(String Allergeni) {
+		return this.mainController.getIDProdottiPerAllergeni(Allergeni);
+	}
 	
 	
 	//Getter e Setter
@@ -592,5 +608,10 @@ public class ControllerGestore {
 	public void setGestoreFrame(GestoreFrame gestoreFrame) {
 		this.gestoreFrame = gestoreFrame;
 	}
+
+	public GestioneProdottiFrame getGestioneProdottiFrame() {
+		return gestioneProdottiFrame;
+	}
+
 
 }

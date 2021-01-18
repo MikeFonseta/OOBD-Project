@@ -142,15 +142,6 @@ public class MainController {
 		
 	}
 	
-	
-	public void ApriVisualizzaProdottiFrame() {
-		visualizzaProdottiFrame = new VisualizzaProdottiFrame(this);
-	}
-	
-	public void ChiudiVisualizzaProdottiFrame() {
-		visualizzaProdottiFrame.setVisible(false);
-	}
-	
 	public void ChiudiCreaOrdineFrame() {
 		creaOrdineFrame.setVisible(false);
 	}
@@ -191,10 +182,6 @@ public class MainController {
 		
 		
 	}
-	
-
-	
-	
 	
 	
 	String[] convertiInArrayStringhe(List<String> list) {
@@ -305,6 +292,82 @@ public class MainController {
 		return risultato;
 	}
 
+	
+	public List<Integer> getIDProdottiPerAllergeni(String Allergeni) {
+		List<Integer> risultato = new ArrayList<>();
+			if(Allergeni.isBlank()== false) {
+				String NomiAllergeni[] = Allergeni.split(","); 
+				if(this.controllerAmministratore != null) {
+					if(this.controllerAmministratore.getImp() == this.controllerAmministratore.getPostgresImp()) {
+						try {
+							ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+							risultato = prodottoDAO.getProdottiPerAllergeni(NomiAllergeni);
+	
+						}catch (SQLException e) {		
+							JOptionPane.showMessageDialog(this.controllerAmministratore.getGestioneProdottiFrame(),e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else if(this.controllerAmministratore.getImp() == this.controllerAmministratore.getAltraImp())
+					{ 
+						//altra implementazione
+					}				
+				}
+				else {// controller gestore
+					if(this.controllerGestore.getImp() == this.controllerGestore.getPostgresImp()) {
+						try {
+							ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+							risultato = prodottoDAO.getProdottiPerAllergeni(NomiAllergeni);
+	
+						}catch (SQLException e) {		
+							JOptionPane.showMessageDialog(this.controllerGestore.getGestioneProdottiFrame(),e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else if(this.controllerGestore.getImp() == this.controllerGestore.getAltraImp())
+					{ 
+						//altra implementazione
+					}									
+				}
+			}
+			else risultato = null;
+
+		return risultato;
+
+	}
+
+	
+	public Object[][] ricercaProdotto(String Categoria, Integer Min, Integer Max, Integer idSede, List<Integer>idProdottiConAllergeni){
+		Object[][] risultato = null;
+		if(this.controllerAmministratore!= null) {
+			if(this.controllerAmministratore.getImp() == this.controllerAmministratore.getPostgresImp()) {
+				try {
+					ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+					risultato = prodottoDAO.ricercaComplessaProdotti(Categoria, Min, Max, idSede, idProdottiConAllergeni).toArray(new Object[][] {});
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(this.controllerAmministratore.getGestioneProdottiFrame(),e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else if(this.controllerAmministratore.getImp() == this.controllerAmministratore.getAltraImp()){
+				//altra implementazione
+			}
+		}
+		else {
+			if(this.controllerGestore.getImp() == this.controllerGestore.getPostgresImp()){
+				try {
+					ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+					risultato = prodottoDAO.ricercaComplessaProdotti(Categoria, Min, Max, idSede, idProdottiConAllergeni).toArray(new Object[][] {});
+				} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.controllerGestore.getGestioneProdottiFrame(),e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else if(this.controllerGestore.getImp() == this.controllerGestore.getAltraImp()){
+				//altra implementazione
+			
+			}
+		}
+		return risultato;
+	}
+		
+	
 
 	public String[] getCategorie() {
 		
@@ -316,6 +379,7 @@ public class MainController {
 				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 				try {
 					result = prodottoDao.getCategorieProdotto().toArray(new String[] {});
+				//	result = prodottoDao.getCategorieTotali().toArray(new String[] {});
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
@@ -332,7 +396,8 @@ public class MainController {
 				
 				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 				try {
-					result = prodottoDao.getCategorieTotali().toArray(new String[] {});
+					result = prodottoDao.getCategorieProdotto().toArray(new String[] {});
+					//result = prodottoDao.getCategorieTotali().toArray(new String[] {});
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
