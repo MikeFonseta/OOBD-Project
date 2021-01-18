@@ -51,7 +51,7 @@ public class CreaOrdineFrame extends JFrame {
 	private JTextField txfVia;
 	private JTextField txfCodice;
 	private JLabel lblAllergeni;
-	private String ID;
+	private String IdCliente;
 	private float Totale;
 	private ControllerGestore controllerGestore;
 	private Point initialClick;
@@ -59,12 +59,12 @@ public class CreaOrdineFrame extends JFrame {
 	private JComboBox cbxProvincia;
 	private JComboBox cbxCitta;
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
-	
+	//disabilitare nuovo e compila in modifica
 
 	public CreaOrdineFrame(ControllerGestore controllerGestore, int defaultId) {
 		setResizable(false);
-		if (defaultId==0) this.ID=controllerGestore.getProssimoID();
-		else this.ID=String.valueOf(9);//togliere questa funzione e metterne una che trova l id del cliente
+		if (defaultId==0) this.IdCliente=controllerGestore.getProssimoID();
+		else this.IdCliente=controllerGestore.getIdClienteDaOrdine(defaultId);
 		
 		this.controllerGestore = controllerGestore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -395,7 +395,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnNuovo.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnNuovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				txfCodice.setText(ID);
+				txfCodice.setText(IdCliente);
 			}
 		});
 		btnNuovo.setBounds(1019, 64, 63, 23);
@@ -405,7 +405,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnConferma.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(tblCarrello.getRowCount()!=0) {	
+				if(tblCarrello.getRowCount()!=0) {	//verificare consistenze di telefono nome cognome
 					if(txfCodice.getText().equals("") || txfNome.getText().equals("") || txfCognome.getText().equals("") || txfVia.getText().equals("")
 							|| txfCivico.getText().equals("") || txfTelefono.getText().equals("") || cbxCitta.getSelectedItem().toString().equals("") 
 							|| cbxProvincia.getSelectedItem().toString().equals("") ) 
@@ -417,9 +417,9 @@ public class CreaOrdineFrame extends JFrame {
 						if(defaultId==0) {
 							//creazione utente
 							int idCliente=Integer.parseInt(txfCodice.getText());
-							if(idCliente==Integer.parseInt(ID)) {
-								controllerGestore.CreaNuovoCliente(ID,txfNome.getText(),txfCognome.getText()); //ok
-							}else if(Integer.parseInt(ID)<idCliente) {
+							if(idCliente==Integer.parseInt(IdCliente)) {
+								controllerGestore.CreaNuovoCliente(IdCliente,txfNome.getText(),txfCognome.getText()); //ok
+							}else if(Integer.parseInt(IdCliente)<idCliente) {
 								//messaggio per creare un nuovo utente utilizzare il tasto 'nuovo'
 							}
 							//creare l ordine inserendo il nome della sede, prelevandolo dall account salvato in controllerGestore (sede 1)
@@ -433,18 +433,8 @@ public class CreaOrdineFrame extends JFrame {
 							//il numero di ogni pezzo, prelevando il tutto dal carrello
 							
 							//funzione che preleva tutti gli id dei prodotti nel carrello e le quantita
-							List<int[]> prodotti = new ArrayList<int[]>();
-							for (int i = 0; i < (tblCarrello.getRowCount())-1; i++) {
 							
-								int idProdotto=((int)(tblCarrello.getValueAt(i, 3)));
-								int quantita=((int)(tblCarrello.getValueAt(i, 1)));
-								
-								int[] object = new int[] {idProdotto,quantita};
-								
-								prodotti.add(object);
-							}
-							
-							controllerGestore.CreazioneCompOrdine(prodotti,idNuovoOrdine);
+							controllerGestore.CreazioneCompOrdine(getProdottiCarrello(),idNuovoOrdine);
 							
 							//in infoordineinserire l id dell ordine e del cliente,
 							//il telefono e tutti gli altri dati relativi all indirizzo(citta via civico provincia)
@@ -453,20 +443,24 @@ public class CreaOrdineFrame extends JFrame {
 									txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString());
 							
 							
-							controllerGestore.ChiudiCreaOrdineFrame();
+							
 						}else {//modifica==true
 						
 							//dato che infoordine e una riga si fa una update a prescindere
+							controllerGestore.AggiornamentoInfoOrdine(defaultId,cbxCitta.getSelectedItem().toString(),txfVia.getText(),
+									txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString());
+							
 							//in compordine si cancellano tutte le righe con l id dell ordine
 							//si va a riscriverle
+							controllerGestore.CancellaCompOrdine(defaultId);
+							controllerGestore.CreazioneCompOrdine(getProdottiCarrello(),defaultId);
+							
+							
 							//in ordine fai update del totale
-							
-							
-							
-							
+							controllerGestore.AggiornamentoTotale(defaultId,Totale);
 							
 						}
-						
+						controllerGestore.ChiudiCreaOrdineFrame();
 						
 					}
 				}else //messaggio il carrello e vuoto
@@ -583,8 +577,8 @@ public class CreaOrdineFrame extends JFrame {
 			//prelevare tutti i dati e passarli ai textfield
 			//il field del codice viene reso non editabile dopo aver riempito la schermata
 			
-			//funzione per prelevare l id del cliente
-			txfCodice.setText("9"); 
+			//disabilita anche nuovo e compila
+			txfCodice.setText(IdCliente); 
 			txfCodice.setEditable( false ); 
 			CompilaCampi();
 			
@@ -644,6 +638,20 @@ public class CreaOrdineFrame extends JFrame {
 		
 	}
 	
+	public List<int[]> getProdottiCarrello() {
+		List<int[]> prodotti = new ArrayList<int[]>();
+		for (int i = 0; i < (tblCarrello.getRowCount())-1; i++) {
+		
+			int idProdotto=((int)(tblCarrello.getValueAt(i, 3)));
+			int quantita=((int)(tblCarrello.getValueAt(i, 1)));
+			
+			int[] object = new int[] {idProdotto,quantita};
+			
+			prodotti.add(object);
+			
+		}
+		return prodotti;
+	}
 	
 	
 	public void AggiungiAlCarrello(DefaultTableModel modCarrello,String azione) {

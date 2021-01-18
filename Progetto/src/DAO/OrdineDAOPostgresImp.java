@@ -124,6 +124,23 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	}
 	
 	@Override
+	public void AggiornaTotaleOrdine(int idOrdine,float totale) throws SQLException{
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		st.executeUpdate("UPDATE ordine SET totale='"+totale+"' "
+				+ " WHERE id_ordine = '"+idOrdine+"' ");
+		
+		
+		st.close();
+		conn.close();
+		
+	}
+	
+	
+	
+	@Override
 	public void CreaCompOrdine(List<int[]> prodotti,int idNuovoOrdine) throws SQLException
 	{
 		Connection conn = DBConnection.getInstance().getConnection();
@@ -145,6 +162,21 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn.close();
 	}
 	
+	
+	
+	@Override
+	public void EliminaCompOrdine(int idOrdine) throws SQLException
+	{
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		st.executeUpdate("DELETE FROM compordine WHERE id_ordine='"+idOrdine+"' ");
+		
+		st.close();
+		conn.close();
+	}
+	
+	
 	@Override
 	public void CreaInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia) throws SQLException
 	{
@@ -159,6 +191,20 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn.close();
 	}
 	
+	@Override
+	public void AggiornaInfoOrdine(int idOrdine, String citta, String via, String civico, String telefono, String provincia) throws SQLException
+	{
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		st.executeUpdate("UPDATE infoordine SET citt\u00E0='"+citta+"', via='"+via+"', numcivico='"+civico+"', telefonoc='"+telefono+"', provincia='"+provincia+"' "
+				+ " WHERE id_ordine = '"+idOrdine+"' ");
+		
+		
+		st.close();
+		conn.close();
+	}
+	
 	
 	@Override
 	public List<Object[]> getOrdiniTabella(int idSede) throws SQLException {
@@ -166,31 +212,10 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		List<Object[]> ordini = new ArrayList<Object[]>();
 		Connection conn = null;
 		
-//		SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || 
-<<<<<<< .mine
-//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || cittï¿½ AS Indirizzo, 
-||||||| .r97
-//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || città AS Indirizzo, 
-=======
-//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || cittÃ  AS Indirizzo, 
->>>>>>> .r98
-//		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato
-//		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine
-//		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente
-//		WHERE id_sede='1' AND fineconsegna IS NULL
-//		ORDER BY O.id_ordine ASC
-
-		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || \r\n"
-<<<<<<< .mine
 				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, \r\n"
-||||||| .r97
-				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || città AS Indirizzo, \r\n"
-=======
-				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || cittÃ  AS Indirizzo, \r\n"
->>>>>>> .r98
 				+ "		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine\r\n"
 				+ "		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente\r\n"
@@ -223,6 +248,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		
 		return ordini;
 	}
+	
 	
 	@Override
 	public List<Object[]> getOrdiniFiltroRider(int idRider) throws SQLException{

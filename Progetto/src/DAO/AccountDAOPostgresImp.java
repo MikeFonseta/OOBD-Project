@@ -148,6 +148,27 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		return id;
 	}
 	
+	
+	@Override
+	public int getClienteOrdine(int idOrdine) throws SQLException{
+		int idCliente=0;
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT id_cliente FROM infoordine WHERE id_ordine='"+idOrdine+"' ");
+		
+		if(rs.next()){
+			idCliente=rs.getInt(1);
+		}
+		
+		
+		rs.close();
+		st.close();
+		conn.close();
+		return idCliente;
+	}
+	
+	
 	@Override
 	public void CreaCliente(int idCliente,String nome,String cognome) throws SQLException{
 		Connection conn = DBConnection.getInstance().getConnection();

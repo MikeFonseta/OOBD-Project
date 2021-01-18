@@ -237,6 +237,28 @@ public class ControllerGestore {
 		return ID;
 	}
 
+	
+	public String getIdClienteDaOrdine(int idOrdine) {
+		String ID=null;
+		
+		if(this.imp.equals(this.postgresImp)) {
+			AccountDAOPostgresImp accountDAO = new AccountDAOPostgresImp();
+			try {
+				ID=String.valueOf(accountDAO.getClienteOrdine(idOrdine));
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		return ID;
+	}
+	
+	
+	
 	public void ApriCreaOrdineFrame() {
 		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
 		creaOrdineFrame = new CreaOrdineFrame(this,0);
@@ -419,6 +441,24 @@ public class ControllerGestore {
 		return idOrdine;
 	}
 	
+	public void AggiornamentoTotale(int idOrdine,float totale) {
+		
+		if(this.imp.equals(this.postgresImp)) {
+			try {
+				OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+				ordineDAO.AggiornaTotaleOrdine(idOrdine,totale);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+		
+	}
+	
 	
 	public void CreazioneCompOrdine(List<int[]> prodotti,int idNuovoOrdine)
 	{
@@ -437,6 +477,22 @@ public class ControllerGestore {
 		
 	}
 	
+	public void CancellaCompOrdine(int idOrdine)
+	{
+		if(this.imp.equals(this.postgresImp)) {
+			try {
+				OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+				ordineDAO.EliminaCompOrdine(idOrdine);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		
+	}
 	
 	public void CreazioneInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia){
 		
@@ -452,10 +508,26 @@ public class ControllerGestore {
 		{
 			//altre implementazioni
 		}
-		
-		
-		
+	
 	}
+	
+	public void AggiornamentoInfoOrdine(int idOrdine, String citta, String via, String civico, String telefono, String provincia){
+		
+		if(this.imp.equals(this.postgresImp)) {
+			try {
+				OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+				ordineDAO.AggiornaInfoOrdine(idOrdine,citta,via,civico,telefono,provincia);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+	
+	}
+	
 	
 	public Object[][] PrelevaProdottiCarrello(int idOrdine){
 		

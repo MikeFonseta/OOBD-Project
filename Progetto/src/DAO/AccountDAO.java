@@ -13,6 +13,6 @@ public interface AccountDAO{
 	public String[] getDatiCliente(int idCliente) throws SQLException;
 	public int getClienteID() throws SQLException;
 	public void CreaCliente(int idCliente,String nome,String cognome) throws SQLException;
-	
+	public int getClienteOrdine(int idOrdine) throws SQLException;
 	
 }
