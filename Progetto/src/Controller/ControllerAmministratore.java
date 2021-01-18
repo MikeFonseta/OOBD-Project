@@ -223,8 +223,8 @@ public class ControllerAmministratore {
 				ProdottoDAOPostgresImp ProdottoDAO = new ProdottoDAOPostgresImp();
 				try {
 					prodotto = ProdottoDAO.getProdottoPerId(idProdotto);
-					this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
 					this.gestioneProdottiFrame.dispose();
+					this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
@@ -376,9 +376,9 @@ public class ControllerAmministratore {
 		
 		if(this.imp.equals(this.postgresImp))
 		{
-			MenuDAOPostgresImp menuDao = new MenuDAOPostgresImp();
+			MenuDAOPostgresImp menuDAO = new MenuDAOPostgresImp();
 			try {
-				risultato = menuDao.getProdottiDellaSede(idSede).toArray(new Object[][] {});
+				risultato = menuDAO.getProdottiDellaSede(idSede).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -394,9 +394,9 @@ public class ControllerAmministratore {
 		
 		if(this.imp.equals(this.postgresImp))
 		{
-			MenuDAOPostgresImp menuDao = new MenuDAOPostgresImp();
+			MenuDAOPostgresImp menuDAO = new MenuDAOPostgresImp();
 			try {
-				risultato = menuDao.getProdottiSedeCategoria(idSede,categoria).toArray(new Object[][] {});
+				risultato = menuDAO.getProdottiSedeCategoria(idSede,categoria).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				this.gestioneSedeFrame.setEnabled(true);
 				this.aggiungiProdottoFrame.dispose();
@@ -416,9 +416,9 @@ public class ControllerAmministratore {
 		
 		if(this.imp.equals(this.postgresImp))
 		{
-			MenuDAOPostgresImp menuDao = new MenuDAOPostgresImp();
+			MenuDAOPostgresImp menuDAO = new MenuDAOPostgresImp();
 			try {
-				risultato = menuDao.getProdottiPerUnaSede(idSede).toArray(new Object[][] {});
+				risultato = menuDAO.getProdottiPerUnaSede(idSede).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -434,10 +434,10 @@ public class ControllerAmministratore {
 		int risultato = 0;
 		if(this.imp.equals(this.postgresImp))
 		{
-			MenuDAOPostgresImp menuDao = new MenuDAOPostgresImp();
+			MenuDAOPostgresImp menuDAO = new MenuDAOPostgresImp();
 			try {
 				for(int i=0;i<prodotti.length;i++) {
-				risultato+= menuDao.aggiungiProdottoASede(idSede, prodotti[i]);
+				risultato+= menuDAO.aggiungiProdottoASede(idSede, prodotti[i]);
 				}
 				if(risultato==prodotti.length) {	
 					if(prodotti.length==1) {
@@ -849,7 +849,7 @@ public class ControllerAmministratore {
 			SedeDAOPostgresImp SedeDAO = new SedeDAOPostgresImp();
 			risultato = SedeDAO.getSediPerProdotto(idProdotto).toArray(new Object[][] {});
 			}catch(SQLException e) {		
-				JOptionPane.showMessageDialog(this.aggiungiSedeFrame,"Error!","",JOptionPane.ERROR_MESSAGE);				
+				JOptionPane.showMessageDialog(this.modificaProdottoFrame,"Error!","",JOptionPane.ERROR_MESSAGE);				
 			}		
 		}
 		else if(this.imp == this.altraImp) {
@@ -922,7 +922,7 @@ public class ControllerAmministratore {
 		if(this.imp == this.postgresImp) {
 			try {
 				for(int i=0; i<sedi.length; i++) {
-					MenuDAOPostgresImp menuDao = new MenuDAOPostgresImp();;
+					MenuDAOPostgresImp menuDao = new MenuDAOPostgresImp();
 					risultato += menuDao.EliminaProdottoDaSede(sedi[i], idProdotto);
 					}
 				if(risultato!=0) {

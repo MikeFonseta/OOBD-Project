@@ -197,6 +197,11 @@ public class GestioneProdottiFrame extends JFrame {
 					int riga = table.getSelectedRow();
 						controllerAmministratore.ApriEliminaProdottoFrame((String) table.getValueAt(riga, 1), (int) table.getValueAt(riga, 0));
 				}
+				else if(table.getSelectedRowCount()>1){
+					JOptionPane.showMessageDialog(parent, new String("Selezionare un solo prodotto!"),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+				else
+					JOptionPane.showMessageDialog(parent, new String("Nessuna riga selezionata!"),"Error",JOptionPane.ERROR_MESSAGE);	
 			}
 		});
 		btnElimina.setBounds(741, 644, 195, 45);
@@ -214,8 +219,10 @@ public class GestioneProdottiFrame extends JFrame {
 							controllerAmministratore.ApriModificaProdotto(idProdotto);
 					}
 					else if(table.getSelectedRowCount()>1){
-						JOptionPane.showMessageDialog(parent, new String("Selezionare una sola sede"),"Error",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(parent, new String("Selezionare un solo prodotto!"),"Error",JOptionPane.ERROR_MESSAGE);
 					}
+					else
+						JOptionPane.showMessageDialog(parent, new String("Nessuna riga selezionata!"),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

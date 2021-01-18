@@ -167,7 +167,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		Connection conn = null;
 		
 //		SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || 
-//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || citt‡ AS Indirizzo, 
+//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || citt√† AS Indirizzo, 
 //		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato
 //		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine
 //		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente
@@ -178,7 +178,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || \r\n"
-				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || citt‡ AS Indirizzo, \r\n"
+				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || citt√† AS Indirizzo, \r\n"
 				+ "		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine\r\n"
 				+ "		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente\r\n"

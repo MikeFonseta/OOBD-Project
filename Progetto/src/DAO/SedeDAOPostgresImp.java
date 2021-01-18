@@ -184,7 +184,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Citt\u00E0 AS Indirizzo "
 							+ "FROM Sede AS S "
 							+ "WHERE S.ID_Sede IN (SELECT DISTINCT ID_Sede "
-							+ "FROM Menù "
+							+ "FROM Men\u00F9 "
 							+ "WHERE ID_Prodotto = "+idProdotto+" ) ");
 		
 		while(rs.next()) {
@@ -218,7 +218,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Citt\u00E0 AS Indirizzo "
 						   + "FROM Sede AS  S "
 						   + "WHERE S.ID_Sede NOT IN (SELECT DISTINCT ID_Sede "
-						   + "FROM Menù "
+						   + "FROM Men\u00F9 "
 						   + "WHERE ID_Prodotto = "+idProdotto+" ) ");
 		
 		while(rs.next()) {
