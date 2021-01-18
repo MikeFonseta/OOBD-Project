@@ -167,7 +167,13 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		Connection conn = null;
 		
 //		SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || 
+<<<<<<< .mine
+//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || cittï¿½ AS Indirizzo, 
+||||||| .r97
+//		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || città AS Indirizzo, 
+=======
 //		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || cittÃ  AS Indirizzo, 
+>>>>>>> .r98
 //		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato
 //		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine
 //		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente
@@ -178,7 +184,13 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || \r\n"
+<<<<<<< .mine
+				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, \r\n"
+||||||| .r97
+				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || città AS Indirizzo, \r\n"
+=======
 				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || cittÃ  AS Indirizzo, \r\n"
+>>>>>>> .r98
 				+ "		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine\r\n"
 				+ "		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente\r\n"
@@ -259,7 +271,38 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 	}
 	
 	
-	
+	public List<Object[]> getProdottiCarrello(int idOrdine) throws SQLException  {
+		
+		List<Object[]> prodotti = new ArrayList<Object[]>();
+		Connection conn =  DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT nomep AS nome, numpezzi AS quantita,prezzo AS prezzo, PR.id_prodotto ,STRING_AGG(nomea,',') AS allergeni\r\n"
+		+ "FROM prodotto AS PR LEFT JOIN etichetta AS E ON PR.id_prodotto=E.id_prodotto\r\n"
+		+ "LEFT JOIN compordine AS CO ON CO.id_prodotto=PR.id_prodotto\r\n"
+		+ "WHERE CO.id_ordine='"+idOrdine+"'\r\n"
+		+ "GROUP BY nome,numpezzi,prezzo,PR.id_prodotto\r\n"
+		+ "ORDER BY nome ASC");
+		
+		while(rs.next()) {
+			
+			String nome=rs.getString(1);
+			int quantita=rs.getInt(2);
+			String prezzo= "\u20AC "+String.valueOf(rs.getFloat(3));
+			int ID=rs.getInt(4);
+			String allergeni=rs.getString(5);
+			
+			Object[] object = new Object[] {nome,quantita,prezzo,ID,allergeni};
+			
+			prodotti.add(object);
+			
+		} 
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return prodotti;
+	}
 	
 
 	@Override

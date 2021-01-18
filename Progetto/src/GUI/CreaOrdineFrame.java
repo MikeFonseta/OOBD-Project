@@ -51,7 +51,7 @@ public class CreaOrdineFrame extends JFrame {
 	private JTextField txfVia;
 	private JTextField txfCodice;
 	private JLabel lblAllergeni;
-	private String idNuovo;
+	private String ID;
 	private float Totale;
 	private ControllerGestore controllerGestore;
 	private Point initialClick;
@@ -61,9 +61,11 @@ public class CreaOrdineFrame extends JFrame {
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	
 
-	public CreaOrdineFrame(ControllerGestore controllerGestore,boolean modifica) {
+	public CreaOrdineFrame(ControllerGestore controllerGestore, int defaultId) {
 		setResizable(false);
-		this.idNuovo=controllerGestore.getProssimoID();
+		if (defaultId==0) this.ID=controllerGestore.getProssimoID();
+		else this.ID=String.valueOf(9);//togliere questa funzione e metterne una che trova l id del cliente
+		
 		this.controllerGestore = controllerGestore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
@@ -126,8 +128,7 @@ public class CreaOrdineFrame extends JFrame {
 		tblCarrello.getTableHeader().setReorderingAllowed(false);
 		tblCarrello.setRowHeight(30);
 		tblCarrello.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
+			controllerGestore.PrelevaProdottiCarrello(defaultId),
 			new String[] {
 				"Nome", "Quantit\u00E0", "Prezzo", "ID", "Allergeni"
 			}
@@ -384,21 +385,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnCompila.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnCompila.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				String [] datiUtente = controllerGestore.getDati(Integer.parseInt(txfCodice.getText())); //preleva i dati
-				
-				if(datiUtente[0]!=null) {//inserisci nei field i dati 
-					txfNome.setText(datiUtente[0]);
-					txfCognome.setText(datiUtente[1]);
-					txfTelefono.setText(datiUtente[2]);
-					cbxProvincia.setSelectedItem(datiUtente[3]);
-					cbxCitta.setSelectedItem(datiUtente[4]);
-					txfVia.setText(datiUtente[5]);
-					txfCivico.setText(datiUtente[6]);
-				}else {
-					Errore("");
-				}
-				
+				CompilaCampi();
 			}
 		});
 		btnCompila.setBounds(1084, 64, 71, 23);
@@ -408,7 +395,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnNuovo.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnNuovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				txfCodice.setText(idNuovo);
+				txfCodice.setText(ID);
 			}
 		});
 		btnNuovo.setBounds(1019, 64, 63, 23);
@@ -427,12 +414,12 @@ public class CreaOrdineFrame extends JFrame {
 					}
 					else 
 					{
-						if(!modifica) {
+						if(defaultId==0) {
 							//creazione utente
 							int idCliente=Integer.parseInt(txfCodice.getText());
-							if(idCliente==Integer.parseInt(idNuovo)) {
-								controllerGestore.CreaNuovoCliente(idNuovo,txfNome.getText(),txfCognome.getText()); //ok
-							}else if(Integer.parseInt(idNuovo)<idCliente) {
+							if(idCliente==Integer.parseInt(ID)) {
+								controllerGestore.CreaNuovoCliente(ID,txfNome.getText(),txfCognome.getText()); //ok
+							}else if(Integer.parseInt(ID)<idCliente) {
 								//messaggio per creare un nuovo utente utilizzare il tasto 'nuovo'
 							}
 							//creare l ordine inserendo il nome della sede, prelevandolo dall account salvato in controllerGestore (sede 1)
@@ -587,14 +574,19 @@ public class CreaOrdineFrame extends JFrame {
 
 		
 		
-		if(modifica) {
+		if(defaultId!=0) {
 			
+			lblAllergeni.setText(AggiornaAllergeni());
 			//prelevare i dati di tutti i prodotti dell ordine e le quantita, inserire il tutto nel carrello aggiungendo la riga del totale alla fine
+			modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale()),null,null});
+			
 			//prelevare tutti i dati e passarli ai textfield
 			//il field del codice viene reso non editabile dopo aver riempito la schermata
 			
-			
-			
+			//funzione per prelevare l id del cliente
+			txfCodice.setText("9"); 
+			txfCodice.setEditable( false ); 
+			CompilaCampi();
 			
 		}
 		
@@ -633,6 +625,24 @@ public class CreaOrdineFrame extends JFrame {
 			tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
 	}
 	
+	
+	public void CompilaCampi(){
+		
+		String [] datiUtente = controllerGestore.getDati(Integer.parseInt(txfCodice.getText())); //preleva i dati
+		
+		if(datiUtente[0]!=null) {//inserisci nei field i dati 
+			txfNome.setText(datiUtente[0]);
+			txfCognome.setText(datiUtente[1]);
+			txfTelefono.setText(datiUtente[2]);
+			cbxProvincia.setSelectedItem(datiUtente[3]);
+			cbxCitta.setSelectedItem(datiUtente[4]);
+			txfVia.setText(datiUtente[5]);
+			txfCivico.setText(datiUtente[6]);
+		}else {
+			Errore("");
+		}
+		
+	}
 	
 	
 	

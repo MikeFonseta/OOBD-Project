@@ -1,6 +1,7 @@
 package Controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -238,7 +239,7 @@ public class ControllerGestore {
 
 	public void ApriCreaOrdineFrame() {
 		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
-		creaOrdineFrame = new CreaOrdineFrame(this,false);
+		creaOrdineFrame = new CreaOrdineFrame(this,0);
 	}
 	
 	public void ApriVisualizzaOrdini() {
@@ -332,10 +333,10 @@ public class ControllerGestore {
 	
 	
 	
-	public void ModificaCreaOrdineFrame() {//scrivere dopo aver caricato CreaOrdineFrame
+	public void ModificaCreaOrdineFrame(int idOrdine) {//scrivere dopo aver caricato CreaOrdineFrame
 		
 		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
-		creaOrdineFrame = new CreaOrdineFrame(this,true);
+		creaOrdineFrame = new CreaOrdineFrame(this,idOrdine);
 	}
 	
 	
@@ -456,6 +457,30 @@ public class ControllerGestore {
 		
 	}
 	
+	public Object[][] PrelevaProdottiCarrello(int idOrdine){
+		
+		Object[][] prodotti = null;
+		
+		if(idOrdine!=0) {
+			if(this.imp.equals(this.postgresImp)) {
+				try {
+					
+					OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
+					prodotti=ordineDAO.getProdottiCarrello(idOrdine).toArray(new Object[][] {});
+				
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else if(this.imp.equals(this.altraImp))
+			{
+				//altre implementazioni
+			}
+		}else prodotti=new Object[][] {};
+		
+		return prodotti;
+	}
+
 	
 	
 	

@@ -270,8 +270,8 @@ public class GestoreFrame extends JFrame {
 		btnModifica.addMouseListener(new MouseAdapter() {//se l ordine e in attesa
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {
-					controllerGestore.ModificaCreaOrdineFrame(); //da scrivere dopo aver caricato CreaOrdineFrame
+				if(e.getButton() == MouseEvent.BUTTON1) {//sibogna seleszionare un ordine prima
+					controllerGestore.ModificaCreaOrdineFrame((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0))); //da scrivere dopo aver caricato CreaOrdineFrame
 					
 				}
 					
