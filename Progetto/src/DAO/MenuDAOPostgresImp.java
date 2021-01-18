@@ -111,9 +111,24 @@ public class MenuDAOPostgresImp implements MenuDAO {
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM men\u00F9 WHERE id_sede=" + idSede + ") AND P.categoria='" + categoria + "' ORDER BY P.id_prodotto ASC");
+		ResultSet rs = null;
 		
+		
+		
+		StringBuilder sql = new  StringBuilder(1024); 
+		sql.append("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
+				+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM men\u00F9 WHERE id_sede=" + idSede + ")");
+		
+		rs = st.executeQuery("SELECT * FROM categorie WHERE nomecategoria='"+categoria+"'");
+		
+		
+		if(rs.next()) {
+			sql.append("AND P.categoria='" + categoria + "'");
+		}
+		
+		sql.append("ORDER BY P.id_prodotto ASC");
+		
+		rs= st.executeQuery(sql.toString());
 		while(rs.next()) {
 				
 			int idProdotto = rs.getInt(1);

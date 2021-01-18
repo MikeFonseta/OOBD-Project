@@ -23,6 +23,7 @@ import Controller.ControllerAmministratore;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Arrays;
 import java.awt.Color;
 
 public class AggiungiProdottoFrame extends JFrame{
@@ -45,7 +46,11 @@ public class AggiungiProdottoFrame extends JFrame{
 		getContentPane().setLayout(null);
 		
 		cbxCategoria = new JComboBox();
-		cbxCategoria.setModel(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
+		DefaultComboBoxModel model = new DefaultComboBoxModel();
+		model.addElement("Tutte le categorie");
+		model.addAll(Arrays.asList(controllerAmministratore.getCategorie()));
+		cbxCategoria.setModel(model);
+		cbxCategoria.setSelectedItem("Tutte le categorie");
 		cbxCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
 		cbxCategoria.setBounds(10, 52, 175, 30);
 		getContentPane().add(cbxCategoria);
