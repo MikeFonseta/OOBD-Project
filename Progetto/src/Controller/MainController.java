@@ -395,8 +395,7 @@ public class MainController {
 				
 				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 				try {
-					result = prodottoDao.getCategorieProdotto().toArray(new String[] {});
-					//result = prodottoDao.getCategorieTotali().toArray(new String[] {});
+					result = prodottoDao.getCategorieTotali().toArray(new String[] {});
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}

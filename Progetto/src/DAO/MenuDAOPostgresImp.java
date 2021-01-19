@@ -116,12 +116,10 @@ public class MenuDAOPostgresImp implements MenuDAO {
 		
 		StringBuilder sql = new  StringBuilder(1024); 
 		sql.append("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-				+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM men\u00F9 WHERE id_sede=" + idSede + ")");
+				+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM men\u00F9 WHERE id_sede=" + idSede + ")");	
+	
 		
-		rs = st.executeQuery("SELECT * FROM categorie WHERE nomecategoria='"+categoria+"'");
-		
-		
-		if(rs.next()) {
+		if(categoria!=null) {
 			sql.append("AND P.categoria='" + categoria + "'");
 		}
 		

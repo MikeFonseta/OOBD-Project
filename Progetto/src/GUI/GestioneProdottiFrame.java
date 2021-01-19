@@ -413,11 +413,7 @@ public class GestioneProdottiFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-	
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
+
 	public GestioneProdottiFrame(ControllerGestore ControllerGestore) {
 		setResizable(false);
 		this.controllerGestore = ControllerGestore;

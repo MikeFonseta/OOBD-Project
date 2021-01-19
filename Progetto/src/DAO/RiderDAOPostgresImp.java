@@ -269,7 +269,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 				+ "ORDER BY id_rider ASC\r\n"
 				+ "LIMIT 1");
 		
-		if(rs.next()){
+		while(rs.next()){
 			 idRider = rs.getInt(1);
 		}
 		

@@ -45,12 +45,7 @@ public class AggiungiProdottoFrame extends JFrame{
 		setBounds(100,100,889,580);
 		getContentPane().setLayout(null);
 		
-		cbxCategoria = new JComboBox();
-		DefaultComboBoxModel model = new DefaultComboBoxModel();
-		model.addElement("Tutte le categorie");
-		model.addAll(Arrays.asList(controllerAmministratore.getCategorie()));
-		cbxCategoria.setModel(model);
-		cbxCategoria.setSelectedItem("Tutte le categorie");
+		cbxCategoria = new JComboBox(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
 		cbxCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
 		cbxCategoria.setBounds(10, 52, 175, 30);
 		getContentPane().add(cbxCategoria);
@@ -59,7 +54,11 @@ public class AggiungiProdottoFrame extends JFrame{
 		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnCerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controllerAmministratore.getProdottiSedeCategoria(idSede,cbxCategoria.getSelectedItem().toString());
+				if(!cbxCategoria.getSelectedItem().toString().equals("Tutte")) {
+					controllerAmministratore.getProdottiSedeCategoria(idSede,cbxCategoria.getSelectedItem().toString());
+				}else {
+					controllerAmministratore.getProdottiSedeCategoria(idSede,null);
+				}
 			}
 		});
 		btnCerca.setBounds(194, 50, 113, 35);

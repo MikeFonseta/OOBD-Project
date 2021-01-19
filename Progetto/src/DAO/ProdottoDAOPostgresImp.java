@@ -496,6 +496,8 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		List<String> categorie = new ArrayList<String>();
 		Connection conn = null;
 		
+		categorie.add("Tutte");
+		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		
