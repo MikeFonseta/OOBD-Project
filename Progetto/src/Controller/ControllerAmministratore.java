@@ -29,6 +29,7 @@ import GUI.EliminaSedeFrame;
 import GUI.GestioneProdottiFrame;
 import GUI.GestioneRiderFrame;
 import GUI.GestioneSedeFrame;
+import GUI.ModificaPasswordFrame;
 import GUI.ModificaProdottoFrame;
 
 
@@ -37,7 +38,7 @@ public class ControllerAmministratore {
 	private String imp = "postgres";
 	private String postgresImp = "postgres";
 	private String altraImp = "altraImp";
-	public AmministratoreFrame amministratoreFrame = null;
+	private AmministratoreFrame amministratoreFrame = null;
 	private MainController mainController = null;
 	private GestioneSedeFrame gestioneSedeFrame = null;
 	private AggiungiProdottoFrame aggiungiProdottoFrame = null;
@@ -52,6 +53,7 @@ public class ControllerAmministratore {
 	private CreaCategoriaFrame creaCategoriaFrame = null;
 	private AggiungiSedeFrame aggiungiSedeFrame = null;
 	private AggiungiACategoriaFrame aggiungiACategoriaFrame = null;
+	private ModificaPasswordFrame modificaPasswordFrame = null;
 	private Account account;
 
 	
@@ -64,6 +66,10 @@ public class ControllerAmministratore {
 		
 	}
 	
+	public AmministratoreFrame getAmministratoreFrame() {
+		return this.amministratoreFrame;
+	}
+	
 	public void ErroreFile(String Messaggio) {
 		if(this.creaSedeFrame == null) {
 			JOptionPane.showMessageDialog(this.gestioneSedeFrame,Messaggio,"Error",JOptionPane.ERROR_MESSAGE);
@@ -72,6 +78,55 @@ public class ControllerAmministratore {
 		}
 	}
 
+	public void ApriModificaPasswordFrame() {
+		this.modificaPasswordFrame = new ModificaPasswordFrame(this);
+		this.amministratoreFrame.setEnabled(false);
+	}
+	
+	public void ChiudiModificaPasswordFrame() {
+		this.amministratoreFrame.setEnabled(true);
+		this.modificaPasswordFrame.dispose();
+	}
+	
+	public void CambiaPassword(String Password, String NuovaPassword, String ConfermaPassword) {
+		
+		
+		if(Password.equals(this.account.getPassword())) {
+			if(NuovaPassword.equals(ConfermaPassword)) {
+				int risultato = 0;
+				if(this.imp.equals(this.postgresImp))
+				{
+					AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
+					try {
+						
+						risultato= accountDao.ModificaPassword(this.account, ConfermaPassword);
+					
+						if(risultato==1) {
+							this.amministratoreFrame.setEnabled(true);
+							this.modificaPasswordFrame.dispose();
+							JOptionPane.showMessageDialog(this.amministratoreFrame,"Password modificata!","",JOptionPane.PLAIN_MESSAGE);
+						}
+					} catch (SQLException e) {
+						JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+					}
+				}else if(this.imp.equals(this.altraImp))
+				{
+					//altra implementazione
+				}
+				
+			}else {
+				this.amministratoreFrame.setEnabled(true);
+				this.modificaPasswordFrame.dispose();
+				JOptionPane.showMessageDialog(this.amministratoreFrame,"Le password non coincidono","Error",JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}else {
+			this.amministratoreFrame.setEnabled(true);
+			this.modificaPasswordFrame.dispose();
+			JOptionPane.showMessageDialog(this.amministratoreFrame,"La password corrente non è corretta","Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	public List<String> getComuniProvincia(String Provincia) {
 		return this.mainController.getComuniProvincia(Provincia);
 	}
@@ -1017,16 +1072,10 @@ public class ControllerAmministratore {
 		return risultato;
 	}
 	
-	
-
-	//getter e setter
-
-
 	public String getImp() {
 		return imp;
 	}
 
-	
 	public String getPostgresImp() {
 		return postgresImp;
 	}

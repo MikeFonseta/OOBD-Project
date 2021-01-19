@@ -24,6 +24,7 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.SystemColor;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class AmministratoreFrame extends JFrame{
 	
@@ -38,8 +39,10 @@ public class AmministratoreFrame extends JFrame{
 		setMinimumSize(new Dimension(1200, 700));
 		getContentPane().setLayout(null);
 		JLabel lblNomeUtente = new JLabel("Nome Utente: " + controllerAmministratore.getAccount().getNomeUtente());
-		lblNomeUtente.setBounds(22, 46, 321, 54);
-		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 30));
+		lblNomeUtente.setHorizontalTextPosition(SwingConstants.LEFT);
+		lblNomeUtente.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNomeUtente.setBounds(22, 46, 317, 35);
+		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 27));
 		getContentPane().add(lblNomeUtente);
 		
 		JButton btnGestioneProdotti = new JButton("GESTIONE PRODOTTI");
@@ -214,6 +217,20 @@ public class AmministratoreFrame extends JFrame{
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
+		
+		JButton btnModificaPassword = new JButton("MODIFICA PASSWORD");
+		btnModificaPassword.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()==MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriModificaPasswordFrame();
+				}
+			}
+		});
+		btnModificaPassword.setFont(new Font("Calibri", Font.PLAIN, 17));
+		btnModificaPassword.setBorder(UIManager.getBorder("Button.border"));
+		btnModificaPassword.setBounds(22, 76, 233, 35);
+		getContentPane().add(btnModificaPassword);
 		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {

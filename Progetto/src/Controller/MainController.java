@@ -37,8 +37,8 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();		
-		//LoginTry("A001","pass12"); //amministratore
-		LoginTry("U00001","pass123");//gestore
+		LoginTry("A001","pass21"); //amministratore
+		//LoginTry("U00001","pass123");//gestore
 	}
 	
 	public static void main(String[] args) {
@@ -99,7 +99,7 @@ public class MainController {
 	
 	public void ApriVisualizzaOrdiniFrame() {
 		if(this.controllerAmministratore!= null)	
-			this.controllerAmministratore.amministratoreFrame.setVisible(false);
+			this.controllerAmministratore.getAmministratoreFrame().setVisible(false);
 		else
 			this.controllerGestore.getGestoreFrame().setVisible(false);
 		visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this);
@@ -108,8 +108,8 @@ public class MainController {
 	public void ChiudiVisualizzaOrdiniFrame() {
 		this.visualizzaOrdiniFrame.dispose();
 		if(this.controllerAmministratore!= null)	{
-			this.controllerAmministratore.amministratoreFrame.setVisible(true);
-			this.controllerAmministratore.amministratoreFrame.setEnabled(true);
+			this.controllerAmministratore.getAmministratoreFrame().setVisible(true);
+			this.controllerAmministratore.getAmministratoreFrame().setEnabled(true);
 		}
 		else {
 			this.controllerGestore.getGestoreFrame().setVisible(true);

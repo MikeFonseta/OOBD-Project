@@ -20,35 +20,30 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-public class EliminaSedeFrame extends JFrame{
+public class ModificaPasswordFrame extends JFrame{
 	
-	private JPasswordField pxfPassword;
 	private Point initialClick;
 	private JFrame parent=this;
+	private JPasswordField pxfPasswordAttuale;
+	private JPasswordField pxfNuovaPassword;
+	private JPasswordField pxfConfermaPassword;
 	
-	public EliminaSedeFrame(ControllerAmministratore controllerAmministratore,int idSede) {
+	public ModificaPasswordFrame(ControllerAmministratore controllerAmministratore) {
 		setUndecorated(true);
 		
 		setPreferredSize(new Dimension(475, 251));
 		setMaximumSize(new Dimension(475, 251));
 		setMinimumSize(new Dimension(475, 251));
-		setSize(new Dimension(475, 251));
+		setSize(new Dimension(475, 359));
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setName("EliminaSede");
 		getContentPane().setLayout(null);
 		
-		JLabel lblText = new JLabel("<html>Per eliminare la sede '" + idSede + "' inserire la propria password: ");
-		lblText.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblText.setHorizontalAlignment(SwingConstants.CENTER);
-		lblText.setFont(new Font("Calibri", Font.PLAIN, 17));
-		lblText.setBounds(12, 13, 443, 96);
-		getContentPane().add(lblText);
-		
-		pxfPassword = new JPasswordField();
-		pxfPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
-		pxfPassword.setBounds(144, 104, 177, 28);
-		getContentPane().add(pxfPassword);
+		pxfPasswordAttuale = new JPasswordField();
+		pxfPasswordAttuale.setFont(new Font("Calibri", Font.PLAIN, 18));
+		pxfPasswordAttuale.setBounds(203, 79, 205, 28);
+		getContentPane().add(pxfPasswordAttuale);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -56,37 +51,59 @@ public class EliminaSedeFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					controllerAmministratore.ChiudiEliminaSedeFrame();
+					controllerAmministratore.ChiudiModificaPasswordFrame();
 				}
 			}
 		});
-		btnChiudi.setBounds(73, 158, 134, 39);
+		btnChiudi.setBounds(76, 269, 134, 39);
 		getContentPane().add(btnChiudi);
 		
 		JButton btnConferma = new JButton("CONFERMA");
 		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 18));
-		btnConferma.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) 
-				{
-					controllerAmministratore.ConfermaEliminazioneSede(pxfPassword.getText(), idSede);
-				}
-			}
-		});
-		btnConferma.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnConferma.setBounds(271, 158, 134, 39);
+		btnConferma.setBounds(274, 269, 134, 39);
 		getContentPane().add(btnConferma);
 		
+		pxfNuovaPassword = new JPasswordField();
+		pxfNuovaPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
+		pxfNuovaPassword.setBounds(203, 133, 205, 28);
+		getContentPane().add(pxfNuovaPassword);
+		
+		pxfConfermaPassword = new JPasswordField();
+		pxfConfermaPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
+		pxfConfermaPassword.setBounds(203, 184, 205, 28);
+		getContentPane().add(pxfConfermaPassword);
+		
+		JLabel lblPasswordAttuale = new JLabel("Password");
+		lblPasswordAttuale.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblPasswordAttuale.setBounds(39, 79, 113, 28);
+		getContentPane().add(lblPasswordAttuale);
+		
+		JLabel lblNuovaPassword = new JLabel("Nuova Password");
+		lblNuovaPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblNuovaPassword.setBounds(39, 133, 154, 28);
+		getContentPane().add(lblNuovaPassword);
+		
+		JLabel lblConfermaPassword = new JLabel("Conferma Password");
+		lblConfermaPassword.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblConfermaPassword.setBounds(39, 184, 154, 28);
+		getContentPane().add(lblConfermaPassword);
 		
 		JPanel pnlBarra = new JPanel();
 		pnlBarra.setBackground(Color.DARK_GRAY);
 		pnlBarra.setBounds(0, 0, 475, 35);
 		getContentPane().add(pnlBarra);
 		pnlBarra.setLayout(null);
+		
+		btnConferma.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) 
+				{
+					controllerAmministratore.CambiaPassword(pxfPasswordAttuale.getText(),pxfNuovaPassword.getText(),pxfConfermaPassword.getText());
+				}
+			}
+		});
+		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
@@ -115,12 +132,13 @@ public class EliminaSedeFrame extends JFrame{
 	    });
 		
 		
-		JLabel lblTitolo = new JLabel("Elimina sede");
+		JLabel lblTitolo = new JLabel("Modifica Password");
 		lblTitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setForeground(Color.WHITE);
-		lblTitolo.setBounds(0, 0, 127, 35);
+		lblTitolo.setBounds(0, 0, 174, 35);
 		pnlBarra.add(lblTitolo);
+		
 		
 		setVisible(true);
 		setResizable(false); 

@@ -124,7 +124,6 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		return dati;
 	}
 	
-	
 	@Override
 	public int getClienteID() throws SQLException{
 	
@@ -147,8 +146,7 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		
 		return id;
 	}
-	
-	
+		
 	@Override
 	public int getClienteOrdine(int idOrdine) throws SQLException{
 		int idCliente=0;
@@ -167,7 +165,6 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		conn.close();
 		return idCliente;
 	}
-	
 	
 	@Override
 	public void CreaCliente(int idCliente,String nome,String cognome) throws SQLException{
@@ -197,11 +194,21 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		
 		return esiste;
 	}
+
 	
+	@Override
+	public int ModificaPassword(Account account, String NuovaPassword) throws SQLException{
+		
+		int risultato=0;
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		risultato = st.executeUpdate("UPDATE account SET password='"+NuovaPassword+"' WHERE nomeutente='"+ account.getNomeUtente() +"'");
 	
-	
-	
-	
-	
+		st.close();
+		conn.close();
+		
+		return risultato;
+	}
+
 	
 }
