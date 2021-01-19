@@ -1,16 +1,11 @@
 package GUI;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+ 
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.awt.Color; 
+import javax.swing.JButton; 
 
 import Controller.ControllerGestore;
 
@@ -98,16 +93,13 @@ public class InfoProdottoFrame extends JFrame {
 	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
 	        @Override
 	        public void mouseDragged(MouseEvent e) {
-
-	            // Posizione Finestra
+ 
 	            int thisX = parent.getLocation().x;
 	            int thisY = parent.getLocation().y;
-
-	            // Determinazione Spostamento
+ 
 	            int xMoved = e.getX() - initialClick.x;
 	            int yMoved = e.getY() - initialClick.y;
-
-	            // Spostamento finestra
+ 
 	            int X = thisX + xMoved;
 	            int Y = thisY + yMoved;
 	            parent.setLocation(X, Y);

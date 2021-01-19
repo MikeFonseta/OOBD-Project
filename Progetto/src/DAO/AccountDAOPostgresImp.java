@@ -180,6 +180,28 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		conn.close();
 	}
 	
+	@Override
+	public boolean VerificaCliente(int idCliente) throws SQLException 
+	{
+		boolean esiste=false;
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		ResultSet rs=st.executeQuery("SELECT id_cliente FROM cliente WHERE id_cliente='"+idCliente+"' ");
+		
+		if (rs.next()) esiste=true;
+		
+		st.close();
+		conn.close();
+		
+		
+		return esiste;
+	}
+	
+	
+	
+	
+	
 	
 	
 }

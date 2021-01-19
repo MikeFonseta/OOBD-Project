@@ -1,8 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,12 +10,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import Controller.ControllerAmministratore;
 import Controller.ControllerGestore;
 
 import java.awt.event.ActionListener;
@@ -60,8 +55,7 @@ public class GestoreFrame extends JFrame {
 		tblRider = new JTable();
 		tblRider.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblRider.setRowHeight(30);
-		tblRider.setFillsViewportHeight(true);
-		//
+		tblRider.setFillsViewportHeight(true); 
 		tblRider.setModel(new DefaultTableModel(
 			controllerGestore.getDatiRider(),
 			new String[] {
@@ -85,8 +79,7 @@ public class GestoreFrame extends JFrame {
 		tblRider.getColumnModel().getColumn(1).setResizable(false);
 		tblRider.getColumnModel().getColumn(2).setResizable(false);
 		tblRider.getColumnModel().getColumn(3).setResizable(false);
-		tblRider.getColumnModel().getColumn(4).setResizable(false);
-		//
+		tblRider.getColumnModel().getColumn(4).setResizable(false); 
 		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
 		scpRider.setViewportView(tblRider);
 		
@@ -99,8 +92,7 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.setRowHeight(30);
 		tblOrdini.setFillsViewportHeight(true);
 		tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
-		tblOrdini.getTableHeader().setReorderingAllowed(false);
-		//
+		tblOrdini.getTableHeader().setReorderingAllowed(false); 
 		tblOrdini.setModel(new DefaultTableModel(
 			controllerGestore.getDatiOrdini(0),
 			new String[] {
@@ -127,13 +119,12 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getColumnModel().getColumn(4).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(5).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(6).setResizable(false);
-		tblOrdini.getColumnModel().getColumn(7).setResizable(false);
-		//
+		tblOrdini.getColumnModel().getColumn(7).setResizable(false); 
 		scpGestore.setViewportView(tblOrdini);
 		
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-		tblOrdini.getColumnModel().getColumn(6).setCellRenderer(rightRenderer); //allinea  a destra gli elementi della colonna
+		tblOrdini.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);  
 		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -157,8 +148,8 @@ public class GestoreFrame extends JFrame {
 		btnEsci.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1)   //controlla che si usi il tasto sinistro del mouse
-					controllerGestore.ChiudiGestoreFrame(true); //dopo aver chiuso il frame, apre login
+				if(e.getButton() == MouseEvent.BUTTON1)   
+					controllerGestore.ChiudiGestoreFrame(true); 
 			}
 		});
 		
@@ -184,8 +175,7 @@ public class GestoreFrame extends JFrame {
 				if(e.getButton() == MouseEvent.BUTTON1)
 					if(e.getButton() == MouseEvent.BUTTON1) {
 						controllerGestore.ApriCreaOrdineFrame(); 
-					}
-					
+					}	
 			}
 		});
 		
@@ -214,11 +204,12 @@ public class GestoreFrame extends JFrame {
 		});
 				
 		JButton btnRiassegna = new JButton("Riassegna");
+		btnRiassegna.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnRiassegna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblOrdini.getSelectedColumnCount() != 0) 
 				{
-					if((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1))==0) {//il codicerider è nullo ovvero l ordine e libero
+					if((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1))==0) { 
 						if(tblRider.getSelectedColumnCount() != 0) 
 						{
 							int idRider=((int)tblRider.getValueAt(tblRider.getSelectedRow(), 3));
@@ -227,19 +218,15 @@ public class GestoreFrame extends JFrame {
 								if(numeroordini==3) {
 									controllerGestore.ImpostaInizioConsegna(idRider,false);
 								}
-								//il filtro sicuramente non e inserito 
 								AggiornaRider();
 								AggiornaOrdini(0);
-							}else
-								//messaggio il rider non e disponibile
-								;
+							}else Errore("Il Rider deve essere disponibile")  ;
 								
-						}else //messaggio seleziona un rider per assegnare l ordine
-							;
+						}else Errore("Selezionare un rider per assegnare l'ordine");
 					
-					}else //l ordine e gia assegnato ad un rider
+					}else  
 					{
-						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
+						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') { 
 							int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),(int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1),false);
 							if(filtroRider==0) {
 								AggiornaOrdini(0);
@@ -252,83 +239,86 @@ public class GestoreFrame extends JFrame {
 								}
 							}
 							AggiornaRider();
-						}else //messaggio non puoi dissociare un ordine gia spedito
-							;
+						}else Errore("L'ordine selezionato \u00E8 gi\u00E0 stato spedito");
 						
 					}				
 				
-				}else Errore();
+				}else Errore("Selezionare un ordine");
 			}
 		});
 		btnRiassegna.setBounds(931, 626, 89, 63);
 		pnlGestore.add(btnRiassegna);
 		
-		
 		JButton btnModifica = new JButton("Modifica");
+		btnModifica.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnModifica.setBounds(1017, 626, 89, 63);
 		pnlGestore.add(btnModifica);
-		btnModifica.addMouseListener(new MouseAdapter() {//se l ordine e in attesa
+		btnModifica.addMouseListener(new MouseAdapter() { 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {//sibogna seleszionare un ordine prima
-					controllerGestore.ModificaCreaOrdineFrame((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0))); //da scrivere dopo aver caricato CreaOrdineFrame
-					
+				if(e.getButton() == MouseEvent.BUTTON1) { 
+					if(tblOrdini.getSelectedColumnCount() != 0)  { 
+						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
+							controllerGestore.ModificaCreaOrdineFrame((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));  
+						}else Errore("L'ordine selezionato \u00E8 gi\u00E0 stato spedito");
+					}
+					else Errore("Selezionare l'ordine da modificare");
 				}
-					
 			}
 		});
 		
 		JButton btnInfo = new JButton("Info");
-		btnInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnInfo.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnInfo.setBounds(1101, 626, 89, 63);
 		pnlGestore.add(btnInfo);
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) { 
-					int indice = getTblOrdini().getSelectedRow();//verificare che sia stata selezionata una riga
-					if(indice!= -1)
-						controllerGestore.ApriVisualizzaCarrello(getIdOrdineAllaRigaSelezionata(indice));
+					if(tblOrdini.getSelectedColumnCount() != 0)  {
+						int indice = getTblOrdini().getSelectedRow(); 
+						if(indice!= -1)
+							controllerGestore.ApriVisualizzaCarrello(getIdOrdineAllaRigaSelezionata(indice));
+					}
+					else Errore("Selezionare l'ordine per visualizzare il carrello"); 
 				}
 			}
 		});
 		
 		JButton btnElimina = new JButton("Elimina");
+		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnElimina.setBounds(845, 626, 89, 63);
 		pnlGestore.add(btnElimina);
-		btnElimina.addMouseListener(new MouseAdapter() {
-			
+		btnElimina.addMouseListener(new MouseAdapter() { 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1)
 				{
-					if(tblOrdini.getSelectedColumnCount() != 0) //inserire messaggio di conferma dell eliminazione
-					{
-						int idRider=(int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1));
+					if(tblOrdini.getSelectedColumnCount() != 0) 
+					{ 
 						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
-							int numeroordini=controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)),idRider); 
-							if(filtroRider!=0) {
-								if(numeroordini==0) {
-									AggiornaOrdini(0);
-									filtroRider=0;
-								}else AggiornaOrdini(idRider); 
-							}else AggiornaOrdini(0);
-							AggiornaRider();
+							
+							if(MessaggioElimina("Eliminare l'ordine?")) {
+								int idRider=(int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1));
+								int numeroordini=controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)),idRider); 
+								if(filtroRider!=0) {
+									if(numeroordini==0) {
+										AggiornaOrdini(0);
+										filtroRider=0;
+									}else AggiornaOrdini(idRider); 
+								}else AggiornaOrdini(0);
+								AggiornaRider();
+							}
 						}
 						else {
-							OrdineSpedito();
+							Errore("Impossibile eliminare un ordine in consegna");
 						}
 					}else 
 					{
-						Errore();	
+						Errore("Selezionare un ordine per l'eliminazione");	
 					}
-				}
-					
-			}
-		
+				} 	
+			} 
 		});
 		
 		JPanel pnlBarra = new JPanel();
@@ -344,13 +334,29 @@ public class GestoreFrame extends JFrame {
 		pnlBarra.add(lblTitolo);
 		
 		JButton btnDisponibile = new JButton("Disponibilit\u00E0");
+		btnDisponibile.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnDisponibile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblRider.getSelectedColumnCount() != 0){
-					int idRider=((int) tblRider.getValueAt(tblRider.getSelectedRow(),3));
-					
+					int idRider=((int) tblRider.getValueAt(tblRider.getSelectedRow(),3)); 
 					if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='L') {
-						if((int) tblRider.getValueAt(tblRider.getSelectedRow(),4)>0) {//messaggio di warning ci sono ordini in corso assegnati al rider
+						if((int) tblRider.getValueAt(tblRider.getSelectedRow(),4)>0) { 
+							if(MessaggioElimina("Tutti gli ordini in attesa verranno dissociati da questo rider")) {
+								controllerGestore.CancellaCodiciRider(idRider);
+								if(filtroRider==0) {
+									AggiornaOrdini(0); 
+								}
+								else if(filtroRider==idRider) {
+									AggiornaOrdini(0);
+									filtroRider=0;
+								} 
+								controllerGestore.AggiornaDisposizioneRider(idRider ,false);
+							}
+						}
+					}
+					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='C') { 
+						if(MessaggioElimina("Il rider \u00E8 in consegna, continuare?")) {
+							controllerGestore.AnnullaConsegna(idRider);
 							controllerGestore.CancellaCodiciRider(idRider);
 							if(filtroRider==0) {
 								AggiornaOrdini(0); 
@@ -360,18 +366,6 @@ public class GestoreFrame extends JFrame {
 								filtroRider=0;
 							}
 						}
-						controllerGestore.AggiornaDisposizioneRider(idRider ,false);
-					}
-					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='C') {//messaggio di warning il rider e in consegna
-						controllerGestore.AnnullaConsegna(idRider);
-						controllerGestore.CancellaCodiciRider(idRider);
-						if(filtroRider==0) {
-							AggiornaOrdini(0); 
-						}
-						else if(filtroRider==idRider) {
-							AggiornaOrdini(0);
-							filtroRider=0;
-						}
 					}
 					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='X') {
 						controllerGestore.AggiornaDisposizioneRider(idRider,true); 
@@ -380,7 +374,7 @@ public class GestoreFrame extends JFrame {
 				
 				}else 
 				{
-					Errore();	
+					Errore("Selezionare il Rider");	
 				}
 			}
 		});
@@ -388,6 +382,7 @@ public class GestoreFrame extends JFrame {
 		pnlGestore.add(btnDisponibile);
 		
 		JButton btnFiltro = new JButton("Filtro");
+		btnFiltro.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnFiltro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (filtroRider!=0) {
@@ -401,11 +396,11 @@ public class GestoreFrame extends JFrame {
 							AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
 							filtroRider=(int)tblRider.getValueAt(tblRider.getSelectedRow(),3);
 						}else {
-							//messaggio per aggiornare il filtro il rider deve essere disponibile
+							Errore("Per aggiornare il filtro il rider deve essere disponibile");
 						}
 					}
 					else if(tblRider.getSelectedColumnCount() == 0 ) {
-						//messaggio seleziona una riga per attivare il filtro
+						Errore("Seleziona un rider per attivare il filtro");
 					}	
 				}
 			}
@@ -414,18 +409,19 @@ public class GestoreFrame extends JFrame {
 		pnlGestore.add(btnFiltro);
 		
 		JButton btnPartenza = new JButton("Partenza");
+		btnPartenza.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnPartenza.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblRider.getSelectedColumnCount() != 0){
 					int idRider=(int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3));
 					if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)!=3) {
 						if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='X'){
-							//messaggio il rider non e disponibile
+							Errore("Il rider non \u00E8 disponibile");
 						}
 						else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)==0) {
-							//messaggio il rider non ha ordini 
+							Errore("Il Rider non ha ordini assegnati");
 						}
-						else if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){//annulla la consegna
+						else if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){ 
 							controllerGestore.ImpostaInizioConsegna(idRider,true);
 							AggiornaRider(); 
 							if (filtroRider==0) AggiornaOrdini(0);
@@ -434,18 +430,17 @@ public class GestoreFrame extends JFrame {
 							}
 						}
 						else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)>0) {
-							controllerGestore.ImpostaInizioConsegna(idRider,false); //inizia la consegna per tutti gli ordini assegnati al rider
+							controllerGestore.ImpostaInizioConsegna(idRider,false);  
 							AggiornaRider(); 
 							if (filtroRider==0) AggiornaOrdini(0);
 							else if(filtroRider==idRider) {
 								AggiornaOrdini(filtroRider);
 							}}
 					}else {
-						//messaggio se il rider ha 3 ordini non si puo annullare la partenza a meno che lo si rende non disponibile
-					}
-						
+						Errore("Per annullare la consegna di un rider con 3 ordini, bisogna renderlo non disponibile");
+					} 
 				}else {
-					//non hai selezionato una riga
+					Errore("Selezionare un Rider");
 				}
 			}
 		});
@@ -453,10 +448,10 @@ public class GestoreFrame extends JFrame {
 		pnlGestore.add(btnPartenza);
 		
 		JButton btnConsegnato = new JButton("Consegnato");
+		btnConsegnato.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnConsegnato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(tblRider.getSelectedColumnCount() != 0){
-					//attivabile solo se lo stato del rider è C 
+				if(tblRider.getSelectedColumnCount() != 0){ 
 					if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='C'){
 						if(MessaggioElimina("Terminare la consegna?")) {
 							int idRider=(int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3));
@@ -471,23 +466,16 @@ public class GestoreFrame extends JFrame {
 						}
 					}
 					else {
-						//messaggio il rider deve essere in consegna 
-					}
-					
+						Errore("Il rider deve essere in consegna");
+					} 
 				}else {
-					//non hai selezionato una riga
+					Errore("Selezionare un rider");
 				}
 			}
-		});
-		
-		
-		
-		
+		}); 
 		btnConsegnato.setBounds(292, 626, 89, 63);
 		pnlGestore.add(btnConsegnato);
-		
-		
-		
+		 
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
 	            initialClick = e.getPoint();
@@ -498,16 +486,13 @@ public class GestoreFrame extends JFrame {
 	    pnlBarra.addMouseMotionListener(new MouseMotionAdapter() {
 	        @Override
 	        public void mouseDragged(MouseEvent e) {
-
-	            // Posizione Finestra
+	        	
 	            int thisX = parent.getLocation().x;
 	            int thisY = parent.getLocation().y;
 
-	            // Determinazione Spostamento
 	            int xMoved = e.getX() - initialClick.x;
 	            int yMoved = e.getY() - initialClick.y;
 
-	            // Spostamento finestra
 	            int X = thisX + xMoved;
 	            int Y = thisY + yMoved;
 	            parent.setLocation(X, Y);
@@ -574,25 +559,20 @@ public class GestoreFrame extends JFrame {
 			tblOrdini.getColumnModel().getColumn(5).setResizable(false);
 			tblOrdini.getColumnModel().getColumn(6).setResizable(false);
 			tblOrdini.getColumnModel().getColumn(7).setResizable(false);
+			
+			DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+			rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+			tblOrdini.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);  
+			
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+			tblOrdini.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
 	}
 	
-	private void Errore() {
-		JOptionPane.showMessageDialog(this,"Nessun ordine selezionato","Errore",JOptionPane.ERROR_MESSAGE);
+	private void Errore(String messaggio) {
+		JOptionPane.showMessageDialog(this,messaggio,"Errore",JOptionPane.ERROR_MESSAGE);
 	}
 	
-	private void OrdineSpedito() {
-		JOptionPane.showMessageDialog(this,"Impossibile eliminare un ordine in consegna","Errore",JOptionPane.ERROR_MESSAGE);
-	}
-	
-	public JTable getTblOrdini() {
-		return tblOrdini;
-	}
-	
-	public int getIdOrdineAllaRigaSelezionata(int indice){
-		int idOrdine = Integer.parseInt(this.getTblOrdini().getValueAt(indice,0).toString());
-		return idOrdine;
-	}
-
 	public boolean MessaggioElimina(String messaggio) {
 		boolean elimina=true;
 		Object[] opzioni = { "Annulla", "Conferma"};
@@ -607,6 +587,15 @@ public class GestoreFrame extends JFrame {
 		return elimina;
 	}
 	
+	public JTable getTblOrdini() {
+		return tblOrdini;
+	}
+	
+	public int getIdOrdineAllaRigaSelezionata(int indice){
+		int idOrdine = Integer.parseInt(this.getTblOrdini().getValueAt(indice,0).toString());
+		return idOrdine;
+	}
+
 	public int getFiltroRider() {
 		return filtroRider;
 	}

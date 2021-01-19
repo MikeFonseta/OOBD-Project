@@ -18,12 +18,12 @@ import Entities.*;
 import GUI.LoginFrame;
 import GUI.VisualizzaCarrelloFrame;
 import GUI.VisualizzaOrdiniFrame;
-import GUI.VisualizzaProdottiFrame;
 import Utility.DatiExcel;
 import GUI.CreaOrdineFrame;
 
 //simbolo euro : \u20AC
 //a accentata  : \u00E0
+//e accentata  : \u00E8
 //u accentata  : \u00F9
 //simbolo NULL : \u0000
 public class MainController {
@@ -33,7 +33,6 @@ public class MainController {
 	private ControllerGestore controllerGestore = null;
 	private VisualizzaOrdiniFrame visualizzaOrdiniFrame = null;
 	private VisualizzaCarrelloFrame visualizzaCarrelloFrame = null;
-	private VisualizzaProdottiFrame visualizzaProdottiFrame = null;
 	private CreaOrdineFrame creaOrdineFrame = null;
 
 	public MainController() {

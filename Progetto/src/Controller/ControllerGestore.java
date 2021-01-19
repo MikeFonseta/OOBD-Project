@@ -1,7 +1,6 @@
 package Controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -18,7 +17,6 @@ import GUI.InfoProdottoFrame;
 
 
 public class ControllerGestore {
-	//da caricare: CreaOrdineFrame, VisualizzaProdottiFrame, InfoProdottoFrame
 	private String imp = "postgres";
 	private String postgresImp = "postgres";
 	private String altraImp = "altraImp";
@@ -34,7 +32,6 @@ public class ControllerGestore {
 		this.mainController = mainController;
 		this.account = account;
 	    gestoreFrame = new GestoreFrame(this); 
-	    
 	    
 	}
 	
@@ -154,7 +151,7 @@ public class ControllerGestore {
 	}
 	
 	
-	public Object[][] getDatiProdotti(String categoria) { //prodotti
+	public Object[][] getDatiProdotti(String categoria) { 
 		
 		Object[][] result = null;
 		if(this.imp.equals(this.postgresImp))
@@ -196,8 +193,8 @@ public class ControllerGestore {
 	public String[] getCategorieBox() {
 		
 		String[] result = this.mainController.getCategorie();
-		
 		return result;
+		
 	}
 
 	public String[] getDati(int id) {
@@ -239,7 +236,6 @@ public class ControllerGestore {
 		return ID;
 	}
 
-	
 	public String getIdClienteDaOrdine(int idOrdine) {
 		String ID=null;
 		
@@ -259,20 +255,18 @@ public class ControllerGestore {
 		return ID;
 	}
 	
-	
-	
 	public void ApriCreaOrdineFrame() {
-		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
+		this.gestoreFrame.setEnabled(false);  
 		creaOrdineFrame = new CreaOrdineFrame(this,0);
 	}
 	
 	public void ApriVisualizzaOrdini() {
-		//this.gestoreFrame.setEnabled(false);	//da reimpostare dopo aver finito i test
+		this.gestoreFrame.setEnabled(false);
 		mainController.ApriVisualizzaOrdiniFrame();
 	}
 	
 	public void ApriVisualizzaProdotti(){
-		this.gestoreFrame.setEnabled(false);	//da reimpostare dopo aver finito i test
+		this.gestoreFrame.setEnabled(false);	
 		this.gestoreFrame.setVisible(false);
 		this.gestioneProdottiFrame  = new GestioneProdottiFrame(this);
 	}
@@ -310,8 +304,9 @@ public class ControllerGestore {
 		gestoreFrame.AggiornaRider();
 		creaOrdineFrame.dispose();
 		creaOrdineFrame=null;
+		this.gestoreFrame.setEnabled(true); 
+		this.gestoreFrame.setVisible(true); 
 	}
-	
 	
 	public void ImpostaInizioConsegna(int idRider, boolean annulla) {
 		
@@ -347,8 +342,6 @@ public class ControllerGestore {
 		
 	}
 	
-	
-	
 	public void ImpostaFineConsegna(int idRider) {
 		
 		if(this.imp.equals(this.postgresImp)) {
@@ -362,14 +355,11 @@ public class ControllerGestore {
 		
 	}
 	
-	
-	
-	public void ModificaCreaOrdineFrame(int idOrdine) {//scrivere dopo aver caricato CreaOrdineFrame
+	public void ModificaCreaOrdineFrame(int idOrdine) {
 		
-		//this.gestoreFrame.setEnabled(false);  //da reimpostare dopo aver finito i test
+		this.gestoreFrame.setEnabled(false);  
 		creaOrdineFrame = new CreaOrdineFrame(this,idOrdine);
 	}
-	
 	
 	public int EliminaOrdine(int idOrdine,int idRider) {
 		int numeroordini=0;
@@ -407,6 +397,24 @@ public class ControllerGestore {
 			//altre implementazioni
 		}
 		
+	}
+	
+	public boolean VerificaEsistenzaCliente(int idCliente){
+		boolean esiste=false;
+		
+		if(this.imp.equals(this.postgresImp)) { 
+			try {
+				AccountDAOPostgresImp accountDAO = new AccountDAOPostgresImp();
+				esiste=accountDAO.VerificaCliente(idCliente);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(this.imp.equals(this.altraImp))
+		{
+			//altre implementazioni
+		}
+		return esiste;
 	}
 	
 	public int CreazioneOrdine(float totale) {
@@ -465,9 +473,7 @@ public class ControllerGestore {
 			//altre implementazioni
 		}
 		
-		
 	}
-	
 	
 	public void CreazioneCompOrdine(List<int[]> prodotti,int idNuovoOrdine)
 	{
@@ -537,7 +543,6 @@ public class ControllerGestore {
 	
 	}
 	
-
 	public Object[][] PrelevaProdottiCarrello(int idOrdine){
 		
 		Object[][] prodotti = null;
@@ -562,7 +567,6 @@ public class ControllerGestore {
 		return prodotti;
 	}
 
-	
 	public Object[][] ApriRicercaProdotto(String categoriaSelezionata, Integer minSelezionato, Integer maxSelezionato, Integer idSede, List<Integer> idProdottiPerAllergeni) {
 			return  this.mainController.ricercaProdotto(categoriaSelezionata, minSelezionato, maxSelezionato, idSede, idProdottiPerAllergeni);
 	}
@@ -571,8 +575,6 @@ public class ControllerGestore {
 		return this.mainController.getIDProdottiPerAllergeni(Allergeni);
 	}
 	
-	
-	//Getter e Setter
 	public String getImp() {
 		return imp;
 	}
@@ -612,6 +614,5 @@ public class ControllerGestore {
 	public GestioneProdottiFrame getGestioneProdottiFrame() {
 		return gestioneProdottiFrame;
 	}
-
 
 }
