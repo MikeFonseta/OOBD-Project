@@ -464,13 +464,6 @@ public class CreaOrdineFrame extends JFrame {
 		
 		cbxCitta = new JComboBox(CittaModel);
 		cbxCitta.setFont(new Font("Calibri", Font.PLAIN, 11));
-		cbxCitta.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) { 
-            	if(cbxCitta.getSelectedItem() != null && !cbxCitta.getSelectedItem().toString().equals("")) { 
-            	}else { 
-            	} 
-            }
-		});
 		cbxCitta.setBounds(994, 362, 161, 22);
 		pnlCreaOrdine.add(cbxCitta);
  

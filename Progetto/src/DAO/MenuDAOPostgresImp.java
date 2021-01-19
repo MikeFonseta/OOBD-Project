@@ -19,7 +19,6 @@ public class MenuDAOPostgresImp implements MenuDAO {
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		String nosense = "àèù€";
 		risultato = st.executeUpdate("INSERT INTO menù VALUES ("+idSede + "," + idProdotto +")");
 				
 		st.close();

@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import Entities.Ordine;
-import Entities.Rider;
 import Database.DBConnection;
 
 public class OrdineDAOPostgresImp implements OrdineDAO {
