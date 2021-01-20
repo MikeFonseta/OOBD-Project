@@ -178,7 +178,7 @@ public class CreaOrdineFrame extends JFrame {
 		cbxCategorie.setBounds(203, 65, 151, 22);
 		pnlCreaOrdine.add(cbxCategorie);
 		
-		JButton btnAggiungiAlCarrello = new JButton("");
+		JButton btnAggiungiAlCarrello = new JButton("+");
 		btnAggiungiAlCarrello.setBounds(309, 532, 45, 23);
 		pnlCreaOrdine.add(btnAggiungiAlCarrello);
 		btnAggiungiAlCarrello.addMouseListener(new MouseAdapter() {
@@ -197,7 +197,7 @@ public class CreaOrdineFrame extends JFrame {
 			}
 		});
 		
-		JButton btnInfo = new JButton("");   
+		JButton btnInfo = new JButton("i");   
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					if(tblProdotti.getSelectedColumnCount() != 0)
@@ -214,7 +214,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnInfo.setBounds(265, 532, 45, 23);
 		pnlCreaOrdine.add(btnInfo);
 		
-		JButton btnAggiungi1 = new JButton("");
+		JButton btnAggiungi1 = new JButton("+");
 		btnAggiungi1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblCarrello.getSelectedColumnCount() != 0)
@@ -231,7 +231,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnAggiungi1.setBounds(489, 532, 45, 23);
 		pnlCreaOrdine.add(btnAggiungi1);
 		
-		JButton btnRimuovi1 = new JButton("");
+		JButton btnRimuovi1 = new JButton("-");
 		btnRimuovi1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblCarrello.getSelectedColumnCount() != 0)
@@ -250,7 +250,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnRimuovi1.setBounds(534, 532, 45, 23);
 		pnlCreaOrdine.add(btnRimuovi1);
 		
-		JButton btnElimina = new JButton("");
+		JButton btnElimina = new JButton("x");
 		btnElimina.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				if(tblCarrello.getSelectedColumnCount() != 0)
@@ -270,7 +270,7 @@ public class CreaOrdineFrame extends JFrame {
 		btnElimina.setBounds(578, 532, 45, 23);
 		pnlCreaOrdine.add(btnElimina);
 		
-		JButton btnSvuota = new JButton("");
+		JButton btnSvuota = new JButton("Svuota");
 		btnSvuota.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

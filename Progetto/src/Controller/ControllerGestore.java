@@ -158,7 +158,7 @@ public class ControllerGestore {
 		{
 			ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 			try {
-				result = prodottoDao.getProdottiTabella(categoria).toArray(new Object[][] {});
+				result = prodottoDao.getProdottiTabella(categoria,this.account.getSede().getIdSede()).toArray(new Object[][] {});
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -438,12 +438,13 @@ public class ControllerGestore {
 			}
 			
 			try {
-				int numeroordini=0;
-				numeroordini=riderDAO.AggiornaNumeroOrdini(idRider,true);
-				if(numeroordini==3)
-				{
-					this.ImpostaInizioConsegna(idRider,false);
-				}
+//				int numeroordini=0;
+//				numeroordini=
+						riderDAO.AggiornaNumeroOrdini(idRider,true);
+//				if(numeroordini==3)
+//				{
+//					this.ImpostaInizioConsegna(idRider,false);
+//				}
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}

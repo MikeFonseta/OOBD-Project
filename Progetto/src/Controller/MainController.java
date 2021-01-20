@@ -37,8 +37,8 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();		
-		LoginTry("A001","pass21"); //amministratore
-		//LoginTry("U00001","pass123");//gestore
+		//LoginTry("A001","pass21"); //amministratore
+		LoginTry("U00001","pass123");//gestore
 	}
 	
 	public static void main(String[] args) {
@@ -377,7 +377,7 @@ public class MainController {
 				
 				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 				try {
-					result = prodottoDao.getCategorieProdotto().toArray(new String[] {});
+					result = prodottoDao.getCategorieProdotto(controllerGestore.getAccount().getSede().getIdSede()).toArray(new String[] {});
 				//	result = prodottoDao.getCategorieTotali().toArray(new String[] {});
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

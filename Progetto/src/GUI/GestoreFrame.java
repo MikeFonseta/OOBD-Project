@@ -55,7 +55,9 @@ public class GestoreFrame extends JFrame {
 		tblRider = new JTable();
 		tblRider.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblRider.setRowHeight(30);
-		tblRider.setFillsViewportHeight(true); 
+		tblRider.setFillsViewportHeight(true);
+		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblRider.getTableHeader().setReorderingAllowed(false); 
 		tblRider.setModel(new DefaultTableModel(
 			controllerGestore.getDatiRider(),
 			new String[] {
@@ -79,8 +81,7 @@ public class GestoreFrame extends JFrame {
 		tblRider.getColumnModel().getColumn(1).setResizable(false);
 		tblRider.getColumnModel().getColumn(2).setResizable(false);
 		tblRider.getColumnModel().getColumn(3).setResizable(false);
-		tblRider.getColumnModel().getColumn(4).setResizable(false); 
-		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblRider.getColumnModel().getColumn(4).setResizable(false);  
 		scpRider.setViewportView(tblRider);
 		
 		JScrollPane scpGestore = new JScrollPane();
@@ -89,6 +90,7 @@ public class GestoreFrame extends JFrame {
 		pnlGestore.add(scpGestore);
 		
 		tblOrdini = new JTable();
+		tblOrdini.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblOrdini.setRowHeight(30);
 		tblOrdini.setFillsViewportHeight(true);
 		tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -128,7 +130,14 @@ public class GestoreFrame extends JFrame {
 		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tblOrdini.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+		tblOrdini.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+		tblOrdini.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
 		tblOrdini.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
+		
+		tblRider.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+		tblRider.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
+		tblRider.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
 		
 		
 		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
@@ -214,12 +223,15 @@ public class GestoreFrame extends JFrame {
 						{
 							int idRider=((int)tblRider.getValueAt(tblRider.getSelectedRow(), 3));
 							if(((char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='L')){
-								int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,true);
-								if(numeroordini==3) {
-									controllerGestore.ImpostaInizioConsegna(idRider,false);
-								}
-								AggiornaRider();
-								AggiornaOrdini(0);
+								if(((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)<3)){
+//									int numeroordini=
+											controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,true);
+//									if(numeroordini==3) {
+//										controllerGestore.ImpostaInizioConsegna(idRider,false);
+//									}
+									AggiornaRider();
+									AggiornaOrdini(0);
+								}else Errore("Il Rider ha raggiunto il limite massimo di ordini assegnabili");
 							}else Errore("Il Rider deve essere disponibile")  ;
 								
 						}else Errore("Selezionare un rider per assegnare l'ordine");
@@ -342,17 +354,17 @@ public class GestoreFrame extends JFrame {
 					if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='L') {
 						if((int) tblRider.getValueAt(tblRider.getSelectedRow(),4)>0) { 
 							if(MessaggioElimina("Tutti gli ordini in attesa verranno dissociati da questo rider")) {
-								controllerGestore.CancellaCodiciRider(idRider);
-								if(filtroRider==0) {
-									AggiornaOrdini(0); 
-								}
-								else if(filtroRider==idRider) {
-									AggiornaOrdini(0);
-									filtroRider=0;
-								} 
-								controllerGestore.AggiornaDisposizioneRider(idRider ,false);
+								controllerGestore.CancellaCodiciRider(idRider); 
 							}
 						}
+						if(filtroRider==0) {
+							AggiornaOrdini(0); 
+						}
+						else if(filtroRider==idRider) {
+							AggiornaOrdini(0);
+							filtroRider=0;
+						} 
+						controllerGestore.AggiornaDisposizioneRider(idRider ,false);
 					}
 					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='C') { 
 						if(MessaggioElimina("Il rider \u00E8 in consegna, continuare?")) {
@@ -414,7 +426,7 @@ public class GestoreFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(tblRider.getSelectedColumnCount() != 0){
 					int idRider=(int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3));
-					if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)!=3) {
+//					if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)!=3) {
 						if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='X'){
 							Errore("Il rider non \u00E8 disponibile");
 						}
@@ -436,9 +448,9 @@ public class GestoreFrame extends JFrame {
 							else if(filtroRider==idRider) {
 								AggiornaOrdini(filtroRider);
 							}}
-					}else {
-						Errore("Per annullare la consegna di un rider con 3 ordini, bisogna renderlo non disponibile");
-					} 
+//					}else {
+//						Errore("Per annullare la consegna di un rider con 3 ordini, bisogna renderlo non disponibile");
+//					} 
 				}else {
 					Errore("Selezionare un Rider");
 				}
@@ -529,6 +541,12 @@ public class GestoreFrame extends JFrame {
 			tblRider.getColumnModel().getColumn(2).setResizable(false);
 			tblRider.getColumnModel().getColumn(3).setResizable(false);
 			tblRider.getColumnModel().getColumn(4).setResizable(false);
+			
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+			tblRider.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+			tblRider.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
+			tblRider.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
 	}
 	
 	public void AggiornaOrdini(int idRider) {
@@ -566,7 +584,11 @@ public class GestoreFrame extends JFrame {
 			
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+			tblOrdini.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+			tblOrdini.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+			tblOrdini.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
 			tblOrdini.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
+			
 	}
 	
 	private void Errore(String messaggio) {

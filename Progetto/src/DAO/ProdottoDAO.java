@@ -9,9 +9,9 @@ public interface ProdottoDAO {
 	public Prodotto getProdottoPerId(int idProdotto) throws SQLException;
 	public List<Integer> getTuttiProdottiPerNome(String[] Prodotti)throws SQLException;
 	public List<Object[]> getTuttiProdotti() throws SQLException; 
-	public List<String> getCategorieProdotto() throws SQLException;
+	public List<String> getCategorieProdotto(int idSede) throws SQLException;
 	public List<String> getCategorieTotali() throws SQLException;
-	public List<Object[]> getProdottiTabella(String categoria) throws SQLException;
+	public List<Object[]> getProdottiTabella(String categoria,int idSede) throws SQLException;
 	public List<Object[]> getProdottiPerId_Ordine(int idOrdine) throws SQLException;
 	public int eliminaProdottoDaTutteLeSedi(int idProdotto) throws SQLException;
 	public List<Integer> getProdottiPerAllergeni(String[] NomiAllergeni) throws SQLException;	
@@ -24,4 +24,3 @@ public interface ProdottoDAO {
 	public int EliminaCategoria(String NomeCategoria) throws SQLException;
 	public int AggiungiProdottoACategoria(int idProdotto, String Categoria) throws SQLException;
 }
-
