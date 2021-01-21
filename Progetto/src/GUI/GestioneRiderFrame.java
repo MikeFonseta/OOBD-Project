@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -28,6 +29,7 @@ import java.awt.Color;
 
 public class GestioneRiderFrame extends JFrame{
 	
+	private JPanel pnlmain;
 	private ControllerAmministratore controllerAmministratore = null;
 	private Point initialClick;
 	private JFrame parent=this;
@@ -41,8 +43,13 @@ public class GestioneRiderFrame extends JFrame{
 		setSize(new Dimension(430, 496));
 		setPreferredSize(new Dimension(430, 496));
 		setMinimumSize(new Dimension(430, 496));
-		getContentPane().setLayout(null);
-			
+
+		pnlmain = new JPanel();
+		pnlmain.setBackground(UIManager.getColor("Panel.background"));
+		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(pnlmain);
+		pnlmain.setLayout(null);
+		
 		JLabel lblIdRiderTxt = new JLabel("ID RIder ");
 		lblIdRiderTxt.setHorizontalAlignment(SwingConstants.LEFT);
 		lblIdRiderTxt.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -158,7 +165,7 @@ public class GestioneRiderFrame extends JFrame{
 		txfTelefono.setBounds(178, 255, 210, 30);
 		getContentPane().add(txfTelefono);
 		
-		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(new String[] {"Nessun veicolo", "Auto", "Bici","Scooter", "Scooter Elettrico"}));
+		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(new String[] {"Nessun veicolo", "Auto", "Bici","Moto","Scooter", "Scooter Elettrico"}));
 		cbxVeicolo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	
@@ -255,7 +262,12 @@ public class GestioneRiderFrame extends JFrame{
 		setSize(new Dimension(430, 496));
 		setPreferredSize(new Dimension(430, 496));
 		setMinimumSize(new Dimension(430, 496));
-		getContentPane().setLayout(null);
+		
+		pnlmain = new JPanel();
+		pnlmain.setBackground(UIManager.getColor("Panel.background"));
+		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(pnlmain);
+		pnlmain.setLayout(null);
 			
 		JLabel lblIdRiderTxt = new JLabel("ID RIder ");
 		lblIdRiderTxt.setHorizontalAlignment(SwingConstants.LEFT);
@@ -326,7 +338,7 @@ public class GestioneRiderFrame extends JFrame{
 		txfTelefono.setBounds(178, 255, 210, 30);
 		getContentPane().add(txfTelefono);
 		
-		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(new String[] {"Nessun veicolo", "Auto", "Bici","Scooter", "Scooter Elettrico"}));
+		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(new String[] {"Nessun veicolo", "Auto", "Bici","Moto","Scooter", "Scooter Elettrico"}));
 		cbxVeicolo.setSelectedItem(rider.getVeicoloRider());
 		cbxVeicolo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {

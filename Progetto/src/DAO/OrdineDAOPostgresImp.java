@@ -50,7 +50,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			
 				
 			st.executeUpdate("UPDATE ordine SET fineconsegna = CURRENT_TIMESTAMP WHERE id_rider='"+idRider+"' AND fineconsegna IS NULL; "
-					+ " UPDATE rider SET disponibilit\u00E0 = true , numeroordini=0  WHERE id_rider='"+idRider+"'");
+					+ " UPDATE rider SET disponibilità = true , numeroordini=0  WHERE id_rider='"+idRider+"'");
 			
 			st.close();
 			conn.close();
@@ -181,7 +181,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		Connection conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		
-		st.executeUpdate("INSERT INTO infoordine (id_ordine,id_cliente,citt\u00E0,via,numcivico,telefonoc,provincia)\r\n"
+		st.executeUpdate("INSERT INTO infoordine (id_ordine,id_cliente,città,via,numcivico,telefonoc,provincia)\r\n"
 				+ " VALUES ('"+idOrdine+"','"+idCliente+"','"+citta+"','"+via+"','"+civico+"','"+telefono+"','"+provincia+"')" );
 		
 		
@@ -195,7 +195,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		Connection conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		
-		st.executeUpdate("UPDATE infoordine SET citt\u00E0='"+citta+"', via='"+via+"', numcivico='"+civico+"', telefonoc='"+telefono+"', provincia='"+provincia+"' "
+		st.executeUpdate("UPDATE infoordine SET città='"+citta+"', via='"+via+"', numcivico='"+civico+"', telefonoc='"+telefono+"', provincia='"+provincia+"' "
 				+ " WHERE id_ordine = '"+idOrdine+"' ");
 		
 		
@@ -213,7 +213,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  O.id_ordine AS CodOrdine,id_rider AS CodRider, I.id_cliente AS CodCliente, nomec || ' ' || \r\n"
-				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, \r\n"
+				+ "		cognomec AS NomeCliente,via || ' ' || numcivico || ',' || città AS Indirizzo, \r\n"
 				+ "		telefonoc AS TelefonoCliente,totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "		FROM ordine AS O LEFT JOIN infoordine AS I ON I.id_ordine=O.id_ordine\r\n"
 				+ "		LEFT JOIN cliente AS C ON C.id_cliente=I.id_cliente\r\n"
@@ -227,7 +227,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			String NomeCliente= rs.getString(4);
 			String Indirizzo= rs.getString(5);
 			String TelefonoCliente = rs.getString(6);
-			String Totale= "\u20AC "+String.valueOf(rs.getFloat(7));		
+			String Totale= "€ "+String.valueOf(rs.getFloat(7));		
 			java.sql.Timestamp InizioConsegna = rs.getTimestamp(8);
 			
 			char Stato = 'A'; //Attesa default
@@ -256,7 +256,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT  id_ordine AS CodOrdine,id_rider AS CodRider, id_cliente AS CodCliente, nomec || ' ' || cognomec AS NomeCliente,\r\n"
-				+ "				via || ' ' || numcivico || ',' || citt\u00E0 AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
+				+ "				via || ' ' || numcivico || ',' || città AS Indirizzo, telefonoc AS TelefonoCliente,\r\n"
 				+ "			    totale AS Totale, inizioconsegna AS Stato\r\n"
 				+ "				FROM ordine AS O NATURAL JOIN infoordine AS I\r\n"
 				+ "				NATURAL JOIN cliente AS C\r\n"
@@ -273,7 +273,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 			String NomeCliente= rs.getString(4);
 			String Indirizzo= rs.getString(5);
 			String TelefonoCliente = rs.getString(6);
-			String Totale= "\u20AC "+String.valueOf(rs.getFloat(7));		
+			String Totale= "€ "+String.valueOf(rs.getFloat(7));		
 			java.sql.Timestamp InizioConsegna = rs.getTimestamp(8);
 			
 			char Stato = 'A'; //Attesa default
@@ -433,7 +433,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 							     				rs.getString(5),
 							     				rs.getInt(6),
 							     				rs.getString(7),
-							     				"\u20ac " + rs.getFloat(8)} );
+							     				"€ " + rs.getFloat(8)} );
 				
 					}
 			

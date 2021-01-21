@@ -121,7 +121,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		
-		ResultSet rs = st.executeQuery("SELECT categoria FROM prodotto AS PR LEFT JOIN men\u00F9 AS MU ON PR.id_prodotto=MU.id_prodotto\r\n"
+		ResultSet rs = st.executeQuery("SELECT categoria FROM prodotto AS PR LEFT JOIN menù AS MU ON PR.id_prodotto=MU.id_prodotto\r\n"
 				+ "WHERE id_sede='"+idSede+"'\r\n"
 				+ "GROUP BY categoria");
 		
@@ -152,7 +152,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		ResultSet rs = st.executeQuery("SELECT nomep AS nome, prezzo AS prezzo, PR.id_prodotto ,STRING_AGG(nomea,',') AS allergeni\r\n"
 				+ "FROM prodotto AS PR LEFT JOIN etichetta AS E ON PR.id_prodotto=E.id_prodotto\r\n"
-				+ "LEFT JOIN men\u00F9 AS MU ON PR.id_prodotto=MU.id_prodotto\r\n"
+				+ "LEFT JOIN menù AS MU ON PR.id_prodotto=MU.id_prodotto\r\n"
 				+ "WHERE id_sede='"+idSede+"' \r\n"
 				+ filtro
 				+ "GROUP BY nome,prezzo,PR.id_prodotto\r\n"
@@ -161,7 +161,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		while(rs.next()) {
 				
 			String Nome= rs.getString(1);
-			String Prezzo= "\u20AC "+String.valueOf(rs.getFloat(2));
+			String Prezzo= "€ "+String.valueOf(rs.getFloat(2));
 			int ID= rs.getInt(3);
 			String allergeni= rs.getString(4);
 			
@@ -196,7 +196,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 				rs.getInt(1),
 				rs.getString(2),
 			    rs.getInt(3),
-			    "\u20ac "+ rs.getString(4)} );	
+			    "€ "+ rs.getString(4)} );	
 			}	
 		
 		rs.close();
@@ -356,7 +356,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 						rs.getString(3),
 						rs.getString(4),
 						"",														
-						"\u20ac "+ rs.getString(5) });
+						"€ "+ rs.getString(5) });
 			}
 			
 		if(risultato != null) {	
@@ -470,7 +470,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		connection = DBConnection.getInstance().getConnection();
 		st = connection.createStatement();
-		risultato = st.executeUpdate("INSERT INTO categorie VALUES('" + NomeCategoria+ "')");
+		risultato = st.executeUpdate("INSERT INTO categoria VALUES('" + NomeCategoria+ "')");
 		
 		st.close();
 		connection.close();
@@ -508,7 +508,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		
-		ResultSet rs = st.executeQuery("SELECT nomecategoria FROM categorie");
+		ResultSet rs = st.executeQuery("SELECT nomecategoria FROM categoria");
 		
 		while(rs.next()) {
 			categorie.add(rs.getString(1));

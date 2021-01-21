@@ -116,7 +116,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		risultato= st.executeUpdate("INSERT INTO sede(id_sede,nomes,telefono,provincia,citt\u00E0,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
+		risultato= st.executeUpdate("INSERT INTO sede(id_sede,nomes,telefono,provincia,città,via,numcivico) VALUES (" + sede.getIdSede() + ",'" +
 									sede.getNomeSede() + "','" + sede.getTelefonoSede() + "','" + sede.getProvincia() + "','" + sede.getCitta() + "','" + sede.getVia() + "','" + sede.getNumCivico() + "')");
 		
 		if(risultato == 1) {
@@ -139,7 +139,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		risultato += st.executeUpdate("UPDATE sede SET nomes='"+sede.getNomeSede()+"',telefono='" + sede.getTelefonoSede() + "',"+
-					"provincia='"+sede.getProvincia()+"',citt\u00E0='" + sede.getCitta() + "',via='"+ sede.getVia() + "',numcivico='" + sede.getNumCivico() + "' WHERE id_sede = " + sede.getIdSede());
+					"provincia='"+sede.getProvincia()+"',città='" + sede.getCitta() + "',via='"+ sede.getVia() + "',numcivico='" + sede.getNumCivico() + "' WHERE id_sede = " + sede.getIdSede());
 				
 		risultato += st.executeUpdate("UPDATE account SET password='" + nuovaPassword+ "' WHERE nomeutente='" + gestoreSede.getNomeUtente() + "'");
 		
@@ -181,10 +181,10 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		connection = DBConnection.getInstance().getConnection();
 		st= connection.createStatement();
-		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Citt\u00E0 AS Indirizzo "
+		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Città AS Indirizzo "
 							+ "FROM Sede AS S "
 							+ "WHERE S.ID_Sede IN (SELECT DISTINCT ID_Sede "
-							+ "FROM Men\u00F9 "
+							+ "FROM Menù "
 							+ "WHERE ID_Prodotto = "+idProdotto+" ) ");
 		
 		while(rs.next()) {
@@ -215,10 +215,10 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		
 		connection = DBConnection.getInstance().getConnection();
 		st= connection.createStatement();
-		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Citt\u00E0 AS Indirizzo "
+		rs = st.executeQuery("SELECT S.ID_Sede, S.NomeS, S.Telefono, S.Via || ' ' || S.Numcivico || ',' || S.Città AS Indirizzo "
 						   + "FROM Sede AS  S "
 						   + "WHERE S.ID_Sede NOT IN (SELECT DISTINCT ID_Sede "
-						   + "FROM Men\u00F9 "
+						   + "FROM Menù "
 						   + "WHERE ID_Prodotto = "+idProdotto+" ) ");
 		
 		while(rs.next()) {

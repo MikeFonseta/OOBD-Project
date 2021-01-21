@@ -152,7 +152,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT disponibilit\u00E0, nomer || ' ' || cognomer AS nome, telefonor AS telefono, id_rider,\r\n"
+			ResultSet rs = st.executeQuery("SELECT disponibilità, nomer || ' ' || cognomer AS nome, telefonor AS telefono, id_rider,\r\n"
 				+ "numeroordini \r\n"
 				+ "FROM rider\r\n"
 				+ "WHERE id_sede = '" + idSede +"'");
@@ -219,7 +219,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		Connection conn = DBConnection.getInstance().getConnection();
 		
 		Statement st = conn.createStatement();
-		st.executeUpdate("UPDATE rider SET disponibilit\u00E0='"+ disponibile + "' WHERE id_rider=" + idRider);
+		st.executeUpdate("UPDATE rider SET disponibilità='"+ disponibile + "' WHERE id_rider=" + idRider);
 	
 		st.close();
 		conn.close();
@@ -264,8 +264,8 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		Connection conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT id_rider FROM rider \r\n"
-				+ "WHERE disponibilit\u00E0 IS TRUE AND id_sede='"+idSede+"' AND numeroordini<3 AND numeroordini=\r\n"
-				+ "(SELECT MAX(numeroordini) FROM rider WHERE id_sede='"+idSede+"' AND numeroordini<3 AND disponibilit\u00E0 IS TRUE) \r\n"
+				+ "WHERE disponibilità IS TRUE AND id_sede='"+idSede+"' AND numeroordini<3 AND numeroordini=\r\n"
+				+ "(SELECT MAX(numeroordini) FROM rider WHERE id_sede='"+idSede+"' AND numeroordini<3 AND disponibilità IS TRUE) \r\n"
 				+ "ORDER BY id_rider ASC \r\n" 
 				+ "LIMIT 1");
 		

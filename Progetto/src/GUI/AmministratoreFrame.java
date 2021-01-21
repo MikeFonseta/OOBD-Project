@@ -28,6 +28,7 @@ import javax.swing.SwingConstants;
 
 public class AmministratoreFrame extends JFrame{
 	
+	private JPanel pnlmain;
 	private JTable tblSedi;
 	private ControllerAmministratore controllerAmministratore = null;
 	private Point initialClick;
@@ -37,15 +38,20 @@ public class AmministratoreFrame extends JFrame{
 		
 		this.controllerAmministratore = controllerAmministratore;
 		setMinimumSize(new Dimension(1200, 700));
-		getContentPane().setLayout(null);
+		pnlmain = new JPanel();
+		pnlmain.setBackground(UIManager.getColor("Panel.background"));
+		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(pnlmain);
+		pnlmain.setLayout(null);
 		JLabel lblNomeUtente = new JLabel("Nome Utente: " + controllerAmministratore.getAccount().getNomeUtente());
+		lblNomeUtente.setBounds(22, 46, 317, 35);
 		lblNomeUtente.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblNomeUtente.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNomeUtente.setBounds(22, 46, 317, 35);
 		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 27));
 		getContentPane().add(lblNomeUtente);
 		
 		JButton btnGestioneProdotti = new JButton("GESTIONE PRODOTTI");
+		btnGestioneProdotti.setBounds(349, 46, 242, 54);
 		btnGestioneProdotti.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -54,12 +60,12 @@ public class AmministratoreFrame extends JFrame{
 				}
 			}
 		});
-		btnGestioneProdotti.setBounds(349, 46, 242, 54);
 		btnGestioneProdotti.setBorder(UIManager.getBorder("Button.border"));
 		btnGestioneProdotti.setFont(new Font("Calibri", Font.PLAIN, 23));
 		getContentPane().add(btnGestioneProdotti); 
 		
 		JButton btnVisualizzaOrdini = new JButton("VISUALIZZA ORDINI");
+		btnVisualizzaOrdini.setBounds(603, 46, 242, 54);
 		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -69,7 +75,6 @@ public class AmministratoreFrame extends JFrame{
 					
 			}
 		});
-		btnVisualizzaOrdini.setBounds(603, 46, 242, 54);
 		btnVisualizzaOrdini.setBorder(UIManager.getBorder("Button.border"));
 		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 23));
 		getContentPane().add(btnVisualizzaOrdini);
@@ -144,7 +149,6 @@ public class AmministratoreFrame extends JFrame{
 		getContentPane().add(btnModifica);
 		
 		JButton btnAggiungi = new JButton("+");
-
 		btnAggiungi.setBounds(1085, 430, 89, 74);
 		btnAggiungi.setBorder(UIManager.getBorder("Button.border"));
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 48));
@@ -207,8 +211,8 @@ public class AmministratoreFrame extends JFrame{
 		scpSedi.setViewportView(tblSedi);
 		
 		JPanel pnlBarra = new JPanel();
-		pnlBarra.setBackground(Color.DARK_GRAY);
 		pnlBarra.setBounds(0, 0, 1200, 35);
+		pnlBarra.setBackground(Color.DARK_GRAY);
 		getContentPane().add(pnlBarra);
 		pnlBarra.setLayout(null);
 		
@@ -219,6 +223,7 @@ public class AmministratoreFrame extends JFrame{
 		pnlBarra.add(lblTitolo);
 		
 		JButton btnModificaPassword = new JButton("MODIFICA PASSWORD");
+		btnModificaPassword.setBounds(22, 76, 233, 35);
 		btnModificaPassword.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -229,7 +234,6 @@ public class AmministratoreFrame extends JFrame{
 		});
 		btnModificaPassword.setFont(new Font("Calibri", Font.PLAIN, 17));
 		btnModificaPassword.setBorder(UIManager.getBorder("Button.border"));
-		btnModificaPassword.setBounds(22, 76, 233, 35);
 		getContentPane().add(btnModificaPassword);
 		
 		
@@ -304,3 +308,5 @@ public class AmministratoreFrame extends JFrame{
 		JOptionPane.showMessageDialog(this,"Nessuna sede selezionata","Errore",JOptionPane.ERROR_MESSAGE);
 	}
 }
+
+

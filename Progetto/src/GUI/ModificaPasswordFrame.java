@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import Controller.ControllerAmministratore;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -22,6 +24,7 @@ import java.awt.event.MouseMotionAdapter;
 
 public class ModificaPasswordFrame extends JFrame{
 	
+	private JPanel pnlmain;
 	private Point initialClick;
 	private JFrame parent=this;
 	private JPasswordField pxfPasswordAttuale;
@@ -38,7 +41,12 @@ public class ModificaPasswordFrame extends JFrame{
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setName("EliminaSede");
-		getContentPane().setLayout(null);
+
+		pnlmain = new JPanel();
+		pnlmain.setBackground(UIManager.getColor("Panel.background"));
+		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(pnlmain);
+		pnlmain.setLayout(null);
 		
 		pxfPasswordAttuale = new JPasswordField();
 		pxfPasswordAttuale.setFont(new Font("Calibri", Font.PLAIN, 18));

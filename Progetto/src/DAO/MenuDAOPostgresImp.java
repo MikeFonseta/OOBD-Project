@@ -35,7 +35,7 @@ public class MenuDAOPostgresImp implements MenuDAO {
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		risultato = st.executeUpdate("DELETE FROM men\u00F9 WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
+		risultato = st.executeUpdate("DELETE FROM menù WHERE id_sede="+ idSede + " AND id_prodotto=" + idProdotto +"");
 				
 		st.close();
 		conn.close();
@@ -52,7 +52,7 @@ public class MenuDAOPostgresImp implements MenuDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM men\u00F9 WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
+					+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
 		
 		while(rs.next()) {
 				
@@ -81,7 +81,7 @@ public class MenuDAOPostgresImp implements MenuDAO {
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT P.id_prodotto,P.nomep,P.prezzo,P.categoria FROM prodotto AS P "
-					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM men\u00F9 WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
+					+ "WHERE P.id_prodotto IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ") ORDER BY P.id_prodotto ASC");
 			
 		while(rs.next()) {
 				
@@ -116,7 +116,7 @@ public class MenuDAOPostgresImp implements MenuDAO {
 		
 		StringBuilder sql = new  StringBuilder(1024); 
 		sql.append("SELECT P.id_prodotto,P.nomep,P.descrizione,P.prezzo,P.categoria FROM prodotto AS P "
-				+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM men\u00F9 WHERE id_sede=" + idSede + ")");	
+				+ "WHERE P.id_prodotto NOT IN (SELECT id_prodotto FROM menù WHERE id_sede=" + idSede + ")");	
 	
 		
 		if(categoria!=null) {

@@ -93,7 +93,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 		
 		
 		cbxVeicolo = new JComboBox();
-		cbxVeicolo.setModel(new DefaultComboBoxModel(new String[] {"", "Auto", "Bici", "Scooter", "Scooter Elettrico"}));
+		cbxVeicolo.setModel(new DefaultComboBoxModel(new String[] {"", "Auto", "Bici","Moto","Scooter", "Scooter Elettrico"}));
 		cbxVeicolo.setFont(new Font("Calibri", Font.PLAIN, 14));
 		cbxVeicolo.setBounds(523, 129, 148, 33);
 		pnlPrincipale.add(cbxVeicolo);

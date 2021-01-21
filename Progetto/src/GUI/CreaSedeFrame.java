@@ -16,6 +16,7 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -29,6 +30,7 @@ import javax.swing.JComboBox;
 public class CreaSedeFrame extends JFrame{
 	
 	private JButton btnCrea;
+	private JPanel pnlmain;
 	private Point initialClick;
 	private JFrame parent=this;
 	private JTextField txfNome;
@@ -47,7 +49,12 @@ public class CreaSedeFrame extends JFrame{
 		this.controllerAmministratore = controllerAmministratore;
 		setUndecorated(true);
 		setBounds(0,0,440,660);
-		getContentPane().setLayout(null);
+
+		pnlmain = new JPanel();
+		pnlmain.setBackground(UIManager.getColor("Panel.background"));
+		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(pnlmain);
+		pnlmain.setLayout(null);
 		
 		JLabel lblidSedeTxt = new JLabel("ID Sede");
 		lblidSedeTxt.setFont(new Font("Calibri", Font.PLAIN, 18));

@@ -16,6 +16,7 @@ import Entities.Account;
 
 import javax.swing.JPasswordField;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -33,6 +34,7 @@ import javax.swing.JComboBox;
 
 public class GestioneSedeFrame extends JFrame{	
 	
+	private JPanel pnlmain;
 	private JTable tblProdotti;
 	private JTable tblRider;
 	private ControllerAmministratore controllerAmministratore;
@@ -49,7 +51,12 @@ public class GestioneSedeFrame extends JFrame{
 		this.gestoreSede = gestoreSede;
 		setResizable(false);
 		setBounds(0,0,1200,700);
-		getContentPane().setLayout(null);
+
+		pnlmain = new JPanel();
+		pnlmain.setBackground(UIManager.getColor("Panel.background"));
+		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(pnlmain);
+		pnlmain.setLayout(null);
 		
 		btnSalva = new JButton("AGGIORNA");
 		btnSalva.setEnabled(false);

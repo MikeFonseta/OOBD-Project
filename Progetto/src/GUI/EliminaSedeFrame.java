@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import Controller.ControllerAmministratore;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -22,6 +24,7 @@ import java.awt.event.MouseMotionAdapter;
 
 public class EliminaSedeFrame extends JFrame{
 	
+	private JPanel pnlmain;
 	private JPasswordField pxfPassword;
 	private Point initialClick;
 	private JFrame parent=this;
@@ -36,7 +39,12 @@ public class EliminaSedeFrame extends JFrame{
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setName("EliminaSede");
-		getContentPane().setLayout(null);
+		
+		pnlmain = new JPanel();
+		pnlmain.setBackground(UIManager.getColor("Panel.background"));
+		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(pnlmain);
+		pnlmain.setLayout(null);
 		
 		JLabel lblText = new JLabel("<html>Per eliminare la sede '" + idSede + "' inserire la propria password: ");
 		lblText.setHorizontalTextPosition(SwingConstants.CENTER);
