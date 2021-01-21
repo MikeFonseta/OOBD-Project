@@ -154,7 +154,7 @@ public class GestioneSedeFrame extends JFrame{
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!txfVia.getText().equals(gestoreSede.getSede().getVia())) {
+				if(!txfVia.getText().equals(gestoreSede.getSede().getVia()) && !txfVia.getText().isBlank()) {
 					ViaModificato=true;
 				}else {
 					ViaModificato=false;
@@ -163,7 +163,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfVia.getText().equals(gestoreSede.getSede().getVia())){
+				if(!txfVia.getText().equals(gestoreSede.getSede().getVia())  && !txfVia.getText().isBlank()){
 					ViaModificato=true;
 				}else {
 					ViaModificato=false;
@@ -172,7 +172,12 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				
+				if(!txfVia.getText().equals(gestoreSede.getSede().getVia())  && !txfVia.getText().isBlank()){
+					ViaModificato=true;
+				}else {
+					ViaModificato=false;
+				}
+				ControllaModifiche();
 		}});
 		txfVia.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfVia.setColumns(10);
@@ -189,7 +194,7 @@ public class GestioneSedeFrame extends JFrame{
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!txfNumCivico.getText().equals(gestoreSede.getSede().getNumCivico())) {
+				if(!txfNumCivico.getText().equals(gestoreSede.getSede().getNumCivico()) && !txfNumCivico.getText().isBlank()) {
 					NumCivicoModificato=true;
 				}else {
 					NumCivicoModificato=false;
@@ -198,7 +203,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfNumCivico.getText().equals(gestoreSede.getSede().getNumCivico())){
+				if(!txfNumCivico.getText().equals(gestoreSede.getSede().getNumCivico()) && !txfNumCivico.getText().isBlank()) {
 					NumCivicoModificato=true;
 				}else {
 					NumCivicoModificato=false;
@@ -207,7 +212,12 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				
+				if(!txfNumCivico.getText().equals(gestoreSede.getSede().getNumCivico()) && !txfNumCivico.getText().isBlank()) {
+					NumCivicoModificato=true;
+				}else {
+					NumCivicoModificato=false;
+				}
+				ControllaModifiche();
 		}});
 		txfNumCivico.setFont(new Font("Calibri", Font.PLAIN, 18));
 		txfNumCivico.setColumns(10);
@@ -301,7 +311,7 @@ public class GestioneSedeFrame extends JFrame{
 		txfTelefono.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()>0) {
+				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && !txfTelefono.getText().isBlank()) {
 					TelefonoModificato=true;
 				}else {
 					TelefonoModificato=false;
@@ -310,7 +320,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && txfTelefono.getText().length()>0) {
+				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && !txfTelefono.getText().isBlank()) {
 					TelefonoModificato=true;
 				}else {
 					TelefonoModificato=false;
@@ -319,7 +329,12 @@ public class GestioneSedeFrame extends JFrame{
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				
+				if(!txfTelefono.getText().equals(gestoreSede.getSede().getTelefonoSede()) && !txfTelefono.getText().isBlank()) {
+					TelefonoModificato=true;
+				}else {
+					TelefonoModificato=false;
+				}
+				ControllaModifiche();
 		}});
 		txfTelefono.setBounds(760, 96, 143, 28);
 		getContentPane().add(txfTelefono);
