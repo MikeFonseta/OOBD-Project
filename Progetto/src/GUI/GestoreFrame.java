@@ -35,6 +35,7 @@ public class GestoreFrame extends JFrame {
 	private JFrame parent=this;
 	private JTable tblRider;
 	private int filtroRider=0; 
+	private JButton btnFiltro;
 
 	public GestoreFrame(ControllerGestore controllerGestore) {
 		this.controllerGestore= controllerGestore;
@@ -83,6 +84,9 @@ public class GestoreFrame extends JFrame {
 		tblRider.getColumnModel().getColumn(2).setResizable(false);
 		tblRider.getColumnModel().getColumn(3).setResizable(false);
 		tblRider.getColumnModel().getColumn(4).setResizable(false);  
+		tblRider.getColumnModel().getColumn(0).setMaxWidth(70);
+		tblRider.getColumnModel().getColumn(3).setMaxWidth(50);
+		tblRider.getColumnModel().getColumn(4).setMaxWidth(40);
 		scpRider.setViewportView(tblRider);
 		
 		JScrollPane scpGestore = new JScrollPane();
@@ -122,7 +126,16 @@ public class GestoreFrame extends JFrame {
 		tblOrdini.getColumnModel().getColumn(4).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(5).setResizable(false);
 		tblOrdini.getColumnModel().getColumn(6).setResizable(false);
-		tblOrdini.getColumnModel().getColumn(7).setResizable(false); 
+		tblOrdini.getColumnModel().getColumn(7).setResizable(false);  
+		tblOrdini.getColumnModel().getColumn(0).setMaxWidth(65); 
+		tblOrdini.getColumnModel().getColumn(1).setMaxWidth(65);
+		tblOrdini.getColumnModel().getColumn(2).setMaxWidth(65);
+		tblOrdini.getColumnModel().getColumn(3).setMinWidth(120);
+		tblOrdini.getColumnModel().getColumn(3).setMaxWidth(120);
+		tblOrdini.getColumnModel().getColumn(5).setMinWidth(100);
+		tblOrdini.getColumnModel().getColumn(5).setMaxWidth(100); 
+		tblOrdini.getColumnModel().getColumn(6).setMaxWidth(60); 
+		tblOrdini.getColumnModel().getColumn(7).setMaxWidth(40);
 		scpGestore.setViewportView(tblOrdini);
 		
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
@@ -243,12 +256,13 @@ public class GestoreFrame extends JFrame {
 							int numeroordini=controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),(int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1),false);
 							if(filtroRider==0) {
 								AggiornaOrdini(0);
-							}else {
+							}else { 
 								if(numeroordini>0) {
 									AggiornaOrdini(filtroRider);
 								}else {
 									AggiornaOrdini(0);
 									filtroRider=0;
+									btnFiltro.setText("<html><p style=\"text-align:center\">Filtro Disattivato</p></html>");
 								}
 							}
 							AggiornaRider();
@@ -259,12 +273,12 @@ public class GestoreFrame extends JFrame {
 				}else Errore("Selezionare un ordine");
 			}
 		});
-		btnRiassegna.setBounds(931, 626, 89, 63);
+		btnRiassegna.setBounds(923, 626, 89, 63);
 		pnlGestore.add(btnRiassegna);
 		
 		JButton btnModifica = new JButton("Modifica");
 		btnModifica.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnModifica.setBounds(1017, 626, 89, 63);
+		btnModifica.setBounds(1012, 626, 89, 63);
 		pnlGestore.add(btnModifica);
 		btnModifica.addMouseListener(new MouseAdapter() { 
 			@Override
@@ -300,7 +314,7 @@ public class GestoreFrame extends JFrame {
 		
 		JButton btnElimina = new JButton("Elimina");
 		btnElimina.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnElimina.setBounds(845, 626, 89, 63);
+		btnElimina.setBounds(834, 626, 89, 63);
 		pnlGestore.add(btnElimina);
 		btnElimina.addMouseListener(new MouseAdapter() { 
 			@Override
@@ -318,6 +332,7 @@ public class GestoreFrame extends JFrame {
 									if(numeroordini==0) {
 										AggiornaOrdini(0);
 										filtroRider=0;
+										btnFiltro.setText("<html><p style=\"text-align:center\">Filtro Disattivato</p></html>");
 									}else AggiornaOrdini(idRider); 
 								}else AggiornaOrdini(0);
 								AggiornaRider();
@@ -364,6 +379,7 @@ public class GestoreFrame extends JFrame {
 						else if(filtroRider==idRider) {
 							AggiornaOrdini(0);
 							filtroRider=0;
+							btnFiltro.setText("<html><p style=\"text-align:center\">Filtro Disattivato</p></html>");
 						} 
 						controllerGestore.AggiornaDisposizioneRider(idRider ,false);
 					}
@@ -377,6 +393,7 @@ public class GestoreFrame extends JFrame {
 							else if(filtroRider==idRider) {
 								AggiornaOrdini(0);
 								filtroRider=0;
+								btnFiltro.setText("<html><p style=\"text-align:center\">Filtro Disattivato</p></html>");
 							}
 						}
 					}
@@ -391,25 +408,31 @@ public class GestoreFrame extends JFrame {
 				}
 			}
 		});
-		btnDisponibile.setBounds(10, 626, 89, 63);
+		btnDisponibile.setBounds(10, 626, 93, 63);
 		pnlGestore.add(btnDisponibile);
 		
-		JButton btnFiltro = new JButton("Filtro");
+		btnFiltro = new JButton("<html><p style=\"text-align:center\">Filtro Disattivato</p></html>");
 		btnFiltro.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnFiltro.setHorizontalAlignment(SwingConstants.CENTER);
 		btnFiltro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (filtroRider!=0) {
 					AggiornaOrdini(0);
 					filtroRider=0;
+					btnFiltro.setText("<html><p style=\"text-align:center\">Filtro Disattivato</p></html>");
 				}
-				else { 
-					
+				else {  
 					if(tblRider.getSelectedColumnCount() != 0 ){
 						if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)!='X') {
-							AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
-							filtroRider=(int)tblRider.getValueAt(tblRider.getSelectedRow(),3);
+							if((int)tblRider.getValueAt(tblRider.getSelectedRow(),4)!=0) {
+								AggiornaOrdini((int)tblRider.getValueAt(tblRider.getSelectedRow(),3));
+								filtroRider=(int)tblRider.getValueAt(tblRider.getSelectedRow(),3);
+								btnFiltro.setText("<html><p style=\"text-align:center\">Filtro Attivato</p></html>");
+							}else {
+								Errore("Il rider non ha ordini assegnati");
+							}
 						}else {
-							Errore("Per aggiornare il filtro il rider deve essere disponibile");
+							Errore("Per aggiornare il filtro il rider selezionato deve essere disponibile");
 						}
 					}
 					else if(tblRider.getSelectedColumnCount() == 0 ) {
@@ -418,7 +441,7 @@ public class GestoreFrame extends JFrame {
 				}
 			}
 		});
-		btnFiltro.setBounds(107, 626, 89, 63);
+		btnFiltro.setBounds(102, 626, 93, 63);
 		pnlGestore.add(btnFiltro);
 		
 		JButton btnPartenza = new JButton("Partenza");
@@ -457,7 +480,7 @@ public class GestoreFrame extends JFrame {
 				}
 			}
 		});
-		btnPartenza.setBounds(203, 626, 89, 63);
+		btnPartenza.setBounds(196, 626, 93, 63);
 		pnlGestore.add(btnPartenza);
 		
 		JButton btnConsegnato = new JButton("Consegnato");
@@ -475,6 +498,7 @@ public class GestoreFrame extends JFrame {
 							}else if(filtroRider==idRider) {
 								AggiornaOrdini(0);
 								filtroRider=0;
+								btnFiltro.setText("<html><p style=\"text-align:center\">Filtro Disattivato</p></html>");
 							}
 						}
 					}
@@ -486,7 +510,7 @@ public class GestoreFrame extends JFrame {
 				}
 			}
 		}); 
-		btnConsegnato.setBounds(292, 626, 89, 63);
+		btnConsegnato.setBounds(288, 626, 93, 63);
 		pnlGestore.add(btnConsegnato);
 		 
 		pnlBarra.addMouseListener(new MouseAdapter() {
@@ -541,7 +565,10 @@ public class GestoreFrame extends JFrame {
 			tblRider.getColumnModel().getColumn(1).setResizable(false);
 			tblRider.getColumnModel().getColumn(2).setResizable(false);
 			tblRider.getColumnModel().getColumn(3).setResizable(false);
-			tblRider.getColumnModel().getColumn(4).setResizable(false);
+			tblRider.getColumnModel().getColumn(4).setResizable(false); 
+			tblRider.getColumnModel().getColumn(0).setMaxWidth(70);
+			tblRider.getColumnModel().getColumn(3).setMaxWidth(50);
+			tblRider.getColumnModel().getColumn(4).setMaxWidth(40);
 			
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -577,7 +604,16 @@ public class GestoreFrame extends JFrame {
 			tblOrdini.getColumnModel().getColumn(4).setResizable(false);
 			tblOrdini.getColumnModel().getColumn(5).setResizable(false);
 			tblOrdini.getColumnModel().getColumn(6).setResizable(false);
-			tblOrdini.getColumnModel().getColumn(7).setResizable(false);
+			tblOrdini.getColumnModel().getColumn(7).setResizable(false); 
+			tblOrdini.getColumnModel().getColumn(0).setMaxWidth(65); 
+			tblOrdini.getColumnModel().getColumn(1).setMaxWidth(65);
+			tblOrdini.getColumnModel().getColumn(2).setMaxWidth(65);
+			tblOrdini.getColumnModel().getColumn(3).setMinWidth(120);
+			tblOrdini.getColumnModel().getColumn(3).setMaxWidth(120);
+			tblOrdini.getColumnModel().getColumn(5).setMinWidth(100);
+			tblOrdini.getColumnModel().getColumn(5).setMaxWidth(100); 
+			tblOrdini.getColumnModel().getColumn(6).setMaxWidth(60); 
+			tblOrdini.getColumnModel().getColumn(7).setMaxWidth(40); 
 			
 			DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 			rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);

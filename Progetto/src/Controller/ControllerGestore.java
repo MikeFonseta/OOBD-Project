@@ -83,6 +83,7 @@ public class ControllerGestore {
 				}
 				else {
 					riderDao.Dissociazione(idOrdine,idRider);
+					numeroordini=riderDao.AggiornaNumeroOrdini(idRider,false);
 				}
 					
 			} catch (SQLException e) {

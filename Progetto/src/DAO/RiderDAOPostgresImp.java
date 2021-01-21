@@ -205,8 +205,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		st.executeUpdate("UPDATE ordine SET id_rider=NULL WHERE id_ordine=" + idOrdine);
 	
 		st.close();
-		conn.close();
-	    AggiornaNumeroOrdini(idRider,false);	
+		conn.close();	
 	}
 	
 	public void AggiornaDisposizione(int idRider,boolean input) throws SQLException{
