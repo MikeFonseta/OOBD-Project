@@ -34,6 +34,8 @@ import java.awt.Point;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListSelectionModel;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 public class CreaOrdineFrame extends JFrame { 
 	private JPanel pnlCreaOrdine;
@@ -64,8 +66,8 @@ public class CreaOrdineFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		pnlCreaOrdine = new JPanel();
-		pnlCreaOrdine.setBackground(Color.WHITE);
-		pnlCreaOrdine.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pnlCreaOrdine.setBackground(UIManager.getColor("Panel.background"));
+		pnlCreaOrdine.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(pnlCreaOrdine);
 		pnlCreaOrdine.setLayout(null);
 		
@@ -441,7 +443,12 @@ public class CreaOrdineFrame extends JFrame {
 		getContentPane().add(pnlBarra);
 		pnlBarra.setLayout(null);
 		
-		JLabel lblTitolo = new JLabel("Creazione Ordine");
+		JLabel lblTitolo = null;
+		if(defaultId==0) {
+			lblTitolo = new JLabel("Creazione Ordine");
+		}else {
+			lblTitolo = new JLabel("Modifica Ordine");
+		}
 		lblTitolo.setForeground(Color.WHITE);
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setBounds(10, 0, 209, 35);

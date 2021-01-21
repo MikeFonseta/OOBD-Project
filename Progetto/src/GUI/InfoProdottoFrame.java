@@ -15,6 +15,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.UIManager;
 
 public class InfoProdottoFrame extends JFrame {
 
@@ -33,8 +34,8 @@ public class InfoProdottoFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 500);
 		pnlinfo = new JPanel();
-		pnlinfo.setBackground(Color.WHITE);
-		pnlinfo.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pnlinfo.setBackground(UIManager.getColor("Panel.background"));
+		pnlinfo.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(pnlinfo);
 		pnlinfo.setLayout(null);
 		

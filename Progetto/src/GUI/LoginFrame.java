@@ -57,7 +57,6 @@ public class LoginFrame extends JFrame {
 	public LoginFrame(MainController c) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(new Rectangle(5, 5, 5, 5));
-		setTitle("Autentificazione");
 		setPreferredSize(new Dimension(472, 363));
 		setMinimumSize(new Dimension(472, 363));
 		setAlwaysOnTop(true);
@@ -70,9 +69,9 @@ public class LoginFrame extends JFrame {
 		JPanel contentPane = new JPanel();
 		contentPane.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.setPreferredSize(new Dimension(0, 0));
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(UIManager.getColor("Panel.background"));
 		contentPane.setAutoscrolls(false);
-		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 	
@@ -148,6 +147,13 @@ public class LoginFrame extends JFrame {
 		pnlBarra.setBounds(0, 0, 472, 35);
 		getContentPane().add(pnlBarra);
 		pnlBarra.setLayout(null);
+		
+		JLabel lblTitolo = new JLabel("Autentificazione");
+		lblTitolo.setForeground(Color.WHITE);
+		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblTitolo.setBounds(10, 0, 209, 35);
+		pnlBarra.add(lblTitolo);
+		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {

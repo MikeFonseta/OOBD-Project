@@ -421,7 +421,7 @@ public class MainController {
 			risultato = DE.ottieniProvince();
 		} catch (IOException e) {
 			if(this.controllerAmministratore != null) {
-				this.controllerAmministratore.ErroreFile(e.getMessage());
+				this.controllerAmministratore.Errore(e.getMessage());
 			}else {
 				//ControllerGestore
 			}
@@ -438,7 +438,7 @@ public class MainController {
 			risultato = DE.ottieniComuniProvincia(Provincia);
 		} catch (IOException e) {
 			if(this.controllerAmministratore != null) {
-				this.controllerAmministratore.ErroreFile(e.getMessage());
+				this.controllerAmministratore.Errore(e.getMessage());
 			}else {
 				//ControllerGestore
 			}

@@ -8,7 +8,6 @@ import DAO.AccountDAOPostgresImp;
 import DAO.AllergeneDaoPostgresImp;
 import DAO.EtichettaDaoPostgresImp;
 import DAO.MenuDAOPostgresImp;
-import DAO.ProdottoDAO;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
@@ -70,11 +69,9 @@ public class ControllerAmministratore {
 		return this.amministratoreFrame;
 	}
 	
-	public void ErroreFile(String Messaggio) {
+	public void Errore(String Messaggio) {
 		if(this.creaSedeFrame == null) {
-			JOptionPane.showMessageDialog(this.gestioneSedeFrame,Messaggio,"Error",JOptionPane.ERROR_MESSAGE);
-		}else {
-			JOptionPane.showMessageDialog(this.creaSedeFrame,Messaggio,"Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.amministratoreFrame,Messaggio,"Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -689,12 +686,10 @@ public class ControllerAmministratore {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.gestioneRiderFrame.dispose();
 	}
-	
-	
+		
 	public List<Integer> ApriGetIdProdottiPerAllergeni(String Allergeni) {
 		return this.mainController.getIDProdottiPerAllergeni(Allergeni);
 	}
-	
 	
 	public Object[][] ApriRicercaProdotto(String Categoria, Integer Min, Integer Max, Integer idSede, List<Integer>idProdottiConAllergeni){
 		return this.mainController.ricercaProdotto(Categoria, Min, Max, idSede, idProdottiConAllergeni);
@@ -728,12 +723,11 @@ public class ControllerAmministratore {
 		
 	}	
 			
-	
 	public void CreaProdotto(int idProssimoProdotto, String Nome, String Descrizione, float Prezzo, String Categoria) {
 		int risultato = 0;
 		Prodotto prodotto = new Prodotto(idProssimoProdotto, Nome, Descrizione, Prezzo, Categoria);
 			if(this.imp == this.postgresImp) {
-				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 				try {
 					risultato = prodottoDAO.CreaProdotto(idProssimoProdotto, Nome, Descrizione, Prezzo, Categoria);
 				} catch (SQLException e) {
@@ -769,7 +763,6 @@ public class ControllerAmministratore {
 		return risultato;
 	}
 	
-	
 	public void AggiungiAllergeniAProdotto(int idProdotto, String[] Allergeni) {
 		int risultato = 0;
 		if(this.imp == this.postgresImp) {
@@ -797,7 +790,6 @@ public class ControllerAmministratore {
 		}	
 	}
 	
-	
 	public void EliminaAllergeniDaProdotto(int idProdotto, String[] Allergeni) {
 		int risultato = 0;
 		if(this.imp == this.postgresImp) {
@@ -823,7 +815,6 @@ public class ControllerAmministratore {
 		}	
 	}
 	
-	
 	public Object[][] getAllergeniProdotto(int idProdotto) {
 		Object[][] risultato = null;
 		if(this.imp == this.postgresImp){
@@ -839,7 +830,6 @@ public class ControllerAmministratore {
 		}
 		return risultato;
 	}
-	
 	
 	public void AggiornaProdotto(int idProdotto, String nome, String descrizione, float prezzo, String categoria) {
 		int risultato = 0;
@@ -862,7 +852,6 @@ public class ControllerAmministratore {
 		
 	}
 	
-	
 	public Object[][] getSediPerProdotto(int idProdotto) {
 		Object[][] risultato = null;
 		if(this.imp == this.postgresImp) {
@@ -878,7 +867,6 @@ public class ControllerAmministratore {
 		}
 		return risultato;
 	}
-	
 	
 	public Object[][] getSediMancanti(int idProdotto) {
 		Object[][] risultato = null;
@@ -896,12 +884,10 @@ public class ControllerAmministratore {
 		return risultato;
 	}	
 
-	
 	public void ApriAggiungiSedeFrame(int idProdotto) {
 		this.modificaProdottoFrame.setEnabled(false);
 		this.aggiungiSedeFrame = new AggiungiSedeFrame(this, idProdotto);
 	}
-	
 	
 	public void ChiudiAggiungiSedeFrame() {
 		this.aggiungiSedeFrame.dispose();
@@ -962,7 +948,6 @@ public class ControllerAmministratore {
 		//Altra Implementazione 
 		}	
 	}
-	
 	
 	public void ApriCreaCategoriaFrame() {
 		this.gestioneProdottiFrame.setEnabled(false);
@@ -1031,7 +1016,6 @@ public class ControllerAmministratore {
 		}
 	}
 	
-
 	public void ApriAggiungiProdottiACategoriaFrame(int[] prodotti) {
 		this.gestioneProdottiFrame.setEnabled(false);
 		this.aggiungiACategoriaFrame = new AggiungiACategoriaFrame(this, prodotti);
@@ -1085,16 +1069,13 @@ public class ControllerAmministratore {
 		return altraImp;
 	}
 	
-
 	public void setImp(String imp) {
 		this.imp = imp;
 	}
 
-	
 	public void setPostgresImp(String postgresImp) {
 		this.postgresImp = postgresImp;
 	}
-
 	
 	public void setAltraImp(String altraImp) {
 		this.altraImp = altraImp;

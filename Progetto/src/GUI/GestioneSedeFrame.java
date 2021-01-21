@@ -330,6 +330,7 @@ public class GestioneSedeFrame extends JFrame{
 		getContentPane().add(scpProdotti);
 		
 		tblProdotti = new JTable();
+		tblProdotti.setFillsViewportHeight(true);
 		tblProdotti.setRowHeight(30);
 		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblProdotti.getTableHeader().setReorderingAllowed(false);
@@ -376,6 +377,7 @@ public class GestioneSedeFrame extends JFrame{
 		getContentPane().add(scpRider);
 		
 		tblRider = new JTable();
+		tblRider.setFillsViewportHeight(true);
 		tblRider.setRowHeight(30);
 		tblRider.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblRider.getTableHeader().setReorderingAllowed(false);

@@ -69,7 +69,7 @@ public class VisualizzaCarrelloFrame extends JFrame {
 		table.setModel(new DefaultTableModel(
 			mainController.getProdottiCarrello(idOrdine),
 			new String[] {
-				"ID", "Nome", "Quantit‡", "Prezzo"
+				"ID", "Nome", "Quantit√†", "Prezzo"
 			}) {
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, Integer.class, String.class

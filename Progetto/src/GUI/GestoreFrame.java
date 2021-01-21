@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Point;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 
 public class GestoreFrame extends JFrame {
 
@@ -42,8 +43,8 @@ public class GestoreFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		pnlGestore = new JPanel();
-		pnlGestore.setBackground(Color.WHITE);
-		pnlGestore.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pnlGestore.setBackground(UIManager.getColor("Panel.background"));
+		pnlGestore.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(pnlGestore);
 		pnlGestore.setLayout(null);
 		
