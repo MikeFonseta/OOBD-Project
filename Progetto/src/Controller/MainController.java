@@ -37,7 +37,7 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();		
-		LoginTry("A001","pass12"); //amministratore
+		ProvaLogin("A001","pass12"); //amministratore
 		//LoginTry("U00001","pass123");//gestore
 	}
 	
@@ -54,7 +54,7 @@ public class MainController {
 	}
 	
 
-	public void LoginTry(String NomeUtente, String password){
+	public void ProvaLogin(String NomeUtente, String password){
 		
 		Account account = new Account();
 		

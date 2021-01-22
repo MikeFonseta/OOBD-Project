@@ -106,7 +106,7 @@ public class LoginFrame extends JFrame {
 		btnLogin.setBounds(333, 285, 63, 27);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				c.LoginTry(getTxfNomeUtente().getText(), getPsfPassword().getText());
+				c.ProvaLogin(getTxfNomeUtente().getText(), getPsfPassword().getText());
 				}
 		});
 		btnLogin.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -138,7 +138,7 @@ public class LoginFrame extends JFrame {
 		contentPane.getActionMap().put("Enter", new AbstractAction(){ 
 	            public void actionPerformed(ActionEvent e)
 	            {
-	            	c.LoginTry(getTxfNomeUtente().getText(), getPsfPassword().getText());
+	            	c.ProvaLogin(getTxfNomeUtente().getText(), getPsfPassword().getText());
 	            }
 	        });
 		

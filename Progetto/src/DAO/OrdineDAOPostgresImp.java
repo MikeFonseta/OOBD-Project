@@ -160,7 +160,7 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn.close();
 	}
 	
-	
+
 	
 	@Override
 	public void EliminaCompOrdine(int idOrdine) throws SQLException
