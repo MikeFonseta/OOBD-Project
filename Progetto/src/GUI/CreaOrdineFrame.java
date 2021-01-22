@@ -313,7 +313,7 @@ public class CreaOrdineFrame extends JFrame {
 		lblProvincia.setBounds(822, 366, 46, 14);
 		pnlCreaOrdine.add(lblProvincia);
 		
-		JLabel lblCitta = new JLabel("Citt\u00E0");
+		JLabel lblCitta = new JLabel("Città");
 		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 11));
 		lblCitta.setBounds(942, 368, 44, 14);
 		pnlCreaOrdine.add(lblCitta);
@@ -399,15 +399,15 @@ public class CreaOrdineFrame extends JFrame {
 						Errore("Per confermare l'ordine, riempire tutti i campi");
 					} 
 					else  {
-						if(txfNome.getText().matches("[a-zA-Z]+") && txfCognome.getText().matches("[a-zA-Z]+"))  {
-							if (txfTelefono.getText().matches("[0-9]+"))  {
+						if(txfNome.getText().matches("[A-Za-z' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+") && txfCognome.getText().matches("[A-Za-z' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+"))  {
+							if (txfTelefono.getText().matches("[0-9 ]+"))  {
 								if(defaultId==0) { 
 									int idCliente=Integer.parseInt(txfCodice.getText());
 									if(Integer.parseInt(IdCliente)<idCliente) { 
 										Errore("Per creare un nuovo utente, utilizzare il codice fornito dal pulsante 'nuovo' ");
 									} 
 									else if((Integer.parseInt(IdCliente)>idCliente) && (!controllerGestore.VerificaEsistenzaCliente(idCliente))){
-										Errore("Il cliente selezionato non appartiene pi\u00F9 al database");
+										Errore("Il cliente selezionato non appartiene più al database");
 									}
 								    else {
 										if(idCliente==Integer.parseInt(IdCliente)) {
@@ -421,7 +421,7 @@ public class CreaOrdineFrame extends JFrame {
 							}else Errore("Il campo telefono accetta solo numeri");
 						}else Errore("I campi nome e cognome possono contenere solo lettere"); 
 					}
-				}else Errore("Il carrello \u00E8 vuoto");
+				}else Errore("Il carrello è vuoto");
 			}
 		}); 
 		btnConferma.setBounds(1075, 605, 80, 23);
