@@ -52,7 +52,7 @@ public class GestioneProdottiFrame extends JFrame {
 	private JTextField txfAllergeni;
 	private JTextField txfMin;
 	private JTextField txfMax;
-	public JTable table;
+	public JTable tblProdotti;
 	private ControllerAmministratore controllerAmministratore;
 	private Point initialClick;
 	private JFrame parent = this;
@@ -60,6 +60,7 @@ public class GestioneProdottiFrame extends JFrame {
 	private JButton  btnEliminaCategoria;
 	private ControllerGestore controllerGestore;
 	
+
 	public GestioneProdottiFrame(ControllerAmministratore controllerAmministratore) {
 		setResizable(false);
 		this.controllerAmministratore = controllerAmministratore;
@@ -196,11 +197,11 @@ public class GestioneProdottiFrame extends JFrame {
 		btnElimina.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(table.getSelectedRowCount() == 1) {
-					int riga = table.getSelectedRow();
-						controllerAmministratore.ApriEliminaProdottoFrame((String) table.getValueAt(riga, 1), (int) table.getValueAt(riga, 0));
+				if(tblProdotti.getSelectedRowCount() == 1) {
+					int riga = tblProdotti.getSelectedRow();
+						controllerAmministratore.ApriEliminaProdottoFrame((String) tblProdotti.getValueAt(riga, 1), (int) tblProdotti.getValueAt(riga, 0));
 				}
-				else if(table.getSelectedRowCount()>1){
+				else if(tblProdotti.getSelectedRowCount()>1){
 					JOptionPane.showMessageDialog(parent, new String("Selezionare un solo prodotto!"),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else
@@ -217,11 +218,11 @@ public class GestioneProdottiFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					if(table.getSelectedRowCount() == 1) {
-							int idProdotto = (int) table.getValueAt(table.getSelectedRow(), 0);
+					if(tblProdotti.getSelectedRowCount() == 1) {
+							int idProdotto = (int) tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0);
 							controllerAmministratore.ApriModificaProdotto(idProdotto);
 					}
-					else if(table.getSelectedRowCount()>1){
+					else if(tblProdotti.getSelectedRowCount()>1){
 						JOptionPane.showMessageDialog(parent, new String("Selezionare un solo prodotto!"),"Error",JOptionPane.ERROR_MESSAGE);
 					}
 					else
@@ -273,9 +274,6 @@ public class GestioneProdottiFrame extends JFrame {
             }
         });
 		cbxCategorie.setFont(new Font("Calibri", Font.PLAIN, 14));
-//		DefaultComboBoxModel Modello  = new DefaultComboBoxModel();		
-//		Modello.addElement("Tutte le categorie");
-//		Modello.addAll(Arrays.asList(controllerAmministratore.getCategorie()));
 		cbxCategorie.setModel(new DefaultComboBoxModel(this.controllerAmministratore.getCategorie()));
 		cbxCategorie.setSelectedItem("Tutte");
 		cbxCategorie.setMaximumRowCount(20);
@@ -290,10 +288,10 @@ public class GestioneProdottiFrame extends JFrame {
 
 		
 
-		table = new JTable();
-		table.setRowHeight(30);
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		table.setModel(new DefaultTableModel(
+		tblProdotti = new JTable();
+		tblProdotti.setRowHeight(30);
+		tblProdotti.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblProdotti.setModel(new DefaultTableModel(
 			controllerAmministratore.ApriRicercaProdotto(getCategoriaSelezionata(), getMinSelezionato(), getMaxSelezionato(), getIdSede(), getIdProdottiPerAllergeni()),
 			new String[] {
 				"CodiceP", "NomeProdotto", "Categoria", "Descrizione", "Allergeni", "Prezzo"
@@ -312,24 +310,24 @@ public class GestioneProdottiFrame extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(25);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(133);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(2).setPreferredWidth(150);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(3).setPreferredWidth(252);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(4).setPreferredWidth(253);
-		table.getColumnModel().getColumn(5).setResizable(false);
-		table.getColumnModel().getColumn(5).setPreferredWidth(35);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setFillsViewportHeight(true);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(25);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(133);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(252);
+		tblProdotti.getColumnModel().getColumn(4).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(4).setPreferredWidth(253);
+		tblProdotti.getColumnModel().getColumn(5).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(5).setPreferredWidth(35);
+		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblProdotti.getTableHeader().setReorderingAllowed(false);
+		tblProdotti.setFillsViewportHeight(true);
 		
 		
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(tblProdotti);
 		contentPane.setLayout(null);
 		contentPane.add(scrollPane);
 		
@@ -365,12 +363,12 @@ public class GestioneProdottiFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			if(e.getButton() == MouseEvent.BUTTON1) {				
-				if(table.getSelectedRowCount() > 0) {	
+				if(tblProdotti.getSelectedRowCount() > 0) {	
 					System.out.println("ciao");
-					int[] Prodotti = new int[table.getSelectedRowCount()];
-					int righe[] = table.getSelectedRows();
-						for(int i = 0; i<table.getSelectedRowCount(); i++)
-							Prodotti[i] = (int) table.getValueAt(righe[i], 0);
+					int[] Prodotti = new int[tblProdotti.getSelectedRowCount()];
+					int righe[] = tblProdotti.getSelectedRows();
+						for(int i = 0; i<tblProdotti.getSelectedRowCount(); i++)
+							Prodotti[i] = (int) tblProdotti.getValueAt(righe[i], 0);
 							controllerAmministratore.ApriAggiungiProdottiACategoriaFrame(Prodotti);
 				}
 			}
@@ -550,9 +548,6 @@ public class GestioneProdottiFrame extends JFrame {
 		
 		cbxCategorie = new JComboBox();
 		cbxCategorie.setFont(new Font("Calibri", Font.PLAIN, 14));
-//		DefaultComboBoxModel Modello  = new DefaultComboBoxModel();		
-//		Modello.addElement("Tutte le categorie");
-//		Modello.addAll(Arrays.asList(controllerGestore.getCategorieBox()));
 		cbxCategorie.setModel(new DefaultComboBoxModel(controllerGestore.getCategorieBox()));
 		cbxCategorie.setSelectedItem("Tutte");
 		cbxCategorie.setMaximumRowCount(20);
@@ -567,10 +562,10 @@ public class GestioneProdottiFrame extends JFrame {
 
 		
 
-		table = new JTable();
-		table.setRowHeight(30);
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		table.setModel(new DefaultTableModel(
+		tblProdotti = new JTable();
+		tblProdotti.setRowHeight(30);
+		tblProdotti.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblProdotti.setModel(new DefaultTableModel(
 				controllerGestore.ApriRicercaProdotto(getCategoriaSelezionata(), getMinSelezionato(), getMaxSelezionato(), getIdSede(), getIdProdottiPerAllergeni()),
 			new String[] {
 				"CodiceP", "NomeProdotto", "Categoria", "Descrizione", "Allergeni", "Prezzo"
@@ -589,24 +584,24 @@ public class GestioneProdottiFrame extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(25);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(133);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(2).setPreferredWidth(150);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(3).setPreferredWidth(252);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(4).setPreferredWidth(253);
-		table.getColumnModel().getColumn(5).setResizable(false);
-		table.getColumnModel().getColumn(5).setPreferredWidth(35);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setFillsViewportHeight(true);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(25);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(133);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(252);
+		tblProdotti.getColumnModel().getColumn(4).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(4).setPreferredWidth(253);
+		tblProdotti.getColumnModel().getColumn(5).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(5).setPreferredWidth(35);
+		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblProdotti.getTableHeader().setReorderingAllowed(false);
+		tblProdotti.setFillsViewportHeight(true);
 		
 		
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(tblProdotti);
 		contentPane.setLayout(null);
 		contentPane.add(scrollPane);
 		
@@ -664,9 +659,9 @@ public class GestioneProdottiFrame extends JFrame {
 		else if(this.controllerAmministratore != null) {
 			dati = controllerAmministratore.ApriRicercaProdotto(getCategoriaSelezionata(), getMinSelezionato(), getMaxSelezionato(), getIdSede(), getIdProdottiPerAllergeni());
 		}
-		table.setRowHeight(30);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(new DefaultTableModel(
+		tblProdotti.setRowHeight(30);
+		tblProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblProdotti.setModel(new DefaultTableModel(
 				dati,
 				new String[] {
 				"CodiceP", "NomeProdotto", "Categoria", "Descrizione", "Allergeni", "Prezzo"
@@ -685,22 +680,22 @@ public class GestioneProdottiFrame extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(25);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(133);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(2).setPreferredWidth(150);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(3).setPreferredWidth(252);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(4).setPreferredWidth(253);
-		table.getColumnModel().getColumn(5).setResizable(false);
-		table.getColumnModel().getColumn(5).setPreferredWidth(35);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
-		table.setFillsViewportHeight(true);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(0).setPreferredWidth(25);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(133);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(252);
+		tblProdotti.getColumnModel().getColumn(4).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(4).setPreferredWidth(253);
+		tblProdotti.getColumnModel().getColumn(5).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(5).setPreferredWidth(35);
+		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tblProdotti.getTableHeader().setReorderingAllowed(false);
+		tblProdotti.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
+		tblProdotti.setFillsViewportHeight(true);
 	}
 			
 
@@ -784,15 +779,7 @@ public class GestioneProdottiFrame extends JFrame {
 			cbxCategorie.setModel(new DefaultComboBoxModel(controllerGestore.getCategorieBox()));
 		
 		cbxCategorie.setSelectedItem("Tutte");
-		
-//		DefaultComboBoxModel Modello  = new DefaultComboBoxModel();		
-//		Modello.addElement("Tutte le categorie");
-//		if(this.controllerAmministratore != null)
-//			Modello.addAll(Arrays.asList(controllerAmministratore.getCategorie()));
-//		else
-//			Modello.addAll(Arrays.asList(controllerGestore.getCategorieBox()));
-//		cbxCategorie.setModel(Modello);
-//		cbxCategorie.setSelectedItem("Tutte le categorie");
+
 	}
 }		
 

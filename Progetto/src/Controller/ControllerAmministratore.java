@@ -241,15 +241,15 @@ public class ControllerAmministratore {
 			try {
 				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 				idProssimoProdotto = prodottoDAO.idProssimoProdotto();
+				this.gestioneProdottiFrame.setEnabled(false);
+				this.creaProdottoFrame = new CreaProdottoFrame(this, idProssimoProdotto);
 			}catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else if(this.imp == this.altraImp){
 		//altra implementazione
-			}
-			this.gestioneProdottiFrame.setEnabled(false);
-			this.creaProdottoFrame = new CreaProdottoFrame(this, idProssimoProdotto);
+		}	
 	}
 	
 	public void ChiudiCreaProdottoFrame() {

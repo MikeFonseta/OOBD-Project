@@ -21,10 +21,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.security.MessageDigest;
 import java.sql.BatchUpdateException;
 import java.text.DecimalFormat;
 import java.awt.Insets;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
@@ -316,8 +318,12 @@ public class ModificaProdottoFrame extends JFrame {
 		btnAggiungiSede.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton()==MouseEvent.BUTTON1)
-					controllerAmministratore.ApriAggiungiSedeFrame(prodotto.getIdProdotto());
+				if(e.getButton()==MouseEvent.BUTTON1) {
+					if(controllerAmministratore.getSediMancanti(prodotto.getIdProdotto()).length > 0)
+						controllerAmministratore.ApriAggiungiSedeFrame(prodotto.getIdProdotto());
+					else
+						JOptionPane.showMessageDialog(null,  "Nessuna sede disponibile, il prodotto è già presente in tutte", "Error", JOptionPane.ERROR_MESSAGE);
+				}	
 			}
 		});
 		btnAggiungiSede.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -366,6 +372,7 @@ public class ModificaProdottoFrame extends JFrame {
 				
 								controllerAmministratore.EliminaAllergeniDaProdotto(prodotto.getIdProdotto(), Allergeni);
 					}
+					else JOptionPane.showMessageDialog(null, "Nessun allergene selezionato/presente ", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -378,8 +385,11 @@ public class ModificaProdottoFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			if(e.getButton() == MouseEvent.BUTTON1) {
-				controllerAmministratore.ApriAggiungiAllergeniFrame(prodotto.getIdProdotto());
-			}
+				if(controllerAmministratore.getAllergeniMancanti(prodotto.getIdProdotto()).length > 0) 
+					controllerAmministratore.ApriAggiungiAllergeniFrame(prodotto.getIdProdotto());
+				else
+				JOptionPane.showInternalMessageDialog(null, "Nessun allergene disponibile, questo prodotto li contiene già tutti ", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnAggiungiAllergene.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -398,6 +408,8 @@ public class ModificaProdottoFrame extends JFrame {
 								Sedi[i] = (int) tblSedi.getValueAt(righe[i], 0);
 							controllerAmministratore.EliminaProdottoDaSedi(prodotto.getIdProdotto(), Sedi);
 					}
+					else
+						JOptionPane.showMessageDialog(null, "Nessuna sede selezionata/presente ", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

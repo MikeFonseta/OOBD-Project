@@ -32,7 +32,7 @@ import java.awt.event.MouseMotionAdapter;
 public class VisualizzaCarrelloFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
+	private JTable tblProdotti;
 	private MainController maincontroller;
 	private Point initialClick;
 	private JFrame parent = this;
@@ -63,10 +63,10 @@ public class VisualizzaCarrelloFrame extends JFrame {
 		contentPane.add(Chiudi_btn);
 		
 		
-		table = new JTable();
-		table.setRowHeight(30);
-		table.setFillsViewportHeight(true);
-		table.setModel(new DefaultTableModel(
+		tblProdotti = new JTable();
+		tblProdotti.setRowHeight(30);
+		tblProdotti.setFillsViewportHeight(true);
+		tblProdotti.setModel(new DefaultTableModel(
 			mainController.getProdottiCarrello(idOrdine),
 			new String[] {
 				"ID", "Nome", "Quantità", "Prezzo"
@@ -84,17 +84,17 @@ public class VisualizzaCarrelloFrame extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(301);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.setAutoResizeMode(JTable.HEIGHT);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.getTableHeader().setReorderingAllowed(false);
+		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(1).setPreferredWidth(301);
+		tblProdotti.getColumnModel().getColumn(2).setResizable(false);
+		tblProdotti.getColumnModel().getColumn(3).setResizable(false);
+		tblProdotti.setAutoResizeMode(JTable.HEIGHT);
+		tblProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblProdotti.getTableHeader().setReorderingAllowed(false);
 		contentPane.setLayout(null);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		scrollPane.setViewportView(table);
+		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		scrollPane.setViewportView(tblProdotti);
 		contentPane.add(scrollPane);
 		
 		
@@ -114,7 +114,7 @@ public class VisualizzaCarrelloFrame extends JFrame {
 		lblVisualizzaCarrello.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblVisualizzaCarrello);
 		
-		JLabel lblTotale = new JLabel("Totale : "+calcolaTotale(table)+" ");
+		JLabel lblTotale = new JLabel("Totale : "+calcolaTotale(tblProdotti)+" ");
 		lblTotale.setFont(new Font("Calibri", Font.BOLD, 18));
 		lblTotale.setBounds(344, 594, 110, 26);
 		contentPane.add(lblTotale);

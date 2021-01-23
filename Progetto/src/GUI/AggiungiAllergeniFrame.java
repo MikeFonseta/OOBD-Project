@@ -45,11 +45,11 @@ public class AggiungiAllergeniFrame extends JFrame {
 		scrollPane.setBounds(31, 67, 375, 435);
 		contentPane.add(scrollPane);
 		
-		JTable table = new JTable();
-		table.setRowHeight(30);
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		table.setFillsViewportHeight(true);
-		table.setModel(new DefaultTableModel(
+		JTable tblAllergeni = new JTable();
+		tblAllergeni.setRowHeight(30);
+		tblAllergeni.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblAllergeni.setFillsViewportHeight(true);
+		tblAllergeni.setModel(new DefaultTableModel(
 			controllerAmministratore.getAllergeniMancanti(idProdotto),
 			new String[] {
 				"Allergeni"
@@ -68,21 +68,21 @@ public class AggiungiAllergeniFrame extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
-		scrollPane.setViewportView(table);
+		tblAllergeni.getColumnModel().getColumn(0).setResizable(false);
+		tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
+		scrollPane.setViewportView(tblAllergeni);
 		
 		JButton btnAggiungi = new JButton("Aggiungi");
 		btnAggiungi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					if(table.getSelectedRowCount() > 0) {
+					if(tblAllergeni.getSelectedRowCount() > 0) {
 						
-						String[] Allergeni = new String[table.getSelectedRowCount()];
-						int righe[] = table.getSelectedRows();
-							for(int i = 0; i<table.getSelectedRowCount(); i++)
-								Allergeni[i] = (String) table.getValueAt(righe[i], 0);
+						String[] Allergeni = new String[tblAllergeni.getSelectedRowCount()];
+						int righe[] = tblAllergeni.getSelectedRows();
+							for(int i = 0; i<tblAllergeni.getSelectedRowCount(); i++)
+								Allergeni[i] = (String) tblAllergeni.getValueAt(righe[i], 0);
 				
 								controllerAmministratore.AggiungiAllergeniAProdotto(idProdotto, Allergeni);
 					}
