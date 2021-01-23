@@ -26,6 +26,7 @@ import java.awt.SystemColor;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+
 public class AmministratoreFrame extends JFrame{
 	
 	private JPanel pnlmain;
