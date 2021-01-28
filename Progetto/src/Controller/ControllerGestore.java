@@ -224,7 +224,7 @@ public class ControllerGestore {
 			AccountDAOPostgresImp accountDAO = new AccountDAOPostgresImp();
 			try {
 				int id = accountDAO.getClienteID();
-				ID=String.valueOf(++id);
+				ID=String.valueOf(id);
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}

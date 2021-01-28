@@ -129,8 +129,7 @@ public class AccountDAOPostgresImp implements AccountDAO {
 	
 		Connection conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT MAX(id_cliente) \r\n"
-				+ "FROM cliente");
+		ResultSet rs = st.executeQuery("SELECT nextval('cliente_id_cliente_seq')");
 
 		int id;
 		if(rs.next()){
