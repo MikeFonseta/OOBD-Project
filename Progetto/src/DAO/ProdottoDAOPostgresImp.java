@@ -393,7 +393,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		
 		connection = DBConnection.getInstance().getConnection();
 		st = connection.createStatement();
-		rs = st.executeQuery("SELECT IdProssimoProdotto()");
+		rs = st.executeQuery("SELECT NEXTVAL('prodotto_id_prodotto_seq')");
 		if(rs.next())
 			risultato = rs.getInt(1);
 		

@@ -130,7 +130,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT idProssimoRider()");	
+		ResultSet rs = st.executeQuery("SELECT NEXTVAL('rider_id_rider_seq')");	
 			
 		if(rs.next()){
 			 risultato = rs.getInt(1);
