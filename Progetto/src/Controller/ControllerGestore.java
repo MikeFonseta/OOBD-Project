@@ -438,14 +438,8 @@ public class ControllerGestore {
 				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
 			
-			try {
-//				int numeroordini=0;
-//				numeroordini=
-						riderDAO.AggiornaNumeroOrdini(idRider,true);
-//				if(numeroordini==3)
-//				{
-//					this.ImpostaInizioConsegna(idRider,false);
-//				}
+			try { 
+					riderDAO.AggiornaNumeroOrdini(idRider,true); 
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -512,20 +506,20 @@ public class ControllerGestore {
 	}
 	
 	public void CreazioneInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia){
-		
+		 
 		if(this.imp.equals(this.postgresImp)) {
 			try {
 				OrdineDAOPostgresImp ordineDAO = new OrdineDAOPostgresImp();
 				ordineDAO.CreaInfoOrdine(idOrdine,idCliente,citta,via,civico,telefono,provincia);
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this.gestoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);  
 			}
 		}
 		else if(this.imp.equals(this.altraImp))
 		{
 			//altre implementazioni
 		}
-	
+		 
 	}
 	
 	public void AggiornamentoInfoOrdine(int idOrdine, String citta, String via, String civico, String telefono, String provincia){

@@ -380,7 +380,7 @@ public class CreaOrdineFrame extends JFrame {
 			btnNuovo.setFont(new Font("Calibri", Font.PLAIN, 11));
 			btnNuovo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					txfCodice.setText(IdCliente);
+					PulisciCampi();
 				}
 			});
 			btnNuovo.setBounds(1019, 64, 63, 23);
@@ -398,28 +398,32 @@ public class CreaOrdineFrame extends JFrame {
 					{
 						Errore("Per confermare l'ordine, riempire tutti i campi");
 					} 
-					else  {
-						if(txfNome.getText().matches("[A-Za-z' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+") && txfCognome.getText().matches("[A-Za-z' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+"))  {
+					else  {   
+						if(txfNome.getText().matches("^[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+(?:'[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+)*$") && txfCognome.getText().matches("^[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+(?:'[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+)*$"))  {
 							if (txfTelefono.getText().matches("[0-9 ]+"))  {
-								if(defaultId==0) { 
-									int idCliente=Integer.parseInt(txfCodice.getText());
-									if(Integer.parseInt(IdCliente)<idCliente) { 
-										Errore("Per creare un nuovo utente, utilizzare il codice fornito dal pulsante 'nuovo' ");
-									} 
-									else if((Integer.parseInt(IdCliente)>idCliente) && (!controllerGestore.VerificaEsistenzaCliente(idCliente))){
-										Errore("Il cliente selezionato non appartiene più al database");
-									}
-								    else {
-										if(idCliente==Integer.parseInt(IdCliente)) {
-											controllerGestore.CreaNuovoCliente(IdCliente,txfNome.getText(),txfCognome.getText());  
-										}  
-										Compila(idCliente,0,true); 
-								    }
-								}else {  
-									Compila(0,defaultId,false);
-								} 
-							}else Errore("Il campo telefono accetta solo numeri");
-						}else Errore("I campi nome e cognome possono contenere solo lettere"); 
+								if(txfVia.getText().matches("^[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+(?:'[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+)*$")) {
+									if (txfCivico.getText().matches("[0-9 ]+"))  {
+										if(defaultId==0) { 
+											int idCliente=Integer.parseInt(txfCodice.getText());
+											if(Integer.parseInt(IdCliente)<idCliente) { 
+												Errore("Per creare un nuovo utente, utilizzare il codice fornito dal pulsante 'nuovo' ");
+											} 
+											else if((Integer.parseInt(IdCliente)>idCliente) && (!controllerGestore.VerificaEsistenzaCliente(idCliente))){
+												Errore("Il cliente selezionato non appartiene più al database");
+											}
+										    else {
+												if(idCliente==Integer.parseInt(IdCliente)) {
+													controllerGestore.CreaNuovoCliente(IdCliente,txfNome.getText().replaceAll("'", "''"),txfCognome.getText().replaceAll("'", "''"));  
+												}  
+												Compila(idCliente,0,true); 
+										    }
+										}else {  
+											Compila(0,defaultId,false);
+										} 
+									}else Errore("Il campo 'civico' può contenere solo numeri");
+								}else Errore("Il campo 'via' può contenere solo lettere");
+							}else Errore("Il campo 'telefono' può contenere solo numeri");
+						}else Errore("I campi 'nome' e 'cognome' possono contenere solo lettere"); 
 					}
 				}else Errore("Il carrello è vuoto");
 			}
@@ -508,6 +512,8 @@ public class CreaOrdineFrame extends JFrame {
 			txfCodice.setText(IdCliente); 
 			txfCodice.setEditable( false ); 
 			CompilaCampi(); 
+			txfNome.setEditable( false );
+			txfCognome.setEditable( false );
 		}
 		 
 	}
@@ -557,10 +563,23 @@ public class CreaOrdineFrame extends JFrame {
 			txfVia.setText(datiUtente[5]);
 			txfCivico.setText(datiUtente[6]);
 		}else {
-			Errore("");
+			Errore("Il codice inserito non corrisponde a nessun cliente, verrà fornito un nuovo codice");
+			PulisciCampi();
 		}
 		
 	}
+	
+	public void PulisciCampi()	{ 
+		txfCodice.setText(IdCliente);
+		txfNome.setText("");
+		txfCognome.setText("");
+		txfTelefono.setText("");
+		cbxProvincia.setSelectedItem("");
+		cbxCitta.setSelectedItem("");
+		txfVia.setText("");
+		txfCivico.setText("");
+	}
+	
 	
 	public List<int[]> getProdottiCarrello() {
 		List<int[]> prodotti = new ArrayList<int[]>();
@@ -670,12 +689,12 @@ public class CreaOrdineFrame extends JFrame {
 	public void Compila(int idCliente,int idOrdine,boolean nuovo) { 
 		if (nuovo) {
 			int idNuovoOrdine=controllerGestore.CreazioneOrdine(Totale);  
+			controllerGestore.CreazioneInfoOrdine(idNuovoOrdine,idCliente,cbxCitta.getSelectedItem().toString(),txfVia.getText().replaceAll("'", "''"),
+					txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString());  
 			controllerGestore.CreazioneCompOrdine(getProdottiCarrello(),idNuovoOrdine); 
-			controllerGestore.CreazioneInfoOrdine(idNuovoOrdine,idCliente,cbxCitta.getSelectedItem().toString(),txfVia.getText(),
-					txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString()); 
-			controllerGestore.ChiudiCreaOrdineFrame();
+			controllerGestore.ChiudiCreaOrdineFrame(); 
 		}else {
-			controllerGestore.AggiornamentoInfoOrdine(idOrdine,cbxCitta.getSelectedItem().toString(),txfVia.getText(),
+			controllerGestore.AggiornamentoInfoOrdine(idOrdine,cbxCitta.getSelectedItem().toString(),txfVia.getText().replaceAll("'", "''"),
 					txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString()); 
 			controllerGestore.CancellaCompOrdine(idOrdine);
 			controllerGestore.CreazioneCompOrdine(getProdottiCarrello(),idOrdine); 
@@ -683,7 +702,6 @@ public class CreaOrdineFrame extends JFrame {
 			controllerGestore.ChiudiCreaOrdineFrame();
 		}
 	}
-	
 	
 	public void Errore(String stringa) {
 		JOptionPane.showMessageDialog(this,stringa,"Error",JOptionPane.ERROR_MESSAGE);
