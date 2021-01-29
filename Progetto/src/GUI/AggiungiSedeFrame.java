@@ -28,7 +28,7 @@ public class AggiungiSedeFrame extends JFrame {
 	private ControllerAmministratore controllerAmministratore;
 	private JTable tblSedi;
 	private Point initialClick;
-	private JFrame parent;  
+	private JFrame parent=this;  
 	
 	public AggiungiSedeFrame(ControllerAmministratore controllerAmministratore, int idProdotto) {
 		this.controllerAmministratore = controllerAmministratore;

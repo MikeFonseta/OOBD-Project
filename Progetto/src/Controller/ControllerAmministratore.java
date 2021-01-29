@@ -1044,6 +1044,7 @@ public class ControllerAmministratore {
 					if(risultato==1) {	
 						JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Categoria '"+ nomeCategoria+"' eliminata!","",JOptionPane.PLAIN_MESSAGE);
 						this.gestioneProdottiFrame.AggiornaCategorie();
+						this.gestioneProdottiFrame.AggiornaTabella();
 					}	
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
