@@ -41,6 +41,8 @@ import java.util.Locale;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.Popup;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
@@ -69,9 +71,6 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	private Point initialClick;
 
 	
-	/**
-	 * Create the frame.
-	 */
 	@SuppressWarnings("deprecation")
 	public VisualizzaOrdiniFrame(MainController mainController) {
 		setResizable(false);
@@ -93,15 +92,15 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 		
 		
 		cbxVeicolo = new JComboBox();
-		cbxVeicolo.setModel(new DefaultComboBoxModel(new String[] {"", "Auto", "Bici","Moto","Scooter", "Scooter Elettrico"}));
+		cbxVeicolo.setModel(new DefaultComboBoxModel(mainController.getVeicoli()));
 		cbxVeicolo.setFont(new Font("Calibri", Font.PLAIN, 14));
 		cbxVeicolo.setBounds(523, 129, 148, 33);
 		pnlPrincipale.add(cbxVeicolo);
 
 		
-		JLabel lblNomeSede = new JLabel("Nome Sede");
+		JLabel lblNomeSede = new JLabel("Sede");
 		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblNomeSede.setBounds(22, 76, 64, 18);
+		lblNomeSede.setBounds(40, 69, 54, 18);
 		pnlPrincipale.add(lblNomeSede);
 		
 		
@@ -291,6 +290,16 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	tblOrdini.setRowHeight(30);
 	tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
 	tblOrdini.setFillsViewportHeight(true);		
+	
+	DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+	DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+	centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+	rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+	tblOrdini.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
 
 	scrollPane.setViewportView(tblOrdini);
 	
@@ -384,11 +393,20 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	tblOrdini.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	tblOrdini.setRowHeight(30);
 	tblOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
-	tblOrdini.setFillsViewportHeight(true);		
+	tblOrdini.setFillsViewportHeight(true);	
+	
+	DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+	DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+	centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+	rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+	tblOrdini.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+	tblOrdini.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
 
 	}
-		
-				private void controllaValoriMin() {
+	private void controllaValoriMin() {
 				if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
 					try {
 					if(Integer.valueOf(this.txfMin.getText()) > Integer.valueOf(this.txfMax.getText()))
@@ -401,7 +419,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 				}
 			}		
 				
-				private void controllaValoriMax() {
+	private void controllaValoriMax() {
 				if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
 					try {
 						if(Integer.valueOf(this.txfMax.getText()) < Integer.valueOf(this.txfMin.getText())) 

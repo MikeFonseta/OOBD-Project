@@ -13,6 +13,7 @@ import DAO.AccountDAOPostgresImp;
 import DAO.OrdineDAOPostgresImp;
 import DAO.ProdottoDAO;
 import DAO.ProdottoDAOPostgresImp;
+import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
 import Entities.*;
 import GUI.LoginFrame;
@@ -37,8 +38,8 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();		
-		//ProvaLogin("A001","pass12"); //amministratore
-		ProvaLogin("U00001","pass123");//gestore
+		ProvaLogin("A001","pass12"); //amministratore
+		//ProvaLogin("U00001","pass123");//gestore
 	}
 	
 	public static void main(String[] args) {
@@ -95,8 +96,7 @@ public class MainController {
 		this.loginFrame.dispose();
 	}
 	
-	
-	
+		
 	public void ApriVisualizzaOrdiniFrame() {
 		if(this.controllerAmministratore!= null)	
 			this.controllerAmministratore.getAmministratoreFrame().setVisible(false);
@@ -128,9 +128,6 @@ public class MainController {
 	}
 		
 	
-	
-	
-	
 	public void ChiudiVisualizzaCarrelloFrame() {
 		if(this.visualizzaOrdiniFrame != null)
 			this.visualizzaOrdiniFrame.setEnabled(true);
@@ -145,8 +142,7 @@ public class MainController {
 		creaOrdineFrame.setVisible(false);
 	}
 	
-	
-	
+		
 	public Object[][] getProdottiCarrello(int idOrdine){
 		Object[][] risultato = null;
 		if(controllerAmministratore != null) {
@@ -181,8 +177,7 @@ public class MainController {
 		
 		
 	}
-	
-	
+		
 	String[] convertiInArrayStringhe(List<String> list) {
 	String risultato[] = new String[list.size()];
 	
@@ -190,7 +185,6 @@ public class MainController {
 			risultato[i] = list.get(i);	
 	return risultato;
 	}
-	
 	
 	
 	public String[] getIDSedi() {
@@ -220,7 +214,6 @@ public class MainController {
 		}
 		return risultato;
 	}
-
 
 	public List<Integer> getID_ProdottiPerNomeP(String NomiP) {
 		List<Integer> risultato = new ArrayList<>();
@@ -255,8 +248,7 @@ public class MainController {
 		
 		return risultato;
 	}
-	
-	
+		
 	public Object[][] getOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) {
 		Object[][] risultato = null;		
 			if(controllerAmministratore != null) {
@@ -291,7 +283,6 @@ public class MainController {
 		return risultato;
 	}
 
-	
 	public List<Integer> getIDProdottiPerAllergeni(String Allergeni) {
 		List<Integer> risultato = new ArrayList<>();
 			if(Allergeni.isBlank()== false) {
@@ -333,7 +324,6 @@ public class MainController {
 
 	}
 
-	
 	public Object[][] ricercaProdotto(String Categoria, Integer Min, Integer Max, Integer idSede, List<Integer>idProdottiConAllergeni){
 		Object[][] risultato = null;
 		if(this.controllerAmministratore!= null) {
@@ -366,19 +356,16 @@ public class MainController {
 		return risultato;
 	}
 		
-	
-
 	public String[] getCategorie() {
 		
-		String[] result = null;
+		String[] categorie = null;
 		if(controllerGestore != null) {
 			if(controllerGestore.getImp()==controllerGestore.getPostgresImp())
 			{
 				
 				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 				try {
-					result = prodottoDao.getCategorieProdotto(controllerGestore.getAccount().getSede().getIdSede()).toArray(new String[] {});
-				//	result = prodottoDao.getCategorieTotali().toArray(new String[] {});
+					categorie = prodottoDao.getCategorieProdotto(controllerGestore.getAccount().getSede().getIdSede()).toArray(new String[] {});
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
@@ -395,7 +382,7 @@ public class MainController {
 				
 				ProdottoDAOPostgresImp prodottoDao = new ProdottoDAOPostgresImp();
 				try {
-					result = prodottoDao.getCategorieTotali().toArray(new String[] {});
+					categorie = prodottoDao.getCategorieTotali().toArray(new String[] {});
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
@@ -409,7 +396,7 @@ public class MainController {
 		}
 		
 		
-		return result;
+		return categorie;
 	}
 	
 	
@@ -445,6 +432,53 @@ public class MainController {
 		}
 		
 		return risultato;
+	}
+
+	
+	
+	public String[] getVeicoli() {
+		
+		
+		String[] veicoli=null;
+		
+		if(controllerGestore != null) {
+			if(controllerGestore.getImp()==controllerGestore.getPostgresImp())
+			{
+				
+				RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+				try {
+					veicoli = riderDao.getVeicoli().toArray(new String[] {});
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}else if(controllerGestore.getImp()==controllerGestore.getAltraImp())
+			{
+				//altre implementazioni
+			}
+		}
+		else {//controllerAmministratore
+			if(controllerAmministratore.getImp()==controllerAmministratore.getPostgresImp())
+			{
+				
+				RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+				try {
+					veicoli = riderDao.getVeicoli().toArray(new String[] {});
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp())
+			{
+				//altre implementazioni
+			}
+			
+		}
+		
+		return veicoli;
+		
 	}
 	
 

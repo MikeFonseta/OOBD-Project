@@ -19,4 +19,5 @@ public interface RiderDAO {
 	public void Assegnazione(int idOrdine,int idRider) throws SQLException;
 	public void Dissociazione(int idOrdine,int idRider) throws SQLException;
 	public int TrovaRiderDisponibile(int idSede) throws SQLException;
+	public List<String> getVeicoli() throws SQLException;
 }

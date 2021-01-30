@@ -2,6 +2,8 @@ package Controller;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import DAO.AccountDAOPostgresImp;
@@ -305,7 +307,8 @@ public class ControllerAmministratore {
 	
 	public void ChiudiModificaProdotto() {
 		this.modificaProdottoFrame.dispose();
-		this.ApriGestioneProdottiFrame();
+		this.gestioneProdottiFrame.setEnabled(true);
+		this.gestioneProdottiFrame.setVisible(true);
 	}
 	
 	public void ApriAggiungiAllergeniFrame(int idProdotto) {
@@ -364,10 +367,11 @@ public class ControllerAmministratore {
 		if(this.imp.equals(this.postgresImp))
 		{
 			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+			AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
 			try {
-				Sede sede = new Sede(idSede,nomeSede,telefono,provincia,citta,via,numCivico);
-				Account account = new Account(nomeUtente,Password,false,sede);
+				Sede sede = new Sede(idSede,nomeSede,telefono,provincia,citta,via,numCivico);				
 				if(sedeDao.CreaSede(sede, nomeUtente, Password)==2) {
+					Account account = accountDao.CercaAccountPerIdSede(idSede);
 					this.creaSedeFrame.dispose();
 					this.amministratoreFrame.setEnabled(true);
 					this.amministratoreFrame.setVisible(false);
@@ -767,6 +771,7 @@ public class ControllerAmministratore {
 				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 				try {
 					risultato = prodottoDAO.CreaProdotto(idProssimoProdotto, Nome, Descrizione, Prezzo, Categoria);
+					this.gestioneProdottiFrame.AggiornaTabella();
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
@@ -1129,5 +1134,8 @@ public class ControllerAmministratore {
 		this.gestioneProdottiFrame = gestioneProdottiFrame;
 	}
 
+	public String[] getVeicoli() {
+		return this.mainController.getVeicoli();
+	}
 }
 

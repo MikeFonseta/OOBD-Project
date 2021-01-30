@@ -399,9 +399,9 @@ public class CreaOrdineFrame extends JFrame {
 						Errore("Per confermare l'ordine, riempire tutti i campi");
 					} 
 					else  {   
-						if(txfNome.getText().matches("^[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+(?:'[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+)*$") && txfCognome.getText().matches("^[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+(?:'[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+)*$"))  {
+						if(txfNome.getText().matches("^[A-Za-z' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$") && txfCognome.getText().matches("^[A-Za-z'' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$"))  {
 							if (txfTelefono.getText().matches("[0-9 ]+"))  {
-								if(txfVia.getText().matches("^[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+(?:'[a-zA-Z àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+)*$")) {
+								if(txfVia.getText().matches("^[A-Za-z0-9' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$")) {
 									if (txfCivico.getText().matches("[0-9 ]+"))  {
 										if(defaultId==0) { 
 											int idCliente=Integer.parseInt(txfCodice.getText());
@@ -689,12 +689,12 @@ public class CreaOrdineFrame extends JFrame {
 	public void Compila(int idCliente,int idOrdine,boolean nuovo) { 
 		if (nuovo) {
 			int idNuovoOrdine=controllerGestore.CreazioneOrdine(Totale);  
-			controllerGestore.CreazioneInfoOrdine(idNuovoOrdine,idCliente,cbxCitta.getSelectedItem().toString(),txfVia.getText().replaceAll("'", "''"),
+			controllerGestore.CreazioneInfoOrdine(idNuovoOrdine,idCliente,cbxCitta.getSelectedItem().toString().replaceAll("'", "''"),txfVia.getText().replaceAll("'", "''"),
 					txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString());  
 			controllerGestore.CreazioneCompOrdine(getProdottiCarrello(),idNuovoOrdine); 
 			controllerGestore.ChiudiCreaOrdineFrame(); 
 		}else {
-			controllerGestore.AggiornamentoInfoOrdine(idOrdine,cbxCitta.getSelectedItem().toString(),txfVia.getText().replaceAll("'", "''"),
+			controllerGestore.AggiornamentoInfoOrdine(idOrdine,cbxCitta.getSelectedItem().toString().replaceAll("'", "''"),txfVia.getText().replaceAll("'", "''"),
 					txfCivico.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString()); 
 			controllerGestore.CancellaCompOrdine(idOrdine);
 			controllerGestore.CreazioneCompOrdine(getProdottiCarrello(),idOrdine); 

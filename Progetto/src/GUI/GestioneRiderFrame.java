@@ -165,7 +165,7 @@ public class GestioneRiderFrame extends JFrame{
 		txfTelefono.setBounds(178, 255, 210, 30);
 		getContentPane().add(txfTelefono);
 		
-		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(new String[] {"Nessun veicolo", "Auto", "Bici","Moto","Scooter", "Scooter Elettrico"}));
+		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(controllerAmministratore.getVeicoli()));
 		cbxVeicolo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	
@@ -245,7 +245,7 @@ public class GestioneRiderFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnSalva.isEnabled()) {
-					controllerAmministratore.CreaRider(Integer.parseInt(lblIdRider.getText()),txfNome.getText(),txfCognome.getText(),txfTelefono.getText(),cbxVeicolo.getSelectedItem().toString(),idSede);
+					controllerAmministratore.CreaRider(Integer.parseInt(lblIdRider.getText()),txfNome.getText().replaceAll("'", "''"),txfCognome.getText().replaceAll("'", "''"),txfTelefono.getText(),cbxVeicolo.getSelectedItem().toString().replaceAll("'", "''"),idSede);
 				}
 			}
 		});
@@ -338,7 +338,7 @@ public class GestioneRiderFrame extends JFrame{
 		txfTelefono.setBounds(178, 255, 210, 30);
 		getContentPane().add(txfTelefono);
 		
-		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(new String[] {"Nessun veicolo", "Auto", "Bici","Moto","Scooter", "Scooter Elettrico"}));
+		JComboBox cbxVeicolo = new JComboBox(new DefaultComboBoxModel(controllerAmministratore.getVeicoli()));
 		cbxVeicolo.setSelectedItem(rider.getVeicoloRider());
 		cbxVeicolo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -420,7 +420,7 @@ public class GestioneRiderFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnSalva.isEnabled()) {
-					controllerAmministratore.AggiornaRider(rider.getIdRider(), txfTelefono.getText(), cbxVeicolo.getSelectedItem().toString());
+					controllerAmministratore.AggiornaRider(rider.getIdRider(), txfTelefono.getText(), cbxVeicolo.getSelectedItem().toString().replaceAll("'", "''"));
 				}
 			}
 		});

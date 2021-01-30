@@ -309,7 +309,7 @@ public class CreaSedeFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnCrea.isEnabled()) {
-					controllerAmministratore.CreaSede(idProssimaSede, txfNome.getText(), txfTelefono.getText(), cbxProvincia.getSelectedItem().toString(), cbxCitta.getSelectedItem().toString(), txfVia.getText(), txfNumCivico.getText(), NomeUtenteGestore, psfPassword.getText());
+					controllerAmministratore.CreaSede(idProssimaSede, txfNome.getText().replaceAll("'", "''"), txfTelefono.getText(), cbxProvincia.getSelectedItem().toString(), cbxCitta.getSelectedItem().toString().replaceAll("'", "''"), txfVia.getText().replaceAll("'", "''"), txfNumCivico.getText(), NomeUtenteGestore, psfPassword.getText());
 				}
 			}
 		});

@@ -89,7 +89,7 @@ public class CreaCategoriaFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnCrea.isEnabled()) {
-					controllerAmministratore.CreaCategoria(txfNomeCategoria.getText());
+					controllerAmministratore.CreaCategoria(txfNomeCategoria.getText().replaceAll("'", "''"));
 				}
 			}
 		});

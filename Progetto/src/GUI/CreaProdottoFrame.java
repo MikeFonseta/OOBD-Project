@@ -47,10 +47,6 @@ public class CreaProdottoFrame extends JFrame {
 	private JComboBox cbxCategorie;
 
 
-	/**
-	 * Create the frame.
-	 * @param idProssimoProdotto 
-	 */
 	public CreaProdottoFrame(ControllerAmministratore ControllerAmministratore, int idProssimoProdotto) {
 		this.controllerAmministratore = ControllerAmministratore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,7 +146,7 @@ public class CreaProdottoFrame extends JFrame {
 		lblCategoria.setBounds(24, 207, 77, 29);
 		contentPane.add(lblCategoria);
 		
-		JLabel lblEuro = new JLabel("\u20AC");
+		JLabel lblEuro = new JLabel("€");
 		lblEuro.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblEuro.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblEuro.setBounds(218, 481, 46, 23);
@@ -240,7 +236,7 @@ public class CreaProdottoFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnCrea.isEnabled()) {
-					controllerAmministratore.CreaProdotto(idProssimoProdotto, txfNome.getText(), txpDescrizione.getText(), Float.parseFloat(txfPrezzo.getText().toString()), cbxCategorie.getSelectedItem().toString());
+					controllerAmministratore.CreaProdotto(idProssimoProdotto, txfNome.getText().replaceAll("'", "''"), txpDescrizione.getText().replaceAll("'", "''"), Float.parseFloat(txfPrezzo.getText().toString()), cbxCategorie.getSelectedItem().toString().replaceAll("'", "''"));
 				}
 			} 
 		});

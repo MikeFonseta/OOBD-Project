@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
@@ -16,6 +17,7 @@ import Entities.Account;
 
 import javax.swing.JPasswordField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -365,7 +367,7 @@ public class GestioneSedeFrame extends JFrame{
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, String.class, Double.class
+				Integer.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -393,6 +395,13 @@ public class GestioneSedeFrame extends JFrame{
 		tblProdotti.getColumnModel().getColumn(3).setMinWidth(60);
 		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(60);
 		scpProdotti.setViewportView(tblProdotti);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblProdotti.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblProdotti.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
 		
 		JScrollPane scpRider = new JScrollPane();
 		scpRider.setBounds(604, 150, 570, 494);
@@ -437,6 +446,8 @@ public class GestioneSedeFrame extends JFrame{
 		tblRider.getColumnModel().getColumn(4).setMinWidth(150);
 		tblRider.getColumnModel().getColumn(4).setMaxWidth(150);
 		scpRider.setViewportView(tblRider);
+		
+		tblRider.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		JButton btnEliminaProdotto = new JButton("ELIMINA");
 		btnEliminaProdotto.addMouseListener(new MouseAdapter() {
@@ -514,7 +525,7 @@ public class GestioneSedeFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnSalva.isEnabled()) {
-					controllerAmministratore.SalvaSede(btnSalva,txfNomeSede.getText(),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString(),cbxCitta.getSelectedItem().toString(),txfVia.getText(),txfNumCivico.getText(),gestoreSede,psfPassword.getText());
+					controllerAmministratore.SalvaSede(btnSalva,txfNomeSede.getText().replaceAll("'", "''"),txfTelefono.getText(),cbxProvincia.getSelectedItem().toString(),cbxCitta.getSelectedItem().toString().replaceAll("'", "''"),txfVia.getText().replaceAll("'", "''"),txfNumCivico.getText(),gestoreSede,psfPassword.getText());
 			}
 			}
 		});
@@ -583,7 +594,7 @@ public class GestioneSedeFrame extends JFrame{
 				}
 			) {
 				Class[] columnTypes = new Class[] {
-					Integer.class, String.class, String.class, Double.class
+					Integer.class, String.class, String.class, String.class
 				};
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
@@ -611,6 +622,12 @@ public class GestioneSedeFrame extends JFrame{
 			tblProdotti.getColumnModel().getColumn(3).setMinWidth(60);
 			tblProdotti.getColumnModel().getColumn(3).setMaxWidth(60);
 			
+			DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+			rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+			tblProdotti.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+			tblProdotti.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
 			
 	}
 	
@@ -654,6 +671,11 @@ public class GestioneSedeFrame extends JFrame{
 		tblRider.getColumnModel().getColumn(4).setPreferredWidth(150);
 		tblRider.getColumnModel().getColumn(4).setMinWidth(150);
 		tblRider.getColumnModel().getColumn(4).setMaxWidth(150);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		tblRider.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		
 	}
 	
 	private void Errore() {

@@ -349,7 +349,7 @@ public class ModificaProdottoFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && btnAggiorna.isEnabled()) {
-					controllerAmministratore.AggiornaProdotto(prodotto.getIdProdotto(), txfNomeP.getText(), txpDescrizione.getText(), Float.parseFloat(txfPrezzo.getText()), cbxCategorie.getSelectedItem().toString());
+					controllerAmministratore.AggiornaProdotto(prodotto.getIdProdotto(), txfNomeP.getText().replaceAll("'", "''"), txpDescrizione.getText().replaceAll("'", "''"), Float.parseFloat(txfPrezzo.getText()), cbxCategorie.getSelectedItem().toString().replaceAll("'", "''"));
 				}
 			}
 		});

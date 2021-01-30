@@ -25,8 +25,8 @@ public class FiltroDecimali extends DocumentFilter {
    private boolean ControlloFloat(String text) {
       try {
          Float.parseFloat(text);
-         if(Float.parseFloat(text)> 0) {System.out.println(Float.parseFloat(text));
-         return true;}
+         if(Float.parseFloat(text)> -1)
+         {return true;}
          else return false;
          
       } catch (NumberFormatException e) {

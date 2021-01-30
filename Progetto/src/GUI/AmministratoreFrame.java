@@ -15,6 +15,7 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.UIManager;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
@@ -210,6 +211,10 @@ public class AmministratoreFrame extends JFrame{
 		tblSedi.setAutoResizeMode(JTable.HEIGHT);
 		tblSedi.getTableHeader().setReorderingAllowed(false);
 		scpSedi.setViewportView(tblSedi);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		tblSedi.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		JPanel pnlBarra = new JPanel();
 		pnlBarra.setBounds(0, 0, 1200, 35);

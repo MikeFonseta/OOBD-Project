@@ -70,8 +70,6 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		return rider;
 	}
 
-
-
 	@Override
 	public int InserisciRider(int idRider, String nome, String cognome, String telefono, String veicolo, int idSede) throws SQLException {
 		
@@ -143,8 +141,6 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		return  risultato;
 	}
 
-
-	
 	public List<Object[]> getRiderPerSede(int idSede) throws SQLException {
 		
 		List<Object[]> rider = new ArrayList<Object[]>();
@@ -224,8 +220,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		conn.close();
 		
 	}
-	
-	
+		
 	public int AggiornaNumeroOrdini(int idRider,boolean aumenta)throws SQLException{
 		int risultato = 0;
 		String operazione=null;
@@ -254,8 +249,7 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		
 		return risultato;
 	}
-	
-	
+
 	
 	@Override
 	public int TrovaRiderDisponibile(int idSede) throws SQLException{
@@ -278,9 +272,28 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		return idRider;
 	}
 
-
-
-
-
+	
+	@Override
+	public List<String> getVeicoli() throws SQLException {
+		
+		List<String> veicoli = new ArrayList<String>();
+		veicoli.add("Nessun Veicolo");
+		Connection conn = null;
+		
+		conn = DBConnection.getInstance().getConnection();
+		Statement st = conn.createStatement();
+		
+		ResultSet rs = st.executeQuery("SELECT * FROM veicolo");
+		
+		while(rs.next()) {
+			veicoli.add(rs.getString(1));
+		}
+		
+		rs.close();
+		st.close();
+		conn.close();
+		
+		return veicoli;
+	}
 
 }

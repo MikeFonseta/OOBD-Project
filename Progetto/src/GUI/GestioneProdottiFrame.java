@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.PlainDocument;
@@ -326,6 +327,12 @@ public class GestioneProdottiFrame extends JFrame {
 		tblProdotti.getTableHeader().setReorderingAllowed(false);
 		tblProdotti.setFillsViewportHeight(true);
 		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblProdotti.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblProdotti.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
 		
 		scrollPane.setViewportView(tblProdotti);
 		contentPane.setLayout(null);
@@ -600,6 +607,13 @@ public class GestioneProdottiFrame extends JFrame {
 		tblProdotti.getTableHeader().setReorderingAllowed(false);
 		tblProdotti.setFillsViewportHeight(true);
 		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblProdotti.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblProdotti.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+		
 		
 		scrollPane.setViewportView(tblProdotti);
 		contentPane.setLayout(null);
@@ -696,6 +710,13 @@ public class GestioneProdottiFrame extends JFrame {
 		tblProdotti.getTableHeader().setReorderingAllowed(false);
 		tblProdotti.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
 		tblProdotti.setFillsViewportHeight(true);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblProdotti.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblProdotti.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
 	}
 			
 

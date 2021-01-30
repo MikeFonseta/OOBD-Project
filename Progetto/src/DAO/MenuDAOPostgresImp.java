@@ -59,9 +59,9 @@ public class MenuDAOPostgresImp implements MenuDAO {
 			int idProdotto = rs.getInt(1);
 			String nomeProdotto= rs.getString(2);
 			String descrizione = rs.getString(3);
-			float prezzo = rs.getFloat(4);
+			String prezzo = rs.getString(4);
 			
-			Object[] object = new Object[] {idProdotto,nomeProdotto,descrizione,prezzo};
+			Object[] object = new Object[] {idProdotto,nomeProdotto,descrizione,"€"+prezzo};
 				
 			prodotti.add(object);
 		}
@@ -87,10 +87,10 @@ public class MenuDAOPostgresImp implements MenuDAO {
 				
 			int idProdotto = rs.getInt(1);
 			String nomeProdotto= rs.getString(2);
-			float prezzo = rs.getFloat(3);
+			String prezzo = rs.getString(3);
 			String categoria = rs.getString(4);
 				
-			Object[] object = new Object[] {idProdotto,nomeProdotto,categoria,prezzo};
+			Object[] object = new Object[] {idProdotto,nomeProdotto,categoria,"€" + prezzo};
 				
 			prodotti.add(object);
 		}
@@ -131,9 +131,9 @@ public class MenuDAOPostgresImp implements MenuDAO {
 			int idProdotto = rs.getInt(1);
 			String nomeProdotto= rs.getString(2);
 			String descrizione = rs.getString(3);
-			float prezzo = rs.getFloat(4);
+			String prezzo = rs.getString(4);
 				
-			Object[] object = new Object[] {idProdotto,nomeProdotto,descrizione,prezzo};
+			Object[] object = new Object[] {idProdotto,nomeProdotto,descrizione,"€" + prezzo};
 				
 			prodotti.add(object);
 		}

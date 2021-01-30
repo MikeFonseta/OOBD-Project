@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
@@ -81,7 +82,7 @@ public class AggiungiProdottoFrame extends JFrame{
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, String.class, Double.class
+				Integer.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -109,6 +110,13 @@ public class AggiungiProdottoFrame extends JFrame{
 		tblProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
 		tblProdotti.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		scpProdotti.setViewportView(tblProdotti);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblProdotti.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblProdotti.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
 		
 		JButton btnChiudi = new JButton("CHIUDI");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -205,7 +213,7 @@ public class AggiungiProdottoFrame extends JFrame{
 				}
 			) {
 				Class[] columnTypes = new Class[] {
-					Integer.class, String.class, String.class, Double.class
+					Integer.class, String.class, String.class, String.class
 				};
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
@@ -230,6 +238,13 @@ public class AggiungiProdottoFrame extends JFrame{
 		tblProdotti.getColumnModel().getColumn(3).setPreferredWidth(70);
 		tblProdotti.getColumnModel().getColumn(3).setMinWidth(70);
 		tblProdotti.getColumnModel().getColumn(3).setMaxWidth(70);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		tblProdotti.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblProdotti.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
 	}
 
 	public void AggiornaProdottiConCategoria(Object[][] result) {

@@ -81,7 +81,7 @@ public class SedeDAOPostgresImp implements SedeDAO{
 			String via = rs.getString(6);
 			String numCivico = rs.getString(7);
 				
-			Object[] object = new Object[] {idSede,nomeSede,"(" + provincia + ") " + citta + " - " + via + " [" + numCivico +"]" , telefonoSede};
+			Object[] object = new Object[] {idSede,nomeSede,via + " " + numCivico + ", " + citta + " (" + provincia + ")", telefonoSede};
 				
 			sedi.add(object);
 		}
