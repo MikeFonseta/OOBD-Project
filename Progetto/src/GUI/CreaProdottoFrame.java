@@ -159,7 +159,7 @@ public class CreaProdottoFrame extends JFrame {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank()) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText().toString()) > 0) {
 					
 						PrezzoInserito = true;
 				}
@@ -172,7 +172,7 @@ public class CreaProdottoFrame extends JFrame {
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank()) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText().toString()) > 0) {
 					
 						PrezzoInserito = true;
 				}
@@ -185,7 +185,7 @@ public class CreaProdottoFrame extends JFrame {
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank()) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText().toString()) > 0) {
 					
 						PrezzoInserito = true;
 				}

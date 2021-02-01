@@ -38,7 +38,7 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();		
-		ProvaLogin("A001","pass12"); //amministratore
+		ProvaLogin("A00001","pass12"); //amministratore
 		//ProvaLogin("U00001","pass123");//gestore
 	}
 	

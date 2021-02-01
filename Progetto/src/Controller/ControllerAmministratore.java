@@ -882,6 +882,7 @@ public class ControllerAmministratore {
 				risultato = ProdottoDAO.AggiornaProdotto(prodotto);
 				if(risultato == 1) {
 					ChiudiModificaProdotto();
+					this.gestioneProdottiFrame.AggiornaTabella();
 					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,"Prodotto aggiornato!","",JOptionPane.PLAIN_MESSAGE);
 				}
 			}catch (SQLException e) {

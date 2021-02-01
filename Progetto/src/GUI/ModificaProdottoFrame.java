@@ -24,6 +24,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.security.MessageDigest;
 import java.sql.BatchUpdateException;
 import java.text.DecimalFormat;
+import java.util.Locale;
 import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -110,14 +111,14 @@ public class ModificaProdottoFrame extends JFrame {
 		txfNomeP.setColumns(10);
 		contentPane.add(txfNomeP);
 
-		  txfPrezzo = new JTextField((Float.valueOf(prodotto.getPrezzo()).toString()));
+		  txfPrezzo = new JTextField(String.format(Locale.US, "%.2f", prodotto.getPrezzo()));
 	      PlainDocument docMin = (PlainDocument) txfPrezzo.getDocument();
 	      docMin.setDocumentFilter(new FiltroDecimali());
 		txfPrezzo.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) != prodotto.getPrezzo() ) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) > 0 && Float.parseFloat(txfPrezzo.getText())!= prodotto.getPrezzo() ) {
 					
 						PrezzoInserito = true;
 				}
@@ -130,7 +131,7 @@ public class ModificaProdottoFrame extends JFrame {
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) != prodotto.getPrezzo() ) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) > 0 && Float.parseFloat(txfPrezzo.getText())!= prodotto.getPrezzo() ) {
 					
 						PrezzoInserito = true;
 				}
@@ -143,7 +144,7 @@ public class ModificaProdottoFrame extends JFrame {
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) != prodotto.getPrezzo() ) {
+				if(!txfPrezzo.getText().isBlank() && Float.parseFloat(txfPrezzo.getText()) > 0 && Float.parseFloat(txfPrezzo.getText())!= prodotto.getPrezzo() ) {
 					
 						PrezzoInserito = true;
 				}

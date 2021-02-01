@@ -166,6 +166,40 @@ public class GestioneProdottiFrame extends JFrame {
 		contentPane.add(lblMin);
 				
 		
+		JButton btnNuovaCategoria = new JButton("Nuova");
+		btnNuovaCategoria.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					controllerAmministratore.ApriCreaCategoriaFrame();
+				}
+			}
+		});
+		btnNuovaCategoria.setFont(new Font("Calibri", Font.PLAIN, 16));
+		btnNuovaCategoria.setBounds(298, 46, 78, 32);
+		contentPane.add(btnNuovaCategoria);
+		
+		JButton btnAggiungiACategoria = new JButton("AGGIUNGI A CATEGORIA");
+		btnAggiungiACategoria.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			if(e.getButton() == MouseEvent.BUTTON1) {				
+				if(tblProdotti.getSelectedRowCount() > 0) {	
+					System.out.println("ciao");
+					int[] Prodotti = new int[tblProdotti.getSelectedRowCount()];
+					int righe[] = tblProdotti.getSelectedRows();
+						for(int i = 0; i<tblProdotti.getSelectedRowCount(); i++)
+							Prodotti[i] = (int) tblProdotti.getValueAt(righe[i], 0);
+							controllerAmministratore.ApriAggiungiProdottiACategoriaFrame(Prodotti);
+				}
+			}
+		}
+		});
+		btnAggiungiACategoria.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnAggiungiACategoria.setBounds(494, 46, 186, 32);
+		contentPane.add(btnAggiungiACategoria);
+		
+		
 		JButton btnCerca = new JButton("Cerca");
 		btnCerca.addMouseListener(new MouseAdapter() {
 			@Override
@@ -351,41 +385,7 @@ public class GestioneProdottiFrame extends JFrame {
 		lblGestioneProdotti.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblGestioneProdotti.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblGestioneProdotti);
-		
-		JButton btnNuovaCategoria = new JButton("Nuova");
-		btnNuovaCategoria.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {
-					controllerAmministratore.ApriCreaCategoriaFrame();
-				}
-			}
-		});
-		btnNuovaCategoria.setFont(new Font("Calibri", Font.PLAIN, 16));
-		btnNuovaCategoria.setBounds(298, 46, 78, 32);
-		contentPane.add(btnNuovaCategoria);
-		
-		JButton btnAggiungiACategoria = new JButton("AGGIUNGI A CATEGORIA");
-		btnAggiungiACategoria.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			if(e.getButton() == MouseEvent.BUTTON1) {				
-				if(tblProdotti.getSelectedRowCount() > 0) {	
-					System.out.println("ciao");
-					int[] Prodotti = new int[tblProdotti.getSelectedRowCount()];
-					int righe[] = tblProdotti.getSelectedRows();
-						for(int i = 0; i<tblProdotti.getSelectedRowCount(); i++)
-							Prodotti[i] = (int) tblProdotti.getValueAt(righe[i], 0);
-							controllerAmministratore.ApriAggiungiProdottiACategoriaFrame(Prodotti);
-				}
-			}
-		}
-		});
-		btnAggiungiACategoria.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnAggiungiACategoria.setBounds(494, 46, 186, 32);
-		contentPane.add(btnAggiungiACategoria);
-		
-		
+	
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
 	            initialClick = e.getPoint();
