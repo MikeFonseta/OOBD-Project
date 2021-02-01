@@ -454,7 +454,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	
 	
 	public String getVeicoloSelezionato() {
-		if(this.cbxVeicolo.getSelectedItem().toString().isBlank())
+		if(this.cbxVeicolo.getSelectedItem().toString().equals("Nessun Veicolo"))
 			return null;
 		else 
 			return this.cbxVeicolo.getSelectedItem().toString();

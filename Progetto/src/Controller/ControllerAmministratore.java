@@ -2,8 +2,6 @@ package Controller;
 
 import java.sql.SQLException;
 import java.util.List;
-
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import DAO.AccountDAOPostgresImp;
@@ -178,17 +176,19 @@ public class ControllerAmministratore {
 		Account gestoreSede = new Account();
 		if(this.imp.equals(this.postgresImp))
 		{
-			AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
-			try {
-				gestoreSede = accountDao.CercaAccountPerIdSede(idSede);
-				this.gestioneSedeFrame = new GestioneSedeFrame(this,gestoreSede);
-				this.amministratoreFrame.setVisible(false);
-			} catch (SQLException e) {
-				if(this.gestioneSedeFrame!=null) {
-					this.gestioneSedeFrame.dispose();	
+			if(this.gestioneSedeFrame == null) {
+				AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
+				try {
+					gestoreSede = accountDao.CercaAccountPerIdSede(idSede);				
+					this.gestioneSedeFrame = new GestioneSedeFrame(this,gestoreSede);
+					this.amministratoreFrame.setVisible(false);
+				} catch (SQLException e) {
+					if(this.gestioneSedeFrame!=null) {
+						this.gestioneSedeFrame.dispose();	
+					}
+					this.amministratoreFrame.setVisible(true);
+					JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
-				this.amministratoreFrame.setVisible(true);
-				JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
 		}else if(this.imp.equals(this.altraImp))
 		{
@@ -233,6 +233,7 @@ public class ControllerAmministratore {
     
 	public void ChiudiGestioneSedeFrame() {
 		this.gestioneSedeFrame.dispose();
+		this.gestioneSedeFrame = null;
 		this.amministratoreFrame.setVisible(true);
 		this.amministratoreFrame.AggiornaSedi();
 	}
