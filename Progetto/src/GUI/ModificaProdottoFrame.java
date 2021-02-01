@@ -373,7 +373,7 @@ public class ModificaProdottoFrame extends JFrame {
 				
 								controllerAmministratore.EliminaAllergeniDaProdotto(prodotto.getIdProdotto(), Allergeni);
 					}
-					else JOptionPane.showMessageDialog(null, "Nessun allergene selezionato/presente ", "Error", JOptionPane.ERROR_MESSAGE);
+					else JOptionPane.showMessageDialog(null, "Nessun allergene selezionato! ", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -389,7 +389,7 @@ public class ModificaProdottoFrame extends JFrame {
 				if(controllerAmministratore.getAllergeniMancanti(prodotto.getIdProdotto()).length > 0) 
 					controllerAmministratore.ApriAggiungiAllergeniFrame(prodotto.getIdProdotto());
 				else
-				JOptionPane.showInternalMessageDialog(null, "Nessun allergene disponibile, questo prodotto li contiene già tutti ", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showInternalMessageDialog(null, "Nessun allergene disponibile! ", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -410,7 +410,7 @@ public class ModificaProdottoFrame extends JFrame {
 							controllerAmministratore.EliminaProdottoDaSedi(prodotto.getIdProdotto(), Sedi);
 					}
 					else
-						JOptionPane.showMessageDialog(null, "Nessuna sede selezionata/presente ", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nessuna sede selezionata! ", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

@@ -291,12 +291,14 @@ public class ControllerAmministratore {
 				try {
 					prodotto = ProdottoDAO.getProdottoPerId(idProdotto);
 					this.gestioneProdottiFrame.setEnabled(false);
+					this.gestioneProdottiFrame.setVisible(false);
 					this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
 				} catch (SQLException e) {
-					if(this.modificaPasswordFrame!=null) {
-						this.modificaPasswordFrame.dispose();
+					if(this.modificaProdottoFrame!=null) {
+						this.modificaProdottoFrame.dispose();
 					}
 					this.gestioneProdottiFrame.setEnabled(true);
+					this.gestioneProdottiFrame.setVisible(true);
 					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 			}

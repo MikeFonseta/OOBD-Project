@@ -251,8 +251,9 @@ public class GestioneProdottiFrame extends JFrame {
 		JButton btnModifica = new JButton("MODIFICA");
 		btnModifica.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {
+			public void mousePressed(MouseEvent e) {
+				
+				if(e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 1 && !e.isConsumed()) {
 					if(tblProdotti.getSelectedRowCount() == 1) {
 							int idProdotto = (int) tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 0);
 							controllerAmministratore.ApriModificaProdotto(idProdotto);
@@ -262,6 +263,7 @@ public class GestioneProdottiFrame extends JFrame {
 					}
 					else
 						JOptionPane.showMessageDialog(parent, new String("Nessuna riga selezionata!"),"Error",JOptionPane.ERROR_MESSAGE);
+					
 				}
 			}
 		});
