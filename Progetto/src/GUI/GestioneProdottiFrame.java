@@ -46,6 +46,7 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.UIManager;
 
 public class GestioneProdottiFrame extends JFrame {
 
@@ -68,7 +69,7 @@ public class GestioneProdottiFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		
 		txfAllergeni = new JTextField();
@@ -421,13 +422,16 @@ public class GestioneProdottiFrame extends JFrame {
 	}
 	
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public GestioneProdottiFrame(ControllerGestore ControllerGestore) {
 		setResizable(false);
 		this.controllerGestore = ControllerGestore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		
 		txfAllergeni = new JTextField();

@@ -22,7 +22,6 @@ import javax.swing.text.PlainDocument;
 
 import Controller.ControllerAmministratore;
 import Utility.FiltroDecimali;
-import Utility.FiltroInteri;
 
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
