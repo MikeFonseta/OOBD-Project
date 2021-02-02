@@ -11,7 +11,6 @@ import Database.DBConnection;
 
 public class OrdineDAOPostgresImp implements OrdineDAO {
 
-	
 	@Override
 	public void IniziaConsegna(Integer idRider,boolean annulla) {
 		Connection conn = null;
@@ -60,7 +59,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 
 	}
 
-	
 	@Override
 	public void CancellaOrdine(Integer idOrdine) {
 		Connection conn = null;
@@ -136,8 +134,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		
 	}
 	
-	
-	
 	@Override
 	public void CreaCompOrdine(List<int[]> prodotti,int idNuovoOrdine) throws SQLException
 	{
@@ -160,8 +156,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		conn.close();
 	}
 	
-
-	
 	@Override
 	public void EliminaCompOrdine(int idOrdine) throws SQLException
 	{
@@ -173,7 +167,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		st.close();
 		conn.close();
 	}
-	
 	
 	@Override
 	public void CreaInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia) throws SQLException
@@ -202,7 +195,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		st.close();
 		conn.close();
 	}
-	
 	
 	@Override
 	public List<Object[]> getOrdiniTabella(int idSede) throws SQLException {
@@ -246,7 +238,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		
 		return ordini;
 	}
-	
 	
 	@Override
 	public List<Object[]> getOrdiniFiltroRider(int idRider) throws SQLException{
@@ -294,7 +285,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		
 	}
 	
-	
 	public List<Object[]> getProdottiCarrello(int idOrdine) throws SQLException  {
 		
 		List<Object[]> prodotti = new ArrayList<Object[]>();
@@ -328,7 +318,6 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 		return prodotti;
 	}
 	
-
 	@Override
 	public List<Object[]> ricercaComplessaOrdini(Integer idSede, List<Integer> idProdotti, String Veicolo, Integer Min, Integer Max) throws SQLException {
 		
@@ -445,6 +434,5 @@ public class OrdineDAOPostgresImp implements OrdineDAO {
 
 		return risultato;
 	}
-
 
 }

@@ -38,5 +38,4 @@ public class AllergeneDaoPostgresImp implements AllergeneDAO {
 		return risultato;
 	}
 
-
 }

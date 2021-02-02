@@ -56,7 +56,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		String nome ="<html>"+rs.getString(1)+"</html>";
 		String descrizione=rs.getString(2);
 		String allergeni=rs.getString(3);
-		String prezzo ="<html> \u20AC "+ rs.getString(4)+"</html>";
+		String prezzo ="<html> € "+ rs.getString(4)+"</html>";
 		
 		if(descrizione==null || descrizione.isBlank()) descrizione="<html>Nessuna descrizione</html>";
 		else descrizione ="<html>"+ rs.getString(2)+"</html>";
@@ -521,7 +521,6 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return categorie;
 	}
 	
-	
 	@Override
 	public int AggiungiProdottoACategoria(int idProdotto, String Categoria) throws SQLException{
 		int risultato = 0;
@@ -537,7 +536,5 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		return risultato;
 	}
 	
-	
-	
-	
+
 }

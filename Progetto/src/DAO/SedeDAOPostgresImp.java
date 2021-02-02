@@ -171,7 +171,6 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return risultato;
 	}
 
-	
 	@Override
 	public List<Object[]> getSediPerProdotto(int idProdotto) throws SQLException {
 		List<Object[]> risultato = new ArrayList<>();
@@ -203,9 +202,6 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		return risultato;
 	}
 	
-	
-	
-	
 	@Override
 	public List<Object[]> getSediMancanti(int idProdotto) throws SQLException {
 		List<Object[]> risultato = new ArrayList<>();
@@ -236,7 +232,5 @@ public class SedeDAOPostgresImp implements SedeDAO{
 		connection.close();
 		return risultato;
 	}
-
-
 	
 }

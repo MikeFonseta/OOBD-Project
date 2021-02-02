@@ -22,11 +22,6 @@ import GUI.VisualizzaOrdiniFrame;
 import Utility.DatiExcel;
 import GUI.CreaOrdineFrame;
 
-//simbolo euro : \u20AC
-//a accentata  : \u00E0
-//e accentata  : \u00E8
-//u accentata  : \u00F9
-//simbolo NULL : \u0000
 public class MainController {
 	
 	public LoginFrame loginFrame = new LoginFrame(this);

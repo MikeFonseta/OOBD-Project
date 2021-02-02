@@ -17,4 +17,5 @@ public interface SedeDAO {
 	public int idProssimaSede() throws SQLException;
 	public List<Object[]> getSediPerProdotto(int idProdotto) throws SQLException;
 	public List<Object[]> getSediMancanti(int idProdotto) throws SQLException; 
+	
 }

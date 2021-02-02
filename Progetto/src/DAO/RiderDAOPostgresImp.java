@@ -250,7 +250,6 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		return risultato;
 	}
 
-	
 	@Override
 	public int TrovaRiderDisponibile(int idSede) throws SQLException{
 		int idRider=0;
@@ -272,7 +271,6 @@ public class RiderDAOPostgresImp implements RiderDAO{
 		return idRider;
 	}
 
-	
 	@Override
 	public List<String> getVeicoli() throws SQLException {
 		

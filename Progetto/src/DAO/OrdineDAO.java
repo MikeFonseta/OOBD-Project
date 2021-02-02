@@ -19,6 +19,7 @@ public interface OrdineDAO {
 	public void CreaInfoOrdine(int idOrdine,int idCliente, String citta, String via, String civico, String telefono, String provincia) throws SQLException;
 	public void AggiornaInfoOrdine(int idOrdine, String citta, String via, String civico, String telefono, String provincia) throws SQLException;
 	public List<Object[]> getProdottiCarrello(int idOrdine) throws SQLException;
+
 }
 
 

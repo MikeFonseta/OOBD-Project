@@ -14,20 +14,12 @@ public class DBConnection {
     private final String DATABASE = "progetto";
     private final String PORT = "5432";
 	private String url = "jdbc:postgresql://" + IP +":"+PORT+"/"+DATABASE;
-//	private String USERNAME = "postgres";
-//	private String PASSWORD = "admin";
 
     private DBConnection() throws SQLException {
-    	
-        //Properties props = new Properties();
-        //props.setProperty("user", USERNAME);
-        //props.setProperty("pwd", PASSWORD);
-    	
         try
         {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
-
         }
         catch (ClassNotFoundException ex)
         {

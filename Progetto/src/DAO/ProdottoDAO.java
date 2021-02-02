@@ -6,6 +6,7 @@ import java.util.List;
 import Entities.Prodotto;
 
 public interface ProdottoDAO {
+	
 	public Prodotto getProdottoPerId(int idProdotto) throws SQLException;
 	public List<Integer> getTuttiProdottiPerNome(String[] Prodotti)throws SQLException;
 	public List<Object[]> getTuttiProdotti() throws SQLException; 
@@ -23,4 +24,5 @@ public interface ProdottoDAO {
 	public int CreaCategoria(String NomeCategoria) throws SQLException;
 	public int EliminaCategoria(String NomeCategoria) throws SQLException;
 	public int AggiungiProdottoACategoria(int idProdotto, String Categoria) throws SQLException;
+	
 }

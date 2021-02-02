@@ -41,9 +41,6 @@ public class EtichettaDaoPostgresImp implements EtichettaDAO {
 		return risultato;
 	}
 
-
-
-
 	public List<String[]> getAllergeniProdotto(int idProdotto) throws SQLException{
 		List<String[]> risultato = new ArrayList<String[]>();
 		Connection connection = null;
