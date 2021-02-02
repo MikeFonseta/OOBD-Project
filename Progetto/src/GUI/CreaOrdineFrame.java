@@ -51,19 +51,19 @@ public class CreaOrdineFrame extends JFrame {
 	private JLabel lblAllergeni;
 	private String IdCliente;
 	private float Totale;
-	private ControllerGestore controllerGestore;
+	private ControllerGestore controllerGestore = null;
 	private Point initialClick;
 	private JFrame parent=this;
 	private JComboBox cbxProvincia;
 	private JComboBox cbxCitta;
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel(); 
 
-	public CreaOrdineFrame(ControllerGestore controllerGestore, int defaultId) {
+	public CreaOrdineFrame(ControllerGestore ControllerGestore, int defaultId) {
+		this.controllerGestore = ControllerGestore;
 		setResizable(false);
 		if (defaultId==0) this.IdCliente=controllerGestore.getProssimoID();
 		else this.IdCliente=controllerGestore.getIdClienteDaOrdine(defaultId);
 		
-		this.controllerGestore = controllerGestore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		pnlCreaOrdine = new JPanel();

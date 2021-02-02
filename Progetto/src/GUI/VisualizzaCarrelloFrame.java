@@ -1,51 +1,41 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.Window;
-
 import javax.swing.table.DefaultTableModel;
-
-
 import Controller.MainController;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.UIManager;
 
 public class VisualizzaCarrelloFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tblProdotti;
-	private MainController maincontroller;
+	private MainController maincontroller = null;
 	private Point initialClick;
 	private JFrame parent = this;
 	
 	
-	public VisualizzaCarrelloFrame(MainController mainController, int idOrdine) {
+	public VisualizzaCarrelloFrame(MainController MainController, int idOrdine) {
 		setAlwaysOnTop(true);
-		this.maincontroller = mainController;
+		this.maincontroller = MainController;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 700);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -67,7 +57,7 @@ public class VisualizzaCarrelloFrame extends JFrame {
 		tblProdotti.setRowHeight(30);
 		tblProdotti.setFillsViewportHeight(true);
 		tblProdotti.setModel(new DefaultTableModel(
-			mainController.getProdottiCarrello(idOrdine),
+			maincontroller.getProdottiCarrello(idOrdine),
 			new String[] {
 				"ID", "Nome", "Quantità", "Prezzo"
 			}) {

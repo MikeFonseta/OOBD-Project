@@ -152,24 +152,30 @@ public class ControllerAmministratore {
 	}
 		
 	public void ApriGestioneProdottiFrame() {
-		this.amministratoreFrame.setEnabled(false);
-		this.amministratoreFrame.setVisible(false);
-		this.gestioneProdottiFrame = new GestioneProdottiFrame(this);
+		if(this.gestioneProdottiFrame == null) {
+			this.amministratoreFrame.setEnabled(false);
+			this.amministratoreFrame.setVisible(false);
+			this.gestioneProdottiFrame = new GestioneProdottiFrame(this);
+		}
 	}
 	
 	public void ChiudiGestioneProdottiFrame(){
 		this.gestioneProdottiFrame.dispose();
+		this.gestioneProdottiFrame = null;
 		this.amministratoreFrame.setEnabled(true);
 		this.amministratoreFrame.setVisible(true);
 	}
 		
 	public void ApriEliminaProdottoFrame(String NomeProdottoDaEliminare, int idProdottoDaEliminare) {
-		this.gestioneProdottiFrame.setEnabled(false);
-		this.eliminaProdottoFrame = new EliminaProdottoFrame(this,NomeProdottoDaEliminare, idProdottoDaEliminare);
+		if(this.eliminaProdottoFrame == null){
+			this.gestioneProdottiFrame.setEnabled(false);
+			this.eliminaProdottoFrame = new EliminaProdottoFrame(this,NomeProdottoDaEliminare, idProdottoDaEliminare);
+		}
 	}
 	
 	public void ChiudiEliminaProdottoFrame() {
 		this.eliminaProdottoFrame.dispose();
+		this.eliminaProdottoFrame = null;
 		this.gestioneProdottiFrame.setEnabled(true);
 		this.gestioneProdottiFrame.setVisible(true);
 	}
@@ -258,28 +264,31 @@ public class ControllerAmministratore {
 	}
 	
 	public void ApriCreaProdottoFrame() {
-		int idProssimoProdotto = 0;
-		if(this.imp == this.postgresImp) {
-			try {
-				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
-				idProssimoProdotto = prodottoDAO.idProssimoProdotto();
-				this.gestioneProdottiFrame.setEnabled(false);
-				this.creaProdottoFrame = new CreaProdottoFrame(this, idProssimoProdotto);
-			}catch (SQLException e) {
-				if(this.creaProdottoFrame!=null) {
-					this.creaProdottoFrame.dispose();
+		if(this.creaProdottoFrame == null) {
+			int idProssimoProdotto = 0;
+			if(this.imp == this.postgresImp) {
+				try {
+					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
+					idProssimoProdotto = prodottoDAO.idProssimoProdotto();
+					this.gestioneProdottiFrame.setEnabled(false);
+					this.creaProdottoFrame = new CreaProdottoFrame(this, idProssimoProdotto);
+				}catch (SQLException e) {
+					if(this.creaProdottoFrame!=null) {
+						this.creaProdottoFrame.dispose();
+					}
+					this.gestioneProdottiFrame.setEnabled(true);
+					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
-				this.gestioneProdottiFrame.setEnabled(true);
-				JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
+			else if(this.imp == this.altraImp){
+				//altra implementazione
+			}	
 		}
-		else if(this.imp == this.altraImp){
-		//altra implementazione
-		}	
 	}
 	
 	public void ChiudiCreaProdottoFrame() {
 		this.creaProdottoFrame.dispose();
+		this.creaProdottoFrame = null;
 		this.gestioneProdottiFrame.setEnabled(true);
 		this.gestioneProdottiFrame.setVisible(true);
 	}
@@ -298,42 +307,48 @@ public class ControllerAmministratore {
 	}
 	
 	public void ApriModificaProdotto(int idProdotto) {
-		Prodotto prodotto = null;
-			if(this.imp == this.postgresImp) {
-				ProdottoDAOPostgresImp ProdottoDAO = new ProdottoDAOPostgresImp();
-				try {
-					prodotto = ProdottoDAO.getProdottoPerId(idProdotto);
-					this.gestioneProdottiFrame.setEnabled(false);
-					this.gestioneProdottiFrame.setVisible(false);
-					this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
-				} catch (SQLException e) {
-					if(this.modificaProdottoFrame!=null) {
-						this.modificaProdottoFrame.dispose();
-					}
-					this.gestioneProdottiFrame.setEnabled(true);
-					this.gestioneProdottiFrame.setVisible(true);
-					JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		if(this.modificaProdottoFrame == null) {
+			Prodotto prodotto = null;
+				if(this.imp == this.postgresImp) {	
+					ProdottoDAOPostgresImp ProdottoDAO = new ProdottoDAOPostgresImp();
+						try {
+							prodotto = ProdottoDAO.getProdottoPerId(idProdotto);
+							this.gestioneProdottiFrame.setEnabled(false);
+							this.gestioneProdottiFrame.setVisible(false);
+							this.modificaProdottoFrame = new ModificaProdottoFrame(this, prodotto);
+						} catch (SQLException e) {
+							if(this.modificaProdottoFrame!=null) {
+								this.modificaProdottoFrame.dispose();
+							}
+							this.gestioneProdottiFrame.setEnabled(true);
+							this.gestioneProdottiFrame.setVisible(true);
+							JOptionPane.showMessageDialog(this.gestioneProdottiFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+						}
 				}
-			}
-			else if (this.imp == this.altraImp) {
+				else if (this.imp == this.altraImp) {
 				//Altra implementazione
-			}
+				}
+		}
 	}
 	
 	public void ChiudiModificaProdotto() {
-		this.modificaProdottoFrame.dispose();
+		this.modificaProdottoFrame.dispose();	
+		this.modificaProdottoFrame = null;
 		this.gestioneProdottiFrame.setEnabled(true);
 		this.gestioneProdottiFrame.setVisible(true);
 	}
 	
 	public void ApriAggiungiAllergeniFrame(int idProdotto) {
-		this.modificaProdottoFrame.setEnabled(false);
-		this.aggiungiAllergeneFrame = new AggiungiAllergeniFrame(this, idProdotto);
+		if(this.aggiungiAllergeneFrame == null) {
+			this.modificaProdottoFrame.setEnabled(false);
+			this.aggiungiAllergeneFrame = new AggiungiAllergeniFrame(this, idProdotto);
+		}
 	}
 	
 	public void ChiudiAggiungiAllergeniFrame() {
 		this.modificaProdottoFrame.setEnabled(true);
 		this.aggiungiAllergeneFrame.dispose();
+		this.aggiungiAllergeneFrame = null;
 		this.modificaProdottoFrame.AggiornaTabellaAllergeni();	
 	}
 	
@@ -947,12 +962,15 @@ public class ControllerAmministratore {
 	}	
 
 	public void ApriAggiungiSedeFrame(int idProdotto) {
-		this.modificaProdottoFrame.setEnabled(false);
-		this.aggiungiSedeFrame = new AggiungiSedeFrame(this, idProdotto);
+		if(this.aggiungiSedeFrame == null) {
+			this.modificaProdottoFrame.setEnabled(false);
+			this.aggiungiSedeFrame = new AggiungiSedeFrame(this, idProdotto);
+		}
 	}
 	
 	public void ChiudiAggiungiSedeFrame() {
 		this.aggiungiSedeFrame.dispose();
+		this.aggiungiSedeFrame = null;
 		this.modificaProdottoFrame.setEnabled(true);
 		this.modificaProdottoFrame.setVisible(true);
 	}
@@ -1085,12 +1103,15 @@ public class ControllerAmministratore {
 	}
 	
 	public void ApriAggiungiProdottiACategoriaFrame(int[] prodotti) {
-		this.gestioneProdottiFrame.setEnabled(false);
-		this.aggiungiACategoriaFrame = new AggiungiACategoriaFrame(this, prodotti);
+		if(this.aggiungiACategoriaFrame == null) {
+			this.gestioneProdottiFrame.setEnabled(false);
+			this.aggiungiACategoriaFrame = new AggiungiACategoriaFrame(this, prodotti);
+		}
 	}
 
 	public void ChiudiAggiungiACategoriaFrame() {
 		this.aggiungiACategoriaFrame.dispose();
+		this.aggiungiACategoriaFrame = null;
 		this.gestioneProdottiFrame.setEnabled(true);
 		this.gestioneProdottiFrame.setVisible(true);
 		

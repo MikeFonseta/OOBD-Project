@@ -1,8 +1,6 @@
 package GUI;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -12,7 +10,6 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerAmministratore;
@@ -21,22 +18,23 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import javax.swing.UIManager;
 
 public class AggiungiSedeFrame extends JFrame {
 
 	private JPanel contentPane;
-	private ControllerAmministratore controllerAmministratore;
+	private ControllerAmministratore controllerAmministratore = null;
 	private JTable tblSedi;
 	private Point initialClick;
 	private JFrame parent=this;  
 	
-	public AggiungiSedeFrame(ControllerAmministratore controllerAmministratore, int idProdotto) {
-		this.controllerAmministratore = controllerAmministratore;
+	public AggiungiSedeFrame(ControllerAmministratore ControllerAmministratore, int idProdotto) {
+		this.controllerAmministratore = ControllerAmministratore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setBounds(100,100,889,553);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		

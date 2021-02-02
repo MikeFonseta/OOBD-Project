@@ -45,8 +45,8 @@ public class CreaSedeFrame extends JFrame{
 	private boolean NomeSedeInserito=false,TelefonoInserito=false,ProvinciaInserito=false,CittaInserito=false,ViaInserito=false,NumCivicoInserito=false,PasswordInserito=false;
 	
 	
-	public CreaSedeFrame(ControllerAmministratore controllerAmministratore,int idProssimaSede,String NomeUtenteGestore) {
-		this.controllerAmministratore = controllerAmministratore;
+	public CreaSedeFrame(ControllerAmministratore ControllerAmministratore,int idProssimaSede,String NomeUtenteGestore) {
+		this.controllerAmministratore = ControllerAmministratore;
 		setUndecorated(true);
 		setBounds(0,0,440,660);
 

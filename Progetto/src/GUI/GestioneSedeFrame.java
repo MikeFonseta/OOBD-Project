@@ -39,7 +39,7 @@ public class GestioneSedeFrame extends JFrame{
 	private JPanel pnlmain;
 	private JTable tblProdotti;
 	private JTable tblRider;
-	private ControllerAmministratore controllerAmministratore;
+	private ControllerAmministratore controllerAmministratore = null;
 	private JButton btnSalva;
 	private Account gestoreSede;
 	private Point initialClick;
@@ -47,9 +47,9 @@ public class GestioneSedeFrame extends JFrame{
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	private boolean NomeSedeModificato=false,TelefonoModificato=false,ProvinciaModificato=false,CittaModificato=false,ViaModificato=false,NumCivicoModificato=false,PasswordModificato=false;
 	
-	public GestioneSedeFrame(ControllerAmministratore controllerAmministratore,Account gestoreSede) {
+	public GestioneSedeFrame(ControllerAmministratore ControllerAmministratore,Account gestoreSede) {
 		
-		this.controllerAmministratore = controllerAmministratore;
+		this.controllerAmministratore = ControllerAmministratore;
 		this.gestoreSede = gestoreSede;
 		setResizable(false);
 		setBounds(0,0,1200,700);

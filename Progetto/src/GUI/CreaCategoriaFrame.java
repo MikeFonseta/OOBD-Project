@@ -18,6 +18,7 @@ import Controller.ControllerAmministratore;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.UIManager;
 
 public class CreaCategoriaFrame extends JFrame {
 	private Point initialClick;
@@ -32,7 +33,7 @@ public class CreaCategoriaFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 471, 100);
 		JPanel contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 

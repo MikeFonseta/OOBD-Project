@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,32 +25,35 @@ import Controller.ControllerAmministratore;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Arrays;
 import java.awt.Color;
 
 public class AggiungiProdottoFrame extends JFrame{
 	
 	private JTable tblProdotti;
-	private ControllerAmministratore controllerAmministratore;
+	private ControllerAmministratore controllerAmministratore = null;
 	private int idSede;
 	private JComboBox cbxCategoria;
 	private Point initialClick;
 	private JFrame parent=this;
+	private JPanel contentPane;
 	
-	public AggiungiProdottoFrame(ControllerAmministratore controllerAmministratore, int idSede){
-		
-		setAlwaysOnTop(true);
-		this.controllerAmministratore = controllerAmministratore;
+	public AggiungiProdottoFrame(ControllerAmministratore ControllerAmministratore, int idSede){		
+		this.controllerAmministratore = ControllerAmministratore;
 		this.idSede = idSede;
 		
+		contentPane = new JPanel();
+		contentPane.setFont(new Font("Calibri", Font.PLAIN, 14));
+		setAlwaysOnTop(true);
 		setResizable(false);
 		setBounds(100,100,889,580);
-		getContentPane().setLayout(null);
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
 		cbxCategoria = new JComboBox(new DefaultComboBoxModel(controllerAmministratore.getCategorie()));
 		cbxCategoria.setFont(new Font("Calibri", Font.PLAIN, 18));
 		cbxCategoria.setBounds(10, 52, 175, 30);
-		getContentPane().add(cbxCategoria);
+		contentPane.add(cbxCategoria);
 		
 		JButton btnCerca = new JButton("CERCA");
 		btnCerca.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -63,12 +67,12 @@ public class AggiungiProdottoFrame extends JFrame{
 			}
 		});
 		btnCerca.setBounds(194, 50, 113, 35);
-		getContentPane().add(btnCerca);
+		contentPane.add(btnCerca);
 		
 		JScrollPane scpProdotti = new JScrollPane();
 		scpProdotti.setFont(new Font("Calibri", Font.PLAIN, 18));
 		scpProdotti.setBounds(12, 109, 859, 405);
-		getContentPane().add(scpProdotti);
+		contentPane.add(scpProdotti);
 		
 		tblProdotti = new JTable();
 		tblProdotti.getTableHeader().setReorderingAllowed(false);
@@ -128,7 +132,7 @@ public class AggiungiProdottoFrame extends JFrame{
 			}
 		});
 		btnChiudi.setBounds(577, 527, 141, 44);
-		getContentPane().add(btnChiudi);
+		contentPane.add(btnChiudi);
 		
 		JButton btnAggiungi = new JButton("AGGIUNGI");
 		btnAggiungi.addMouseListener(new MouseAdapter() {
@@ -153,13 +157,13 @@ public class AggiungiProdottoFrame extends JFrame{
 		});
 		btnAggiungi.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnAggiungi.setBounds(730, 525, 141, 44);
-		getContentPane().add(btnAggiungi);
+		contentPane.add(btnAggiungi);
 		
 		
 		JPanel pnlBarra = new JPanel();
 		pnlBarra.setBackground(Color.DARK_GRAY);
 		pnlBarra.setBounds(0, 0, 956, 35);
-		getContentPane().add(pnlBarra);
+		contentPane.add(pnlBarra);
 		pnlBarra.setLayout(null);
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {

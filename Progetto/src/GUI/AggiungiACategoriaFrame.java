@@ -1,8 +1,7 @@
 package GUI;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -13,12 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import Controller.ControllerAmministratore;
 import javax.swing.JComboBox;
+import javax.swing.UIManager;
 
 public class AggiungiACategoriaFrame extends JFrame {
 
@@ -27,15 +23,14 @@ public class AggiungiACategoriaFrame extends JFrame {
 	private JFrame parent = this;
 	private ControllerAmministratore controllerAmministratore = null;
 	private JComboBox cbxNomeCategoria;
-	private boolean NomeInserito = false;
 	private JButton btnAggiungi = null;
 
 	public AggiungiACategoriaFrame(ControllerAmministratore ControllerAmministratore,int[] idProdotti) {
 		this.controllerAmministratore = ControllerAmministratore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 496, 100);
-		JPanel contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane = new JPanel();
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 

@@ -2,18 +2,15 @@ package GUI;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import Controller.ControllerGestore;
 
 import java.awt.event.ActionListener;
@@ -37,8 +34,8 @@ public class GestoreFrame extends JFrame {
 	private int filtroRider=0; 
 	private JButton btnFiltro;
 
-	public GestoreFrame(ControllerGestore controllerGestore) {
-		this.controllerGestore= controllerGestore;
+	public GestoreFrame(ControllerGestore ControllerGestore) {
+		this.controllerGestore= ControllerGestore;
 		setResizable(false);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

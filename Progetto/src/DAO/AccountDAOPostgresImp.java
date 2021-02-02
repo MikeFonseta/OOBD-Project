@@ -94,8 +94,7 @@ public class AccountDAOPostgresImp implements AccountDAO {
 	public String[] getDatiCliente(int idCliente) throws SQLException{
 		
 		Connection conn = DBConnection.getInstance().getConnection();
-		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT nomec AS nome, cognomec AS cognome, telefonoc AS telefono, provincia, città, via, numcivico\r\n"
+		Statement st = conn.createStatement();		ResultSet rs = st.executeQuery("SELECT nomec AS nome, cognomec AS cognome, telefonoc AS telefono, provincia, città, via, numcivico\r\n"
 				+ "FROM cliente LEFT JOIN infoordine ON cliente.id_cliente=infoordine.id_cliente\r\n"
 				+ "WHERE cliente.id_cliente='"+idCliente+"' \r\n"
 				+ "ORDER BY id_ordine DESC\r\n"
@@ -192,8 +191,7 @@ public class AccountDAOPostgresImp implements AccountDAO {
 		
 		
 		return esiste;
-	}
-	
+	}	
 	@Override
 	public int ModificaPassword(Account account, String NuovaPassword) throws SQLException{
 		

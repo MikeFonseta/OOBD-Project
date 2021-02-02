@@ -2,60 +2,33 @@
 package GUI;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicInternalFrameUI.InternalFramePropertyChangeListener;
-
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.PopupMenu;
-
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.beans.PropertyChangeListener;
-import java.text.DecimalFormat;
-import java.text.FieldPosition;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.Popup;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
 import javax.swing.text.PlainDocument;
-
-
 import Controller.MainController;
 import Utility.FiltroInteri;
-
 import javax.swing.DefaultComboBoxModel;
-import java.beans.PropertyChangeEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.util.List;
+import javax.swing.UIManager;
 
 public class VisualizzaOrdiniFrame extends JFrame  {
 
@@ -66,21 +39,20 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	private JTextField txfProdotti;
 	private JTextField txfMin;
 	private JTextField txfMax;
-	private MainController mainController;
+	private MainController mainController = null;
 	private JFrame parent = this;
 	private Point initialClick;
 
 	
-	@SuppressWarnings("deprecation")
-	public VisualizzaOrdiniFrame(MainController mainController) {
+	public VisualizzaOrdiniFrame(MainController MainController) {
 		setResizable(false);
-		this.mainController = mainController;
+		this.mainController = MainController;
 		setMinimumSize(new Dimension(1200, 700));
 		setTitle("Visualizza Ordini");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		pnlPrincipale = new JPanel();
-		pnlPrincipale.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pnlPrincipale.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(pnlPrincipale);
 		pnlPrincipale.setLayout(null);
 		
@@ -233,6 +205,8 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 				int indice = tblOrdini.getSelectedRow();
 				if(indice!= -1)
 					mainController.ApriVisualizzaCarrelloFrame(getIdOrdineAllaRigaSelezionata(indice));
+				else
+					JOptionPane.showMessageDialog(parent, new String("Nessuna riga selezionata!"),"Error",JOptionPane.ERROR_MESSAGE);	
 				}
 			}
 		});

@@ -1,17 +1,12 @@
 package GUI;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
 import Controller.ControllerAmministratore;
 import java.awt.Font;
 import java.awt.Point;
@@ -21,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Dimension;
+import javax.swing.UIManager;
 
 public class EliminaProdottoFrame extends JFrame {
 
@@ -46,7 +42,7 @@ public class EliminaProdottoFrame extends JFrame {
 		contentPane.setMaximumSize(new Dimension(475, 271));
 		contentPane.setMinimumSize(new Dimension(475, 251));
 		contentPane.setFont(new Font("Calibri", Font.PLAIN, 14));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		contentPane.setLayout(null);
 		
 		lblAvviso = new JLabel("<html>Per eliminare il prodotto '"+NomeProdottoDaEliminare+"' da tutte le sedi inserire la propria password:</html>");

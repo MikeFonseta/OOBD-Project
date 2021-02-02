@@ -6,12 +6,10 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -22,13 +20,14 @@ import javax.swing.table.DefaultTableModel;
 import Controller.ControllerAmministratore;
 
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 
 public class AggiungiAllergeniFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JFrame parent = this;
 	private Point initialClick;
-	private ControllerAmministratore controllerAmministratore;
+	private ControllerAmministratore controllerAmministratore = null;
 
 
 	public AggiungiAllergeniFrame(ControllerAmministratore ControllerAmministratore, int idProdotto) {
@@ -37,7 +36,7 @@ public class AggiungiAllergeniFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100,100,442,580);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		

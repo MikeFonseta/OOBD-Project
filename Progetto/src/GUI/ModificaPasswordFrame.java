@@ -3,19 +3,13 @@ package GUI;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import java.awt.Font;
 import java.awt.Point;
-
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-
 import Controller.ControllerAmministratore;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -30,10 +24,11 @@ public class ModificaPasswordFrame extends JFrame{
 	private JPasswordField pxfPasswordAttuale;
 	private JPasswordField pxfNuovaPassword;
 	private JPasswordField pxfConfermaPassword;
-	
-	public ModificaPasswordFrame(ControllerAmministratore controllerAmministratore) {
-		setUndecorated(true);
+	private ControllerAmministratore controllerAmministratore = null;
+	public ModificaPasswordFrame(ControllerAmministratore ControllerAmministratore) {
 		
+		this.controllerAmministratore = ControllerAmministratore;
+		setUndecorated(true);
 		setPreferredSize(new Dimension(475, 251));
 		setMaximumSize(new Dimension(475, 251));
 		setMinimumSize(new Dimension(475, 251));

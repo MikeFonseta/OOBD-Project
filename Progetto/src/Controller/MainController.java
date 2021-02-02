@@ -91,15 +91,18 @@ public class MainController {
 	}
 		
 	public void ApriVisualizzaOrdiniFrame() {
-		if(this.controllerAmministratore!= null)	
-			this.controllerAmministratore.getAmministratoreFrame().setVisible(false);
-		else
-			this.controllerGestore.getGestoreFrame().setVisible(false);
-		visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this);
+		if(this.visualizzaOrdiniFrame == null) {
+			if(this.controllerAmministratore!= null)	
+				this.controllerAmministratore.getAmministratoreFrame().setVisible(false);
+			else
+				this.controllerGestore.getGestoreFrame().setVisible(false);
+			visualizzaOrdiniFrame = new VisualizzaOrdiniFrame(this);
+		}
 	}
 
 	public void ChiudiVisualizzaOrdiniFrame() {
 		this.visualizzaOrdiniFrame.dispose();
+		this.visualizzaOrdiniFrame = null;
 		if(this.controllerAmministratore!= null)	{
 			this.controllerAmministratore.getAmministratoreFrame().setVisible(true);
 			this.controllerAmministratore.getAmministratoreFrame().setEnabled(true);
@@ -111,12 +114,13 @@ public class MainController {
 	}
 	
 	public void ApriVisualizzaCarrelloFrame(int idOrdine) {
-		if(this.visualizzaOrdiniFrame != null)
-			this.visualizzaOrdiniFrame.setEnabled(false);
-		else 
-			this.controllerGestore.getGestoreFrame().setEnabled(false);
-
-		visualizzaCarrelloFrame = new VisualizzaCarrelloFrame(this,idOrdine);
+		if(this.visualizzaCarrelloFrame == null) {
+			if(this.visualizzaOrdiniFrame != null)
+				this.visualizzaOrdiniFrame.setEnabled(false);
+			else 
+				this.controllerGestore.getGestoreFrame().setEnabled(false);
+			visualizzaCarrelloFrame = new VisualizzaCarrelloFrame(this,idOrdine);
+		}
 	}
 			
 	public void ChiudiVisualizzaCarrelloFrame() {
@@ -126,6 +130,7 @@ public class MainController {
 			this.controllerGestore.getGestoreFrame().setEnabled(true);
 
 		this.visualizzaCarrelloFrame.dispose();
+		this.visualizzaCarrelloFrame = null;
 		
 	}
 	

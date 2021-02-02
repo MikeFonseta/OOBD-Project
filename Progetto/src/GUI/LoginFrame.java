@@ -1,60 +1,41 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-
 import Controller.MainController;
-
 import javax.swing.AbstractAction;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.InputMap;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JPasswordField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
-import javax.swing.WindowConstants;
-
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.Dimension;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Rectangle;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
 
 
 public class LoginFrame extends JFrame {
 
-	MainController controller;
+	private MainController mainController = null;
 	private Point initialClick;
 	private JFrame parent=this;
 	private JTextField txfNomeUtente;
 	private JPasswordField psfPassword;
 
 	
-	public LoginFrame(MainController c) {
+	public LoginFrame(MainController MainController) {
+		this.mainController = MainController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(new Rectangle(5, 5, 5, 5));
 		setPreferredSize(new Dimension(472, 363));
@@ -106,7 +87,7 @@ public class LoginFrame extends JFrame {
 		btnLogin.setBounds(333, 285, 63, 27);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				c.ProvaLogin(getTxfNomeUtente().getText(), getPsfPassword().getText());
+				mainController.ProvaLogin(getTxfNomeUtente().getText(), getPsfPassword().getText());
 				}
 		});
 		btnLogin.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -117,7 +98,7 @@ public class LoginFrame extends JFrame {
 		btnChiudi.setBounds(217, 285, 67, 27);
 		btnChiudi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				c.ChiudiLogin();
+				mainController.ChiudiLogin();
 				}
 		});	
 		btnChiudi.setOpaque(false);
@@ -129,7 +110,7 @@ public class LoginFrame extends JFrame {
 		contentPane.getActionMap().put("Cancel", new AbstractAction(){ 
 	            public void actionPerformed(ActionEvent e)
 	            {
-	            	 c.ChiudiLogin();
+	            	 mainController.ChiudiLogin();
 	            }
 	        });
 		
@@ -138,7 +119,7 @@ public class LoginFrame extends JFrame {
 		contentPane.getActionMap().put("Enter", new AbstractAction(){ 
 	            public void actionPerformed(ActionEvent e)
 	            {
-	            	c.ProvaLogin(getTxfNomeUtente().getText(), getPsfPassword().getText());
+	            	mainController.ProvaLogin(getTxfNomeUtente().getText(), getPsfPassword().getText());
 	            }
 	        });
 		

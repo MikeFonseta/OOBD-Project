@@ -36,8 +36,8 @@ public class GestioneRiderFrame extends JFrame{
 	private JButton btnSalva;
 	private boolean Nome=false,Cognome=false,Telefono=false,Veicolo=false;
 
-	public GestioneRiderFrame(ControllerAmministratore controllerAmministratore, int idSede, int idRider) {
-		this.controllerAmministratore = controllerAmministratore;
+	public GestioneRiderFrame(ControllerAmministratore ControllerAmministratore, int idSede, int idRider) {
+		this.controllerAmministratore =  ControllerAmministratore;
 		setUndecorated(true);
 		setResizable(false);
 		setSize(new Dimension(430, 496));

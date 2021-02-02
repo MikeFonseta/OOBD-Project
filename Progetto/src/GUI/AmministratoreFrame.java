@@ -36,9 +36,9 @@ public class AmministratoreFrame extends JFrame{
 	private Point initialClick;
 	private JFrame parent=this;
 	
-	public AmministratoreFrame(ControllerAmministratore controllerAmministratore) {
+	public AmministratoreFrame(ControllerAmministratore ControllerAmministratore) {
 		
-		this.controllerAmministratore = controllerAmministratore;
+		this.controllerAmministratore = ControllerAmministratore;
 		setMinimumSize(new Dimension(1200, 700));
 		pnlmain = new JPanel();
 		pnlmain.setBackground(UIManager.getColor("Panel.background"));

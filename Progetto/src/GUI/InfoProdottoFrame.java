@@ -3,12 +3,9 @@ package GUI;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color; 
 import javax.swing.JButton; 
-
 import Controller.ControllerGestore;
-
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Point;
@@ -25,9 +22,9 @@ public class InfoProdottoFrame extends JFrame {
 	private JFrame parent=this;
 	private int ID;
 
-	public InfoProdottoFrame(ControllerGestore controllerGestore, int idProdotto) {
+	public InfoProdottoFrame(ControllerGestore ControllerGestore, int idProdotto) {
 		
-		this.controllerGestore=controllerGestore;
+		this.controllerGestore=ControllerGestore;
 		String[] dati=this.controllerGestore.getSingoloProdotto(idProdotto);
 		this.ID=idProdotto;
 		

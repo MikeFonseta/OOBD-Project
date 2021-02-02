@@ -1,33 +1,23 @@
 package GUI;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.text.PlainDocument;
-
 import Controller.ControllerAmministratore;
 import Controller.ControllerGestore;
 import Utility.FiltroInteri;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Point;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -37,14 +27,8 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.lang.ModuleLayer.Controller;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-
 import javax.swing.JComboBox;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 
@@ -55,17 +39,17 @@ public class GestioneProdottiFrame extends JFrame {
 	private JTextField txfMin;
 	private JTextField txfMax;
 	public JTable tblProdotti;
-	private ControllerAmministratore controllerAmministratore;
+	private ControllerAmministratore controllerAmministratore = null;
 	private Point initialClick;
 	private JFrame parent = this;
 	private JComboBox cbxCategorie;
 	private JButton  btnEliminaCategoria;
-	private ControllerGestore controllerGestore;
+	private ControllerGestore controllerGestore = null;
 	
 
-	public GestioneProdottiFrame(ControllerAmministratore controllerAmministratore) {
+	public GestioneProdottiFrame(ControllerAmministratore ControllerAmministratore) {
 		setResizable(false);
-		this.controllerAmministratore = controllerAmministratore;
+		this.controllerAmministratore = ControllerAmministratore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		contentPane = new JPanel();
@@ -186,7 +170,6 @@ public class GestioneProdottiFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 			if(e.getButton() == MouseEvent.BUTTON1) {				
 				if(tblProdotti.getSelectedRowCount() > 0) {	
-					System.out.println("ciao");
 					int[] Prodotti = new int[tblProdotti.getSelectedRowCount()];
 					int righe[] = tblProdotti.getSelectedRows();
 						for(int i = 0; i<tblProdotti.getSelectedRowCount(); i++)
