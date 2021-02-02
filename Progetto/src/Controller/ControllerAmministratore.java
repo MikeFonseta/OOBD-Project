@@ -74,13 +74,16 @@ public class ControllerAmministratore {
 	}
 
 	public void ApriModificaPasswordFrame() {
-		this.modificaPasswordFrame = new ModificaPasswordFrame(this);
-		this.amministratoreFrame.setEnabled(false);
+		if(this.modificaPasswordFrame == null) {
+			this.modificaPasswordFrame = new ModificaPasswordFrame(this);
+			this.amministratoreFrame.setEnabled(false);
+		}
 	}
 	
 	public void ChiudiModificaPasswordFrame() {
 		this.amministratoreFrame.setEnabled(true);
 		this.modificaPasswordFrame.dispose();
+		this.modificaPasswordFrame = null;
 	}
 	
 	public void CambiaPassword(String Password, String NuovaPassword, String ConfermaPassword) {
@@ -197,26 +200,35 @@ public class ControllerAmministratore {
 
 	}
 		
-    public void ApriCreazioneSedeFrame() {
+	public void ChiudiGestioneSedeFrame() {
+		this.gestioneSedeFrame.dispose();
+		this.gestioneSedeFrame = null;
+		this.amministratoreFrame.setVisible(true);
+		this.amministratoreFrame.AggiornaSedi();
+	}
+	
+	public void ApriCreazioneSedeFrame() {
     	
 		int idProssimaSede;
 		String nomeUtenteGestore=null;
 		
 		if(this.imp.equals(this.postgresImp))
 		{
-			SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
-			AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
-			try {
-				idProssimaSede = sedeDao.idProssimaSede();
-				nomeUtenteGestore = accountDao.NomeUtentePerNuovaSede(idProssimaSede);
-				this.amministratoreFrame.setEnabled(false);
-				this.creaSedeFrame = new CreaSedeFrame(this,idProssimaSede,nomeUtenteGestore);
-			} catch (SQLException e) {
-				if(this.creaSedeFrame!=null) {
-					this.creaSedeFrame.dispose();
+			if(this.creaSedeFrame == null) {
+				SedeDAOPostgresImp sedeDao = new SedeDAOPostgresImp();
+				AccountDAOPostgresImp accountDao = new AccountDAOPostgresImp();
+				try {
+					idProssimaSede = sedeDao.idProssimaSede();
+					nomeUtenteGestore = accountDao.NomeUtentePerNuovaSede(idProssimaSede);
+					this.amministratoreFrame.setEnabled(false);
+					this.creaSedeFrame = new CreaSedeFrame(this,idProssimaSede,nomeUtenteGestore);
+				} catch (SQLException e) {
+					if(this.creaSedeFrame!=null) {
+						this.creaSedeFrame.dispose();
+					}
+					this.amministratoreFrame.setEnabled(true);
+					JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
-				this.amministratoreFrame.setEnabled(true);
-				JOptionPane.showMessageDialog(this.amministratoreFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}else if(this.imp.equals(this.altraImp))
@@ -229,23 +241,20 @@ public class ControllerAmministratore {
 	public void ChiudiCreaSedeFrame() {
 		this.amministratoreFrame.setEnabled(true);
 		this.creaSedeFrame.dispose();
+		this.creaSedeFrame = null;
 	}
     
-	public void ChiudiGestioneSedeFrame() {
-		this.gestioneSedeFrame.dispose();
-		this.gestioneSedeFrame = null;
-		this.amministratoreFrame.setVisible(true);
-		this.amministratoreFrame.AggiornaSedi();
-	}
-
 	public void ApriEliminaSedeFrame(int idSede) {
-		this.amministratoreFrame.setEnabled(false);
-		this.eliminaSedeFrame = new EliminaSedeFrame(this,idSede);
+		if(this.eliminaSedeFrame == null) {
+			this.amministratoreFrame.setEnabled(false);
+			this.eliminaSedeFrame = new EliminaSedeFrame(this,idSede);
+		}
 	}
 	
 	public void ChiudiEliminaSedeFrame() {
 		this.amministratoreFrame.setEnabled(true);
 		this.eliminaSedeFrame.dispose();
+		this.eliminaSedeFrame = null;
 	}
 	
 	public void ApriCreaProdottoFrame() {
@@ -276,13 +285,16 @@ public class ControllerAmministratore {
 	}
 
 	public void ApriAggiungiProdottoFrame(int idSede) {
-		this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
-		this.gestioneSedeFrame.setEnabled(false);
+		if(this.aggiungiProdottoFrame == null) {
+			this.aggiungiProdottoFrame = new AggiungiProdottoFrame(this,idSede);
+			this.gestioneSedeFrame.setEnabled(false);
+		}
 	}
 
 	public void ChiudiAggiungiProdottoFrame() {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.aggiungiProdottoFrame.dispose();
+		this.aggiungiProdottoFrame = null;
 	}
 	
 	public void ApriModificaProdotto(int idProdotto) {
@@ -333,6 +345,7 @@ public class ControllerAmministratore {
 			this.mainController.loginFrame.dispose();
 		}
 		this.amministratoreFrame.dispose();
+		this.amministratoreFrame = null;
 	}
 
 	public int SalvaSede(JButton btnSalva, String nomeSede, String telefono,String provincia, String citta, String via, String numCivico,Account gestoreSede, String nuovaPassword) {
@@ -609,17 +622,18 @@ public class ControllerAmministratore {
 		
 		if(this.imp.equals(this.postgresImp))
 		{
-			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
-			try {
-				risultato = riderDao.idProssimoRider();
-				this.gestioneSedeFrame.setEnabled(false);
-				this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede,risultato);
-			} catch (SQLException e) {
-				this.gestioneSedeFrame.setEnabled(true);
-				this.gestioneRiderFrame.dispose();
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			if(this.gestioneRiderFrame == null) {
+				RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+				try {
+					risultato = riderDao.idProssimoRider();
+					this.gestioneSedeFrame.setEnabled(false);
+					this.gestioneRiderFrame = new GestioneRiderFrame(this,idSede,risultato);
+				} catch (SQLException e) {
+					this.gestioneSedeFrame.setEnabled(true);
+					this.gestioneRiderFrame.dispose();
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
 			}
-			
 		}else if(this.imp.equals(this.altraImp))
 		{
 			//altra implementazione
@@ -633,17 +647,18 @@ public class ControllerAmministratore {
 		
 		if(this.imp.equals(this.postgresImp)) 
 		{
-			RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
-			try {
-				rider = riderDao.CercaRiderPerId(Integer.parseInt(idRider));
-				this.gestioneRiderFrame = new GestioneRiderFrame(this,rider);
-				this.gestioneSedeFrame.setEnabled(false);
-			} catch (SQLException e) {
-				this.gestioneSedeFrame.setEnabled(true);
-				this.gestioneRiderFrame.dispose();
-				JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			}
-				
+			if(this .gestioneRiderFrame == null) {
+				RiderDAOPostgresImp riderDao = new RiderDAOPostgresImp();
+				try {
+					rider = riderDao.CercaRiderPerId(Integer.parseInt(idRider));
+					this.gestioneRiderFrame = new GestioneRiderFrame(this,rider);
+					this.gestioneSedeFrame.setEnabled(false);
+				} catch (SQLException e) {
+					this.gestioneSedeFrame.setEnabled(true);
+					this.gestioneRiderFrame.dispose();
+					JOptionPane.showMessageDialog(this.gestioneSedeFrame,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}	
 		}else
 		{
 			//altra implementazione
@@ -729,6 +744,7 @@ public class ControllerAmministratore {
 	public void ChiudiGestioneRiderFrame() {
 		this.gestioneSedeFrame.setEnabled(true);
 		this.gestioneRiderFrame.dispose();
+		this.gestioneRiderFrame = null;
 	}
 		
 	public List<Integer> ApriGetIdProdottiPerAllergeni(String Allergeni) {
@@ -996,13 +1012,16 @@ public class ControllerAmministratore {
 	}
 	
 	public void ApriCreaCategoriaFrame() {
-		this.gestioneProdottiFrame.setEnabled(false);
-		this.creaCategoriaFrame = new CreaCategoriaFrame(this);
+		if(this.creaCategoriaFrame == null) {
+			this.gestioneProdottiFrame.setEnabled(false);
+			this.creaCategoriaFrame = new CreaCategoriaFrame(this);
+		}
 	}
 	
 	public void ChiudiCreaCategoriaFrame() {
 		this.gestioneProdottiFrame.setEnabled(true);
 		this.creaCategoriaFrame.dispose();
+		this.creaCategoriaFrame = null;
 	}
 	
 	public String[] getCategorie() {
