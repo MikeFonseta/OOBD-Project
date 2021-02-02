@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.UIManager;
+import javax.swing.SwingConstants;
 
 public class InfoProdottoFrame extends JFrame {
 
@@ -35,25 +36,53 @@ public class InfoProdottoFrame extends JFrame {
 		setContentPane(pnlinfo);
 		pnlinfo.setLayout(null);
 		
-		JLabel lblNome = new JLabel(dati[0]);
-		lblNome.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNome.setBounds(108, 66, 180, 60);
+		JLabel lblNome = new JLabel("Nome: ");
+		lblNome.setVerticalAlignment(SwingConstants.TOP);
+		lblNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNome.setBounds(52, 87, 59, 14);
 		pnlinfo.add(lblNome);
 		
-		JLabel lblDescrizione = new JLabel(dati[1]);
-		lblDescrizione.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblDescrizione.setBounds(108, 137, 180, 60);
+		JLabel lblDescrizione = new JLabel("Descrizione: ");
+		lblDescrizione.setVerticalAlignment(SwingConstants.TOP);
+		lblDescrizione.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblDescrizione.setBounds(52, 158, 77, 14);
 		pnlinfo.add(lblDescrizione);
 		
-		JLabel lblAllergeni = new JLabel(dati[2]);
-		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblAllergeni.setBounds(108, 219, 180, 60);
+		JLabel lblAllergeni = new JLabel("Allergeni: ");
+		lblAllergeni.setVerticalAlignment(SwingConstants.TOP);
+		lblAllergeni.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAllergeni.setBounds(52, 240, 59, 23);
 		pnlinfo.add(lblAllergeni);
 		
-		JLabel lblPrezzo = new JLabel(dati[3]);
-		lblPrezzo.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblPrezzo.setBounds(108, 293, 180, 60);
+		JLabel lblPrezzo = new JLabel("Prezzo: ");
+		lblPrezzo.setVerticalAlignment(SwingConstants.TOP);
+		lblPrezzo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblPrezzo.setBounds(52, 314, 59, 14);
 		pnlinfo.add(lblPrezzo);
+		
+		JLabel lblDatiNome = new JLabel(dati[0]);
+		lblDatiNome.setVerticalAlignment(SwingConstants.TOP);
+		lblDatiNome.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblDatiNome.setBounds(128, 87, 212, 60);
+		pnlinfo.add(lblDatiNome);
+		
+		JLabel lblDatiDescrizione = new JLabel(dati[1]);
+		lblDatiDescrizione.setVerticalAlignment(SwingConstants.TOP);
+		lblDatiDescrizione.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblDatiDescrizione.setBounds(128, 158, 212, 60);
+		pnlinfo.add(lblDatiDescrizione);
+		
+		JLabel lblDatiAllergeni = new JLabel(dati[2]);
+		lblDatiAllergeni.setVerticalAlignment(SwingConstants.TOP);
+		lblDatiAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblDatiAllergeni.setBounds(128, 240, 212, 60);
+		pnlinfo.add(lblDatiAllergeni);
+		
+		JLabel lblDatiPrezzo = new JLabel(dati[3]);
+		lblDatiPrezzo.setVerticalAlignment(SwingConstants.TOP);
+		lblDatiPrezzo.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblDatiPrezzo.setBounds(128, 315, 212, 60);
+		pnlinfo.add(lblDatiPrezzo);
 		
 		JButton btnChiudi = new JButton("Chiudi");
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -78,6 +107,7 @@ public class InfoProdottoFrame extends JFrame {
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
+		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
@@ -110,5 +140,4 @@ public class InfoProdottoFrame extends JFrame {
 	public int getID() {
 		return this.ID;
 	}
-	
 }

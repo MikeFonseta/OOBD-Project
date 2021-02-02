@@ -151,18 +151,18 @@ public class GestoreFrame extends JFrame {
 		tblRider.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
 		
 		
-		JLabel lblNomeUtente = new JLabel(controllerGestore.getAccount().getNomeUtente());
-		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNomeUtente.setBounds(10, 51, 88, 14);
+		JLabel lblNomeUtente = new JLabel("Utente: "+controllerGestore.getAccount().getNomeUtente());
+		lblNomeUtente.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblNomeUtente.setBounds(10, 47, 185, 18);
 		pnlGestore.add(lblNomeUtente);
 		
-		JLabel lblNomeSede = new JLabel(controllerGestore.getAccount().getSede().getNomeSede());
-		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNomeSede.setBounds(391, 51, 88, 14);
+		JLabel lblNomeSede = new JLabel("Sede: "+controllerGestore.getAccount().getSede().getNomeSede());
+		lblNomeSede.setFont(new Font("Calibri", Font.PLAIN, 18));
+		lblNomeSede.setBounds(391, 47, 407, 18);
 		pnlGestore.add(lblNomeSede);
 		
 		JButton btnEsci = new JButton("Esci");
-		btnEsci.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnEsci.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnEsci.setBounds(1002, 47, 89, 23);
 		pnlGestore.add(btnEsci);
 		btnEsci.addMouseListener(new MouseAdapter() {
@@ -174,7 +174,7 @@ public class GestoreFrame extends JFrame {
 		});
 		
 		JButton btnChiudi = new JButton("Chiudi");
-		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnChiudi.setBounds(1101, 47, 89, 23);
 		pnlGestore.add(btnChiudi);
 		btnChiudi.addMouseListener(new MouseAdapter() {
@@ -186,7 +186,7 @@ public class GestoreFrame extends JFrame {
 		});
 		
 		JButton btnCreaOrdine = new JButton("Crea Ordine");
-		btnCreaOrdine.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnCreaOrdine.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnCreaOrdine.setBounds(10, 98, 371, 63);
 		pnlGestore.add(btnCreaOrdine);
 		btnCreaOrdine.addMouseListener(new MouseAdapter() {
@@ -200,7 +200,7 @@ public class GestoreFrame extends JFrame {
 		});
 		
 		JButton btnVisualizzaOrdini = new JButton("Visualizza Ordini");
-		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnVisualizzaOrdini.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnVisualizzaOrdini.setBounds(391, 98, 407, 63);
 		pnlGestore.add(btnVisualizzaOrdini);
 		btnVisualizzaOrdini.addMouseListener(new MouseAdapter() {
@@ -212,7 +212,7 @@ public class GestoreFrame extends JFrame {
 		});
 		
 		JButton btnVisualizzaProdotti = new JButton("Visualizza Prodotti");
-		btnVisualizzaProdotti.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnVisualizzaProdotti.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnVisualizzaProdotti.setBounds(808, 98, 382, 63);
 		pnlGestore.add(btnVisualizzaProdotti);
 		btnVisualizzaProdotti.addMouseListener(new MouseAdapter() {

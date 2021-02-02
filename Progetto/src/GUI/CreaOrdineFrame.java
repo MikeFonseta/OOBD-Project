@@ -72,7 +72,7 @@ public class CreaOrdineFrame extends JFrame {
 		pnlCreaOrdine.setLayout(null);
 		
 		JScrollPane scpProdotti = new JScrollPane();
-		scpProdotti.setBounds(46, 181, 308, 351);
+		scpProdotti.setBounds(46, 125, 308, 407);
 		pnlCreaOrdine.add(scpProdotti);
 		
 		tblProdotti = new JTable();
@@ -93,6 +93,12 @@ public class CreaOrdineFrame extends JFrame {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false
+				};
+			public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+			}
 		});
 		tblProdotti.getColumnModel().getColumn(0).setResizable(false);
 		tblProdotti.getColumnModel().getColumn(1).setResizable(false);
@@ -111,7 +117,7 @@ public class CreaOrdineFrame extends JFrame {
 		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
 		
 		JScrollPane scpCarrello = new JScrollPane();
-		scpCarrello.setBounds(404, 181, 308, 351);
+		scpCarrello.setBounds(404, 125, 308, 407);
 		pnlCreaOrdine.add(scpCarrello);
 		
 		tblCarrello = new JTable();
@@ -133,7 +139,7 @@ public class CreaOrdineFrame extends JFrame {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				true, true, true, true, false
+				false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -165,6 +171,7 @@ public class CreaOrdineFrame extends JFrame {
 	   
 		String[] categorie =controllerGestore.getCategorieBox();
 		JComboBox cbxCategorie = new JComboBox(categorie);
+		cbxCategorie.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		cbxCategorie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String Categoria = cbxCategorie.getSelectedItem().toString();
@@ -173,13 +180,14 @@ public class CreaOrdineFrame extends JFrame {
 		});
 		 
 		JLabel lblCategoria = new JLabel("Categoria:");
-		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 11));
+		lblCategoria.setFont(new Font("Calibri", Font.PLAIN, 14));
 		lblCategoria.setBounds(46, 69, 88, 14);
 		pnlCreaOrdine.add(lblCategoria);
 		cbxCategorie.setBounds(203, 65, 151, 22);
 		pnlCreaOrdine.add(cbxCategorie);
 		
 		JButton btnAggiungiAlCarrello = new JButton("+");
+		btnAggiungiAlCarrello.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAggiungiAlCarrello.setBounds(309, 532, 45, 23);
 		pnlCreaOrdine.add(btnAggiungiAlCarrello);
 		btnAggiungiAlCarrello.addMouseListener(new MouseAdapter() {
@@ -198,6 +206,7 @@ public class CreaOrdineFrame extends JFrame {
 		});
 		
 		JButton btnInfo = new JButton("i");   
+		btnInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					if(tblProdotti.getSelectedColumnCount() != 0)
@@ -210,10 +219,11 @@ public class CreaOrdineFrame extends JFrame {
 				
 				}
 		});
-		btnInfo.setBounds(265, 532, 45, 23);
+		btnInfo.setBounds(263, 532, 45, 23);
 		pnlCreaOrdine.add(btnInfo);
 		
 		JButton btnAggiungi1 = new JButton("+");
+		btnAggiungi1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAggiungi1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblCarrello.getSelectedColumnCount() != 0)
@@ -230,6 +240,7 @@ public class CreaOrdineFrame extends JFrame {
 		pnlCreaOrdine.add(btnAggiungi1);
 		
 		JButton btnRimuovi1 = new JButton("-");
+		btnRimuovi1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnRimuovi1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblCarrello.getSelectedColumnCount() != 0)
@@ -249,6 +260,7 @@ public class CreaOrdineFrame extends JFrame {
 		pnlCreaOrdine.add(btnRimuovi1);
 		
 		JButton btnElimina = new JButton("x");
+		btnElimina.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnElimina.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				if(tblCarrello.getSelectedColumnCount() != 0)
@@ -269,6 +281,7 @@ public class CreaOrdineFrame extends JFrame {
 		pnlCreaOrdine.add(btnElimina);
 		
 		JButton btnSvuota = new JButton("Svuota");
+		btnSvuota.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSvuota.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -285,76 +298,85 @@ public class CreaOrdineFrame extends JFrame {
 		pnlCreaOrdine.add(btnSvuota);
 		
 		JLabel lblCodice = new JLabel("CodiceCliente");
-		lblCodice.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblCodice.setBounds(822, 65, 98, 14);
+		lblCodice.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblCodice.setBounds(822, 73, 98, 14);
 		pnlCreaOrdine.add(lblCodice);
 		 
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblNome.setBounds(822, 188, 98, 14);
+		lblNome.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblNome.setBounds(822, 134, 98, 14);
 		pnlCreaOrdine.add(lblNome);
 		
 		JLabel lblCognome = new JLabel("Cognome");
-		lblCognome.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblCognome.setBounds(822, 247, 98, 14);
+		lblCognome.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblCognome.setBounds(822, 177, 98, 14);
 		pnlCreaOrdine.add(lblCognome);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
-		lblTelefono.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblTelefono.setBounds(822, 308, 98, 14);
+		lblTelefono.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblTelefono.setBounds(822, 224, 98, 14);
 		pnlCreaOrdine.add(lblTelefono);
 		
 		JLabel lblProvincia = new JLabel("Provincia");
-		lblProvincia.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblProvincia.setBounds(822, 366, 46, 14);
+		lblProvincia.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblProvincia.setBounds(822, 271, 61, 14);
 		pnlCreaOrdine.add(lblProvincia);
 		
 		JLabel lblCitta = new JLabel("Città");
-		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblCitta.setBounds(942, 368, 44, 14);
+		lblCitta.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblCitta.setBounds(954, 271, 34, 14);
 		pnlCreaOrdine.add(lblCitta);
 		
 		JLabel lblVia = new JLabel("Via");
-		lblVia.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblVia.setBounds(822, 428, 98, 14);
+		lblVia.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblVia.setBounds(822, 326, 98, 14);
 		pnlCreaOrdine.add(lblVia);
 		
 		JLabel lblCivico = new JLabel("N.");
-		lblCivico.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblCivico.setBounds(1084, 428, 11, 14);
+		lblCivico.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblCivico.setBounds(1086, 326, 13, 14);
 		pnlCreaOrdine.add(lblCivico);
  
 		this.lblAllergeni = new JLabel("<html> Qui verranno inseriti gli allergeni </html>");
-		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 11));
-		lblAllergeni.setBounds(822, 473, 333, 82);
+		lblAllergeni.setVerticalAlignment(SwingConstants.TOP);
+		lblAllergeni.setBackground(Color.LIGHT_GRAY);
+		lblAllergeni.setForeground(Color.BLACK);
+		lblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));
+		lblAllergeni.setBounds(822, 369, 333, 186);
 		pnlCreaOrdine.add(lblAllergeni);
 		 
 		txfNome = new JTextField();
-		txfNome.setBounds(942, 185, 213, 20);
+		txfNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txfNome.setBounds(942, 125, 213, 20);
 		txfNome.setColumns(10);
 		pnlCreaOrdine.add(txfNome);
 		
 		txfCivico = new JTextField();
+		txfCivico.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txfCivico.setColumns(10);
-		txfCivico.setBounds(1110, 423, 45, 20);
+		txfCivico.setBounds(1109, 321, 45, 20);
 		pnlCreaOrdine.add(txfCivico);
 		
 		txfCognome = new JTextField();
+		txfCognome.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txfCognome.setColumns(10);
-		txfCognome.setBounds(942, 244, 213, 20);
+		txfCognome.setBounds(942, 172, 213, 20);
 		pnlCreaOrdine.add(txfCognome);
 	 
 		txfTelefono = new JTextField(); 
+		txfTelefono.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txfTelefono.setColumns(10);
-		txfTelefono.setBounds(942, 305, 213, 20);
+		txfTelefono.setBounds(942, 219, 213, 20);
 		pnlCreaOrdine.add(txfTelefono);
 	 
 		txfVia = new JTextField();
+		txfVia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txfVia.setColumns(10);
-		txfVia.setBounds(873, 425, 192, 20);
+		txfVia.setBounds(873, 321, 192, 20);
 		pnlCreaOrdine.add(txfVia);
 		
 		txfCodice = new JTextField();
+		txfCodice.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PlainDocument docId = (PlainDocument) txfCodice.getDocument();
 		docId.setDocumentFilter(new FiltroInteri());
 		txfCodice.getDocument().addDocumentListener(new DocumentListener() {
@@ -381,12 +403,12 @@ public class CreaOrdineFrame extends JFrame {
 			}
 		});
 		txfCodice.setColumns(10);
-		txfCodice.setBounds(942, 65, 71, 20);
+		txfCodice.setBounds(942, 61, 59, 26);
 		pnlCreaOrdine.add(txfCodice);
 		 
 		if(defaultId==0){		 
 			JButton btnCompila = new JButton("Compila"); 
-			btnCompila.setFont(new Font("Calibri", Font.PLAIN, 11));
+			btnCompila.setFont(new Font("Calibri", Font.PLAIN, 14));
 			btnCompila.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(txfCodice.getText().isEmpty()) {
@@ -394,22 +416,22 @@ public class CreaOrdineFrame extends JFrame {
 					}else CompilaCampi();
 				}
 			});
-			btnCompila.setBounds(1084, 64, 71, 23);
+			btnCompila.setBounds(1078, 61, 77, 27);
 			pnlCreaOrdine.add(btnCompila);
 			
 			JButton btnNuovo = new JButton("Nuovo");
-			btnNuovo.setFont(new Font("Calibri", Font.PLAIN, 11));
+			btnNuovo.setFont(new Font("Calibri", Font.PLAIN, 14));
 			btnNuovo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					PulisciCampi();
 				}
 			});
-			btnNuovo.setBounds(1019, 64, 63, 23);
+			btnNuovo.setBounds(1005, 61, 74, 27);
 			pnlCreaOrdine.add(btnNuovo);
 		}
 		
 		JButton btnConferma = new JButton("Conferma");
-		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnConferma.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnConferma.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblCarrello.getRowCount()!=0) {	 
@@ -449,17 +471,17 @@ public class CreaOrdineFrame extends JFrame {
 				}else Errore("Il carrello è vuoto");
 			}
 		}); 
-		btnConferma.setBounds(1075, 605, 80, 23);
+		btnConferma.setBounds(1056, 601, 115, 44);
 		pnlCreaOrdine.add(btnConferma);
 		
 		JButton btnAnnulla = new JButton("Annulla");
-		btnAnnulla.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnAnnulla.setFont(new Font("Calibri", Font.PLAIN, 18));
 		btnAnnulla.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 					controllerGestore.ChiudiCreaOrdineFrame(); 
 			}
 		}); 
-		btnAnnulla.setBounds(994, 605, 71, 23);
+		btnAnnulla.setBounds(873, 601, 115, 44);
 		pnlCreaOrdine.add(btnAnnulla);
 	 
 		JPanel pnlBarra = new JPanel();
@@ -480,7 +502,7 @@ public class CreaOrdineFrame extends JFrame {
 		pnlBarra.add(lblTitolo);
 		
 		cbxProvincia = new JComboBox(controllerGestore.getProvince());
-		cbxProvincia.setFont(new Font("Calibri", Font.PLAIN, 11));
+		cbxProvincia.setFont(new Font("Calibri", Font.PLAIN, 14));
 		cbxProvincia.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	if(cbxProvincia.getSelectedItem() != null && !cbxProvincia.getSelectedItem().toString().equals("")) {	 
@@ -491,12 +513,12 @@ public class CreaOrdineFrame extends JFrame {
             	}  
             }
 		});
-		cbxProvincia.setBounds(874, 362, 46, 22);
+		cbxProvincia.setBounds(888, 267, 46, 22);
 		pnlCreaOrdine.add(cbxProvincia);
 		
 		cbxCitta = new JComboBox(CittaModel);
-		cbxCitta.setFont(new Font("Calibri", Font.PLAIN, 11));
-		cbxCitta.setBounds(994, 362, 161, 22);
+		cbxCitta.setFont(new Font("Calibri", Font.PLAIN, 14));
+		cbxCitta.setBounds(994, 267, 161, 22);
 		pnlCreaOrdine.add(cbxCitta);
  
 		
@@ -553,6 +575,12 @@ public class CreaOrdineFrame extends JFrame {
 				};
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+						false, false, false, false
+					};
+				public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
 				}
 			});
 			tblProdotti.getColumnModel().getColumn(0).setResizable(false);
