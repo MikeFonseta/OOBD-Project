@@ -28,6 +28,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter; 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Point;
@@ -153,7 +154,7 @@ public class CreaOrdineFrame extends JFrame {
 		tblCarrello.getColumnModel().getColumn(4).setMaxWidth(0);
 		DefaultTableModel modelloCarrello = (DefaultTableModel) tblCarrello.getModel();
 		scpCarrello.setViewportView(tblCarrello);
-		
+		tblCarrello.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
 		
         final ListSelectionModel sel = tblCarrello.getSelectionModel();
         	sel.addListSelectionListener(new ListSelectionListener(){
@@ -222,7 +223,7 @@ public class CreaOrdineFrame extends JFrame {
 				if(tblCarrello.getSelectedColumnCount() != 0)
 				{
 					AggiornaQuantita(modelloCarrello,"AggiungiCarrello");
-					modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
+					modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale())});
 
 				}else 
 				{
@@ -241,7 +242,7 @@ public class CreaOrdineFrame extends JFrame {
 					AggiornaQuantita(modelloCarrello,"Rimuovi");
 					lblAllergeni.setText(AggiornaAllergeni());
 					if(modelloCarrello.getRowCount()!=0) {
-						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale())});
 					}
 				}else 
 				{
@@ -260,7 +261,7 @@ public class CreaOrdineFrame extends JFrame {
 					AggiornaQuantita(modelloCarrello,"Elimina");
 					lblAllergeni.setText(AggiornaAllergeni());
 					if(modelloCarrello.getRowCount()!=0) {
-						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale())});
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale())});
 					}
 				}else 
 				{
@@ -370,7 +371,9 @@ public class CreaOrdineFrame extends JFrame {
 			btnCompila.setFont(new Font("Calibri", Font.PLAIN, 11));
 			btnCompila.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					CompilaCampi();
+					if(txfCodice.getText().isEmpty()) {
+						Errore("Inserire il codice fornito dal cliente");
+					}else CompilaCampi();
 				}
 			});
 			btnCompila.setBounds(1084, 64, 71, 23);
@@ -399,9 +402,9 @@ public class CreaOrdineFrame extends JFrame {
 						Errore("Per confermare l'ordine, riempire tutti i campi");
 					} 
 					else  {   
-						if(txfNome.getText().matches("^[A-Za-z' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$") && txfCognome.getText().matches("^[A-Za-z'' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$"))  {
+						if(txfNome.getText().matches("^[A-Za-z'. àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$") && txfCognome.getText().matches("^[A-Za-z'. àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$"))  {
 							if (txfTelefono.getText().matches("[0-9 ]+"))  {
-								if(txfVia.getText().matches("^[A-Za-z0-9' àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$")) {
+								if(txfVia.getText().matches("^[A-Za-z0-9'. àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝ]+$")) {
 									if (txfCivico.getText().matches("[0-9 ]+"))  {
 										if(defaultId==0) { 
 											int idCliente=Integer.parseInt(txfCodice.getText());
@@ -508,12 +511,10 @@ public class CreaOrdineFrame extends JFrame {
 		this.setVisible(true); 
 		if(defaultId!=0) { 
 			lblAllergeni.setText(AggiornaAllergeni()); 
-			modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale()),null,null}); 
+			modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale()),null,null}); 
 			txfCodice.setText(IdCliente); 
 			txfCodice.setEditable( false ); 
 			CompilaCampi(); 
-			txfNome.setEditable( false );
-			txfCognome.setEditable( false );
 		}
 		 
 	}
@@ -562,6 +563,9 @@ public class CreaOrdineFrame extends JFrame {
 			cbxCitta.setSelectedItem(datiUtente[4]);
 			txfVia.setText(datiUtente[5]);
 			txfCivico.setText(datiUtente[6]);
+			
+			txfNome.setEditable( false );
+			txfCognome.setEditable( false );
 		}else {
 			Errore("Il codice inserito non corrisponde a nessun cliente, verrà fornito un nuovo codice");
 			PulisciCampi();
@@ -570,6 +574,9 @@ public class CreaOrdineFrame extends JFrame {
 	}
 	
 	public void PulisciCampi()	{ 
+		txfNome.setEditable( true );
+		txfCognome.setEditable( true );
+		
 		txfCodice.setText(IdCliente);
 		txfNome.setText("");
 		txfCognome.setText("");
@@ -607,7 +614,7 @@ public class CreaOrdineFrame extends JFrame {
 											});
 		} 
 		lblAllergeni.setText(AggiornaAllergeni());
-		modCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.valueOf(CalcolaTotale()),null,null});	
+		modCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+ String.format(Locale.US, "%.2f", CalcolaTotale()) ,null,null});	
 		
 	}
 	

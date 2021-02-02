@@ -38,8 +38,8 @@ public class MainController {
 
 	public MainController() {
 		//ApriLogin();		
-		ProvaLogin("A00001","1234"); //amministratore
-		//ProvaLogin("U00001","12345");//gestore
+		//ProvaLogin("A00001","1234"); //amministratore
+		ProvaLogin("U00001","12345");//gestore
 	}
 	
 	public static void main(String[] args) {

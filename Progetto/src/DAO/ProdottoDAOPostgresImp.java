@@ -161,7 +161,7 @@ public class ProdottoDAOPostgresImp implements ProdottoDAO{
 		while(rs.next()) {
 				
 			String Nome= rs.getString(1);
-			String Prezzo= "€ "+String.valueOf(rs.getFloat(2));
+			String Prezzo= "€ "+ rs.getString(2);
 			int ID= rs.getInt(3);
 			String allergeni= rs.getString(4);
 			
