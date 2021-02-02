@@ -26,7 +26,7 @@ public class EliminaSedeFrame extends JFrame{
 	private Point initialClick;
 	private JFrame parent=this;
 	private ControllerAmministratore controllerAmministratore = null;
-	
+
 	public EliminaSedeFrame(ControllerAmministratore ControllerAmministratore,int idSede) {
 		this.controllerAmministratore = ControllerAmministratore;
 		setUndecorated(true);

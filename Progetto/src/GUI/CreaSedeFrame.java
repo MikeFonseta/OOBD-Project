@@ -386,7 +386,7 @@ public class CreaSedeFrame extends JFrame{
 	}
 
 
-	protected void ControllaModifiche() {
+	public void ControllaModifiche() {
 		if(NomeSedeInserito==true && TelefonoInserito==true && ProvinciaInserito==true && CittaInserito==true && ViaInserito==true && NumCivicoInserito==true && PasswordInserito==true) {
 			btnCrea.setEnabled(true);
 		}else {
