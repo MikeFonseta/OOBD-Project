@@ -1,6 +1,5 @@
 package GUI;
  
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color; 
@@ -79,7 +78,6 @@ public class InfoProdottoFrame extends JFrame {
 		lblTitolo.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblTitolo.setBounds(10, 0, 209, 35);
 		pnlBarra.add(lblTitolo);
-		
 		
 		pnlBarra.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {

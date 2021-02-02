@@ -1,8 +1,7 @@
 package GUI;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JPanel; 
 import javax.swing.event.*;
 
 import java.awt.Color;
@@ -34,8 +33,7 @@ import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ListSelectionModel;
-import java.awt.SystemColor;
+import javax.swing.ListSelectionModel; 
 import javax.swing.UIManager;
 
 public class CreaOrdineFrame extends JFrame { 
@@ -57,6 +55,7 @@ public class CreaOrdineFrame extends JFrame {
 	private JComboBox cbxProvincia;
 	private JComboBox cbxCitta;
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel(); 
+	private boolean DisabilitaCampi=true;
 
 	public CreaOrdineFrame(ControllerGestore ControllerGestore, int defaultId) {
 		this.controllerGestore = ControllerGestore;
@@ -111,7 +110,6 @@ public class CreaOrdineFrame extends JFrame {
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
 		
-		
 		JScrollPane scpCarrello = new JScrollPane();
 		scpCarrello.setBounds(404, 181, 308, 351);
 		pnlCreaOrdine.add(scpCarrello);
@@ -125,7 +123,7 @@ public class CreaOrdineFrame extends JFrame {
 		tblCarrello.setModel(new DefaultTableModel(
 			controllerGestore.PrelevaProdottiCarrello(defaultId),
 			new String[] {
-				"Nome", "Quantit\u00E0", "Prezzo", "ID", "Allergeni"
+				"Nome", "Quantità", "Prezzo", "ID", "Allergeni"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -195,8 +193,7 @@ public class CreaOrdineFrame extends JFrame {
 					{
 						Errore("Selezionare un prodotto da aggiungere al carrello");	
 					}
-				}
-					
+				}	
 			}
 		});
 		
@@ -206,7 +203,6 @@ public class CreaOrdineFrame extends JFrame {
 					if(tblProdotti.getSelectedColumnCount() != 0)
 					{
 						controllerGestore.ApriInfoProdottoFrame(Integer.parseInt((tblProdotti.getValueAt(tblProdotti.getSelectedRow(), 2).toString()))); 
- 
 					}else 
 					{
 						Errore("Selezionare un prodotto per visualizzarne le info");
@@ -223,8 +219,7 @@ public class CreaOrdineFrame extends JFrame {
 				if(tblCarrello.getSelectedColumnCount() != 0)
 				{
 					AggiornaQuantita(modelloCarrello,"AggiungiCarrello");
-					modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale())});
-
+					modelloCarrello.addRow(new Object[]{"Totale", null ,"€ "+String.format(Locale.US, "%.2f", CalcolaTotale())});
 				}else 
 				{
 					Errore("Selezionare un prodotto");	
@@ -242,7 +237,7 @@ public class CreaOrdineFrame extends JFrame {
 					AggiornaQuantita(modelloCarrello,"Rimuovi");
 					lblAllergeni.setText(AggiornaAllergeni());
 					if(modelloCarrello.getRowCount()!=0) {
-						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale())});
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"€ "+String.format(Locale.US, "%.2f", CalcolaTotale())});
 					}
 				}else 
 				{
@@ -261,7 +256,7 @@ public class CreaOrdineFrame extends JFrame {
 					AggiornaQuantita(modelloCarrello,"Elimina");
 					lblAllergeni.setText(AggiornaAllergeni());
 					if(modelloCarrello.getRowCount()!=0) {
-						modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale())});
+						modelloCarrello.addRow(new Object[]{"Totale", null ,"€ "+String.format(Locale.US, "%.2f", CalcolaTotale())});
 					}
 				}else 
 				{
@@ -362,6 +357,29 @@ public class CreaOrdineFrame extends JFrame {
 		txfCodice = new JTextField();
 		PlainDocument docId = (PlainDocument) txfCodice.getDocument();
 		docId.setDocumentFilter(new FiltroInteri());
+		txfCodice.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!txfCodice.getText().equals(getNuovoIdCliente())) {
+					DisabilitaCampi=true;
+				}else {
+					DisabilitaCampi=false;
+				}	
+				ControllaModifiche();	
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!txfCodice.getText().equals(getNuovoIdCliente())) {
+					DisabilitaCampi=true;
+				}else {
+					DisabilitaCampi=false;
+				}	
+				ControllaModifiche();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+		});
 		txfCodice.setColumns(10);
 		txfCodice.setBounds(942, 65, 71, 20);
 		pnlCreaOrdine.add(txfCodice);
@@ -511,14 +529,17 @@ public class CreaOrdineFrame extends JFrame {
 		this.setVisible(true); 
 		if(defaultId!=0) { 
 			lblAllergeni.setText(AggiornaAllergeni()); 
-			modelloCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+String.format(Locale.US, "%.2f", CalcolaTotale()),null,null}); 
+			modelloCarrello.addRow(new Object[]{"Totale", null ,"€ "+String.format(Locale.US, "%.2f", CalcolaTotale()),null,null}); 
 			txfCodice.setText(IdCliente); 
 			txfCodice.setEditable( false ); 
 			CompilaCampi(); 
+		}else	
+		{
+			txfNome.setEditable( false ); 
+			txfCognome.setEditable( false ); 
 		}
 		 
 	}
-	
 	
 	public void FiltraPerCategorie(String categoria) {	 
 		tblProdotti.setModel(new DefaultTableModel(
@@ -549,7 +570,6 @@ public class CreaOrdineFrame extends JFrame {
 			rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 			tblProdotti.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
 	}
-	
 	
 	public void CompilaCampi(){
 		
@@ -587,7 +607,6 @@ public class CreaOrdineFrame extends JFrame {
 		txfCivico.setText("");
 	}
 	
-	
 	public List<int[]> getProdottiCarrello() {
 		List<int[]> prodotti = new ArrayList<int[]>();
 		for (int i = 0; i < (tblCarrello.getRowCount())-1; i++) {
@@ -602,7 +621,6 @@ public class CreaOrdineFrame extends JFrame {
 		return prodotti;
 	}
 	
-	
 	public void AggiungiAlCarrello(DefaultTableModel modCarrello,String azione) {
 		
 		if(AggiornaQuantita(modCarrello,azione)) {
@@ -614,7 +632,7 @@ public class CreaOrdineFrame extends JFrame {
 											});
 		} 
 		lblAllergeni.setText(AggiornaAllergeni());
-		modCarrello.addRow(new Object[]{"Totale", null ,"\u20AC "+ String.format(Locale.US, "%.2f", CalcolaTotale()) ,null,null});	
+		modCarrello.addRow(new Object[]{"Totale", null ,"€ "+ String.format(Locale.US, "%.2f", CalcolaTotale()) ,null,null});	
 		
 	}
 	
@@ -624,7 +642,7 @@ public class CreaOrdineFrame extends JFrame {
 		if(azione.equals("AggiungiCarrello")) {
 			int quantita= (int) tblCarrello.getValueAt(tblCarrello.getSelectedRow(),1);
 			if(quantita==99) {
-				JOptionPane.showMessageDialog(this,"Impossibile aumentare la quantit\u00E0");
+				JOptionPane.showMessageDialog(this,"Impossibile aumentare la quantità");
 			}else {
 				tblCarrello.setValueAt(++quantita,tblCarrello.getSelectedRow(),1);
 			}
@@ -650,7 +668,7 @@ public class CreaOrdineFrame extends JFrame {
 				if(tblProdotti.getValueAt(tblProdotti.getSelectedRow(),0).equals(tblCarrello.getValueAt(i, 0)) ){
 					int quantita= (int) tblCarrello.getValueAt(i, 1);
 					if(quantita==99) {
-						JOptionPane.showMessageDialog(this,"Impossibile aumentare la quantit\u00E0");
+						JOptionPane.showMessageDialog(this,"Impossibile aumentare la quantità");
 					}else {
 						tblCarrello.setValueAt(++quantita,i,1);
 					}
@@ -672,7 +690,7 @@ public class CreaOrdineFrame extends JFrame {
 		for (int i = 0; i < tblCarrello.getRowCount(); i++) { 
 			int quantita= (int) tblCarrello.getValueAt(i, 1);
 			String costoEuro=(String) tblCarrello.getValueAt(i, 2);
-			float costo= Float.valueOf(costoEuro.replace("\u20AC ", ""));
+			float costo= Float.valueOf(costoEuro.replace("€ ", ""));
 			totale+=(quantita*costo);
 		}
 		this.Totale=totale;
@@ -689,7 +707,6 @@ public class CreaOrdineFrame extends JFrame {
 		if(tblCarrello.getRowCount()==0 || allergeni=="<html>") {
 			allergeni+=" Nessun allergene presente ";
 		}
-		
 		return allergeni+" </html>";
 	}
 	
@@ -718,16 +735,28 @@ public class CreaOrdineFrame extends JFrame {
 		boolean elimina=true;
 		Object[] opzioni = { "Annulla", "Conferma"};
 		
-		 int result = JOptionPane.showOptionDialog(this, messaggio,null,
-	                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
-	                null, opzioni, null);
-	        if (result == JOptionPane.YES_OPTION){
-	            elimina=false;
-	        }
+		int result = JOptionPane.showOptionDialog(this, messaggio, null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opzioni, null);
+	    if (result == JOptionPane.YES_OPTION){
+	    	elimina=false;
+	    }
 		
 		return elimina;
 	}
 	
-	 
+	public String getNuovoIdCliente(){
+		return IdCliente;
+	}
+	
+	private void ControllaModifiche(){
+		if(DisabilitaCampi)	{ 
+			txfNome.setText("");
+			txfCognome.setText("");
+			txfNome.setEditable( false );
+			txfCognome.setEditable( false );
+		}else {
+			txfNome.setEditable( true );
+			txfCognome.setEditable( true );
+		}
+	}
 	
 }

@@ -60,7 +60,7 @@ public class GestoreFrame extends JFrame {
 		tblRider.setModel(new DefaultTableModel(
 			controllerGestore.getDatiRider(),
 			new String[] {
-				"Disponibilit\u00E0", "Nome", "Telefono", "Codice", "Ordini"
+				"Disponibilità", "Nome", "Telefono", "Codice", "Ordini"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -235,18 +235,12 @@ public class GestoreFrame extends JFrame {
 							int idRider=((int)tblRider.getValueAt(tblRider.getSelectedRow(), 3));
 							if(((char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='L')){
 								if(((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)<3)){
-//									int numeroordini=
-											controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,true);
-//									if(numeroordini==3) {
-//										controllerGestore.ImpostaInizioConsegna(idRider,false);
-//									}
+									controllerGestore.AssegnaOrdineAlRider((int)tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0),idRider,true);
 									AggiornaRider();
 									AggiornaOrdini(0);
 								}else Errore("Il Rider ha raggiunto il limite massimo di ordini assegnabili");
 							}else Errore("Il Rider deve essere disponibile")  ;
-								
 						}else Errore("Selezionare un rider per assegnare l'ordine");
-					
 					}else  
 					{
 						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') { 
@@ -263,10 +257,8 @@ public class GestoreFrame extends JFrame {
 								}
 							}
 							AggiornaRider();
-						}else Errore("L'ordine selezionato \u00E8 gi\u00E0 stato spedito");
-						
+						}else Errore("L'ordine selezionato è stato già spedito");
 					}				
-				
 				}else Errore("Selezionare un ordine");
 			}
 		});
@@ -284,7 +276,7 @@ public class GestoreFrame extends JFrame {
 					if(tblOrdini.getSelectedColumnCount() != 0)  { 
 						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
 							controllerGestore.ModificaCreaOrdineFrame((int)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)));  
-						}else Errore("L'ordine selezionato \u00E8 gi\u00E0 stato spedito");
+						}else Errore("L'ordine selezionato è stato già spedito");
 					}
 					else Errore("Selezionare l'ordine da modificare");
 				}
@@ -321,7 +313,6 @@ public class GestoreFrame extends JFrame {
 					if(tblOrdini.getSelectedColumnCount() != 0) 
 					{ 
 						if((char)(tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 7))=='A') {
-							
 							if(MessaggioElimina("Eliminare l'ordine?")) {
 								int idRider=(int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 1));
 								int numeroordini=controllerGestore.EliminaOrdine((int) (tblOrdini.getValueAt(tblOrdini.getSelectedRow(), 0)),idRider); 
@@ -381,7 +372,7 @@ public class GestoreFrame extends JFrame {
 						controllerGestore.AggiornaDisposizioneRider(idRider ,false);
 					}
 					else if((char)tblRider.getValueAt(tblRider.getSelectedRow(),0)=='C') { 
-						if(MessaggioElimina("Il rider \u00E8 in consegna, continuare?")) {
+						if(MessaggioElimina("Il rider è in consegna, continuare?")) {
 							controllerGestore.AnnullaConsegna(idRider);
 							controllerGestore.CancellaCodiciRider(idRider);
 							if(filtroRider==0) {
@@ -398,7 +389,6 @@ public class GestoreFrame extends JFrame {
 						controllerGestore.AggiornaDisposizioneRider(idRider,true); 
 					}
 					AggiornaRider();
-				
 				}else 
 				{
 					Errore("Selezionare il Rider");	
@@ -446,10 +436,9 @@ public class GestoreFrame extends JFrame {
 		btnPartenza.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tblRider.getSelectedColumnCount() != 0){
-					int idRider=(int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3));
-//					if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)!=3) {
+					int idRider=(int) (tblRider.getValueAt(tblRider.getSelectedRow(), 3)); 
 						if( (char)tblRider.getValueAt(tblRider.getSelectedRow(), 0)=='X'){
-							Errore("Il rider non \u00E8 disponibile");
+							Errore("Il rider non è disponibile");
 						}
 						else if((int)tblRider.getValueAt(tblRider.getSelectedRow(), 4)==0) {
 							Errore("Il Rider non ha ordini assegnati");
@@ -468,10 +457,8 @@ public class GestoreFrame extends JFrame {
 							if (filtroRider==0) AggiornaOrdini(0);
 							else if(filtroRider==idRider) {
 								AggiornaOrdini(filtroRider);
-							}}
-//					}else {
-//						Errore("Per annullare la consegna di un rider con 3 ordini, bisogna renderlo non disponibile");
-//					} 
+							}
+						} 
 				}else {
 					Errore("Selezionare un Rider");
 				}
@@ -542,7 +529,7 @@ public class GestoreFrame extends JFrame {
 		tblRider.setModel(new DefaultTableModel(
 				controllerGestore.getDatiRider(),
 				new String[] {
-					"Disponibilit\u00E0", "Nome", "Telefono", "Codice", "Ordini"
+					"Disponibilità", "Nome", "Telefono", "Codice", "Ordini"
 				}
 			) {
 				Class[] columnTypes = new Class[] {
