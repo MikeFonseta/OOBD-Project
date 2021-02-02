@@ -49,7 +49,6 @@ public class MainController {
 		MainController mainController = new MainController();
 	}
 	
-
 	public void ProvaLogin(String NomeUtente, String password){
 		
 		Account account = new Account();
@@ -90,7 +89,6 @@ public class MainController {
 	public void ChiudiLogin() {
 		this.loginFrame.dispose();
 	}
-	
 		
 	public void ApriVisualizzaOrdiniFrame() {
 		if(this.controllerAmministratore!= null)	
@@ -112,7 +110,6 @@ public class MainController {
 		}
 	}
 	
-	
 	public void ApriVisualizzaCarrelloFrame(int idOrdine) {
 		if(this.visualizzaOrdiniFrame != null)
 			this.visualizzaOrdiniFrame.setEnabled(false);
@@ -121,8 +118,7 @@ public class MainController {
 
 		visualizzaCarrelloFrame = new VisualizzaCarrelloFrame(this,idOrdine);
 	}
-		
-	
+			
 	public void ChiudiVisualizzaCarrelloFrame() {
 		if(this.visualizzaOrdiniFrame != null)
 			this.visualizzaOrdiniFrame.setEnabled(true);
@@ -136,7 +132,6 @@ public class MainController {
 	public void ChiudiCreaOrdineFrame() {
 		creaOrdineFrame.setVisible(false);
 	}
-	
 		
 	public Object[][] getProdottiCarrello(int idOrdine){
 		Object[][] risultato = null;
@@ -146,8 +141,7 @@ public class MainController {
 				try {
 					risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			else if(controllerAmministratore.getImp() == controllerAmministratore.getAltraImp()){
@@ -160,8 +154,7 @@ public class MainController {
 				try {
 					risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
@@ -180,7 +173,6 @@ public class MainController {
 			risultato[i] = list.get(i);	
 	return risultato;
 	}
-	
 	
 	public String[] getIDSedi() {
 		List<String> IDsedi = new ArrayList<String>();
@@ -252,8 +244,7 @@ public class MainController {
 					try {
 						risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else if(controllerAmministratore.getImp()==controllerAmministratore.getAltraImp()) {//Altra Impl
@@ -266,8 +257,7 @@ public class MainController {
 						try {
 							risultato = OrdineDAO.ricercaComplessaOrdini(idSede,idProdotti,Veicolo,Min,Max).toArray(new Object[][] {});
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							JOptionPane.showMessageDialog(null,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					else if(controllerGestore.getImp() == controllerGestore.getAltraImp()) {
@@ -393,8 +383,7 @@ public class MainController {
 		
 		return categorie;
 	}
-	
-	
+		
 	public Object[] getProvince() {
 		
 		List<String> risultato = new ArrayList<String>();
@@ -429,8 +418,6 @@ public class MainController {
 		return risultato;
 	}
 
-	
-	
 	public String[] getVeicoli() {
 		
 		
@@ -475,10 +462,5 @@ public class MainController {
 		return veicoli;
 		
 	}
-	
-
-
-
-
 
 }
