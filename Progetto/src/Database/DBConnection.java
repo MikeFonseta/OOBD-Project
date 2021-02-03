@@ -13,7 +13,7 @@ public class DBConnection {
     private final String IP = "database.ckeutmg1tgie.eu-central-1.rds.amazonaws.com";
     private final String DATABASE = "progetto";
     private final String PORT = "5432";
-	private String url = "jdbc:postgresql://" + IP +":"+PORT+"/"+DATABASE;
+	private final String url = "jdbc:postgresql://" + IP +":"+PORT+"/"+DATABASE;
 
     private DBConnection() throws SQLException {
         try

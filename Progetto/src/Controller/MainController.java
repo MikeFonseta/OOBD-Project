@@ -32,9 +32,9 @@ public class MainController {
 	private CreaOrdineFrame creaOrdineFrame = null;
 
 	public MainController() {
-		//ApriLogin();		
+		ApriLogin();		
 		//ProvaLogin("A00001","1234"); //amministratore
-		ProvaLogin("U00001","12345");//gestore
+		//ProvaLogin("U00001","12345");//gestore
 	}
 	
 	public static void main(String[] args) {

@@ -41,19 +41,18 @@ public class GestioneSedeFrame extends JFrame{
 	private JTable tblRider;
 	private ControllerAmministratore controllerAmministratore = null;
 	private JButton btnSalva;
-	private Account gestoreSede;
 	private Point initialClick;
 	private JFrame parent=this;
+	private Account gestoreSede;
 	private DefaultComboBoxModel CittaModel = new DefaultComboBoxModel();
 	private boolean NomeSedeModificato=false,TelefonoModificato=false,ProvinciaModificato=false,CittaModificato=false,ViaModificato=false,NumCivicoModificato=false,PasswordModificato=false;
 	
 	public GestioneSedeFrame(ControllerAmministratore ControllerAmministratore,Account gestoreSede) {
 		
 		this.controllerAmministratore = ControllerAmministratore;
-		this.gestoreSede = gestoreSede;
 		setResizable(false);
 		setBounds(0,0,1200,700);
-
+		this.gestoreSede = gestoreSede;
 		pnlmain = new JPanel();
 		pnlmain.setBackground(UIManager.getColor("Panel.background"));
 		pnlmain.setBorder(UIManager.getBorder("ComboBox.border"));
