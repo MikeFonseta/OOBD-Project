@@ -1,5 +1,6 @@
 
 package GUI;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
@@ -43,7 +44,6 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	private JFrame parent = this;
 	private Point initialClick;
 
-	
 	public VisualizzaOrdiniFrame(MainController MainController) {
 		setResizable(false);
 		this.mainController = MainController;
@@ -323,8 +323,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	setUndecorated(true);
 	this.setVisible(true);
 	}
-		
-		
+			
 	public void AggiornaRis(){
 		tblOrdini.setModel(new DefaultTableModel(
 				mainController.getOrdini(getSedeSelezionata(), getProdottiSelezionati(),getVeicoloSelezionato(), getMinSelezionato(), getMaxSelezionato()),
@@ -380,6 +379,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 	tblOrdini.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
 
 	}
+	
 	private void controllaValoriMin() {
 				if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
 					try {
@@ -407,34 +407,25 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 			}
 		}		
 
-
 	public Integer getSedeSelezionata() {
 		if(this.cbxIDSedi.getSelectedItem().toString() == "Tutte Le Sedi")
 			return null; 
 		else 
 			return Integer.valueOf(this.cbxIDSedi.getSelectedItem().toString());
 	}
-		
-	
-	
-	
-	
+				
 	public List<Integer> getProdottiSelezionati(){
 
 		return mainController.getID_ProdottiPerNomeP(this.txfProdotti.getText());
 
 	}
-	
-	
-	
+
 	public String getVeicoloSelezionato() {
 		if(this.cbxVeicolo.getSelectedItem().toString().equals("Nessun Veicolo"))
 			return null;
 		else 
 			return this.cbxVeicolo.getSelectedItem().toString();
 	}
-	
-	
 	
 	public Integer getMinSelezionato() {
 		if(this.txfMin.getText().isBlank())
@@ -444,9 +435,7 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 			return min;
 		}
 	}
-	
-	
-	
+		
 	public Integer getMaxSelezionato() {
 		if(this.txfMax.getText().isBlank())
 			return null;
@@ -456,12 +445,10 @@ public class VisualizzaOrdiniFrame extends JFrame  {
 		}
 	}
 
-
 	public JTable getTblOrdini() {
 		return tblOrdini;
 	}
 
-	
 	public int getIdOrdineAllaRigaSelezionata(int indice){
 		int idOrdine = Integer.parseInt(this.getTblOrdini().getValueAt(indice, 1).toString());
 		return idOrdine;

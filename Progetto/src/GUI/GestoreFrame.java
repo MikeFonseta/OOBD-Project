@@ -642,5 +642,5 @@ public class GestoreFrame extends JFrame {
 	public int getFiltroRider() {
 		return filtroRider;
 	}
-	
+
 }

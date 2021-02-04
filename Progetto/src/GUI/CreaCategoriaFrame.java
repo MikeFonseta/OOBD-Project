@@ -10,7 +10,6 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -144,8 +143,6 @@ public class CreaCategoriaFrame extends JFrame {
 		setUndecorated(true);
 		this.setVisible(true);
 	}
-	
-	
 	
 	public void ControllaModifiche() {
 		if(NomeInserito==true) {

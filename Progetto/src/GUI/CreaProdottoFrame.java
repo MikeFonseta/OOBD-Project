@@ -273,22 +273,11 @@ public class CreaProdottoFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-	
-	
 	public void ControllaModifiche() {
 		if(NomeInserito == true && CategoriaInserita == true && PrezzoInserito == true )
 			btnCrea.setEnabled(true);
 		else
 			btnCrea.setEnabled(false);
 		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

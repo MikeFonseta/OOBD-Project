@@ -11,11 +11,10 @@ import javax.swing.UIManager;
 
 import DAO.AccountDAOPostgresImp;
 import DAO.OrdineDAOPostgresImp;
-import DAO.ProdottoDAO;
 import DAO.ProdottoDAOPostgresImp;
 import DAO.RiderDAOPostgresImp;
 import DAO.SedeDAOPostgresImp;
-import Entities.*;
+import Entities.Account;
 import GUI.LoginFrame;
 import GUI.VisualizzaCarrelloFrame;
 import GUI.VisualizzaOrdiniFrame;
@@ -42,9 +41,8 @@ public class MainController {
 		try {
 			  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch(Exception e) {
-			  System.out.println("Error setting native LookAndFeelClassName: " + e);
+			  System.out.println("Errore durante la selezione del tema Finestre " + e);
 		}
-		
 		
 		MainController mainController = new MainController();
 	}
@@ -142,7 +140,7 @@ public class MainController {
 		Object[][] risultato = null;
 		if(controllerAmministratore != null) {
 			if(controllerAmministratore.getImp() == controllerAmministratore.getPostgresImp()) {
-				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 				try {
 					risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
 				} catch (SQLException e) {
@@ -155,7 +153,7 @@ public class MainController {
 		}
 		else {
 			if(controllerGestore.getImp() == controllerGestore.getPostgresImp()) {
-				ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+				ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 				try {
 					risultato = prodottoDAO.getProdottiPerId_Ordine(idOrdine).toArray(new Object[][] {});
 				} catch (SQLException e) {
@@ -319,7 +317,7 @@ public class MainController {
 		if(this.controllerAmministratore!= null) {
 			if(this.controllerAmministratore.getImp() == this.controllerAmministratore.getPostgresImp()) {
 				try {
-					ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 					risultato = prodottoDAO.ricercaComplessaProdotti(Categoria, Min, Max, idSede, idProdottiConAllergeni).toArray(new Object[][] {});
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(this.controllerAmministratore.getGestioneProdottiFrame(),e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -332,7 +330,7 @@ public class MainController {
 		else {
 			if(this.controllerGestore.getImp() == this.controllerGestore.getPostgresImp()){
 				try {
-					ProdottoDAO prodottoDAO = new ProdottoDAOPostgresImp();
+					ProdottoDAOPostgresImp prodottoDAO = new ProdottoDAOPostgresImp();
 					risultato = prodottoDAO.ricercaComplessaProdotti(Categoria, Min, Max, idSede, idProdottiConAllergeni).toArray(new Object[][] {});
 				} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this.controllerGestore.getGestioneProdottiFrame(),e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

@@ -24,7 +24,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-
 public class LoginFrame extends JFrame {
 
 	private MainController mainController = null;
@@ -33,7 +32,6 @@ public class LoginFrame extends JFrame {
 	private JTextField txfNomeUtente;
 	private JPasswordField psfPassword;
 
-	
 	public LoginFrame(MainController MainController) {
 		this.mainController = MainController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -105,7 +103,6 @@ public class LoginFrame extends JFrame {
 		btnChiudi.setFont(new Font("Calibri", Font.PLAIN, 14));
 		contentPane.add(btnChiudi);
 
-		//premendo il tasto esc chiudi la schermata
 		contentPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel"); 
 		contentPane.getActionMap().put("Cancel", new AbstractAction(){ 
 	            public void actionPerformed(ActionEvent e)
@@ -114,7 +111,6 @@ public class LoginFrame extends JFrame {
 	            }
 	        });
 		
-		//premendo il tasto invio fai partire il login
 		contentPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter"); 
 		contentPane.getActionMap().put("Enter", new AbstractAction(){ 
 	            public void actionPerformed(ActionEvent e)
@@ -162,11 +158,8 @@ public class LoginFrame extends JFrame {
 	        }
 	    });
 		
-		
 }
 
-
-	//Getter e Setter
 	public JTextField getTxfNomeUtente() {
 		return txfNomeUtente;
 	}
@@ -182,7 +175,4 @@ public class LoginFrame extends JFrame {
 	public void setPsfPassword(JPasswordField psfPassword) {
 		this.psfPassword = psfPassword;
 	}
-	
-	
-
 }

@@ -137,5 +137,4 @@ public class EliminaProdottoFrame extends JFrame {
 	}
 
 	
-	
 }

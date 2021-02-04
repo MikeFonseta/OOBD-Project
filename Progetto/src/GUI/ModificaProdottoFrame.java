@@ -450,14 +450,12 @@ public class ModificaProdottoFrame extends JFrame {
 
 	}
 
-
 	private void ControllaModifiche() {
 		if(NomeInserito == true || DescrizioneInserita == true || CategoriaInserita == true || PrezzoInserito == true)
 			btnAggiorna.setEnabled(true);
 		else 
 			btnAggiorna.setEnabled(false);
 	}			
-
 
 	public void AggiornaTabellaAllergeni() {
 		tblAllergeni.setModel(new DefaultTableModel(
@@ -485,7 +483,6 @@ public class ModificaProdottoFrame extends JFrame {
 			tblAllergeni.setFont(new Font("Calibri", Font.PLAIN, 14));	
 		
 	}
-
 
 	public void AggiornaTabellaSedi() {
 		tblSedi.setRowHeight(20);

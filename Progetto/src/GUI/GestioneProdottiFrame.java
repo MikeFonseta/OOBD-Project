@@ -46,7 +46,6 @@ public class GestioneProdottiFrame extends JFrame {
 	private JButton  btnEliminaCategoria;
 	private ControllerGestore controllerGestore = null;
 	
-
 	public GestioneProdottiFrame(ControllerAmministratore ControllerAmministratore) {
 		setResizable(false);
 		this.controllerAmministratore = ControllerAmministratore;
@@ -404,10 +403,6 @@ public class GestioneProdottiFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public GestioneProdottiFrame(ControllerGestore ControllerGestore) {
 		setResizable(false);
 		this.controllerGestore = ControllerGestore;
@@ -653,7 +648,6 @@ public class GestioneProdottiFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-	
 	public void AggiornaTabella() {
 		Object[][] dati = null;
 		if(this.controllerGestore != null) {
@@ -708,7 +702,6 @@ public class GestioneProdottiFrame extends JFrame {
 		tblProdotti.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
 	}
 			
-
 	public void controllaValoriMin() {
 		if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
 			try {
@@ -719,7 +712,6 @@ public class GestioneProdottiFrame extends JFrame {
 			}
 		}
 	}		
-
 
 	public void controllaValoriMax() {
 		if(!txfMin.getText().isBlank() && !txfMax.getText().isBlank()) {
@@ -732,7 +724,6 @@ public class GestioneProdottiFrame extends JFrame {
 		}	
 	}
 	
-	
 	public String getCategoriaSelezionata() {
 		if(this.cbxCategorie.getSelectedItem().toString()=="Tutte")
 			return null;
@@ -740,8 +731,7 @@ public class GestioneProdottiFrame extends JFrame {
 			return this.cbxCategorie.getSelectedItem().toString();
 	
 	}
-		
-		
+			
 	public Integer getMinSelezionato() {
 		if(this.txfMin.getText().isBlank())
 			return null;
@@ -750,8 +740,7 @@ public class GestioneProdottiFrame extends JFrame {
 			return min;
 		}
 	}
-	
-	
+		
 	public Integer getMaxSelezionato() {
 		if(this.txfMax.getText().isBlank())
 			return null;
@@ -760,7 +749,6 @@ public class GestioneProdottiFrame extends JFrame {
 			return max;  
 		}
 	}
-	
 	
 	public Integer getIdSede() {
 		if(this.controllerGestore != null) {
@@ -771,7 +759,6 @@ public class GestioneProdottiFrame extends JFrame {
 		}
 	}
 	
-	
 	public List<Integer> getIdProdottiPerAllergeni() {
 		if(this.controllerAmministratore != null) 
 			return controllerAmministratore.ApriGetIdProdottiPerAllergeni(txfAllergeni.getText().toString());
@@ -779,8 +766,6 @@ public class GestioneProdottiFrame extends JFrame {
 			return controllerGestore.ApriGetIdProdottiPerAllergeni(txfAllergeni.getText().toString());
 			
 	}
-
-
 	
 	public void AggiornaCategorie() {
 		if(this.controllerAmministratore != null)

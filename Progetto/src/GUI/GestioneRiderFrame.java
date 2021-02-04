@@ -430,7 +430,6 @@ public class GestioneRiderFrame extends JFrame{
 		setVisible(true);
 	}
 	
-
 	private void ControllaModifiche(String Operazione) {
 		if(Operazione.equals("Modifica")){
 			if(Telefono==true || Veicolo==true) {
@@ -446,6 +445,5 @@ public class GestioneRiderFrame extends JFrame{
 			}
 		}
 	}
-	
-	
+
 }

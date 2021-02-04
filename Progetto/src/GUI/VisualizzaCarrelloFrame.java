@@ -1,6 +1,5 @@
 package GUI;
 
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,7 +25,6 @@ public class VisualizzaCarrelloFrame extends JFrame {
 	private MainController maincontroller = null;
 	private Point initialClick;
 	private JFrame parent = this;
-	
 	
 	public VisualizzaCarrelloFrame(MainController MainController, int idOrdine) {
 		setAlwaysOnTop(true);
@@ -144,9 +142,6 @@ public class VisualizzaCarrelloFrame extends JFrame {
 		this.setVisible(true);
 		
 	}
-	
-	
-	
 		
 	public String calcolaTotale(JTable table) {
 		float totale = 0, prezzo=0;
@@ -159,22 +154,5 @@ public class VisualizzaCarrelloFrame extends JFrame {
 		}
 		return "\u20ac " + Float.valueOf(totale).toString();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
