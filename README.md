@@ -1,3 +1,3 @@
-# Progetto Univeristà Federico II.
+# Federico II University Project.
 
-Software per gestione di una catena di ristorazione.
+Software for managing a restaurant chain.
